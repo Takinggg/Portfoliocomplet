@@ -1,0 +1,191 @@
+═══════════════════════════════════════════════════════════════
+🚀 VERSION 3 - ULTRA SIMPLE - GARANTIE DE FONCTIONNER
+═══════════════════════════════════════════════════════════════
+
+Cette version utilise CORS "*" sans credentials pour garantir que ça marche.
+Une fois que ça fonctionne, on ajoutera credentials.
+
+DÉPLOIEMENT :
+1. https://supabase.com/dashboard/project/ptcxeqtjlxittxayffgu/functions
+2. Cliquez "make-server-04919ac5"
+3. "Deploy a new version"
+4. Copiez TOUT le code ci-dessous
+5. Deploy
+
+═══════════════════════════════════════════════════════════════
+
+import { Hono } from "npm:hono";
+import { cors } from "npm:hono/cors";
+import { logger } from "npm:hono/logger";
+import { createClient } from "jsr:@supabase/supabase-js@2";
+
+const app = new Hono();
+
+const supabase = createClient(
+  Deno.env.get("SUPABASE_URL") ?? "",
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+);
+
+app.use('*', logger(console.log));
+
+// CORS ULTRA PERMISSIF - pour tester
+app.use("/*", cors({
+  origin: "*",
+  allowHeaders: ["Content-Type", "Authorization", "X-Client-Info"],
+  allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+}));
+
+// KV Functions
+async function kvGet(key: string) {
+  const { data } = await supabase
+    .from("kv_store_04919ac5")
+    .select("value")
+    .eq("key", key)
+    .single();
+  return data?.value || null;
+}
+
+async function kvSet(key: string, value: any) {
+  await supabase
+    .from("kv_store_04919ac5")
+    .upsert({ key, value, updated_at: new Date().toISOString() });
+}
+
+async function kvGetByPrefix(prefix: string) {
+  const { data } = await supabase
+    .from("kv_store_04919ac5")
+    .select("value")
+    .like("key", `${prefix}%`);
+  return data?.map(row => row.value) || [];
+}
+
+// HEALTH CHECK
+app.get("/make-server-04919ac5/health", (c) => {
+  return c.json({ 
+    success: true, 
+    message: "✅ Server V3 Ultra Simple is RUNNING",
+    version: "3.0.0",
+    timestamp: new Date().toISOString(),
+    cors: "open"
+  });
+});
+
+// INIT ADMIN
+app.post("/make-server-04919ac5/auth/init-admin", async (c) => {
+  try {
+    const ADMIN_EMAIL = "contact@maxence.design";
+    const ADMIN_PASSWORD = Deno.env.get("ADMIN_PASSWORD") ?? "vbz657D9";
+
+    const { data: users } = await supabase.auth.admin.listUsers();
+    const exists = users?.users.some(u => u.email === ADMIN_EMAIL);
+
+    if (exists) {
+      return c.json({ success: true, message: "Admin exists", email: ADMIN_EMAIL });
+    }
+
+    const { error } = await supabase.auth.admin.createUser({
+      email: ADMIN_EMAIL,
+      password: ADMIN_PASSWORD,
+      email_confirm: true,
+      user_metadata: { name: "Admin", role: "admin" },
+    });
+
+    if (error) {
+      return c.json({ success: false, error: error.message }, 500);
+    }
+
+    return c.json({ success: true, message: "Admin created", email: ADMIN_EMAIL });
+  } catch (error) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// LOGIN
+app.post("/make-server-04919ac5/auth/login", async (c) => {
+  try {
+    const { email, password } = await c.req.json();
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      return c.json({ success: false, error: error.message }, 401);
+    }
+
+    return c.json({ success: true, session: data.session, user: data.user });
+  } catch (error) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// NEWSLETTER
+app.get("/make-server-04919ac5/newsletter/stats", async (c) => {
+  const subscribers = await kvGetByPrefix("newsletter:");
+  return c.json({ 
+    success: true, 
+    total: subscribers.length,
+    confirmed: subscribers.filter((s: any) => s.status === "confirmed").length,
+  });
+});
+
+app.post("/make-server-04919ac5/newsletter/subscribe", async (c) => {
+  const { email, name } = await c.req.json();
+  await kvSet(`newsletter:${email}`, {
+    email,
+    name,
+    status: "confirmed",
+    subscribedAt: new Date().toISOString()
+  });
+  return c.json({ success: true });
+});
+
+// LEADS
+app.post("/make-server-04919ac5/leads", async (c) => {
+  const lead = await c.req.json();
+  const id = `lead_${Date.now()}`;
+  await kvSet(id, { ...lead, id, createdAt: new Date().toISOString() });
+  return c.json({ success: true, id });
+});
+
+app.get("/make-server-04919ac5/leads", async (c) => {
+  const leads = await kvGetByPrefix("lead_");
+  return c.json({ success: true, leads });
+});
+
+// PROJECTS
+app.get("/make-server-04919ac5/projects", async (c) => {
+  const projects = await kvGetByPrefix("project_");
+  return c.json({ success: true, projects });
+});
+
+app.post("/make-server-04919ac5/projects", async (c) => {
+  const project = await c.req.json();
+  const id = project.id || `project_${Date.now()}`;
+  await kvSet(id, { ...project, id, updatedAt: new Date().toISOString() });
+  return c.json({ success: true, id });
+});
+
+// CLIENTS
+app.get("/make-server-04919ac5/clients", async (c) => {
+  const clients = await kvGetByPrefix("client_");
+  return c.json({ success: true, clients });
+});
+
+app.post("/make-server-04919ac5/clients", async (c) => {
+  const client = await c.req.json();
+  const id = client.id || `client_${Date.now()}`;
+  await kvSet(id, { ...client, id, updatedAt: new Date().toISOString() });
+  return c.json({ success: true, id });
+});
+
+console.log("🚀 V3 Ultra Simple Server Starting...");
+Deno.serve(app.fetch);
+
+═══════════════════════════════════════════════════════════════
+TEST APRÈS DÉPLOIEMENT :
+═══════════════════════════════════════════════════════════════
+
+// Sans Authorization (devrait marcher maintenant)
+fetch('https://ptcxeqtjlxittxayffgu.supabase.co/functions/v1/make-server-04919ac5/health')
+  .then(r => r.json())
+  .then(console.log)
+
+// Vous devriez voir : { success: true, message: "✅ Server V3 Ultra Simple is RUNNING", version: "3.0.0" }

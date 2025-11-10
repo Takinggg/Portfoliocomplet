@@ -1,0 +1,153 @@
+╔════════════════════════════════════════════════════════════╗
+║  ✅ TESTER LE BOUTON "INITIALISER" - GUIDE RAPIDE        ║
+╚════════════════════════════════════════════════════════════╝
+
+🎯 OBJECTIF :
+   Vérifier que le bouton "Initialiser" fonctionne SANS crasher
+   la preview Figma.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 ÉTAPES DE TEST :
+
+   1️⃣  Ouvrez le Dashboard
+       → Cliquez sur l'icône utilisateur en haut à droite
+       → Ou allez directement sur /dashboard
+
+   2️⃣  Allez dans l'onglet "Études de Cas"
+       → Devrait afficher le message "📭 AUCUNE CASE STUDY TROUVÉE"
+
+   3️⃣  Cliquez sur le bouton "Initialiser"
+       → Bouton vert avec icône ⭐ Sparkles
+       → En haut à droite de la section
+
+   4️⃣  Confirmez dans la popup
+       → Message : "Voulez-vous initialiser les études de cas bilingues ?"
+       → Cliquez sur "OK"
+
+   5️⃣  Observez les résultats
+       ✅ Toast : "🔄 Reset et initialisation en cours..."
+       ✅ Puis : "✅ 3 case studies bilingues chargées avec succès !"
+       ✅ Les compteurs se mettent à jour
+       ✅ Les 3 case studies s'affichent
+       ✅ PAS de crash, PAS d'écran blanc !
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ RÉSULTAT ATTENDU :
+
+   Compteurs :
+   ┌─────────────────────────────────────┐
+   │ Total        : 3                    │
+   │ Featured     : 2                    │
+   │ 🌐 Multilingues : 3                   │
+   │ E-commerce   : 1                    │
+   └─────────────────────────────────────┘
+
+   Case Studies affichées :
+   ⭐ Plateforme E-commerce Luxe
+      Client: Maison Beaumont
+      Catégorie: E-commerce
+   
+   ⭐ Application SaaS de Gestion
+      Client: TaskFlow
+      Catégorie: SaaS
+   
+   • Site Vitrine Architecte
+      Client: Atelier Blanc
+      Catégorie: Website
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔍 VÉRIFICATIONS CONSOLE :
+
+   Ouvrez la console (F12) et vérifiez les logs :
+
+   ✅ "🗑️ Étape 1/3 : Suppression de la liste noire..."
+   ✅ "📦 Étape 2/3 : Chargement des case studies bilingues..."
+   ✅ "🌱 Seeding bilingual case studies to localStorage..."
+   ✅ "✅ 3 case studies bilingues chargées dans localStorage"
+   ✅ "✅ Étape 3/3 : Rechargement des données..."
+
+   ❌ PAS de "Uncaught Error"
+   ❌ PAS de "Failed to fetch"
+   ❌ PAS d'erreurs 404
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚨 SI ÇA NE MARCHE PAS :
+
+   Problème : Le bouton ne fait rien
+   Solution : Vérifiez la console pour les erreurs
+
+   Problème : La preview se coupe
+   Solution : 
+   1. Tapez dans la console : fixCaseStudiesNoReload()
+   2. Puis rafraîchissez manuellement (F5)
+
+   Problème : Erreurs 404 d'images
+   Solution : Les URLs des images sont valides maintenant
+             Si vous voyez encore des 404, c'est un cache
+             → Rafraîchissez avec Ctrl+F5 (force reload)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 TEST SUPPLÉMENTAIRE - PAGE PUBLIQUE :
+
+   1. Allez sur /case-studies
+   2. Vérifiez que les 3 case studies s'affichent
+   3. Testez le changement de langue (FR ↔ EN)
+   4. Cliquez sur une case study pour voir les détails
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 CHECKLIST FINALE :
+
+   Dashboard :
+   □ Bouton "Initialiser" fonctionne
+   □ Pas de crash de la preview
+   □ Compteurs affichent : 3, 2, 3, 1
+   □ 3 case studies listées
+   □ Badges "Featured" et "EN" visibles
+   □ Pas d'erreurs dans la console
+
+   Page Publique :
+   □ 3 case studies affichées
+   □ Images chargées correctement
+   □ Changement de langue fonctionne
+   □ Détails complets (FR + EN)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ SI TOUT FONCTIONNE :
+
+   🎉 FÉLICITATIONS !
+   
+   Votre système de case studies bilingues est prêt :
+   • Dashboard fonctionnel
+   • Page publique opérationnelle
+   • Traductions FR + EN complètes
+   • Images Unsplash valides
+   • Pas de crash dans Figma
+   
+   VOTRE PORTFOLIO EST COMPLET ! 🚀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🆘 BESOIN D'AIDE ?
+
+   Commandes console utiles :
+   
+   → fixCaseStudiesNoReload()
+      Fix complet sans crash
+   
+   → checkDeletedCaseStudies()
+      Vérifier la liste noire
+   
+   → initBilingualCaseStudies()
+      Charger les case studies
+   
+   → localStorage.clear()
+      Reset complet (dernier recours)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

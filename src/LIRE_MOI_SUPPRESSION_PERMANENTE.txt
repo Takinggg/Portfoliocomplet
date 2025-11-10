@@ -1,0 +1,57 @@
+╔══════════════════════════════════════════════════════════════════╗
+║  ✅ BUG CORRIGÉ : CASE STUDIES QUI RÉAPPARAISSENT               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+🐛 PROBLÈME INITIAL
+───────────────────
+Les case studies supprimés dans le dashboard réapparaissaient
+après avoir appelé initCaseStudies() ou seedCaseStudies()
+
+✅ SOLUTION IMPLÉMENTÉE
+─────────────────────────
+Système de suppression permanente avec localStorage :
+- Suppression depuis le dashboard = DÉFINITIVE
+- Les IDs supprimés sont mémorisés
+- initCaseStudies() et seedCaseStudies() les ignorent
+
+🎯 UTILISATION (SUPER SIMPLE !)
+─────────────────────────────────
+1. Allez dans Dashboard → Case Studies
+2. Supprimez un case study normalement
+3. C'EST TOUT ! Il ne réapparaîtra JAMAIS ✅
+
+📋 FONCTIONS DE CONSOLE
+────────────────────────
+getDeletedCaseStudies()
+→ Voir la liste des case studies supprimés
+
+permanentlyDeleteCaseStudy('id')
+→ Supprimer manuellement un case study
+
+clearDeletedCaseStudies()
+→ Réinitialiser (permet de recréer tous les case studies)
+
+🧪 TEST RAPIDE
+───────────────
+1. Supprimez un case study dans le dashboard
+2. Appelez initCaseStudies() dans la console
+3. Vérifiez qu'il ne réapparaît PAS ✅
+
+💡 NOTES IMPORTANTES
+─────────────────────
+✅ Fonctionne automatiquement
+✅ Persistant entre les sessions (localStorage)
+✅ Les fonctions d'init respectent les suppressions
+⚠️ Local au navigateur (pas synchronisé entre appareils)
+
+📚 DOCUMENTATION DÉTAILLÉE
+────────────────────────────
+→ FIX_CASE_STUDIES_PERMANENT_DELETE.md (guide rapide)
+→ SUPPRESSION_PERMANENTE_CASE_STUDIES.md (documentation complète)
+→ TEST_SUPPRESSION_PERMANENTE.md (procédure de test)
+
+══════════════════════════════════════════════════════════════════
+
+🎉 VOUS POUVEZ MAINTENANT SUPPRIMER DES CASE STUDIES SANS CRAINTE !
+
+══════════════════════════════════════════════════════════════════

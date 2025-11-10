@@ -1,0 +1,279 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║      🚨 FAQ CATÉGORIES - ERREUR 404 SUPPRESSION FIX          ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+ERREUR ACTUELLE :
+═══════════════════════════════════════════════════════════════════
+
+DELETE /faq-categories/faq_category:1762473292384 → 404 (Not Found)
+
+Impossible de supprimer les catégories FAQ !
+
+
+CAUSE IDENTIFIÉE :
+═══════════════════════════════════════════════════════════════════
+
+Les anciennes catégories ont été créées avec ":" au lieu de "_" :
+
+  ❌ faq_category:1762473292384  (mauvais format)
+  ✅ faq_category_1762473292384  (bon format)
+
+C'est exactement le MÊME problème que pour les questions FAQ !
+
+
+CORRECTION APPLIQUÉE :
+═══════════════════════════════════════════════════════════════════
+
+✅ Le serveur accepte maintenant TOUS les formats :
+   • faq_category:123 (ancien avec deux-points)
+   • faq_category_123 (nouveau avec underscore)
+
+✅ 2 routes corrigées :
+   • PUT    /faq-categories/:id
+   • DELETE /faq-categories/:id
+
+✅ Fonction de nettoyage créée :
+   • window.fixFAQCategoryKeys()
+   • window.fixFAQQuestionKeys()
+   • window.fixAllFAQKeys() (recommandé - tout nettoyer)
+
+
+ACTIONS IMMÉDIATES (3 MINUTES) :
+═══════════════════════════════════════════════════════════════════
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 1 : RECHARGER L'APP (10 sec)                          │
+└───────────────────────────────────────────────────────────────┘
+
+F5 ou Cmd+R pour charger les nouvelles fonctions
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 2 : CORRIGER TOUTES LES CLÉS FAQ (1 min)              │
+└───────────────────────────────────────────────────────────────┘
+
+1. Ouvrez la console : F12
+
+2. Connectez-vous au Dashboard (si pas déjà fait)
+
+3. Exécutez la FONCTION COMPLÈTE (recommandé) :
+
+   await window.fixAllFAQKeys()
+
+   Cette fonction va :
+   • Corriger toutes les catégories avec ":"
+   • Corriger toutes les questions avec ":"
+   • Afficher un résumé complet
+
+4. Attendez le résumé :
+
+   ╔════════════════════════════════════════════╗
+   ║     📊 RÉSUMÉ COMPLET - FIX FAQ KEYS      ║
+   ╚════════════════════════════════════════════╝
+   
+   🏷️  CATÉGORIES FAQ :
+      ✅ Corrigées : 2
+   
+   ❓ QUESTIONS FAQ :
+      ✅ Corrigées : 3
+   
+   📦 TOTAUX :
+      • Catégories traitées : 6
+      • Questions traitées : 37
+      • Total corrigé : 5
+
+5. Rechargez (F5)
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 3 : DÉPLOYER LE SERVEUR (1 min)                       │
+└───────────────────────────────────────────────────────────────┘
+
+Le serveur DOIT être redéployé avec les corrections :
+
+OPTION A - CLI (Recommandé) :
+──────────────────────────────────────────────────────────────
+
+  supabase functions deploy make-server-04919ac5 --no-verify-jwt
+
+OPTION B - Dashboard :
+──────────────────────────────────────────────────────────────
+
+  1. https://supabase.com/dashboard
+  2. Edge Functions → make-server-04919ac5
+  3. Edit Function
+  4. Copier/coller : /supabase/functions/server/index.tsx
+  5. Deploy
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 4 : TESTER LA SUPPRESSION (30 sec)                    │
+└───────────────────────────────────────────────────────────────┘
+
+1. Rechargez le Dashboard (F5)
+
+2. Allez dans : Dashboard → FAQ → Catégories
+
+3. Sélectionnez une catégorie
+
+4. Cliquez sur 🗑️ (Supprimer)
+
+5. Confirmez
+
+6. Résultat attendu :
+
+   ✅ "Catégorie supprimée avec succès"
+   
+   (Plus d'erreur 404 !)
+
+
+CE QUI A ÉTÉ CORRIGÉ :
+═══════════════════════════════════════════════════════════════════
+
+1. ✅ Serveur - Route PUT /faq-categories/:id
+   → Normalise "faq_category:" en "faq_category_"
+   → Cherche avec "_" en premier
+   → Fallback avec ":" si pas trouvé
+   → Compatible anciens ET nouveaux formats
+
+2. ✅ Serveur - Route DELETE /faq-categories/:id
+   → Normalise "faq_category:" en "faq_category_"
+   → Cherche avec "_" en premier
+   → Fallback avec ":" si pas trouvé
+   → Logs détaillés en cas d'erreur
+
+3. ✅ Fonction de nettoyage - fixFAQCategoryKeys()
+   → Trouve toutes les catégories avec ":"
+   → Les recrée avec "_"
+   → Supprime les anciennes versions
+   → Disponible : window.fixFAQCategoryKeys()
+
+4. ✅ Fonction de nettoyage - fixFAQQuestionKeys()
+   → Trouve toutes les questions avec ":"
+   → Les recrée avec "_"
+   → Supprime les anciennes versions
+   → Disponible : window.fixFAQQuestionKeys()
+
+5. ✅ Fonction globale - fixAllFAQKeys()
+   → Corrige TOUT (catégories + questions)
+   → Affiche un résumé complet
+   → Disponible : window.fixAllFAQKeys()
+
+
+FONCTIONS CONSOLE DISPONIBLES :
+═══════════════════════════════════════════════════════════════════
+
+Dans la console (F12), après connexion au Dashboard :
+
+// RECOMMANDÉ - Tout corriger en une fois
+await window.fixAllFAQKeys()
+
+// OU séparément :
+await window.fixFAQCategoryKeys()    // Catégories seulement
+await window.fixFAQQuestionKeys()    // Questions seulement
+
+
+DÉTAILS TECHNIQUES :
+═══════════════════════════════════════════════════════════════════
+
+Route DELETE /faq-categories/:id - AVANT :
+──────────────────────────────────────────────────────────────
+
+let id = c.req.param("id");
+
+if (!id.startsWith("faq_category_")) {
+  id = `faq_category_${id}`;
+}
+
+const existing = await kv.get(id);  // ❌ Échoue si l'ID a ":"
+
+
+Route DELETE /faq-categories/:id - APRÈS :
+──────────────────────────────────────────────────────────────
+
+let id = c.req.param("id");
+
+// Normaliser : "faq_category:" → "faq_category_"
+id = id.replace(/^faq_category:/, "faq_category_");
+
+// Ajouter préfixe si manquant
+if (!id.startsWith("faq_category_")) {
+  id = `faq_category_${id}`;
+}
+
+// Chercher avec "_" en premier
+let existing = await kv.get(id);
+
+// Fallback : chercher avec ":" si pas trouvé
+if (!existing && id.includes("faq_category_")) {
+  const colonId = id.replace("faq_category_", "faq_category:");
+  existing = await kv.get(colonId);
+  if (existing) {
+    id = colonId;  // ✅ Utiliser la version avec ":"
+  }
+}
+
+// ✅ Trouve TOUJOURS la catégorie, quel que soit le format
+
+
+VÉRIFICATION CONSOLE :
+═══════════════════════════════════════════════════════════════════
+
+AVANT LE FIX :
+──────────────────────────────────────────────────────────────
+
+❌ DELETE /faq-categories/faq_category:123 → 404 (Not Found)
+
+
+APRÈS LE DÉPLOIEMENT ET NETTOYAGE :
+──────────────────────────────────────────────────────────────
+
+CONSOLE FRONTEND (F12) :
+✅ Catégorie supprimée avec succès
+
+CONSOLE SERVEUR (Supabase Logs) :
+✅ Deleted FAQ category: faq_category_1762473292384
+
+
+RÉSUMÉ ULTRA-RAPIDE :
+═══════════════════════════════════════════════════════════════════
+
+┌─────┬──────────────────────────────────────┬──────────┐
+│  #  │ Action                               │ Durée    │
+├─────┼──────────────────────────────────────┼──────────┤
+│  1  │ Recharger (F5)                       │ 10 sec   │
+│  2  │ window.fixAllFAQKeys()               │ 1 min    │
+│  3  │ Déployer serveur                     │ 1 min    │
+│  4  │ Tester suppression                   │ 30 sec   │
+├─────┼──────────────────────────────────────┼──────────┤
+│     │ TOTAL                                │ 2m 40s   │
+└─────┴──────────────────────────────────────┴──────────┘
+
+
+FICHIERS MODIFIÉS :
+═══════════════════════════════════════════════════════════════════
+
+• /supabase/functions/server/index.tsx
+  → PUT /faq-categories/:id (gère ":" et "_")
+  → DELETE /faq-categories/:id (gère ":" et "_")
+
+• /utils/fixFAQKeys.ts
+  → fixFAQCategoryKeys() (nouvelle fonction)
+  → fixFAQQuestionKeys() (existante)
+  → fixAllFAQKeys() (nouvelle - recommandée)
+
+• /FAQ_CATEGORIES_404_FIX.txt
+  → Ce guide
+
+
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║  🎯 Après les 4 actions, vos FAQ seront 100% fonctionnelles! ║
+║                                                               ║
+║  ⏱️ Temps total : moins de 3 minutes                          ║
+║                                                               ║
+║  ✅ Plus AUCUNE erreur 404 sur les catégories ET questions!  ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝

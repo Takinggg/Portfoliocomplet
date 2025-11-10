@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide - Tarification Freelance</title>
+    <style>
+        @page { margin: 2cm; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #0C0C0C;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
+            color: #00FFC2;
+            margin: -20px -20px 40px -20px;
+        }
+        
+        h2 {
+            color: #0C0C0C;
+            border-bottom: 3px solid #00FFC2;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        
+        .calculator {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            border: 2px solid #00FFC2;
+            margin: 30px 0;
+        }
+        
+        .calc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .calc-label {
+            font-weight: bold;
+            flex: 1;
+        }
+        
+        .calc-value {
+            flex: 0 0 200px;
+            text-align: right;
+            padding: 8px 12px;
+            border: 2px solid #00FFC2;
+            border-radius: 4px;
+            background: white;
+        }
+        
+        .calc-result {
+            background: #00FFC2;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #0C0C0C;
+            color: #00FFC2;
+        }
+        
+        .tip {
+            background: #00FFC2;
+            background: linear-gradient(135deg, #00FFC2 0%, #00e6ae 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #0C0C0C;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .example {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 0 20px 0;
+            margin-top: 60px;
+            border-top: 2px solid #00FFC2;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>💰 Guide Complet</h1>
+        <h2 style="margin: 20px 0; border: none; padding: 0;">Calculer ses Tarifs Freelance</h2>
+        <p>La méthode pour fixer des tarifs justes et rentables</p>
+    </div>
+
+    <div class="tip">
+        <strong>🎯 Objectif de ce guide :</strong>
+        Apprendre à calculer vos tarifs freelance de manière scientifique, en tenant compte de TOUTES vos charges et de votre temps réel. Fini les tarifs au pif !
+    </div>
+
+    <h2>1. Pourquoi bien calculer ses tarifs ?</h2>
+    
+    <p>Beaucoup de freelances débutants font ces erreurs :</p>
+    <ul>
+        <li>❌ Se baser sur les tarifs des autres sans connaître leur situation</li>
+        <li>❌ Oublier les charges sociales et fiscales (ÉNORME erreur !)</li>
+        <li>❌ Ne pas compter le temps non facturable</li>
+        <li>❌ Ne pas prévoir de congés ou d'imprévus</li>
+        <li>❌ Confondre chiffre d'affaires et revenu net</li>
+    </ul>
+
+    <p><strong>Résultat ?</strong> Ils travaillent beaucoup mais gagnent peu. Nous allons éviter ça !</p>
+
+    <h2>2. La Formule Magique</h2>
+
+    <div class="calculator">
+        <h3 style="text-align: center; margin-top: 0;">📊 Calculateur de Taux Horaire</h3>
+        
+        <div class="calc-row">
+            <div class="calc-label">Revenu mensuel souhaité (net après impôts)</div>
+            <div class="calc-value">_________ €</div>
+        </div>
+        
+        <div class="calc-row">
+            <div class="calc-label">× 12 mois = Revenu annuel souhaité</div>
+            <div class="calc-value">_________ €</div>
+        </div>
+        
+        <div class="calc-row">
+            <div class="calc-label">+ Charges sociales (~45% du CA)</div>
+            <div class="calc-value">_________ €</div>
+        </div>
+        
+        <div class="calc-row">
+            <div class="calc-label">+ Impôts (~15-30% selon situation)</div>
+            <div class="calc-value">_________ €</div>
+        </div>
+        
+        <div class="calc-row">
+            <div class="calc-label">+ Frais professionnels (10-20% du CA)</div>
+            <div class="calc-value">_________ €</div>
+        </div>
+        
+        <div class="calc-row">
+            <div class="calc-label">= Chiffre d'affaires annuel nécessaire</div>
+            <div class="calc-value">_________ €</div>
+        </div>
+        
+        <hr style="margin: 20px 0;">
+        
+        <div class="calc-row">
+            <div class="calc-label">Jours travaillés par an</div>
+            <div class="calc-value">_________ jours</div>
+        </div>
+        
+        <p style="font-size: 14px; color: #6c757d; margin: 10px 0;">
+            365 jours - 104 week-ends - 25 congés - 10 jours fériés - 10 jours maladie = <strong>216 jours</strong>
+        </p>
+        
+        <div class="calc-row">
+            <div class="calc-label">× Taux de facturation (temps facturable)</div>
+            <div class="calc-value">× 60% = ______ j</div>
+        </div>
+        
+        <p style="font-size: 14px; color: #6c757d; margin: 10px 0;">
+            40% de votre temps part en prospection, administratif, formation, etc.
+        </p>
+        
+        <div class="calc-row">
+            <div class="calc-label">÷ 7h par jour</div>
+            <div class="calc-value">_________ heures</div>
+        </div>
+        
+        <div class="calc-result">
+            CA Annuel ÷ Heures Facturables = <br>
+            <span style="font-size: 36px;">_____ € HT/h</span>
+        </div>
+    </div>
+
+    <h2>3. Exemple Concret</h2>
+
+    <div class="example">
+        <h3>Cas de Julie, développeuse web freelance</h3>
+        
+        <p><strong>Objectif :</strong> Gagner 3 000€ nets par mois pour vivre confortablement</p>
+        
+        <table>
+            <tr>
+                <td><strong>Revenu net souhaité</strong></td>
+                <td>3 000€ × 12 = <strong>36 000€ / an</strong></td>
+            </tr>
+            <tr>
+                <td>Charges sociales (45%)</td>
+                <td>+ 29 700€</td>
+            </tr>
+            <tr>
+                <td>Impôts (20%)</td>
+                <td>+ 16 500€</td>
+            </tr>
+            <tr>
+                <td>Frais pro (outils, formation, compta)</td>
+                <td>+ 5 000€</td>
+            </tr>
+            <tr style="background: #ffe6cc; font-weight: bold;">
+                <td>CA annuel nécessaire</td>
+                <td>87 200€ HT</td>
+            </tr>
+        </table>
+        
+        <p><strong>Calcul des jours facturables :</strong></p>
+        <ul>
+            <li>365 jours - 104 week-ends = 261 jours</li>
+            <li>- 25 jours de congés = 236 jours</li>
+            <li>- 10 jours fériés = 226 jours</li>
+            <li>- 10 jours maladie/imprévus = 216 jours</li>
+            <li>× 60% (taux de facturation) = <strong>130 jours facturables</strong></li>
+            <li>× 7h/jour = <strong>910 heures facturables</strong></li>
+        </ul>
+        
+        <div style="background: #00FFC2; padding: 20px; border-radius: 8px; text-align: center; margin-top: 20px;">
+            <p style="margin: 0; font-size: 18px;">Taux horaire de Julie :</p>
+            <p style="margin: 10px 0; font-size: 36px; font-weight: bold;">87 200€ ÷ 910h = 96€ HT/h</p>
+            <p style="margin: 0; font-size: 18px;">ou <strong>672€ HT/jour</strong></p>
+        </div>
+    </div>
+
+    <div class="warning">
+        <strong>⚠️ Erreur courante :</strong> "3 000€ net ÷ 30 jours ÷ 7h = 14€/h, c'est bon !"<br>
+        NON ! Cette personne oublie les charges, impôts, congés et temps non facturable. Elle va droit à la faillite.
+    </div>
+
+    <h2>4. Grille de Tarifs par Expérience</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Profil</th>
+                <th>Taux Horaire</th>
+                <th>Taux Journalier</th>
+                <th>Projet Site Vitrine</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Junior</strong><br>(0-2 ans d'xp)</td>
+                <td>40-60€ HT</td>
+                <td>300-450€ HT</td>
+                <td>2 500-4 000€</td>
+            </tr>
+            <tr>
+                <td><strong>Confirmé</strong><br>(2-5 ans d'xp)</td>
+                <td>60-90€ HT</td>
+                <td>450-650€ HT</td>
+                <td>4 000-7 000€</td>
+            </tr>
+            <tr>
+                <td><strong>Senior</strong><br>(5-10 ans d'xp)</td>
+                <td>90-120€ HT</td>
+                <td>650-900€ HT</td>
+                <td>7 000-12 000€</td>
+            </tr>
+            <tr>
+                <td><strong>Expert</strong><br>(10+ ans d'xp)</td>
+                <td>120-200€ HT</td>
+                <td>900-1500€ HT</td>
+                <td>12 000-25 000€</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><em>Ces fourchettes varient selon la spécialité, la région et le type de clients.</em></p>
+
+    <h2>5. Facturation : Horaire, Journalière ou au Forfait ?</h2>
+
+    <h3>🕐 Facturation Horaire</h3>
+    <p><strong>Avantages :</strong></p>
+    <ul>
+        <li>✅ Simple à calculer</li>
+        <li>✅ Rémunération juste du temps passé</li>
+        <li>✅ Idéal pour missions courtes ou floues</li>
+    </ul>
+    <p><strong>Inconvénients :</strong></p>
+    <ul>
+        <li>❌ Plafonne vos revenus (temps = argent)</li>
+        <li>❌ Pénalise votre efficacité (plus vous êtes rapide, moins vous gagnez)</li>
+        <li>❌ Client peut contester les heures</li>
+    </ul>
+
+    <h3>📅 Facturation Journalière (TJM)</h3>
+    <p><strong>Avantages :</strong></p>
+    <ul>
+        <li>✅ Standard dans l'industrie</li>
+        <li>✅ Plus facile à budgéter pour le client</li>
+        <li>✅ Bon compromis flexibilité/rentabilité</li>
+    </ul>
+    <p><strong>Inconvénients :</strong></p>
+    <ul>
+        <li>❌ Toujours limité par le temps</li>
+    </ul>
+
+    <h3>📦 Facturation au Forfait</h3>
+    <p><strong>Avantages :</strong></p>
+    <ul>
+        <li>✅ Récompense votre efficacité</li>
+        <li>✅ Budget clair pour le client</li>
+        <li>✅ Permet de valoriser votre expertise</li>
+        <li>✅ Scalable (pas lié au temps)</li>
+    </ul>
+    <p><strong>Inconvénients :</strong></p>
+    <ul>
+        <li>❌ Risque si mauvaise estimation</li>
+        <li>❌ Nécessite un cahier des charges précis</li>
+        <li>❌ Scope creep (demandes hors scope)</li>
+    </ul>
+
+    <div class="tip">
+        <strong>💡 Ma recommandation :</strong>
+        <p><strong>Forfait pour les projets définis</strong> (site web, app) avec un CDC clair.</p>
+        <p><strong>TJM pour les missions longues</strong> (régie, accompagnement continu).</p>
+        <p>Toujours calculer en interne sur une base horaire, puis présenter au client sous la forme la plus adaptée.</p>
+    </div>
+
+    <h2>6. Valorisation au-delà du Temps</h2>
+
+    <p>Vous pouvez facturer plus cher si :</p>
+
+    <ul>
+        <li><strong>Urgence</strong> : Délai serré ? +20-50%</li>
+        <li><strong>Expertise rare</strong> : Vous êtes un des seuls à savoir faire ? +30-100%</li>
+        <li><strong>Valeur créée</strong> : Votre travail rapporte 100k€ au client ? Facturez en conséquence</li>
+        <li><strong>Gros client</strong> : CAC40, scale-up ? Ils ont le budget, ajustez</li>
+        <li><strong>Récurrence</strong> : Maintenance mensuelle = revenu prévisible = remise possible</li>
+    </ul>
+
+    <div class="example">
+        <h3>💡 Penser "Valeur" plutôt que "Temps"</h3>
+        <p>Un site e-commerce qui génère 500k€/an de CA ne vaut pas "40h × 60€" = 2 400€.</p>
+        <p>Il vaut au moins 10-15k€ car il génère de la valeur énorme pour des années.</p>
+        <p><strong>Facturez la valeur, pas le temps.</strong></p>
+    </div>
+
+    <h2>7. Checklist avant de Fixer vos Tarifs</h2>
+
+    <ul style="list-style: none; padding: 0;">
+        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+            <span style="position: absolute; left: 0; color: #00FFC2; font-size: 20px;">☐</span>
+            J'ai calculé mon CA annuel nécessaire (revenu net + charges + impôts + frais)
+        </li>
+        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+            <span style="position: absolute; left: 0; color: #00FFC2; font-size: 20px;">☐</span>
+            J'ai estimé mes jours facturables réels (60% max de mes jours travaillés)
+        </li>
+        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+            <span style="position: absolute; left: 0; color: #00FFC2; font-size: 20px;">☐</span>
+            J'ai vérifié les tarifs du marché pour mon profil
+        </li>
+        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+            <span style="position: absolute; left: 0; color: #00FFC2; font-size: 20px;">☐</span>
+            J'ai ajusté selon mon positionnement (premium, accessible, etc.)
+        </li>
+        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+            <span style="position: absolute; left: 0; color: #00FFC2; font-size: 20px;">☐</span>
+            Je suis à l'aise pour annoncer ce tarif (confiance !)
+        </li>
+        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+            <span style="position: absolute; left: 0; color: #00FFC2; font-size: 20px;">☐</span>
+            J'ai préparé mon argumentaire de valeur
+        </li>
+    </ul>
+
+    <h2>8. Outils Complémentaires</h2>
+
+    <p><strong>Simulateurs en ligne :</strong></p>
+    <ul>
+        <li>Simulateur URSSAF (charges sociales)</li>
+        <li>Simulateur impots.gouv.fr</li>
+        <li>Calculateur TJM (Google "calculateur tjm freelance")</li>
+    </ul>
+
+    <p><strong>Ressources :</strong></p>
+    <ul>
+        <li>Livre : "Double Your Freelancing Rate" - Brennan Dunn</li>
+        <li>Podcast : "Freelance Life" (tarification, positionnement)</li>
+        <li>Communautés : Malt, Comet, Discord freelances</li>
+    </ul>
+
+    <div class="warning">
+        <strong>🚨 Attention :</strong> Ces calculs sont des estimations. Pour des chiffres exacts, consultez un comptable. Chaque situation est unique (régime fiscal, charges, etc.).
+    </div>
+
+    <div class="tip">
+        <strong>🎯 Action immédiate :</strong>
+        <p>Prenez 30 minutes maintenant pour remplir le calculateur de ce guide avec VOS chiffres. Vous serez surpris du résultat !</p>
+    </div>
+
+    <div class="footer">
+        <p><strong>Maxence - Développeur Web & Designer</strong></p>
+        <p>Besoin d'aide pour positionner votre offre et vos tarifs ? Parlons-en : contact@maxence.design</p>
+        <p style="margin-top: 20px; color: #00FFC2;">© 2025 - Guide gratuit</p>
+    </div>
+</body>
+</html>

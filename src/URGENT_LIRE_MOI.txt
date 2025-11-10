@@ -1,0 +1,23 @@
+═══════════════════════════════════════════════════════════════════
+🚨 URGENT : PROBLÈME DÉTECTÉ - _redirects est un DOSSIER ❌
+═══════════════════════════════════════════════════════════════════
+
+❌ PROBLÈME :
+   Tu as créé /public/_redirects comme un DOSSIER
+   Il DOIT être un FICHIER texte simple
+
+✅ SOLUTION RAPIDE (3 COMMANDES) :
+
+   Ouvre ton terminal et copie-colle :
+
+   rm -rf public/_redirects
+   echo "/*    /index.html   200" > public/_redirects
+   git add public/_redirects && git commit -m "fix: _redirects as file" && git push origin main
+
+⏰ Attends 2-3 minutes, puis teste :
+   https://www.maxence.design/en → F5 → Plus de 404 ✅
+
+📖 GUIDE COMPLET :
+   Ouvre /COMMANDES_EXACTES_FIX_REDIRECTS.md
+
+═══════════════════════════════════════════════════════════════════

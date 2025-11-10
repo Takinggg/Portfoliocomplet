@@ -1,0 +1,140 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║         📋 COPIE-COLLE DANS LA CONSOLE MAINTENANT            ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+
+🎯 LES FONCTIONS NE SONT PAS ENCORE DÉPLOYÉES
+
+Les modifications que j'ai faites ne sont pas encore en ligne.
+
+MAIS TU PEUX TESTER MAINTENANT avec ce code !
+
+
+═══════════════════════════════════════════════════════════════
+  📋 ÉTAPE 1 : COPIE TOUT CE CODE
+═══════════════════════════════════════════════════════════════
+
+Sélectionne TOUT le code ci-dessous (du premier { au dernier })
+et copie-le (Ctrl+C) :
+
+
+// === DÉBUT DU CODE À COPIER ===
+
+window.showCurrentState = function() {
+  const pathname = window.location.pathname;
+  const lang = pathname.match(/^\/(en|fr)/)?.[1];
+  const isHome = pathname === `/${lang}` || pathname === `/${lang}/`;
+  const currentPage = pathname.split('/').filter(Boolean).slice(1).join('/') || 'home';
+  
+  console.log(`%c
+╔═══════════════════════════════════════════════════════════════╗
+║                 ÉTAT ACTUEL DE LA NAVIGATION                  ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📍 URL : ${window.location.href}
+📂 Path : ${pathname}
+🌍 Langue : ${lang || '❌ Non détectée'}
+📄 Page : ${currentPage}
+🏠 Page d'accueil ? ${isHome ? '✅ OUI' : '❌ NON'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ DIAGNOSTIC :
+
+${lang ? '✅ Langue détectée correctement' : '❌ PROBLÈME : Langue non détectée'}
+${pathname.includes('/services') ? '✅ URL contient /services' : pathname.includes('/blog') ? '✅ URL contient /blog' : pathname.includes('/projects') ? '✅ URL contient /projects' : '⚠️  URL ne contient pas de page spécifique'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  `, 'color: #F4F4F4; font-size: 13px; background: #1a1a1a; padding: 15px; border-left: 5px solid #00FFC2;');
+};
+
+window.goToServices = function() {
+  const lang = window.location.pathname.match(/^\/(en|fr)/)?.[1] || 'fr';
+  console.log(`%c🚀 Navigation vers /${lang}/services...`, 'color: #00FFC2; font-size: 14px;');
+  window.location.href = `/${lang}/services`;
+};
+
+window.goToBlog = function() {
+  const lang = window.location.pathname.match(/^\/(en|fr)/)?.[1] || 'fr';
+  console.log(`%c🚀 Navigation vers /${lang}/blog...`, 'color: #00FFC2; font-size: 14px;');
+  window.location.href = `/${lang}/blog`;
+};
+
+window.goToProjects = function() {
+  const lang = window.location.pathname.match(/^\/(en|fr)/)?.[1] || 'fr';
+  console.log(`%c🚀 Navigation vers /${lang}/projects...`, 'color: #00FFC2; font-size: 14px;');
+  window.location.href = `/${lang}/projects`;
+};
+
+window.testAllPages = function() {
+  const lang = window.location.pathname.match(/^\/(en|fr)/)?.[1] || 'fr';
+  const pages = ['services', 'projects', 'blog', 'about', 'contact', 'booking', 'case-studies', 'faq', 'resources', 'testimonials'];
+  
+  console.log(`%c
+🧪 TOUTES LES URLS DISPONIBLES
+
+Langue : ${lang}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  `, 'color: #00FFC2; font-size: 14px;');
+  
+  pages.forEach((page, i) => {
+    console.log(`${i + 1}. ${window.location.origin}/${lang}/${page}`);
+  });
+};
+
+console.log(`%c
+✅ FONCTIONS CHARGÉES !
+
+Tu peux maintenant exécuter :
+
+• showCurrentState()
+• goToServices()
+• goToBlog()
+• goToProjects()
+• testAllPages()
+
+`, 'color: #00FFC2; font-size: 14px; background: #0a2520; padding: 10px; border: 2px solid #00FFC2;');
+
+// === FIN DU CODE À COPIER ===
+
+
+═══════════════════════════════════════════════════════════════
+  📋 ÉTAPE 2 : COLLE DANS LA CONSOLE
+═══════════════════════════════════════════════════════════════
+
+1. Ouvre la console (F12)
+2. Colle le code (Ctrl+V)
+3. Appuie sur Entrée
+
+Tu devrais voir : "✅ FONCTIONS CHARGÉES !"
+
+
+═══════════════════════════════════════════════════════════════
+  📋 ÉTAPE 3 : TESTE
+═══════════════════════════════════════════════════════════════
+
+Maintenant exécute :
+
+showCurrentState()
+
+Puis clique sur "Services" dans le menu et exécute à nouveau :
+
+showCurrentState()
+
+
+═══════════════════════════════════════════════════════════════
+  🚀 OU VA DIRECTEMENT SUR SERVICES
+═══════════════════════════════════════════════════════════════
+
+Après avoir collé le code, exécute :
+
+goToServices()
+
+
+═══════════════════════════════════════════════════════════════
+
+COPIE TOUT LE CODE CI-DESSUS ET COLLE-LE DANS LA CONSOLE !
+
+═══════════════════════════════════════════════════════════════

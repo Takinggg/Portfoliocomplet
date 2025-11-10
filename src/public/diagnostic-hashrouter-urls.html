@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnostic HashRouter URLs - maxence.design</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
+      color: #F4F4F4;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #00FFC2, #00CC99);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .subtitle {
+      color: #999;
+      margin-bottom: 40px;
+    }
+    
+    .section {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .section h2 {
+      color: #00FFC2;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .label {
+      color: #999;
+      font-weight: 500;
+    }
+    
+    .value {
+      color: #F4F4F4;
+      font-family: monospace;
+      background: rgba(0, 255, 194, 0.05);
+      padding: 8px 12px;
+      border-radius: 6px;
+      border-left: 3px solid #00FFC2;
+      word-break: break-all;
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    .status.success {
+      background: rgba(0, 255, 194, 0.15);
+      color: #00FFC2;
+      border: 1px solid rgba(0, 255, 194, 0.3);
+    }
+    
+    .status.error {
+      background: rgba(255, 68, 68, 0.15);
+      color: #ff4444;
+      border: 1px solid rgba(255, 68, 68, 0.3);
+    }
+    
+    .status.warning {
+      background: rgba(255, 193, 7, 0.15);
+      color: #ffc107;
+      border: 1px solid rgba(255, 193, 7, 0.3);
+    }
+    
+    .test-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .test-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #F4F4F4;
+    }
+    
+    .test-description {
+      color: #999;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+    
+    .test-result {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+    
+    .test-result.pass {
+      background: rgba(0, 255, 194, 0.1);
+      color: #00FFC2;
+      border-left: 3px solid #00FFC2;
+    }
+    
+    .test-result.fail {
+      background: rgba(255, 68, 68, 0.1);
+      color: #ff4444;
+      border-left: 3px solid #ff4444;
+    }
+    
+    button {
+      background: #00FFC2;
+      color: #0C0C0C;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    
+    button:hover {
+      background: #00CC99;
+      transform: translateY(-2px);
+    }
+    
+    .code-block {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 10px;
+      overflow-x: auto;
+    }
+    
+    .code-block code {
+      color: #00FFC2;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    
+    .actions {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Diagnostic HashRouter URLs</h1>
+    <p class="subtitle">Vérification de la configuration des URLs avec HashRouter</p>
+    
+    <!-- État actuel -->
+    <div class="section">
+      <h2>📍 État actuel de l'URL</h2>
+      <div class="info-grid">
+        <div class="label">URL complète :</div>
+        <div class="value" id="fullUrl">-</div>
+        
+        <div class="label">Hash :</div>
+        <div class="value" id="hash">-</div>
+        
+        <div class="label">Pathname :</div>
+        <div class="value" id="pathname">-</div>
+        
+        <div class="label">Origin :</div>
+        <div class="value" id="origin">-</div>
+        
+        <div class="label">Statut :</div>
+        <div id="urlStatus">-</div>
+      </div>
+      
+      <div class="actions">
+        <button onclick="refreshInfo()">🔄 Rafraîchir</button>
+        <button onclick="copyToClipboard()">📋 Copier diagnostic</button>
+      </div>
+    </div>
+    
+    <!-- Tests automatiques -->
+    <div class="section">
+      <h2>🧪 Tests automatiques</h2>
+      <div id="testsContainer"></div>
+    </div>
+    
+    <!-- Actions de test -->
+    <div class="section">
+      <h2>🎯 Actions de test</h2>
+      <div class="test-item">
+        <div class="test-title">Test 1 : Changement vers FR</div>
+        <div class="test-description">Redirige vers /#/fr et vérifie que l'URL est correcte</div>
+        <button onclick="testLanguageChange('fr')">Tester FR</button>
+      </div>
+      
+      <div class="test-item">
+        <div class="test-title">Test 2 : Changement vers EN</div>
+        <div class="test-description">Redirige vers /#/en et vérifie que l'URL est correcte</div>
+        <button onclick="testLanguageChange('en')">Tester EN</button>
+      </div>
+      
+      <div class="test-item">
+        <div class="test-title">Test 3 : Navigation vers Projects</div>
+        <div class="test-description">Navigue vers /projects dans la langue actuelle</div>
+        <button onclick="testNavigation('projects')">Tester Projects</button>
+      </div>
+      
+      <div class="test-item">
+        <div class="test-title">Test 4 : Navigation vers Services</div>
+        <div class="test-description">Navigue vers /services dans la langue actuelle</div>
+        <button onclick="testNavigation('services')">Tester Services</button>
+      </div>
+    </div>
+    
+    <!-- Guide rapide -->
+    <div class="section">
+      <h2>📖 Guide rapide</h2>
+      <p style="color: #999; margin-bottom: 15px;">
+        Pour un système HashRouter correct, l'URL doit TOUJOURS avoir ce format :
+      </p>
+      <div class="code-block">
+        <code>https://www.maxence.design/#/fr</code>
+      </div>
+      <div class="code-block">
+        <code>https://www.maxence.design/#/en/projects</code>
+      </div>
+      <p style="color: #999; margin-top: 15px;">
+        <strong>❌ Incorrect :</strong> <code style="color: #ff4444;">https://www.maxence.design/fr</code> (pas de #)
+      </p>
+      <p style="color: #999; margin-top: 5px;">
+        <strong>✅ Correct :</strong> <code style="color: #00FFC2;">https://www.maxence.design/#/fr</code>
+      </p>
+    </div>
+  </div>
+  
+  <script>
+    // Afficher les informations actuelles
+    function refreshInfo() {
+      document.getElementById('fullUrl').textContent = window.location.href;
+      document.getElementById('hash').textContent = window.location.hash || '(vide)';
+      document.getElementById('pathname').textContent = window.location.pathname;
+      document.getElementById('origin').textContent = window.location.origin;
+      
+      // Vérifier le statut de l'URL
+      const hash = window.location.hash;
+      const pathname = window.location.pathname;
+      const statusEl = document.getElementById('urlStatus');
+      
+      if (hash && hash.match(/#\/(fr|en)/)) {
+        statusEl.innerHTML = '<span class="status success">✅ URL Correcte</span>';
+      } else if (pathname.match(/^\/(fr|en)/)) {
+        statusEl.innerHTML = '<span class="status error">❌ URL sans hash (sera corrigée)</span>';
+      } else if (!hash || hash === '#/' || hash === '#') {
+        statusEl.innerHTML = '<span class="status warning">⚠️ Pas de langue (redirection en cours)</span>';
+      } else {
+        statusEl.innerHTML = '<span class="status error">❌ Format inconnu</span>';
+      }
+      
+      runAutomaticTests();
+    }
+    
+    // Tests automatiques
+    function runAutomaticTests() {
+      const tests = [
+        {
+          name: 'Hash existe',
+          test: () => window.location.hash !== '',
+          description: 'Vérifie que l\'URL contient un hash (#)'
+        },
+        {
+          name: 'Hash contient une langue',
+          test: () => window.location.hash.match(/#\/(fr|en)/),
+          description: 'Vérifie que le hash contient /fr ou /en'
+        },
+        {
+          name: 'Pathname est racine',
+          test: () => window.location.pathname === '/',
+          description: 'Vérifie que le pathname est / (pas /fr ou /en)'
+        },
+        {
+          name: 'Format URL HashRouter',
+          test: () => {
+            const hash = window.location.hash;
+            const pathname = window.location.pathname;
+            return pathname === '/' && hash.match(/#\/(fr|en)/);
+          },
+          description: 'Vérifie que l\'URL suit le format HashRouter complet'
+        }
+      ];
+      
+      const container = document.getElementById('testsContainer');
+      container.innerHTML = '';
+      
+      tests.forEach(test => {
+        const result = test.test();
+        const div = document.createElement('div');
+        div.className = 'test-item';
+        div.innerHTML = `
+          <div class="test-title">${test.name}</div>
+          <div class="test-description">${test.description}</div>
+          <div class="test-result ${result ? 'pass' : 'fail'}">
+            ${result ? '✅ PASS' : '❌ FAIL'}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+    
+    // Tester le changement de langue
+    function testLanguageChange(lang) {
+      const newUrl = `${window.location.origin}/#/${lang}`;
+      console.log(`🧪 Test changement langue vers ${lang}`);
+      console.log(`📍 Nouvelle URL: ${newUrl}`);
+      window.location.href = newUrl;
+    }
+    
+    // Tester la navigation
+    function testNavigation(page) {
+      const hash = window.location.hash;
+      const langMatch = hash.match(/#\/(fr|en)/);
+      const lang = langMatch ? langMatch[1] : 'fr';
+      const newUrl = `${window.location.origin}/#/${lang}/${page}`;
+      console.log(`🧪 Test navigation vers ${page}`);
+      console.log(`📍 Nouvelle URL: ${newUrl}`);
+      window.location.href = newUrl;
+    }
+    
+    // Copier le diagnostic
+    function copyToClipboard() {
+      const diagnostic = `
+🔍 Diagnostic HashRouter URLs - ${new Date().toLocaleString()}
+
+URL complète: ${window.location.href}
+Hash: ${window.location.hash || '(vide)'}
+Pathname: ${window.location.pathname}
+Origin: ${window.location.origin}
+
+Statut: ${document.getElementById('urlStatus').textContent}
+      `.trim();
+      
+      navigator.clipboard.writeText(diagnostic).then(() => {
+        alert('✅ Diagnostic copié dans le presse-papier !');
+      }).catch(err => {
+        console.error('Erreur copie:', err);
+        alert('❌ Erreur lors de la copie');
+      });
+    }
+    
+    // Initialiser au chargement
+    window.addEventListener('load', () => {
+      refreshInfo();
+      console.log('🔍 Diagnostic HashRouter chargé');
+      console.log('📍 URL actuelle:', window.location.href);
+      console.log('🔗 Hash:', window.location.hash);
+      console.log('📂 Pathname:', window.location.pathname);
+    });
+    
+    // Rafraîchir quand l'URL change
+    window.addEventListener('hashchange', () => {
+      console.log('🔄 Hash changé:', window.location.hash);
+      refreshInfo();
+    });
+  </script>
+</body>
+</html>

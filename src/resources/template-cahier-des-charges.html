@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template - Cahier des Charges à Remplir</title>
+    <style>
+        @page {
+            margin: 2cm;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #0C0C0C;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
+            color: #00FFC2;
+            margin: -20px -20px 40px -20px;
+        }
+        
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 36px;
+        }
+        
+        .header .subtitle {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #00FFC2;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        
+        .info-box strong {
+            display: block;
+            margin-bottom: 10px;
+            color: #0C0C0C;
+        }
+        
+        .section {
+            margin: 40px 0;
+            page-break-inside: avoid;
+        }
+        
+        .section-title {
+            background: #0C0C0C;
+            color: #00FFC2;
+            padding: 15px 20px;
+            margin: 0 -20px 20px -20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .subsection {
+            margin: 25px 0;
+        }
+        
+        .subsection h3 {
+            color: #0C0C0C;
+            border-bottom: 2px solid #00FFC2;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .field {
+            margin: 20px 0;
+        }
+        
+        .field-label {
+            font-weight: bold;
+            color: #0C0C0C;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .field-input {
+            width: 100%;
+            min-height: 40px;
+            border: 2px solid #00FFC2;
+            border-radius: 4px;
+            padding: 10px;
+            background: white;
+            margin-top: 5px;
+        }
+        
+        .field-textarea {
+            min-height: 100px;
+        }
+        
+        .field-small {
+            min-height: 40px;
+        }
+        
+        .checkbox-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .checkbox-list li {
+            margin: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .checkbox-list li:before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: #00FFC2;
+            font-size: 20px;
+        }
+        
+        .help-text {
+            font-size: 14px;
+            color: #6c757d;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 2px solid #00FFC2;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #0C0C0C;
+            color: #00FFC2;
+        }
+        
+        .priority-box {
+            display: inline-block;
+            width: 100px;
+            text-align: center;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 0 20px 0;
+            margin-top: 60px;
+            border-top: 2px solid #00FFC2;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 Cahier des Charges</h1>
+        <p class="subtitle">Template à remplir pour votre projet web</p>
+    </div>
+
+    <div class="info-box">
+        <strong>📝 Mode d'emploi :</strong>
+        <p>Ce document est votre guide pour structurer votre projet web. Remplissez chaque section avec le maximum de détails. Plus vous serez précis, plus les devis que vous recevrez seront justes et comparables.</p>
+        <p><strong>Temps estimé :</strong> 1h à 2h de remplissage</p>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="section">
+        <div class="section-title">1. INFORMATIONS GÉNÉRALES</div>
+        
+        <div class="field">
+            <span class="field-label">Nom du projet :</span>
+            <div class="field-input field-small"></div>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">Entreprise / Organisation :</span>
+            <div class="field-input field-small"></div>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">Contact principal :</span>
+            <div class="field-input field-small"></div>
+            <p class="help-text">Nom, fonction, email, téléphone</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">Date de rédaction :</span>
+            <div class="field-input field-small"></div>
+        </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section">
+        <div class="section-title">2. CONTEXTE & OBJECTIFS</div>
+        
+        <div class="field">
+            <span class="field-label">2.1 Présentez votre entreprise / activité :</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">Secteur d'activité, taille, historique, positionnement marché</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">2.2 Quel problème ce projet doit-il résoudre ?</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">Site actuel obsolète ? Pas de présence en ligne ? Mauvaise UX ? Manque de conversions ?</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">2.3 Quels sont vos objectifs mesurables ?</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">Exemples : générer 50 leads/mois, augmenter les ventes de 30%, améliorer le taux de conversion, etc.</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">2.4 Cible(s) principale(s) :</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">Qui sont vos utilisateurs ? (âge, profession, comportements, besoins, pain points)</p>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- SECTION 3 -->
+    <div class="section">
+        <div class="section-title">3. ARBORESCENCE & CONTENUS</div>
+        
+        <div class="field">
+            <span class="field-label">3.1 Listez toutes les pages souhaitées :</span>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom de la page</th>
+                        <th>Contenu principal</th>
+                        <th>Priorité (Haute/Moyenne/Basse)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="height: 50px;"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="height: 50px;"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="height: 50px;"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="height: 50px;"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="height: 50px;"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="height: 50px;"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">3.2 Avez-vous déjà tous vos contenus (textes, images, vidéos) ?</span>
+            <div class="field-input field-small"></div>
+            <p class="help-text">☐ Oui, tout est prêt | ☐ En partie | ☐ Non, besoin d'aide pour la création</p>
+        </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section">
+        <div class="section-title">4. FONCTIONNALITÉS</div>
+        
+        <div class="subsection">
+            <h3>4.1 Fonctionnalités Essentielles (Must Have)</h3>
+            <p class="help-text">Cochez et complétez les fonctionnalités indispensables :</p>
+            <ul class="checkbox-list">
+                <li>Formulaire de contact avec notifications email</li>
+                <li>Responsive (mobile, tablet, desktop)</li>
+                <li>Optimisation SEO de base</li>
+                <li>Google Analytics / tracking</li>
+                <li>Mentions légales & conformité RGPD</li>
+                <li>Autre : ______________________________________________</li>
+                <li>Autre : ______________________________________________</li>
+            </ul>
+        </div>
+        
+        <div class="subsection">
+            <h3>4.2 Fonctionnalités Importantes (Should Have)</h3>
+            <ul class="checkbox-list">
+                <li>Blog avec CMS (gestion autonome)</li>
+                <li>Portfolio / Galerie projets</li>
+                <li>Système de réservation en ligne</li>
+                <li>Newsletter avec inscription</li>
+                <li>Témoignages clients / Avis</li>
+                <li>FAQ dynamique</li>
+                <li>Recherche interne</li>
+                <li>Autre : ______________________________________________</li>
+                <li>Autre : ______________________________________________</li>
+            </ul>
+        </div>
+        
+        <div class="subsection">
+            <h3>4.3 Fonctionnalités Bonus (Nice to Have)</h3>
+            <ul class="checkbox-list">
+                <li>Espace client sécurisé</li>
+                <li>Chat en direct / Chatbot</li>
+                <li>Multilingue (préciser langues : ___________________)</li>
+                <li>E-commerce (panier, paiement en ligne)</li>
+                <li>Intégration CRM (préciser : ______________________)</li>
+                <li>Agenda / Calendrier partagé</li>
+                <li>Autre : ______________________________________________</li>
+                <li>Autre : ______________________________________________</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- SECTION 5 -->
+    <div class="section">
+        <div class="section-title">5. DESIGN & IDENTITÉ VISUELLE</div>
+        
+        <div class="field">
+            <span class="field-label">5.1 Avez-vous déjà une identité de marque ?</span>
+            <div class="field-input field-small"></div>
+            <p class="help-text">☐ Oui, complète | ☐ Partielle (logo uniquement) | ☐ Non, à créer</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">5.2 Si oui, éléments disponibles :</span>
+            <ul class="checkbox-list">
+                <li>Logo (formats : ____________________________________)</li>
+                <li>Charte graphique complète</li>
+                <li>Palette de couleurs (codes HEX : ____________________)</li>
+                <li>Typographies (fonts : _______________________________)</li>
+            </ul>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">5.3 Quel style graphique souhaitez-vous ?</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">3-5 adjectifs (moderne, élégant, minimaliste, coloré, professionnel, dynamique, etc.)</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">5.4 Sites web que vous aimez (inspiration) :</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">Listez 3-5 URLs de sites dont vous appréciez le design</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">5.5 Sites web à éviter (contre-exemples) :</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">Qu'est-ce que vous ne voulez surtout pas ?</p>
+        </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section">
+        <div class="section-title">6. CONTRAINTES TECHNIQUES</div>
+        
+        <div class="field">
+            <span class="field-label">6.1 Hébergement :</span>
+            <div class="field-input field-small"></div>
+            <p class="help-text">☐ J'ai déjà un hébergeur (préciser : _______________) | ☐ À prévoir</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">6.2 Nom de domaine :</span>
+            <div class="field-input field-small"></div>
+            <p class="help-text">☐ Déjà acheté (nom : _______________) | ☐ À acheter</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">6.3 Emails professionnels nécessaires ?</span>
+            <div class="field-input field-small"></div>
+            <p class="help-text">Combien ? Exemples : contact@, commercial@, support@</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">6.4 Intégrations avec d'autres outils :</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">CRM (Salesforce, HubSpot), ERP, outils marketing (Mailchimp, Sendinblue), etc.</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">6.5 Maintenance post-lancement :</span>
+            <div class="field-input field-small"></div>
+            <p class="help-text">☐ Gérée par le prestataire | ☐ En interne | ☐ À discuter</p>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- SECTION 7 -->
+    <div class="section">
+        <div class="section-title">7. BUDGET & PLANNING</div>
+        
+        <div class="field">
+            <span class="field-label">7.1 Budget global (TTC) :</span>
+            <div class="field-input field-small"></div>
+            <p class="help-text">Budget fixe ou fourchette (ex: 5 000 - 8 000€). Soyez transparent, cela aide à vous proposer la meilleure solution.</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">7.2 Ce budget inclut-il :</span>
+            <ul class="checkbox-list">
+                <li>Design graphique & DA</li>
+                <li>Développement du site</li>
+                <li>Rédaction des contenus</li>
+                <li>Photographies / Vidéos</li>
+                <li>Hébergement (1ère année)</li>
+                <li>Formation à l'utilisation</li>
+                <li>Maintenance (combien de mois : _____)</li>
+            </ul>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">7.3 Date de lancement souhaitée :</span>
+            <div class="field-input field-small"></div>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">7.4 Date impérative (si applicable) :</span>
+            <div class="field-input field-small"></div>
+            <p class="help-text">Événement, salon, lancement produit, etc.</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">7.5 Jalons importants / Phases du projet :</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">Ex: Validation DA (semaine 2), Livraison contenus (semaine 4), Tests (semaine 6), Mise en ligne (semaine 8)</p>
+        </div>
+    </div>
+
+    <!-- SECTION 8 -->
+    <div class="section">
+        <div class="section-title">8. LIVRABLES & ATTENTES</div>
+        
+        <div class="field">
+            <span class="field-label">8.1 Livrables attendus :</span>
+            <ul class="checkbox-list">
+                <li>Maquettes graphiques (desktop + mobile)</li>
+                <li>Prototype cliquable / Wireframes</li>
+                <li>Site web développé et responsive</li>
+                <li>Code source (accès GitHub / ZIP)</li>
+                <li>Documentation technique</li>
+                <li>Formation à l'utilisation du CMS</li>
+                <li>Support post-lancement (durée : ______ mois)</li>
+                <li>Autre : ______________________________________________</li>
+            </ul>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">8.2 Nombre de révisions souhaitées :</span>
+            <div class="field-input field-small"></div>
+            <p class="help-text">Combien d'allers-retours sur les maquettes ? (Standard : 2-3 révisions)</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">8.3 Qui validera les livrables ?</span>
+            <div class="field-input field-small"></div>
+            <p class="help-text">Nom et fonction de la personne décisionnaire</p>
+        </div>
+    </div>
+
+    <!-- SECTION 9 -->
+    <div class="section">
+        <div class="section-title">9. INFORMATIONS COMPLÉMENTAIRES</div>
+        
+        <div class="field">
+            <span class="field-label">9.1 Concurrence :</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">Sites web de vos principaux concurrents (pour benchmark)</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">9.2 Points forts à mettre en avant :</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">Qu'est-ce qui vous différencie ? Votre USP (Unique Selling Proposition)</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">9.3 Contraintes légales / Sectorielles :</span>
+            <div class="field-input field-textarea"></div>
+            <p class="help-text">Réglementations spécifiques (santé, finance, etc.)</p>
+        </div>
+        
+        <div class="field">
+            <span class="field-label">9.4 Autres informations importantes :</span>
+            <div class="field-input field-textarea"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>✅ Bravo, votre cahier des charges est prêt !</strong></p>
+        <p>Envoyez ce document à plusieurs prestataires pour comparer les devis et approches.</p>
+        <p style="margin-top: 20px;">
+            <strong>Maxence - Développeur Web & Designer</strong><br>
+            Pour un accompagnement personnalisé : contact@maxence.design
+        </p>
+        <p style="margin-top: 20px; color: #00FFC2;">© 2025 - Template gratuit</p>
+    </div>
+</body>
+</html>

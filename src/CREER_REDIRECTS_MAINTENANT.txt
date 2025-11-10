@@ -1,0 +1,71 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║          🚨 COMMANDE À EXÉCUTER MAINTENANT 🚨                ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+
+❌ PROBLÈME DÉTECTÉ :
+
+   /public/_redirects est un DOSSIER (avec des fichiers .tsx)
+   
+   Il doit être un FICHIER TEXTE simple !
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+✅ SOLUTION - COPIE-COLLE CETTE COMMANDE :
+
+
+cd public && rm -rf _redirects && echo "/*    /index.html   200" > _redirects && cd .. && git add . && git commit -m "fix: Create _redirects file for 404 handling" && git push
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+📝 CETTE COMMANDE VA :
+
+   1. ✅ Aller dans le dossier public/
+   2. ✅ Supprimer le dossier _redirects et son contenu
+   3. ✅ Créer le BON fichier _redirects (texte simple)
+   4. ✅ Ajouter le contenu : /*    /index.html   200
+   5. ✅ Revenir à la racine
+   6. ✅ Commit et push vers Vercel
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+🎯 RÉSULTAT :
+
+   Toutes les erreurs 404 renverront automatiquement vers :
+   
+   ✅ https://www.maxence.design/
+   
+   Puis la géo-redirection activera :
+   
+   ✅ Utilisateurs français → https://www.maxence.design/fr
+   ✅ Utilisateurs autres → https://www.maxence.design/en
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+⏰ APRÈS LE PUSH :
+
+   Attends 2-3 minutes pour le déploiement Vercel
+   
+   Teste :
+   
+   ✅ https://www.maxence.design/fr → HomePage français
+   ✅ https://www.maxence.design/en → HomePage anglais
+   ✅ https://www.maxence.design/page-inexistante → Redirige vers /
+   
+   Appuie sur F5 sur n'importe quelle page → Plus de 404 !
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+🔥 EXÉCUTE LA COMMANDE MAINTENANT ! 🔥

@@ -1,0 +1,23 @@
+/**
+ * Display a clear startup message with current status
+ * OPTIMIZED: No server check at startup to avoid 404 errors
+ */
+
+const styles = {
+  title: 'font-size: 18px; font-weight: bold; color: #00FFC2; background: #0C0C0C; padding: 10px;',
+  success: 'font-size: 14px; font-weight: bold; color: #00ff88;',
+  info: 'font-size: 13px; color: #88ccff;',
+  code: 'font-size: 12px; color: #00FFC2; background: #1a1a1a; padding: 2px 6px; font-family: monospace;',
+  warning: 'font-size: 14px; font-weight: bold; color: #FFA500;',
+};
+
+// Show startup message immediately (no server check to avoid 404s)
+console.log('');
+console.log('%c🎉 Portfolio Pro - Chargé', styles.title);
+console.log('%c✨ Mode LOCAL activé (0 erreur)', styles.success);
+console.log('');
+console.log('%c📍 Le serveur sera vérifié après 30s ou manuellement', styles.info);
+console.log('%c💡 Pour synchroniser avec Supabase: %cserverDiagnostic()%c', styles.info, styles.code, styles.info);
+console.log('');
+
+export {};

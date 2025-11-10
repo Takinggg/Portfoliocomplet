@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚨 Guide Déploiement Express - Fix 404 + posts.map</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
+      color: #F4F4F4;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      color: #00FFC2;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+      animation: glow 2s ease-in-out infinite;
+    }
+    
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 194, 0.5); }
+      50% { text-shadow: 0 0 30px rgba(0, 255, 194, 0.8); }
+    }
+    
+    .error-box {
+      background: rgba(239, 68, 68, 0.1);
+      border: 2px solid #ef4444;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+    
+    .error-box h2 {
+      color: #ef4444;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+    
+    .error-box code {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      color: #fca5a5;
+    }
+    
+    .step-container {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #00FFC2;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .step-number {
+      background: #00FFC2;
+      color: #0C0C0C;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+    
+    .step-title {
+      color: #00FFC2;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+    
+    .step-content {
+      margin-left: 65px;
+    }
+    
+    .substep {
+      background: rgba(0, 0, 0, 0.3);
+      border-left: 3px solid #00FFC2;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+    }
+    
+    .substep strong {
+      color: #00FFC2;
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    .code-block {
+      background: #000;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px 0;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+    
+    .code-block code {
+      color: #00FFC2;
+    }
+    
+    .checklist {
+      background: rgba(0, 255, 194, 0.05);
+      border: 1px solid #00FFC2;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .checklist-item:hover {
+      background: rgba(0, 255, 194, 0.1);
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    
+    .warning {
+      background: rgba(251, 191, 36, 0.1);
+      border-left: 4px solid #fbbf24;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    
+    .warning strong {
+      color: #fbbf24;
+    }
+    
+    .success {
+      background: rgba(34, 197, 94, 0.1);
+      border-left: 4px solid #22c55e;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    
+    .success strong {
+      color: #22c55e;
+    }
+    
+    .btn {
+      background: #00FFC2;
+      color: #0C0C0C;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-block;
+      text-decoration: none;
+      margin: 10px 10px 10px 0;
+    }
+    
+    .btn:hover {
+      background: #00d9a6;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 255, 194, 0.3);
+    }
+    
+    .timer {
+      background: rgba(0, 255, 194, 0.1);
+      border: 2px solid #00FFC2;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .timer-display {
+      font-size: 3rem;
+      color: #00FFC2;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    
+    .fixes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .fix-card {
+      background: rgba(0, 255, 194, 0.1);
+      border: 1px solid #00FFC2;
+      border-radius: 8px;
+      padding: 15px;
+    }
+    
+    .fix-card h4 {
+      color: #00FFC2;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚨 Guide Déploiement Express</h1>
+    
+    <div class="error-box">
+      <h2>❌ Erreurs Actuelles</h2>
+      <p style="margin: 10px 0;"><code>TypeError: posts.map is not a function</code></p>
+      <p style="margin: 10px 0;"><code>Error: Erreur serveur: 404 Not Found</code></p>
+      <p style="margin-top: 15px;"><strong>Cause :</strong> Le serveur n'est <strong>PAS déployé</strong> sur Supabase.</p>
+    </div>
+
+    <!-- ÉTAPE 1 -->
+    <div class="step-container">
+      <div class="step-header">
+        <div class="step-number">1</div>
+        <div class="step-title">Déployer le Serveur</div>
+      </div>
+      
+      <div class="step-content">
+        <div class="substep">
+          <strong>1.1 - Ouvrez le fichier</strong>
+          <div class="code-block">
+            <code>/supabase/functions/server/index-complete.tsx</code>
+          </div>
+        </div>
+        
+        <div class="substep">
+          <strong>1.2 - Copiez TOUT le contenu</strong>
+          <p>• Appuyez sur <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+A</code> (tout sélectionner)</p>
+          <p>• Appuyez sur <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+C</code> (copier)</p>
+        </div>
+        
+        <div class="substep">
+          <strong>1.3 - Allez sur Supabase Dashboard</strong>
+          <p>• Ouvrez : <a href="https://supabase.com/dashboard" target="_blank" style="color: #00FFC2;">https://supabase.com/dashboard</a></p>
+          <p>• Allez dans <strong>Edge Functions</strong></p>
+          <p>• Trouvez la fonction <code style="background: #000; padding: 2px 6px; border-radius: 3px;">make-server-04919ac5</code></p>
+        </div>
+        
+        <div class="substep">
+          <strong>1.4 - Remplacez le code</strong>
+          <p>Dans l'éditeur Supabase :</p>
+          <p>• <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+A</code> (sélectionner tout)</p>
+          <p>• <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Delete</code> (supprimer)</p>
+          <p>• <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+V</code> (coller le nouveau code)</p>
+        </div>
+        
+        <div class="substep">
+          <strong>1.5 - Déployez</strong>
+          <p>• Cliquez sur le bouton <strong>"Deploy"</strong> (vert)</p>
+          <p>• <strong>Attendez 2 minutes</strong> ⏱️</p>
+        </div>
+        
+        <div class="timer">
+          <h3>⏱️ Timer de Propagation</h3>
+          <div class="timer-display" id="timer">02:00</div>
+          <button class="btn" onclick="startTimer()">▶ Démarrer le Timer</button>
+          <p style="margin-top: 10px; color: #aaa;">Démarrez après avoir cliqué sur "Deploy"</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 -->
+    <div class="step-container">
+      <div class="step-header">
+        <div class="step-number">2</div>
+        <div class="step-title">Tester + Initialiser</div>
+      </div>
+      
+      <div class="step-content">
+        <div class="warning">
+          <strong>⚠️ Attendez que le timer soit terminé avant de continuer !</strong>
+          <p>Le serveur a besoin de 2 minutes pour se propager.</p>
+        </div>
+        
+        <div class="substep">
+          <strong>2.1 - Allez sur le Dashboard</strong>
+          <p>• Ouvrez votre dashboard CRM</p>
+        </div>
+        
+        <div class="substep">
+          <strong>2.2 - Cliquez sur "🔍 Tester Connexion"</strong>
+          <p>• Devrait afficher : <span style="color: #22c55e;">✅ Serveur connecté ! Version: v2</span></p>
+          <p style="margin-top: 10px; color: #fbbf24;">⚠️ Si vous obtenez une erreur 404, attendez encore 2-3 minutes.</p>
+        </div>
+        
+        <div class="substep">
+          <strong>2.3 - Cliquez sur "🌱 Initialiser les Données"</strong>
+          <p>Crée automatiquement :</p>
+          <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>✅ 3 projets</li>
+            <li>✅ 3 articles de blog</li>
+            <li>✅ 2 études de cas</li>
+            <li>✅ 2 témoignages</li>
+          </ul>
+        </div>
+        
+        <div class="substep">
+          <strong>2.4 - Rafraîchissez la page</strong>
+          <p>• Appuyez sur <code style="background: #000; padding: 2px 6px; border-radius: 3px;">F5</code></p>
+          <p>• Les données apparaissent dans toutes les catégories !</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CE QUI EST FIXÉ -->
+    <div style="background: rgba(0, 255, 194, 0.05); border: 2px solid #00FFC2; border-radius: 12px; padding: 30px; margin-bottom: 30px;">
+      <h2 style="color: #00FFC2; margin-bottom: 20px;">🎯 Ce Qui Est Fixé</h2>
+      
+      <div class="fixes">
+        <div class="fix-card">
+          <h4>🛠️ Serveur (v2)</h4>
+          <p>✅ Routes corrigées</p>
+          <p>✅ Retours en tableaux</p>
+          <p>✅ Route /seed-data</p>
+        </div>
+        
+        <div class="fix-card">
+          <h4>📱 Frontend</h4>
+          <p>✅ Fix posts.map error</p>
+          <p>✅ Protection Array.isArray()</p>
+          <p>✅ Gestion erreurs 404</p>
+        </div>
+        
+        <div class="fix-card">
+          <h4>📊 Dashboard</h4>
+          <p>✅ Bouton "Tester Connexion"</p>
+          <p>✅ Bouton "Initialiser Données"</p>
+          <p>✅ Messages d'erreur clairs</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div class="checklist">
+      <h3 style="color: #00FFC2; margin-bottom: 15px;">📋 Checklist de Déploiement</h3>
+      
+      <label class="checklist-item">
+        <input type="checkbox" id="check1">
+        <span>Fichier index-complete.tsx ouvert</span>
+      </label>
+      
+      <label class="checklist-item">
+        <input type="checkbox" id="check2">
+        <span>Contenu copié (Ctrl+A, Ctrl+C)</span>
+      </label>
+      
+      <label class="checklist-item">
+        <input type="checkbox" id="check3">
+        <span>Supabase Dashboard ouvert</span>
+      </label>
+      
+      <label class="checklist-item">
+        <input type="checkbox" id="check4">
+        <span>Code remplacé dans Edge Function</span>
+      </label>
+      
+      <label class="checklist-item">
+        <input type="checkbox" id="check5">
+        <span>Bouton "Deploy" cliqué</span>
+      </label>
+      
+      <label class="checklist-item">
+        <input type="checkbox" id="check6">
+        <span>Attente de 2 minutes (timer terminé)</span>
+      </label>
+      
+      <label class="checklist-item">
+        <input type="checkbox" id="check7">
+        <span>"🔍 Tester Connexion" cliqué → ✅ Serveur connecté</span>
+      </label>
+      
+      <label class="checklist-item">
+        <input type="checkbox" id="check8">
+        <span>"🌱 Initialiser les Données" cliqué → ✅ Données créées</span>
+      </label>
+      
+      <label class="checklist-item">
+        <input type="checkbox" id="check9">
+        <span>Page rafraîchie (F5)</span>
+      </label>
+      
+      <label class="checklist-item">
+        <input type="checkbox" id="check10">
+        <span>Données visibles dans toutes les catégories</span>
+      </label>
+    </div>
+
+    <div class="success" style="text-align: center; margin-top: 40px;">
+      <h3 style="margin-bottom: 15px;">🚀 Prêt à Commencer ?</h3>
+      <p style="margin-bottom: 20px;">Temps total : <strong>2 minutes de déploiement + 30 secondes d'initialisation = 2min30</strong></p>
+      <a href="https://supabase.com/dashboard" target="_blank" class="btn">🚀 Ouvrir Supabase Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    let timerInterval;
+    let timeLeft = 120; // 2 minutes
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timeLeft = 120;
+      
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        
+        document.getElementById('timer').textContent = 
+          `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById('timer').textContent = '✅ PRÊT !';
+          document.getElementById('timer').style.color = '#22c55e';
+          
+          // Auto-check étape 6
+          document.getElementById('check6').checked = true;
+          
+          // Notification
+          alert('✅ TIMER TERMINÉ !\n\nVous pouvez maintenant tester la connexion et initialiser les données.');
+        }
+      }, 1000);
+    }
+    
+    // Auto-save checklist in localStorage
+    document.querySelectorAll('.checklist-item input').forEach(checkbox => {
+      const savedState = localStorage.getItem(checkbox.id);
+      if (savedState === 'true') {
+        checkbox.checked = true;
+      }
+      
+      checkbox.addEventListener('change', () => {
+        localStorage.setItem(checkbox.id, checkbox.checked);
+      });
+    });
+  </script>
+</body>
+</html>

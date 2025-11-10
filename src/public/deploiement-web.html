@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Déployer le serveur Supabase - Interface Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #F4F4F4;
+            background: #0C0C0C;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 255, 194, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
+            padding: 40px;
+            border-bottom: 2px solid #00FFC2;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #00FFC2;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header p {
+            color: #999;
+            font-size: 16px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .alert {
+            background: rgba(0, 255, 194, 0.1);
+            border-left: 4px solid #00FFC2;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 6px;
+        }
+        
+        .alert-title {
+            color: #00FFC2;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .step {
+            background: #252525;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        
+        .step:hover {
+            border-color: #00FFC2;
+            box-shadow: 0 4px 20px rgba(0, 255, 194, 0.15);
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: #00FFC2;
+            color: #0C0C0C;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        .step-title {
+            font-size: 20px;
+            color: #F4F4F4;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .step-content {
+            color: #ccc;
+            padding-left: 48px;
+        }
+        
+        .step-content p {
+            margin-bottom: 10px;
+        }
+        
+        .code-block {
+            background: #0C0C0C;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #00FFC2;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .code-block code {
+            display: block;
+            white-space: pre;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #00FFC2;
+            color: #0C0C0C;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: #00d9a6;
+        }
+        
+        .path {
+            background: #00FFC2;
+            color: #0C0C0C;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .url {
+            background: #252525;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            border: 1px solid #00FFC2;
+            color: #00FFC2;
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .warning-title {
+            color: #ffc107;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .success {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .success-title {
+            color: #4caf50;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+        
+        li {
+            margin: 8px 0;
+            color: #ccc;
+        }
+        
+        strong {
+            color: #00FFC2;
+        }
+        
+        a {
+            color: #00FFC2;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        
+        a:hover {
+            border-bottom-color: #00FFC2;
+        }
+        
+        .footer {
+            background: #0C0C0C;
+            padding: 20px 40px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #333;
+        }
+
+        .img-placeholder {
+            background: #252525;
+            border: 2px dashed #00FFC2;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Déployer le serveur Supabase</h1>
+            <p>Guide pas à pas pour déployer via l'interface web (sans CLI)</p>
+        </div>
+        
+        <div class="content">
+            <div class="alert">
+                <div class="alert-title">📌 Pourquoi déployer ?</div>
+                <p>
+                    Les routes <span class="path">/clients</span> existent dans votre code local mais le serveur Supabase 
+                    déployé utilise une ancienne version. Vous devez copier-coller le code mis à jour via l'interface web.
+                </p>
+            </div>
+
+            <!-- Étape 1 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">1</span>
+                    Accéder à l'interface Supabase
+                </div>
+                <div class="step-content">
+                    <p>1. Allez sur <a href="https://supabase.com/dashboard" target="_blank">https://supabase.com/dashboard</a></p>
+                    <p>2. Connectez-vous à votre compte</p>
+                    <p>3. Sélectionnez votre projet</p>
+                </div>
+            </div>
+
+            <!-- Étape 2 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">2</span>
+                    Ouvrir l'éditeur de Edge Functions
+                </div>
+                <div class="step-content">
+                    <p>1. Dans le menu de gauche, cliquez sur <strong>"Edge Functions"</strong></p>
+                    <p>2. Cherchez la fonction nommée <span class="path">make-server-04919ac5</span></p>
+                    <p>3. Cliquez dessus pour l'ouvrir</p>
+                    
+                    <div class="warning">
+                        <div class="warning-title">⚠️ Important</div>
+                        Si vous ne voyez pas la fonction, elle n'existe pas encore. Vous devrez la créer en cliquant sur 
+                        <strong>"New Function"</strong> et en la nommant exactement <span class="path">make-server-04919ac5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 3 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">3</span>
+                    Copier le code complet
+                </div>
+                <div class="step-content">
+                    <p>1. Dans Figma Make, ouvrez le fichier : <span class="path">/supabase/functions/server/index.tsx</span></p>
+                    <p>2. Sélectionnez <strong>TOUT LE CONTENU</strong> du fichier (Ctrl+A ou Cmd+A)</p>
+                    <p>3. Copiez-le (Ctrl+C ou Cmd+C)</p>
+                    
+                    <div class="warning">
+                        <div class="warning-title">📝 Note importante</div>
+                        Le fichier contient environ <strong>4000+ lignes de code</strong>. Assurez-vous de tout copier !
+                        Le code doit commencer par :
+                        <div class="code-block" style="margin-top: 10px;">
+<code>// ============================================================================
+// CONSOLIDATED EDGE FUNCTION - ALL CODE IN ONE FILE</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 4 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">4</span>
+                    Coller dans l'éditeur Supabase
+                </div>
+                <div class="step-content">
+                    <p>1. Dans l'éditeur web de Supabase, <strong>sélectionnez tout le contenu existant</strong> (Ctrl+A)</p>
+                    <p>2. <strong>Remplacez-le</strong> en collant le nouveau code (Ctrl+V ou Cmd+V)</p>
+                    <p>3. Vérifiez que le code a bien été collé en entier</p>
+                    
+                    <div class="success">
+                        <div class="success-title">✅ Vérification visuelle</div>
+                        Le fichier doit avoir environ <strong>4000+ lignes</strong>. 
+                        Faites défiler jusqu'en bas pour vérifier que tout est bien là.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 5 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">5</span>
+                    Déployer la fonction
+                </div>
+                <div class="step-content">
+                    <p>1. Cherchez le bouton <strong>"Deploy"</strong> ou <strong>"Save & Deploy"</strong> (généralement en haut à droite)</p>
+                    <p>2. Cliquez dessus</p>
+                    <p>3. Attendez que le déploiement se termine (peut prendre 30 secondes à 2 minutes)</p>
+                    
+                    <div class="success">
+                        <div class="success-title">✅ Succès</div>
+                        Vous devriez voir un message confirmant que la fonction a été déployée avec succès.
+                        La mention "Live" ou "Active" devrait apparaître à côté du nom de la fonction.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 6 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">6</span>
+                    Vérifier que ça fonctionne
+                </div>
+                <div class="step-content">
+                    <p><strong>Test 1 : Vérifier la version du serveur</strong></p>
+                    <p>Visitez cette URL dans votre navigateur :</p>
+                    <div class="code-block">
+                        <code>https://ptcxeqtjlxittxayffgu.supabase.co/functions/v1/make-server-04919ac5/health</code>
+                    </div>
+                    <p>Vous devriez voir :</p>
+                    <div class="code-block">
+<code>{
+  "success": true,
+  "message": "Server is running - CONSOLIDATED VERSION",
+  "version": "consolidated-v1"
+}</code>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Si vous voyez <span class="path">"version": "consolidated-v1"</span></strong> → ✅ Le déploiement a réussi !</p>
+
+                    <div style="height: 20px;"></div>
+
+                    <p><strong>Test 2 : Vérifier le dashboard</strong></p>
+                    <ol>
+                        <li>Retournez sur votre application portfolio</li>
+                        <li>Connectez-vous au dashboard</li>
+                        <li>Allez dans l'onglet <strong>"Clients"</strong></li>
+                        <li>L'erreur 404 devrait avoir disparu ! 🎉</li>
+                    </ol>
+                    
+                    <div class="warning">
+                        <div class="warning-title">🔄 Cache du navigateur</div>
+                        Si vous voyez toujours l'erreur, essayez :
+                        <ul>
+                            <li>Rechargez la page avec <strong>Ctrl+Shift+R</strong> (ou Cmd+Shift+R sur Mac)</li>
+                            <li>Videz le cache du navigateur</li>
+                            <li>Ouvrez en navigation privée</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Troubleshooting -->
+            <div class="alert" style="margin-top: 40px; background: rgba(255, 193, 7, 0.1); border-left-color: #ffc107;">
+                <div class="alert-title" style="color: #ffc107;">🔧 Problèmes courants</div>
+                <p><strong>❌ "Function not found" ou 404</strong></p>
+                <ul>
+                    <li>Vérifiez que le nom de la fonction est exactement <span class="path">make-server-04919ac5</span></li>
+                    <li>Attendez 1-2 minutes après le déploiement (propagation)</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>❌ "Internal server error" ou 500</strong></p>
+                <ul>
+                    <li>Vérifiez que vous avez bien copié TOUT le code (4000+ lignes)</li>
+                    <li>Consultez les logs dans Supabase : Edge Functions → make-server-04919ac5 → Logs</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>❌ La version est toujours ancienne</strong></p>
+                <ul>
+                    <li>Vérifiez que vous avez bien cliqué sur "Deploy" après avoir collé le code</li>
+                    <li>Videz le cache de votre navigateur</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>💡 <strong>Conseil :</strong> Gardez ce guide à portée de main pour les prochains déploiements</p>
+            <p style="margin-top: 10px; font-size: 12px;">
+                Fichier : <code>/public/deploiement-web.html</code> ou <code>/DEPLOIEMENT_WEB.html</code>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour copier le code
+        document.querySelectorAll('.code-block').forEach(block => {
+            if (!block.querySelector('.copy-btn')) {
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.textContent = 'Copier';
+                btn.onclick = () => {
+                    const code = block.querySelector('code')?.textContent || block.textContent;
+                    navigator.clipboard.writeText(code).then(() => {
+                        btn.textContent = '✓ Copié !';
+                        setTimeout(() => {
+                            btn.textContent = 'Copier';
+                        }, 2000);
+                    });
+                };
+                block.style.position = 'relative';
+                block.appendChild(btn);
+            }
+        });
+    </script>
+</body>
+</html>

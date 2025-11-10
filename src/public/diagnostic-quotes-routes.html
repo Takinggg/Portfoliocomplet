@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔍 Diagnostic Routes Devis</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
+      color: #F4F4F4;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #00FFC2 0%, #00cc9a 100%);
+      border-radius: 20px;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 40px rgba(0, 255, 194, 0.3);
+    }
+
+    .header h1 {
+      font-size: 2.5em;
+      color: #0C0C0C;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(0, 255, 194, 0.2);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+    }
+
+    .card h2 {
+      color: #00FFC2;
+      margin-bottom: 20px;
+      font-size: 1.6em;
+    }
+
+    .button {
+      display: inline-block;
+      background: #00FFC2;
+      color: #0C0C0C;
+      padding: 15px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 10px 10px 10px 0;
+      cursor: pointer;
+      border: none;
+      font-size: 1.1em;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(0, 255, 194, 0.4);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #00FFC2;
+      border: 2px solid #00FFC2;
+    }
+
+    .log-container {
+      background: #1a1a1a;
+      border: 1px solid #00FFC2;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      max-height: 500px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+
+    .log-line {
+      margin: 5px 0;
+      padding: 5px 0;
+    }
+
+    .log-success {
+      color: #4CAF50;
+    }
+
+    .log-error {
+      color: #ff5252;
+    }
+
+    .log-warning {
+      color: #ffa726;
+    }
+
+    .log-info {
+      color: #00FFC2;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin: 5px;
+      font-size: 0.9em;
+    }
+
+    .status-pending {
+      background: rgba(255, 167, 38, 0.2);
+      color: #ffa726;
+      border: 1px solid #ffa726;
+    }
+
+    .status-success {
+      background: rgba(76, 175, 80, 0.2);
+      color: #4CAF50;
+      border: 1px solid #4CAF50;
+    }
+
+    .status-error {
+      background: rgba(255, 82, 82, 0.2);
+      color: #ff5252;
+      border: 1px solid #ff5252;
+    }
+
+    .test-result {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      border-left: 4px solid transparent;
+    }
+
+    .test-result.success {
+      border-left-color: #4CAF50;
+    }
+
+    .test-result.error {
+      border-left-color: #ff5252;
+    }
+
+    .test-result.pending {
+      border-left-color: #ffa726;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(0, 255, 194, 0.3);
+      border-radius: 50%;
+      border-top-color: #00FFC2;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .solution-box {
+      background: linear-gradient(135deg, #ff5252 0%, #ff1744 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .solution-box h3 {
+      margin-bottom: 15px;
+    }
+
+    .solution-box ol {
+      margin-left: 20px;
+    }
+
+    .solution-box li {
+      margin: 10px 0;
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin: 10px 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🔍 Diagnostic Routes Devis</h1>
+      <p>Vérification automatique de la connectivité backend</p>
+    </div>
+
+    <div class="card">
+      <h2>État du Diagnostic</h2>
+      <div id="status-container">
+        <div class="test-result pending" id="auth-status">
+          <span class="spinner"></span>
+          <strong>Authentification</strong> : En attente...
+        </div>
+        <div class="test-result pending" id="get-status">
+          <span class="spinner"></span>
+          <strong>GET /quotes</strong> : En attente...
+        </div>
+        <div class="test-result pending" id="post-status">
+          <span class="spinner"></span>
+          <strong>POST /quotes</strong> : En attente...
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Actions</h2>
+      <button class="button" onclick="runDiagnostic()">
+        🔍 Lancer le Diagnostic
+      </button>
+      <button class="button secondary" onclick="clearLogs()">
+        🗑️ Effacer les Logs
+      </button>
+      <button class="button secondary" onclick="window.open('https://supabase.com/dashboard', '_blank')">
+        🌐 Ouvrir Supabase
+      </button>
+    </div>
+
+    <div class="card">
+      <h2>Logs du Diagnostic</h2>
+      <div class="log-container" id="log-container">
+        <div class="log-line log-info">
+          💡 Cliquez sur "Lancer le Diagnostic" pour commencer...
+        </div>
+      </div>
+    </div>
+
+    <div class="card hidden" id="solution-card">
+      <div class="solution-box">
+        <h3>🚨 Problème Détecté : Erreur 404</h3>
+        <p><strong>Les routes ne sont pas déployées correctement sur Supabase.</strong></p>
+        
+        <h4 style="margin-top: 20px;">📋 Solution :</h4>
+        <ol>
+          <li>Ouvrez <a href="https://supabase.com/dashboard" target="_blank" style="color: white; text-decoration: underline;">Supabase Dashboard</a></li>
+          <li>Allez dans <strong>Edge Functions</strong> → <strong>make-server-04919ac5</strong></li>
+          <li>Cliquez sur l'onglet <strong>Editor</strong></li>
+          <li>Ouvrez le fichier <code>/supabase/functions/server/index.tsx</code> dans votre projet</li>
+          <li><strong>Copiez TOUT le contenu</strong> (Ctrl+A puis Ctrl+C)</li>
+          <li>Dans l'éditeur Supabase, <strong>supprimez tout</strong> le code existant</li>
+          <li><strong>Collez</strong> le nouveau code (Ctrl+V)</li>
+          <li>Cliquez sur <strong>"Deploy"</strong></li>
+          <li>Attendez 30 secondes</li>
+          <li>Relancez ce diagnostic</li>
+        </ol>
+
+        <h4 style="margin-top: 20px;">⚠️ Points Importants :</h4>
+        <ul style="margin-left: 20px;">
+          <li>Vous devez copier <strong>TOUT</strong> le fichier, pas seulement une partie</li>
+          <li>Le fichier fait environ <strong>4000+ lignes</strong></li>
+          <li>Assurez-vous que les routes <code>/quotes</code> sont présentes</li>
+          <li>Vérifiez qu'il n'y a pas d'erreurs de syntaxe</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Informations de Configuration</h2>
+      <pre id="config-info">Chargement...</pre>
+    </div>
+  </div>
+
+  <script type="module">
+    let projectId = '';
+    let publicAnonKey = '';
+    let accessToken = '';
+
+    async function initConfig() {
+      try {
+        // Charger dynamiquement la config depuis l'app
+        const response = await fetch('/src/utils/supabase/info.tsx');
+        const text = await response.text();
+        
+        // Parser le projectId et publicAnonKey
+        const projectIdMatch = text.match(/projectId\s*=\s*["']([^"']+)["']/);
+        const keyMatch = text.match(/publicAnonKey\s*=\s*["']([^"']+)["']/);
+        
+        if (projectIdMatch) projectId = projectIdMatch[1];
+        if (keyMatch) publicAnonKey = keyMatch[1];
+        
+        document.getElementById('config-info').textContent = 
+          `Project ID: ${projectId}\n` +
+          `Base URL: https://${projectId}.supabase.co/functions/v1/make-server-04919ac5\n` +
+          `Quotes URL: https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/quotes`;
+      } catch (e) {
+        // Fallback - utiliser les valeurs du localStorage ou prompt
+        projectId = prompt('Entrez votre Project ID Supabase:', 'ptcxeqtjlxittxayffgu') || 'ptcxeqtjlxittxayffgu';
+        publicAnonKey = localStorage.getItem('supabase_anon_key') || '';
+        
+        document.getElementById('config-info').textContent = 
+          `Project ID: ${projectId}\n` +
+          `Base URL: https://${projectId}.supabase.co/functions/v1/make-server-04919ac5\n` +
+          `Note: Assurez-vous d'être connecté au dashboard`;
+      }
+    }
+
+    function log(message, type = 'info') {
+      const container = document.getElementById('log-container');
+      const line = document.createElement('div');
+      line.className = `log-line log-${type}`;
+      line.textContent = message;
+      container.appendChild(line);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function clearLogs() {
+      document.getElementById('log-container').innerHTML = '';
+      log('💡 Logs effacés. Prêt pour un nouveau diagnostic.', 'info');
+    }
+
+    function updateStatus(id, status, message) {
+      const element = document.getElementById(id);
+      element.className = `test-result ${status}`;
+      element.innerHTML = message;
+    }
+
+    async function getAccessToken() {
+      // Essayer de récupérer le token depuis le localStorage
+      const supabaseAuth = localStorage.getItem('sb-ptcxeqtjlxittxayffgu-auth-token');
+      if (supabaseAuth) {
+        try {
+          const parsed = JSON.parse(supabaseAuth);
+          return parsed.access_token;
+        } catch (e) {
+          log('⚠️ Impossible de parser le token d\'authentification', 'warning');
+        }
+      }
+      return null;
+    }
+
+    window.runDiagnostic = async function() {
+      clearLogs();
+      log('🔍 DÉMARRAGE DU DIAGNOSTIC', 'info');
+      log('=====================================', 'info');
+      
+      document.getElementById('solution-card').classList.add('hidden');
+
+      // Test 1: Authentification
+      log('\n1️⃣ Vérification de l\'authentification...', 'info');
+      accessToken = await getAccessToken();
+      
+      if (!accessToken) {
+        updateStatus('auth-status', 'error', '<strong>Authentification</strong> : ❌ Non connecté');
+        log('❌ Vous n\'êtes pas authentifié !', 'error');
+        log('💡 Veuillez vous connecter au dashboard d\'abord', 'warning');
+        log('   1. Ouvrez votre application', 'info');
+        log('   2. Connectez-vous au dashboard', 'info');
+        log('   3. Relancez ce diagnostic', 'info');
+        return;
+      }
+      
+      updateStatus('auth-status', 'success', '<strong>Authentification</strong> : ✅ Connecté');
+      log('✅ Authentifié avec succès', 'success');
+
+      const baseUrl = `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5`;
+
+      // Test 2: GET /quotes
+      log('\n2️⃣ Test GET /quotes (Lister les devis)...', 'info');
+      try {
+        const response = await fetch(`${baseUrl}/quotes`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        log(`   Status: ${response.status} ${response.statusText}`, 'info');
+        
+        if (response.status === 404) {
+          updateStatus('get-status', 'error', '<strong>GET /quotes</strong> : ❌ 404 Not Found');
+          log('❌ ERREUR 404 - La route n\'existe pas !', 'error');
+          document.getElementById('solution-card').classList.remove('hidden');
+          return;
+        }
+
+        const data = await response.json();
+        log(`   Réponse: ${JSON.stringify(data, null, 2)}`, 'info');
+        
+        if (response.ok) {
+          updateStatus('get-status', 'success', '<strong>GET /quotes</strong> : ✅ Fonctionne');
+          log('✅ Route GET /quotes fonctionne !', 'success');
+        } else {
+          updateStatus('get-status', 'error', `<strong>GET /quotes</strong> : ⚠️ ${data.error || 'Erreur'}`);
+          log(`⚠️ Route accessible mais erreur: ${data.error || 'Unknown'}`, 'warning');
+        }
+      } catch (error) {
+        updateStatus('get-status', 'error', '<strong>GET /quotes</strong> : ❌ Erreur réseau');
+        log(`❌ Erreur lors du test: ${error.message}`, 'error');
+      }
+
+      // Test 3: POST /quotes
+      log('\n3️⃣ Test POST /quotes (Créer un devis)...', 'info');
+      try {
+        const testQuote = {
+          number: `TEST-${Date.now()}`,
+          clientId: 'test-client-id',
+          clientName: 'Test Client',
+          clientEmail: 'test@example.com',
+          amount: 1000,
+          validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          description: 'Test Quote',
+          status: 'draft',
+          metadata: {}
+        };
+
+        const response = await fetch(`${baseUrl}/quotes`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(testQuote)
+        });
+
+        log(`   Status: ${response.status} ${response.statusText}`, 'info');
+        
+        if (response.status === 404) {
+          updateStatus('post-status', 'error', '<strong>POST /quotes</strong> : ❌ 404 Not Found');
+          log('❌ ERREUR 404 - La route POST n\'existe pas !', 'error');
+          document.getElementById('solution-card').classList.remove('hidden');
+          return;
+        }
+
+        const data = await response.json();
+        log(`   Réponse: ${JSON.stringify(data, null, 2)}`, 'info');
+        
+        if (response.ok) {
+          updateStatus('post-status', 'success', '<strong>POST /quotes</strong> : ✅ Fonctionne');
+          log('✅ Route POST /quotes fonctionne !', 'success');
+          
+          // Nettoyer
+          if (data.quote?.id) {
+            log('   🧹 Nettoyage du devis de test...', 'info');
+            await fetch(`${baseUrl}/quotes/${encodeURIComponent(data.quote.id)}`, {
+              method: 'DELETE',
+              headers: {
+                'Authorization': `Bearer ${accessToken}`
+              }
+            });
+            log('   ✅ Devis de test supprimé', 'success');
+          }
+        } else {
+          updateStatus('post-status', 'error', `<strong>POST /quotes</strong> : ⚠️ ${data.error || 'Erreur'}`);
+          log(`⚠️ Route accessible mais erreur: ${data.error || 'Unknown'}`, 'warning');
+        }
+      } catch (error) {
+        updateStatus('post-status', 'error', '<strong>POST /quotes</strong> : ❌ Erreur réseau');
+        log(`❌ Erreur lors du test: ${error.message}`, 'error');
+      }
+
+      log('\n=====================================', 'info');
+      log('📊 DIAGNOSTIC TERMINÉ', 'info');
+      log('=====================================', 'info');
+    };
+
+    // Initialiser au chargement
+    initConfig();
+  </script>
+</body>
+</html>

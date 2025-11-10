@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔍 Vérification Déploiement Supabase</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0C0C0C;
+      color: #F4F4F4;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .alert-box {
+      background: linear-gradient(135deg, #ff5252 0%, #ff1744 100%);
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(255, 82, 82, 0.3);
+    }
+
+    .alert-box h1 {
+      font-size: 2.2em;
+      margin-bottom: 15px;
+      color: white;
+    }
+
+    .step-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #00FFC2;
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px 0;
+    }
+
+    .step-box h2 {
+      color: #00FFC2;
+      font-size: 1.6em;
+      margin-bottom: 20px;
+    }
+
+    .problem {
+      background: rgba(255, 82, 82, 0.1);
+      border: 2px solid #ff5252;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+
+    .problem h3 {
+      color: #ff5252;
+      margin-bottom: 15px;
+      font-size: 1.3em;
+    }
+
+    .solution {
+      background: rgba(0, 255, 194, 0.1);
+      border: 2px solid #00FFC2;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+
+    .solution h3 {
+      color: #00FFC2;
+      margin-bottom: 15px;
+      font-size: 1.3em;
+    }
+
+    .step {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border-left: 4px solid #00FFC2;
+    }
+
+    .step-number {
+      display: inline-block;
+      background: #00FFC2;
+      color: #0C0C0C;
+      width: 35px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-right: 10px;
+    }
+
+    code {
+      background: rgba(0, 255, 194, 0.1);
+      color: #00FFC2;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .button {
+      display: inline-block;
+      background: #00FFC2;
+      color: #0C0C0C;
+      padding: 12px 25px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 10px 5px;
+      cursor: pointer;
+      border: none;
+      font-size: 1em;
+      transition: all 0.3s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 255, 194, 0.4);
+    }
+
+    .button.danger {
+      background: #ff5252;
+      color: white;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+    }
+
+    .checklist li {
+      padding: 10px;
+      margin: 8px 0;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      border-left: 4px solid #00FFC2;
+    }
+
+    .checklist li::before {
+      content: '⚠️';
+      margin-right: 10px;
+      font-size: 1.2em;
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 10px 0;
+      border: 1px solid #00FFC2;
+    }
+
+    .warning {
+      background: rgba(255, 167, 38, 0.1);
+      border: 2px solid #ffa726;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .warning h3 {
+      color: #ffa726;
+      margin-bottom: 10px;
+    }
+
+    ol, ul {
+      margin-left: 20px;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+
+    .highlight {
+      background: rgba(0, 255, 194, 0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Alert -->
+    <div class="alert-box">
+      <h1>🚨 Le déploiement a réussi MAIS l'erreur 404 persiste</h1>
+      <p style="font-size: 1.2em; margin-top: 10px;">
+        Cela signifie que <strong>le code n'a pas été copié en entier</strong> ou qu'il y a une <strong>erreur de syntaxe</strong>.
+      </p>
+    </div>
+
+    <!-- Diagnostic du problème -->
+    <div class="step-box">
+      <h2>🔍 Diagnostic du Problème</h2>
+      
+      <div class="problem">
+        <h3>❌ Problème Identifié</h3>
+        <p>Vous avez bien cliqué sur "Deploy" et vu "Successfully updated edge function", MAIS :</p>
+        <ul class="checklist">
+          <li>Les routes <code>/quotes</code> ne sont pas enregistrées</li>
+          <li>Le serveur démarre sans ces routes</li>
+          <li>L'erreur 404 persiste</li>
+        </ul>
+      </div>
+
+      <div class="warning">
+        <h3>⚠️ Cause Probable</h3>
+        <p><strong>Le fichier n'a pas été copié en entier.</strong></p>
+        <p style="margin-top: 10px;">Même si vous pensez avoir tout copié, il est très probable qu'il manque une partie du code. Le fichier fait <span class="highlight">4071 lignes</span>, et si vous avez copié manuellement ou si l'éditeur Supabase a coupé le code, les routes ne seront pas présentes.</p>
+      </div>
+    </div>
+
+    <!-- Solution Étape par Étape -->
+    <div class="step-box">
+      <h2>✅ Solution Garantie (Méthode Infaillible)</h2>
+
+      <div class="step">
+        <span class="step-number">1</span>
+        <strong>Vérifier ce qui est VRAIMENT déployé</strong>
+        <div style="margin-top: 10px; padding-left: 45px;">
+          <p>Dans Supabase Dashboard :</p>
+          <ol>
+            <li>Allez dans Edge Functions → make-server-04919ac5</li>
+            <li>Cliquez sur l'onglet <strong>"Editor"</strong></li>
+            <li>Regardez en BAS à DROITE : combien de lignes ?</li>
+            <li>Si c'est moins de <strong>4000 lignes</strong>, le code n'est PAS complet</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-number">2</span>
+        <strong>Chercher les routes dans l'éditeur Supabase</strong>
+        <div style="margin-top: 10px; padding-left: 45px;">
+          <p>Dans l'éditeur Supabase :</p>
+          <ol>
+            <li>Appuyez sur <strong>Ctrl+F</strong> (ou Cmd+F)</li>
+            <li>Cherchez : <code>/make-server-04919ac5/quotes</code></li>
+            <li>Vous devez trouver <span class="highlight">6 résultats</span></li>
+            <li>Si vous en trouvez 0, le code n'a PAS été copié</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-number">3</span>
+        <strong>Recommencer la copie CORRECTEMENT</strong>
+        <div style="margin-top: 10px; padding-left: 45px;">
+          <div class="warning">
+            <h3>⚠️ MÉTHODE INFAILLIBLE</h3>
+            <p>Ne copiez PAS en scrollant ou en sélectionnant à la souris !</p>
+          </div>
+          
+          <p><strong>Dans votre éditeur de code (VS Code, etc.) :</strong></p>
+          <ol>
+            <li>Ouvrez <code>/supabase/functions/server/index.tsx</code></li>
+            <li>Cliquez n'importe où dans le fichier</li>
+            <li><strong>Ctrl+A</strong> (sélectionner TOUT)</li>
+            <li>Vérifiez que TOUT est bleu/sélectionné (jusqu'en bas)</li>
+            <li><strong>Ctrl+C</strong> (copier)</li>
+          </ol>
+          
+          <p style="margin-top: 15px;"><strong>Dans l'éditeur Supabase :</strong></p>
+          <ol>
+            <li><strong>Ctrl+A</strong> (sélectionner tout le code actuel)</li>
+            <li><strong>Delete</strong> ou <strong>Backspace</strong> (supprimer tout)</li>
+            <li>L'éditeur doit être complètement vide</li>
+            <li><strong>Ctrl+V</strong> (coller le nouveau code)</li>
+            <li><strong>ATTENDEZ 5-10 secondes</strong> que l'éditeur affiche tout</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-number">4</span>
+        <strong>VÉRIFIER AVANT de déployer</strong>
+        <div style="margin-top: 10px; padding-left: 45px;">
+          <div class="warning">
+            <h3>⚠️ VÉRIFICATION OBLIGATOIRE</h3>
+            <p>NE CLIQUEZ PAS SUR "DEPLOY" AVANT D'AVOIR VÉRIFIÉ !</p>
+          </div>
+          
+          <ul class="checklist">
+            <li>Regardez en bas à droite : Il doit y avoir <strong>~4071 lignes</strong></li>
+            <li>Cherchez (Ctrl+F) : <code>/make-server-04919ac5/quotes</code></li>
+            <li>Vous devez voir <strong>"6 of 6"</strong> ou <strong>"6 results"</strong></li>
+            <li>Scrollez tout en bas : La dernière ligne doit être <code>Deno.serve(app.fetch);</code></li>
+          </ul>
+          
+          <p style="margin-top: 15px; color: #ff5252; font-weight: bold;">
+            ⚠️ Si vous ne trouvez PAS 6 occurrences, recommencez l'étape 3 !
+          </p>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-number">5</span>
+        <strong>Déployer</strong>
+        <div style="margin-top: 10px; padding-left: 45px;">
+          <ol>
+            <li>Cliquez sur <strong>"Deploy"</strong></li>
+            <li>Attendez le message "Successfully updated edge function"</li>
+            <li><strong>Attendez 1-2 minutes COMPLÈTES</strong> (important !)</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-number">6</span>
+        <strong>Vider le cache et tester</strong>
+        <div style="margin-top: 10px; padding-left: 45px;">
+          <ol>
+            <li>Fermez complètement votre navigateur</li>
+            <li>Rouvrez-le</li>
+            <li>Allez sur votre app</li>
+            <li>Appuyez sur <strong>Ctrl+Shift+R</strong> (rechargement forcé)</li>
+            <li>Connectez-vous au dashboard</li>
+            <li>Essayez de créer un devis</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vérification Alternative -->
+    <div class="step-box">
+      <h2>🔧 Méthode Alternative : Copie Fichier par Fichier</h2>
+      
+      <div class="solution">
+        <h3>Si le fichier est vraiment trop gros :</h3>
+        
+        <p><strong>Option 1 : Utiliser le Terminal (Recommandé si vous avez Supabase CLI)</strong></p>
+        <pre>supabase functions deploy make-server-04919ac5</pre>
+        
+        <p style="margin-top: 20px;"><strong>Option 2 : Créer un fichier temporaire plus petit</strong></p>
+        <ol>
+          <li>Créez un nouveau fichier <code>quotes-routes.tsx</code></li>
+          <li>Copiez UNIQUEMENT la section QUOTES ROUTES (lignes 3844-4066)</li>
+          <li>Ajoutez cette section dans l'éditeur Supabase AVANT <code>Deno.serve(app.fetch);</code></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Vérification Logs -->
+    <div class="step-box">
+      <h2>🔍 Vérifier les Logs Supabase</h2>
+      
+      <div class="step">
+        <strong>Checker si le serveur démarre correctement :</strong>
+        <div style="margin-top: 10px;">
+          <ol>
+            <li>Dans Supabase Dashboard → Edge Functions → make-server-04919ac5</li>
+            <li>Cliquez sur l'onglet <strong>"Logs"</strong></li>
+            <li>Vous devriez voir :
+              <ul>
+                <li>✅ "🚀 Server started successfully"</li>
+                <li>✅ "📊 Analytics routes loaded"</li>
+                <li>❌ Si vous voyez des erreurs, il y a un problème de syntaxe</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="warning">
+        <h3>⚠️ Si vous voyez des erreurs dans les logs</h3>
+        <p>Cela signifie qu'il y a une erreur de syntaxe dans le code. Le serveur démarre mais certaines routes ne se chargent pas.</p>
+        <p style="margin-top: 10px;"><strong>Solution :</strong> Copiez l'erreur exacte et corrigez-la dans votre fichier local avant de redéployer.</p>
+      </div>
+    </div>
+
+    <!-- Test Manuel -->
+    <div class="step-box">
+      <h2>🧪 Test Manuel avec Curl</h2>
+      
+      <p>Si vous avez curl installé, testez directement :</p>
+      
+      <pre>curl -X GET \
+  "https://ptcxeqtjlxittxayffgu.supabase.co/functions/v1/make-server-04919ac5/quotes" \
+  -H "Authorization: Bearer VOTRE_TOKEN_ICI"</pre>
+      
+      <p style="margin-top: 15px;"><strong>Résultat attendu :</strong></p>
+      <ul>
+        <li>✅ Si ça marche : <code>{"success":true,"quotes":[]}</code></li>
+        <li>❌ Si 404 : Le code n'est pas déployé correctement</li>
+      </ul>
+    </div>
+
+    <!-- Checklist Finale -->
+    <div class="step-box">
+      <h2>✅ Checklist de Vérification Finale</h2>
+      
+      <ul class="checklist">
+        <li>J'ai vérifié que l'éditeur Supabase affiche <strong>~4071 lignes</strong></li>
+        <li>J'ai cherché <code>/quotes</code> et trouvé <strong>6 occurrences</strong></li>
+        <li>La dernière ligne est <code>Deno.serve(app.fetch);</code></li>
+        <li>J'ai attendu <strong>2 minutes complètes</strong> après le déploiement</li>
+        <li>J'ai fermé et rouvert mon navigateur</li>
+        <li>J'ai fait <strong>Ctrl+Shift+R</strong> pour vider le cache</li>
+        <li>J'ai vérifié les logs Supabase (pas d'erreur)</li>
+      </ul>
+    </div>
+
+    <!-- Boutons -->
+    <div style="text-align: center; margin: 40px 0;">
+      <a href="https://supabase.com/dashboard/project/ptcxeqtjlxittxayffgu/functions/make-server-04919ac5/details" target="_blank" class="button danger">
+        🚀 Ouvrir Supabase Editor
+      </a>
+      <a href="https://supabase.com/dashboard/project/ptcxeqtjlxittxayffgu/functions/make-server-04919ac5/logs" target="_blank" class="button">
+        📋 Voir les Logs
+      </a>
+    </div>
+
+    <div style="text-align: center; padding: 40px 20px; color: #888; border-top: 1px solid rgba(0, 255, 194, 0.2); margin-top: 40px;">
+      <p><strong>🔥 LE PROBLÈME : Le code n'a PAS été copié en entier</strong></p>
+      <p style="margin-top: 10px;"><strong>✅ LA SOLUTION : Recommencer avec Ctrl+A, Ctrl+C, Ctrl+V</strong></p>
+      <p style="margin-top: 10px;">Date : 10 novembre 2024</p>
+    </div>
+  </div>
+</body>
+</html>

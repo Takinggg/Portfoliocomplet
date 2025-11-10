@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=/">
+    <title>Redirection...</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0C0C0C;
+            color: #00FFC2;
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .loader {
+            text-align: center;
+        }
+        .spinner {
+            border: 3px solid rgba(0, 255, 194, 0.2);
+            border-top: 3px solid #00FFC2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="spinner"></div>
+        <p>Redirection vers la page d'accueil...</p>
+    </div>
+    <script>
+        // Fallback JavaScript redirect
+        setTimeout(function() {
+            window.location.href = '/';
+        }, 100);
+    </script>
+</body>
+</html>

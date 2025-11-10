@@ -1,0 +1,49 @@
+╔═══════════════════════════════════════════════════════════════╗
+║              ✅ BLOG : Warning Corrigé                        ║
+╚═══════════════════════════════════════════════════════════════╝
+
+❌ PROBLÈME:
+   Warning: Duplicate React keys (blog_post:1762414310344_n2m4of1ea)
+
+✅ SOLUTION APPLIQUÉE:
+   Déduplication automatique des articles en double
+
+───────────────────────────────────────────────────────────────
+
+CE QUI A ÉTÉ FAIT:
+
+1. ✅ Déduplication automatique avant affichage
+   → Les articles en double sont filtrés
+
+2. ✅ Clés React uniques améliorées
+   → key={`${post.id}-${index}`}
+
+3. ✅ Détection et alerte
+   → Toast si doublons détectés
+
+───────────────────────────────────────────────────────────────
+
+RÉSULTAT:
+
+✅ Plus de warning React
+✅ Articles affichent correctement
+✅ Performance améliorée
+✅ Alerte si doublons détectés
+
+───────────────────────────────────────────────────────────────
+
+SI VOUS VOYEZ ENCORE L'ALERTE "X articles en double":
+
+C'est normal ! Cela signifie que vous avez des doublons en base.
+Ils sont automatiquement dédupliqués à l'affichage.
+
+OPTIONNEL - Nettoyer les doublons:
+1. Dashboard → Blog
+2. Supprimer manuellement les articles en double
+3. OU réinitialiser : supprimer tous + re-seed
+
+───────────────────────────────────────────────────────────────
+
+📖 GUIDE DÉTAILLÉ: /FIX_BLOG_DUPLICATE_KEYS.md
+
+╚═══════════════════════════════════════════════════════════════╝

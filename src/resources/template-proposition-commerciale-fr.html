@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template de Proposition Commerciale Professionnelle</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 2px 30px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #00FFC2;
+            margin-bottom: 40px;
+        }
+        h1 {
+            color: #0C0C0C;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .proposal-number {
+            color: #666;
+            font-size: 1.1em;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        h2 {
+            color: #0C0C0C;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        h3 {
+            color: #333;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        .info-box {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .info-box strong {
+            display: block;
+            color: #666;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background: #0C0C0C;
+            color: white;
+            font-weight: 600;
+        }
+        .price-row {
+            font-weight: 600;
+            background: #f9f9f9;
+        }
+        .total-row {
+            background: #00FFC2;
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+        .timeline {
+            background: #f0f9ff;
+            padding: 20px;
+            border-left: 4px solid #00FFC2;
+            margin: 20px 0;
+        }
+        .phase {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+        }
+        .phase:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .note {
+            background: #fffbf0;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        .signature-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 2px solid #e0e0e0;
+        }
+        .signature-box {
+            display: inline-block;
+            width: 45%;
+            margin-right: 5%;
+            vertical-align: top;
+        }
+        .signature-line {
+            border-top: 1px solid #333;
+            margin-top: 60px;
+            padding-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        ul {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .highlight {
+            background: #00FFC2;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Proposition Commerciale</h1>
+            <p class="proposal-number">N° PROP-2024-001 | Date: [JJ/MM/AAAA]</p>
+        </div>
+
+        <div class="section">
+            <div class="info-grid">
+                <div class="info-box">
+                    <strong>Prestataire</strong>
+                    <p>
+                        [Votre Nom / Entreprise]<br>
+                        [Adresse]<br>
+                        [Code postal, Ville]<br>
+                        [Email]<br>
+                        [Téléphone]<br>
+                        SIRET: [Numéro SIRET]
+                    </p>
+                </div>
+                <div class="info-box">
+                    <strong>Client</strong>
+                    <p>
+                        [Nom du Client / Entreprise]<br>
+                        [Adresse]<br>
+                        [Code postal, Ville]<br>
+                        [Email]<br>
+                        [Téléphone]
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>1. Contexte du Projet</h2>
+            <p>
+                [Description du contexte et des enjeux du client. Montrez que vous avez compris leur problématique.]
+            </p>
+            <p>
+                <strong>Exemple:</strong> Votre entreprise souhaite développer sa présence en ligne et attirer de nouveaux clients grâce à un site web professionnel et optimisé pour le référencement. Actuellement, vous n'avez pas de site web et perdez des opportunités face à vos concurrents présents en ligne.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>2. Objectifs</h2>
+            <ul>
+                <li>Créer une présence en ligne professionnelle</li>
+                <li>Générer 50 demandes de devis qualifiées par mois d'ici 6 mois</li>
+                <li>Améliorer la crédibilité et l'image de marque</li>
+                <li>Faciliter la découverte de vos services par vos clients cibles</li>
+                <li>Mettre en place des outils de mesure de performance</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Prestations Proposées</h2>
+            
+            <h3>Phase 1: Analyse & Conception (2 semaines)</h3>
+            <ul>
+                <li>Audit de la concurrence et benchmark</li>
+                <li>Définition de l'arborescence du site</li>
+                <li>Création de wireframes (maquettes fil de fer)</li>
+                <li>Définition de la charte graphique</li>
+                <li>Validation du design (2 propositions)</li>
+            </ul>
+
+            <h3>Phase 2: Développement (4 semaines)</h3>
+            <ul>
+                <li>Développement front-end responsive (mobile-first)</li>
+                <li>Intégration du CMS WordPress / [autre CMS]</li>
+                <li>Création de [X] pages personnalisées</li>
+                <li>Mise en place du formulaire de contact</li>
+                <li>Optimisation SEO technique</li>
+                <li>Optimisation de la vitesse de chargement</li>
+            </ul>
+
+            <h3>Phase 3: Tests & Déploiement (1 semaine)</h3>
+            <ul>
+                <li>Tests multi-navigateurs et multi-appareils</li>
+                <li>Tests de performance et optimisations</li>
+                <li>Configuration des outils analytics (Google Analytics 4)</li>
+                <li>Formation à l'utilisation du CMS (2h)</li>
+                <li>Mise en ligne et surveillance initiale</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Planning Prévisionnel</h2>
+            <div class="timeline">
+                <div class="phase">
+                    <strong>Semaines 1-2:</strong> Analyse & Conception<br>
+                    <small>Livrables: Wireframes, maquettes design validées</small>
+                </div>
+                <div class="phase">
+                    <strong>Semaines 3-6:</strong> Développement<br>
+                    <small>Livrables: Site fonctionnel sur environnement de test</small>
+                </div>
+                <div class="phase">
+                    <strong>Semaine 7:</strong> Tests & Déploiement<br>
+                    <small>Livrables: Site en ligne, formation effectuée</small>
+                </div>
+            </div>
+            <p><strong>Date de livraison prévue:</strong> [JJ/MM/AAAA]</p>
+        </div>
+
+        <div class="section">
+            <h2>5. Investissement</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Quantité</th>
+                        <th>Prix Unitaire</th>
+                        <th>Total HT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Analyse & Conception</td>
+                        <td>1</td>
+                        <td>1 500 €</td>
+                        <td>1 500 €</td>
+                    </tr>
+                    <tr>
+                        <td>Design graphique (2 propositions)</td>
+                        <td>1</td>
+                        <td>1 800 €</td>
+                        <td>1 800 €</td>
+                    </tr>
+                    <tr>
+                        <td>Développement site web (10 pages)</td>
+                        <td>1</td>
+                        <td>3 500 €</td>
+                        <td>3 500 €</td>
+                    </tr>
+                    <tr>
+                        <td>Optimisation SEO</td>
+                        <td>1</td>
+                        <td>800 €</td>
+                        <td>800 €</td>
+                    </tr>
+                    <tr>
+                        <td>Formation & Documentation</td>
+                        <td>1</td>
+                        <td>400 €</td>
+                        <td>400 €</td>
+                    </tr>
+                    <tr class="price-row">
+                        <td colspan="3"><strong>Sous-total HT</strong></td>
+                        <td><strong>8 000 €</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">TVA 20%</td>
+                        <td>1 600 €</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="3"><strong>TOTAL TTC</strong></td>
+                        <td><strong>9 600 €</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>6. Conditions de Paiement</h2>
+            <ul>
+                <li><span class="highlight">30%</span> à la signature (2 880 € TTC) - Acompte</li>
+                <li><span class="highlight">40%</span> à la validation des maquettes (3 840 € TTC)</li>
+                <li><span class="highlight">30%</span> à la livraison finale (2 880 € TTC)</li>
+            </ul>
+            <div class="note">
+                <strong>Note:</strong> Paiement par virement bancaire sous 15 jours à réception de facture.
+                Toute somme non réglée à l'échéance donnera lieu à l'application de pénalités de retard.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. Options & Services Additionnels</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Description</th>
+                        <th>Prix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Maintenance mensuelle</td>
+                        <td>Mises à jour, sauvegardes, support</td>
+                        <td>150 € HT/mois</td>
+                    </tr>
+                    <tr>
+                        <td>Rédaction contenu</td>
+                        <td>Rédaction professionnelle des textes</td>
+                        <td>80 € HT/page</td>
+                    </tr>
+                    <tr>
+                        <td>Photographies pro</td>
+                        <td>Session photo produits/locaux</td>
+                        <td>600 € HT/jour</td>
+                    </tr>
+                    <tr>
+                        <td>Module e-commerce</td>
+                        <td>Ajout boutique en ligne</td>
+                        <td>2 500 € HT</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>8. Conditions Générales</h2>
+            <ul>
+                <li><strong>Validité de l'offre:</strong> 30 jours à compter de la date d'émission</li>
+                <li><strong>Délai de rétractation:</strong> Conformément à l'article L221-18 du Code de la consommation</li>
+                <li><strong>Révisions:</strong> 2 cycles de révisions inclus par phase</li>
+                <li><strong>Contenu:</strong> Le client fournit les textes, images et logos nécessaires</li>
+                <li><strong>Hébergement:</strong> Non inclus (environ 100-200 €/an, à votre charge)</li>
+                <li><strong>Nom de domaine:</strong> Non inclus (environ 12 €/an, à votre charge)</li>
+                <li><strong>Propriété:</strong> Vous êtes propriétaire du site après paiement complet</li>
+                <li><strong>Garantie:</strong> Correction des bugs pendant 30 jours après livraison</li>
+            </ul>
+        </div>
+
+        <div class="signature-section">
+            <p>
+                En signant cette proposition commerciale, le client accepte l'ensemble des conditions décrites ci-dessus et s'engage à respecter les modalités de paiement convenues.
+            </p>
+            
+            <div style="margin-top: 40px;">
+                <div class="signature-box">
+                    <strong>Le Prestataire</strong>
+                    <div class="signature-line">
+                        Date et signature
+                    </div>
+                </div>
+                
+                <div class="signature-box">
+                    <strong>Le Client</strong>
+                    <div class="signature-line">
+                        Date et signature<br>
+                        <small>Précédée de la mention "Bon pour accord"</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

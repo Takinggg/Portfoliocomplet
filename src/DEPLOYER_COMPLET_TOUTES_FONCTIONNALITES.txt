@@ -1,0 +1,692 @@
+/**
+ * SERVEUR COMPLET - TOUTES FONCTIONNALITÉS
+ * 
+ * À déployer sur Supabase Dashboard :
+ * https://supabase.com/dashboard/project/ptcxeqtjlxittxayffgu/functions
+ * 
+ * Fonction : make-server-04919ac5
+ * 
+ * Ce serveur inclut TOUT : Blog, Case Studies, FAQ, Testimonials, Resources,
+ * Projects, Clients, Leads, Newsletter, Auth
+ */
+
+import { Hono } from "npm:hono@4.6.14";
+import { cors } from "npm:hono/cors";
+import { logger } from "npm:hono/logger";
+import { createClient } from "jsr:@supabase/supabase-js@2";
+
+const app = new Hono();
+
+// CORS ultra-permissif pour Figma Make
+app.use("/*", cors({
+  origin: "*",
+  allowHeaders: ["Content-Type", "Authorization", "X-Client-Info", "apikey", "x-client-info"],
+  allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  exposeHeaders: ["Content-Length", "X-Request-Id"],
+  maxAge: 86400,
+  credentials: false,
+}));
+
+app.use("*", logger(console.log));
+
+// Supabase Client
+const supabase = createClient(
+  Deno.env.get("SUPABASE_URL") ?? "",
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+);
+
+// ============================================================================
+// KV STORE HELPERS
+// ============================================================================
+
+async function kvGet(key: string) {
+  const { data, error } = await supabase
+    .from("kv_store_04919ac5")
+    .select("value")
+    .eq("key", key)
+    .single();
+  
+  if (error || !data) return null;
+  return data.value;
+}
+
+async function kvSet(key: string, value: any) {
+  const { error } = await supabase
+    .from("kv_store_04919ac5")
+    .upsert({ key, value, updated_at: new Date().toISOString() });
+  
+  if (error) throw error;
+}
+
+async function kvDel(key: string) {
+  const { error } = await supabase
+    .from("kv_store_04919ac5")
+    .delete()
+    .eq("key", key);
+  
+  if (error) throw error;
+}
+
+async function kvGetByPrefix(prefix: string) {
+  const { data, error } = await supabase
+    .from("kv_store_04919ac5")
+    .select("key, value")
+    .like("key", `${prefix}%`);
+  
+  if (error) return [];
+  return data.map(row => row.value);
+}
+
+// ============================================================================
+// ROUTES - HEALTH CHECK
+// ============================================================================
+
+app.get("/make-server-04919ac5/health", (c) => {
+  return c.json({
+    success: true,
+    message: "🎉 SERVEUR COMPLET FONCTIONNEL",
+    version: "complete-2.0.0",
+    timestamp: new Date().toISOString(),
+    modules: ["auth", "blog", "case-studies", "faq", "testimonials", "resources", "projects", "clients", "leads", "newsletter"],
+    cors: "open (production-ready)"
+  });
+});
+
+// ============================================================================
+// ROUTES - AUTH
+// ============================================================================
+
+app.post("/make-server-04919ac5/auth/init-admin", async (c) => {
+  try {
+    const adminPassword = Deno.env.get("ADMIN_PASSWORD") || "vbz657D9";
+    
+    const { data: existingUser } = await supabase.auth.admin.listUsers();
+    const adminExists = existingUser?.users?.some(u => u.email === "contact@maxence.design");
+    
+    if (adminExists) {
+      return c.json({ success: true, message: "Admin déjà créé" });
+    }
+    
+    const { data, error } = await supabase.auth.admin.createUser({
+      email: "contact@maxence.design",
+      password: adminPassword,
+      email_confirm: true,
+      user_metadata: { role: "admin", name: "Admin" }
+    });
+    
+    if (error) throw error;
+    
+    return c.json({ success: true, message: "Admin créé", user: data.user });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/auth/login", async (c) => {
+  try {
+    const { email, password } = await c.req.json();
+    
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    
+    if (error) throw error;
+    
+    return c.json({
+      success: true,
+      session: data.session,
+      user: data.user
+    });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 401);
+  }
+});
+
+// ============================================================================
+// ROUTES - BLOG
+// ============================================================================
+
+app.get("/make-server-04919ac5/blog", async (c) => {
+  try {
+    const posts = await kvGetByPrefix("blog_post_");
+    return c.json({ success: true, posts });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.get("/make-server-04919ac5/blog/:slug", async (c) => {
+  try {
+    const slug = c.req.param("slug");
+    const post = await kvGet(`blog_post_${slug}`);
+    
+    if (!post) {
+      return c.json({ success: false, error: "Post not found" }, 404);
+    }
+    
+    return c.json({ success: true, post });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/blog", async (c) => {
+  try {
+    const post = await c.req.json();
+    const slug = post.slug || post.title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    
+    await kvSet(`blog_post_${slug}`, {
+      ...post,
+      slug,
+      createdAt: post.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "Post créé", slug });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.put("/make-server-04919ac5/blog/:slug", async (c) => {
+  try {
+    const slug = c.req.param("slug");
+    const updates = await c.req.json();
+    const existing = await kvGet(`blog_post_${slug}`);
+    
+    if (!existing) {
+      return c.json({ success: false, error: "Post not found" }, 404);
+    }
+    
+    await kvSet(`blog_post_${slug}`, {
+      ...existing,
+      ...updates,
+      updatedAt: new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "Post mis à jour" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.delete("/make-server-04919ac5/blog/:slug", async (c) => {
+  try {
+    const slug = c.req.param("slug");
+    await kvDel(`blog_post_${slug}`);
+    return c.json({ success: true, message: "Post supprimé" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// ============================================================================
+// ROUTES - CASE STUDIES
+// ============================================================================
+
+app.get("/make-server-04919ac5/case-studies", async (c) => {
+  try {
+    const caseStudies = await kvGetByPrefix("case_study_");
+    return c.json({ success: true, caseStudies });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.get("/make-server-04919ac5/case-studies/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    const caseStudy = await kvGet(`case_study_${id}`);
+    
+    if (!caseStudy) {
+      return c.json({ success: false, error: "Case study not found" }, 404);
+    }
+    
+    return c.json({ success: true, caseStudy });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/case-studies", async (c) => {
+  try {
+    const caseStudy = await c.req.json();
+    const id = caseStudy.id || `case_${Date.now()}`;
+    
+    await kvSet(`case_study_${id}`, {
+      ...caseStudy,
+      id,
+      createdAt: caseStudy.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "Case study créée", id });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.put("/make-server-04919ac5/case-studies/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    const updates = await c.req.json();
+    const existing = await kvGet(`case_study_${id}`);
+    
+    if (!existing) {
+      return c.json({ success: false, error: "Case study not found" }, 404);
+    }
+    
+    await kvSet(`case_study_${id}`, {
+      ...existing,
+      ...updates,
+      updatedAt: new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "Case study mise à jour" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.delete("/make-server-04919ac5/case-studies/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    await kvDel(`case_study_${id}`);
+    return c.json({ success: true, message: "Case study supprimée" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// ============================================================================
+// ROUTES - FAQ
+// ============================================================================
+
+app.get("/make-server-04919ac5/faq", async (c) => {
+  try {
+    const faqs = await kvGetByPrefix("faq_");
+    return c.json({ success: true, faqs });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/faq", async (c) => {
+  try {
+    const faq = await c.req.json();
+    const id = faq.id || `faq_${Date.now()}`;
+    
+    await kvSet(`faq_${id}`, {
+      ...faq,
+      id,
+      createdAt: faq.createdAt || new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "FAQ créée", id });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.put("/make-server-04919ac5/faq/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    const updates = await c.req.json();
+    const existing = await kvGet(`faq_${id}`);
+    
+    if (!existing) {
+      return c.json({ success: false, error: "FAQ not found" }, 404);
+    }
+    
+    await kvSet(`faq_${id}`, { ...existing, ...updates });
+    return c.json({ success: true, message: "FAQ mise à jour" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.delete("/make-server-04919ac5/faq/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    await kvDel(`faq_${id}`);
+    return c.json({ success: true, message: "FAQ supprimée" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// ============================================================================
+// ROUTES - TESTIMONIALS
+// ============================================================================
+
+app.get("/make-server-04919ac5/testimonials", async (c) => {
+  try {
+    const testimonials = await kvGetByPrefix("testimonial_");
+    return c.json({ success: true, testimonials });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/testimonials", async (c) => {
+  try {
+    const testimonial = await c.req.json();
+    const id = testimonial.id || `testimonial_${Date.now()}`;
+    
+    await kvSet(`testimonial_${id}`, {
+      ...testimonial,
+      id,
+      createdAt: testimonial.createdAt || new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "Testimonial créé", id });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.put("/make-server-04919ac5/testimonials/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    const updates = await c.req.json();
+    const existing = await kvGet(`testimonial_${id}`);
+    
+    if (!existing) {
+      return c.json({ success: false, error: "Testimonial not found" }, 404);
+    }
+    
+    await kvSet(`testimonial_${id}`, { ...existing, ...updates });
+    return c.json({ success: true, message: "Testimonial mis à jour" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.delete("/make-server-04919ac5/testimonials/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    await kvDel(`testimonial_${id}`);
+    return c.json({ success: true, message: "Testimonial supprimé" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// ============================================================================
+// ROUTES - RESOURCES
+// ============================================================================
+
+app.get("/make-server-04919ac5/resources", async (c) => {
+  try {
+    const resources = await kvGetByPrefix("resource_");
+    return c.json({ success: true, resources });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/resources", async (c) => {
+  try {
+    const resource = await c.req.json();
+    const id = resource.id || `resource_${Date.now()}`;
+    
+    await kvSet(`resource_${id}`, {
+      ...resource,
+      id,
+      createdAt: resource.createdAt || new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "Resource créée", id });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.put("/make-server-04919ac5/resources/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    const updates = await c.req.json();
+    const existing = await kvGet(`resource_${id}`);
+    
+    if (!existing) {
+      return c.json({ success: false, error: "Resource not found" }, 404);
+    }
+    
+    await kvSet(`resource_${id}`, { ...existing, ...updates });
+    return c.json({ success: true, message: "Resource mise à jour" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.delete("/make-server-04919ac5/resources/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    await kvDel(`resource_${id}`);
+    return c.json({ success: true, message: "Resource supprimée" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// ============================================================================
+// ROUTES - PROJECTS (existantes)
+// ============================================================================
+
+app.get("/make-server-04919ac5/projects", async (c) => {
+  try {
+    const projects = await kvGetByPrefix("project_");
+    return c.json({ success: true, projects });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/projects", async (c) => {
+  try {
+    const project = await c.req.json();
+    const id = project.id || `project_${Date.now()}`;
+    
+    await kvSet(`project_${id}`, {
+      ...project,
+      id,
+      createdAt: project.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "Projet créé", id });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.put("/make-server-04919ac5/projects/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    const updates = await c.req.json();
+    const existing = await kvGet(`project_${id}`);
+    
+    if (!existing) {
+      return c.json({ success: false, error: "Project not found" }, 404);
+    }
+    
+    await kvSet(`project_${id}`, {
+      ...existing,
+      ...updates,
+      updatedAt: new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "Projet mis à jour" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.delete("/make-server-04919ac5/projects/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    await kvDel(`project_${id}`);
+    return c.json({ success: true, message: "Projet supprimé" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// ============================================================================
+// ROUTES - CLIENTS
+// ============================================================================
+
+app.get("/make-server-04919ac5/clients", async (c) => {
+  try {
+    const clients = await kvGetByPrefix("client_");
+    return c.json({ success: true, clients });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/clients", async (c) => {
+  try {
+    const client = await c.req.json();
+    const id = client.id || `client_${Date.now()}`;
+    
+    await kvSet(`client_${id}`, {
+      ...client,
+      id,
+      createdAt: client.createdAt || new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "Client créé", id });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.put("/make-server-04919ac5/clients/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    const updates = await c.req.json();
+    const existing = await kvGet(`client_${id}`);
+    
+    if (!existing) {
+      return c.json({ success: false, error: "Client not found" }, 404);
+    }
+    
+    await kvSet(`client_${id}`, { ...existing, ...updates });
+    return c.json({ success: true, message: "Client mis à jour" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.delete("/make-server-04919ac5/clients/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    await kvDel(`client_${id}`);
+    return c.json({ success: true, message: "Client supprimé" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// ============================================================================
+// ROUTES - LEADS
+// ============================================================================
+
+app.get("/make-server-04919ac5/leads", async (c) => {
+  try {
+    const leads = await kvGetByPrefix("lead_");
+    return c.json({ success: true, leads });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/contacts", async (c) => {
+  try {
+    const contact = await c.req.json();
+    const id = `lead_${Date.now()}`;
+    
+    await kvSet(id, {
+      ...contact,
+      id,
+      status: "new",
+      createdAt: new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "Contact enregistré", id });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.put("/make-server-04919ac5/leads/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    const updates = await c.req.json();
+    const existing = await kvGet(`lead_${id}`);
+    
+    if (!existing) {
+      return c.json({ success: false, error: "Lead not found" }, 404);
+    }
+    
+    await kvSet(`lead_${id}`, { ...existing, ...updates });
+    return c.json({ success: true, message: "Lead mis à jour" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.delete("/make-server-04919ac5/leads/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    await kvDel(`lead_${id}`);
+    return c.json({ success: true, message: "Lead supprimé" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// ============================================================================
+// ROUTES - NEWSLETTER
+// ============================================================================
+
+app.get("/make-server-04919ac5/newsletter/stats", async (c) => {
+  try {
+    const subscribers = await kvGetByPrefix("newsletter_");
+    const confirmed = subscribers.filter(s => s.confirmed);
+    
+    return c.json({
+      success: true,
+      total: subscribers.length,
+      confirmed: confirmed.length
+    });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/newsletter/subscribe", async (c) => {
+  try {
+    const { email, name } = await c.req.json();
+    const id = `newsletter_${email.replace(/[^a-z0-9]/gi, "_")}`;
+    
+    await kvSet(id, {
+      email,
+      name: name || "",
+      confirmed: true,
+      subscribedAt: new Date().toISOString()
+    });
+    
+    return c.json({ success: true, message: "Inscription réussie" });
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// ============================================================================
+// START SERVER
+// ============================================================================
+
+Deno.serve(app.fetch);

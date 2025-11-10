@@ -1,0 +1,38 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║             COMMANDE FINALE À EXÉCUTER                       ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+
+COPIE-COLLE CECI DANS TON TERMINAL :
+
+rm -rf public/_redirects && echo "/*    /index.html   200" > public/_redirects && git add . && git commit -m "fix: Add _redirects file" && git push
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+✅ CETTE COMMANDE :
+
+   1. Supprime l'ancien _redirects (s'il existe)
+   2. Crée le bon fichier _redirects
+   3. Ajoute tous les fichiers à Git
+   4. Commit
+   5. Push vers Vercel
+
+
+⏰ APRÈS LA COMMANDE :
+
+   Attends 2-3 minutes pour le déploiement
+
+
+✅ TESTE :
+
+   https://www.maxence.design/fr  → HomePage en français
+   https://www.maxence.design/en  → HomePage en anglais
+   
+   Appuie sur F5 → Plus de 404 !
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -1,0 +1,55 @@
+/**
+ * Display message about Vercel SPA configuration fix
+ */
+
+setTimeout(() => {
+  const hostname = window.location.hostname;
+  const isProduction = hostname !== 'localhost' && hostname !== '127.0.0.1';
+
+  if (isProduction) {
+    console.log(`%c
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║          🎯 VERCEL SPA FIX APPLIQUÉ                          ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+    `, 'color: #00FFC2; font-size: 18px; font-weight: bold;');
+
+    console.log(`%c
+📍 CONFIGURATION VERCEL MISE À JOUR
+
+Le fichier vercel.json contient maintenant la configuration
+"rewrites" nécessaire pour que React Router fonctionne correctement.
+
+✅ Ce qui est corrigé :
+   • Accès direct aux URLs (/fr/services, /en/blog, etc.)
+   • Rafraîchissement de page (F5)
+   • Partage de liens directs
+   • Navigation entre les pages
+   • Changement de langue
+
+🔍 Vérifier si c'est déployé :
+   1. Vérifie sur https://vercel.com/dashboard que le build est "Ready"
+   2. Vide ton cache : Ctrl+Shift+R (Win) ou Cmd+Shift+R (Mac)
+   3. Teste d'accéder directement à ${hostname}/fr/services
+   
+   Si la page s'affiche = C'EST DÉPLOYÉ ✅
+   Si tu as un 404 = Le code n'est pas encore déployé
+
+💡 Pour déployer le fix (si pas encore fait) :
+   
+   git add vercel.json
+   git commit -m "fix: rewrites SPA pour React Router"
+   git push origin main
+   
+   Puis attends 2-3 minutes.
+
+📖 Guide complet : /FIX_FINAL_SPA.md
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    `, 'color: #F4F4F4; font-size: 13px; background: #0a2520; padding: 15px; border-left: 5px solid #00FFC2;');
+  }
+}, 3000);
+
+export {};

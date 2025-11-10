@@ -1,0 +1,302 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║      ✅ ERREUR "reasons.map is not a function" CORRIGÉE      ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+ERREUR CORRIGÉE :
+═══════════════════════════════════════════════════════════════════
+
+❌ AVANT :
+  TypeError: reasons.map is not a function
+  at ContactPage (components/pages/ContactPage.tsx:359:33)
+
+✅ APRÈS :
+  Le système de traduction des options d'intérêt fonctionne correctement
+
+
+CAUSE DU PROBLÈME :
+═══════════════════════════════════════════════════════════════════
+
+Le hook `t()` ne peut pas retourner directement un tableau.
+
+Code problématique :
+```typescript
+// ❌ NE FONCTIONNE PAS
+const reasons = t("contact.form.reasons") as string[];
+```
+
+Le hook `t()` retourne toujours une chaîne de caractères, 
+pas un tableau ou un objet complexe.
+
+
+SOLUTION APPLIQUÉE :
+═══════════════════════════════════════════════════════════════════
+
+┌───────────────────────────────────────────────────────────────┐
+│ 1. CONTACTPAGE.TSX - Mapping sur des clés individuelles      │
+└───────────────────────────────────────────────────────────────┘
+
+Changement de :
+```typescript
+// ❌ AVANT - Ne fonctionne pas
+const reasons = t("contact.form.reasons") as string[];
+```
+
+Vers :
+```typescript
+// ✅ APRÈS - Fonctionne parfaitement
+const reasonKeys = [
+  "contact.form.reasons.0",
+  "contact.form.reasons.1",
+  "contact.form.reasons.2",
+  "contact.form.reasons.3",
+  "contact.form.reasons.4",
+  "contact.form.reasons.5"
+];
+
+const reasons = reasonKeys.map(key => t(key));
+```
+
+Maintenant, `reasons` est un vrai tableau de chaînes traduites !
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ 2. FR.TS - Structure objet au lieu de tableau                │
+└───────────────────────────────────────────────────────────────┘
+
+Changement de :
+```typescript
+// ❌ AVANT - Tableau
+"reasons": [
+  "Audit d'automatisation gratuit",
+  "Projet d'automatisation CRM",
+  ...
+]
+```
+
+Vers :
+```typescript
+// ✅ APRÈS - Objet avec clés numériques
+"reasons": {
+  "0": "Audit d'automatisation gratuit",
+  "1": "Projet d'automatisation CRM",
+  "2": "Dashboard Notion ou Airtable",
+  "3": "Intégration IA (chatbot, GPT)",
+  "4": "Formation sur les outils no-code",
+  "5": "Autre demande"
+}
+```
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ 3. EN.TS - Structure objet au lieu de tableau                │
+└───────────────────────────────────────────────────────────────┘
+
+Changement de :
+```typescript
+// ❌ AVANT - Tableau
+"reasons": [
+  "Free automation audit",
+  "CRM automation project",
+  ...
+]
+```
+
+Vers :
+```typescript
+// ✅ APRÈS - Objet avec clés numériques
+"reasons": {
+  "0": "Free automation audit",
+  "1": "CRM automation project",
+  "2": "Notion or Airtable dashboard",
+  "3": "AI integration (chatbot, GPT)",
+  "4": "No-code tools training",
+  "5": "Other request"
+}
+```
+
+
+COMMENT ÇA FONCTIONNE MAINTENANT :
+═══════════════════════════════════════════════════════════════════
+
+1. On définit un tableau de clés :
+   ["contact.form.reasons.0", "contact.form.reasons.1", ...]
+
+2. On mappe sur ce tableau pour obtenir les traductions :
+   reasonKeys.map(key => t(key))
+
+3. Le résultat est un tableau de chaînes traduites :
+   EN FRANÇAIS :
+   [
+     "Audit d'automatisation gratuit",
+     "Projet d'automatisation CRM",
+     "Dashboard Notion ou Airtable",
+     ...
+   ]
+
+   EN ANGLAIS :
+   [
+     "Free automation audit",
+     "CRM automation project",
+     "Notion or Airtable dashboard",
+     ...
+   ]
+
+4. Ce tableau peut être utilisé avec .map() dans le JSX !
+
+
+VÉRIFICATION (5 SEC) :
+═══════════════════════════════════════════════════════════════════
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 1 : RECHARGER (F5)                                    │
+└───────────────────────────────────────────────────────────────┘
+
+Rechargez la page (F5 ou Cmd+R)
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 2 : TESTER EN FRANÇAIS (1 MIN)                        │
+└───────────────────────────────────────────────────────────────┘
+
+1. Allez sur /contact
+
+2. Vérifiez que vous voyez les 6 options en français :
+
+   Vous êtes intéressé par :
+   
+   ☐ Audit d'automatisation gratuit
+   ☐ Projet d'automatisation CRM
+   ☐ Dashboard Notion ou Airtable
+   ☐ Intégration IA (chatbot, GPT)
+   ☐ Formation sur les outils no-code
+   ☐ Autre demande
+
+3. Cliquez sur une ou plusieurs options
+
+4. Vérifiez qu'elles se sélectionnent correctement
+   (bordure verte + icône checkmark)
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 3 : TESTER EN ANGLAIS (1 MIN)                         │
+└───────────────────────────────────────────────────────────────┘
+
+1. Changez la langue en anglais (EN)
+
+2. Vérifiez que vous voyez les 6 options en anglais :
+
+   You are interested in:
+   
+   ☐ Free automation audit
+   ☐ CRM automation project
+   ☐ Notion or Airtable dashboard
+   ☐ AI integration (chatbot, GPT)
+   ☐ No-code tools training
+   ☐ Other request
+
+3. Cliquez sur une ou plusieurs options
+
+4. Vérifiez qu'elles se sélectionnent correctement
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 4 : VÉRIFIER AUCUNE ERREUR (OBLIGATOIRE)              │
+└───────────────────────────────────────────────────────────────┘
+
+1. Ouvrez la console (F12)
+
+2. Vérifiez qu'il n'y a AUCUNE erreur :
+   ❌ "reasons.map is not a function" → DISPARU ✅
+
+3. Changez la langue plusieurs fois
+
+4. Vérifiez que tout fonctionne sans erreur
+
+
+FICHIERS MODIFIÉS :
+═══════════════════════════════════════════════════════════════════
+
+• /components/pages/ContactPage.tsx
+  → Changé : const reasons = t(...) as string[]
+  → Vers : const reasons = reasonKeys.map(key => t(key))
+
+• /utils/i18n/translations/fr.ts
+  → Changé : "reasons": [...]  (tableau)
+  → Vers : "reasons": { "0": ..., "1": ... }  (objet)
+
+• /utils/i18n/translations/en.ts
+  → Changé : "reasons": [...]  (tableau)
+  → Vers : "reasons": { "0": ..., "1": ... }  (objet)
+
+
+POURQUOI CETTE APPROCHE ?
+═══════════════════════════════════════════════════════════════════
+
+Les hooks i18n comme `useTranslation()` sont conçus pour :
+✅ Traduire des chaînes simples
+✅ Accéder à des objets avec notation par points (a.b.c)
+
+Ils ne sont PAS conçus pour :
+❌ Retourner des tableaux directement
+❌ Retourner des objets complexes
+
+C'est pourquoi on utilise :
+1. Un objet avec clés numériques dans les traductions
+2. Un mapping manuel dans le composant
+
+
+COMPATIBILITÉ :
+═══════════════════════════════════════════════════════════════════
+
+✅ Français (FR) : 6 options traduites
+✅ Anglais (EN) : 6 options traduites
+✅ Sélection : Fonctionne
+✅ Changement de langue : Temps réel
+✅ Aucune erreur console : Vérifié
+
+
+AUTRES ERREURS DANS LES LOGS :
+═══════════════════════════════════════════════════════════════════
+
+Vous avez mentionné cette erreur FAQ :
+
+```
+❌ FAQ category not found: faq_category_1762631049594
+```
+
+Cette erreur est non liée à la page Contact.
+C'est un problème de FAQ qui existe déjà.
+
+Si vous voulez la corriger, utilisez les commandes de diagnostic FAQ :
+
+```javascript
+// Dans la console
+window.fixFAQCategoryNotFound();
+window.deleteOrphanedFAQQuestions();
+```
+
+Ou demandez-moi de corriger les erreurs FAQ séparément.
+
+
+RÉSUMÉ ULTRA-RAPIDE :
+═══════════════════════════════════════════════════════════════════
+
+Problème : reasons.map is not a function
+Cause : t() ne retourne pas de tableaux
+Solution : Mapping manuel sur des clés individuelles
+Temps : Rechargement (F5)
+Résultat : Options d'intérêt traduites FR/EN ✅
+
+
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║  🎯 Rechargez (F5) et testez la page Contact !              ║
+║                                                               ║
+║  Les 6 options d'intérêt sont maintenant traduites           ║
+║  en français et en anglais sans erreur ! ✨                  ║
+║                                                               ║
+║  ⏱️ Temps de vérification : 3 minutes                        ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝

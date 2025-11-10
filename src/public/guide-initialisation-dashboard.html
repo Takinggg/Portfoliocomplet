@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Guide d'Initialisation du Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
+            color: #F4F4F4;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(0, 255, 194, 0.1);
+        }
+        
+        h1 {
+            color: #00FFC2;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 0 30px rgba(0, 255, 194, 0.3);
+        }
+        
+        h2 {
+            color: #00FFC2;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 255, 194, 0.2);
+        }
+        
+        h3 {
+            color: #F4F4F4;
+            font-size: 1.3em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .step {
+            background: rgba(0, 255, 194, 0.05);
+            border-left: 4px solid #00FFC2;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .step h3 {
+            margin-top: 0;
+            color: #00FFC2;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        
+        .status.success {
+            background: rgba(0, 255, 194, 0.2);
+            color: #00FFC2;
+        }
+        
+        .status.error {
+            background: rgba(255, 107, 107, 0.2);
+            color: #FF6B6B;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.5);
+            color: #00FFC2;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 194, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        ul li {
+            padding: 8px 0 8px 30px;
+            position: relative;
+        }
+        
+        ul li:before {
+            content: "→";
+            color: #00FFC2;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .button-preview {
+            display: inline-block;
+            background: #00FFC2;
+            color: #0C0C0C;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 10px 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .button-preview:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 194, 0.4);
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #FFC107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .success {
+            background: rgba(0, 255, 194, 0.1);
+            border-left: 4px solid #00FFC2;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .project-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 255, 194, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: #00FFC2;
+            box-shadow: 0 5px 20px rgba(0, 255, 194, 0.2);
+        }
+        
+        .project-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .project-title {
+            color: #F4F4F4;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .project-budget {
+            color: #00FFC2;
+            font-weight: 600;
+        }
+        
+        .checklist {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .checklist li {
+            padding: 10px 0 10px 40px;
+        }
+        
+        .checklist li:before {
+            content: "☐";
+            font-size: 1.2em;
+        }
+        
+        .tip {
+            background: linear-gradient(135deg, rgba(0, 255, 194, 0.1) 0%, rgba(0, 100, 255, 0.1) 100%);
+            border: 1px solid rgba(0, 255, 194, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .tip:before {
+            content: "💡";
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Guide d'Initialisation du Dashboard CRM</h1>
+        
+        <p style="text-align: center; font-size: 1.2em; margin-bottom: 40px; color: rgba(244, 244, 244, 0.7);">
+            Suivez ces étapes simples pour initialiser votre Dashboard avec des données de démonstration
+        </p>
+
+        <div class="step">
+            <h3>1️⃣ Accéder à la Section d'Initialisation</h3>
+            <p>Dans le Dashboard, cliquez sur <strong>"Seed Data"</strong> dans le menu latéral (section "Gestion").</p>
+        </div>
+
+        <div class="step">
+            <h3>2️⃣ Tester la Connexion au Serveur</h3>
+            <p>Cliquez sur le bouton :</p>
+            <div class="button-preview">🔍 Tester Connexion</div>
+            <p style="margin-top: 15px;">Cela vérifie que votre serveur Supabase Edge Function est déployé et fonctionne correctement.</p>
+            
+            <p style="margin-top: 15px;"><strong>Statuts possibles :</strong></p>
+            <div class="status success">✅ Serveur connecté et opérationnel</div>
+            <div class="status error">❌ Serveur non disponible</div>
+        </div>
+
+        <div class="step">
+            <h3>3️⃣ Si le Serveur N'est Pas Disponible</h3>
+            <div class="warning">
+                <strong>⚠️ Action Requise</strong><br>
+                Le serveur doit être déployé avant de pouvoir initialiser les données.
+            </div>
+            <p>Déployez le serveur avec la commande :</p>
+            <pre><code>supabase functions deploy make-server-04919ac5</code></pre>
+            <p>Puis cliquez à nouveau sur <strong>"🔍 Tester Connexion"</strong>.</p>
+        </div>
+
+        <div class="step">
+            <h3>4️⃣ Initialiser les Données de Démonstration</h3>
+            <p>Une fois le serveur connecté (✅ vert), cliquez sur le bouton :</p>
+            <div class="button-preview">🌱 Initialiser les Données</div>
+            
+            <div class="success" style="margin-top: 20px;">
+                <strong>✅ Ce qui sera créé :</strong>
+                <ul style="margin-top: 10px;">
+                    <li>6 projets professionnels bilingues (FR/EN)</li>
+                    <li>Leads de démonstration</li>
+                    <li>Clients de test</li>
+                    <li>Rendez-vous (bookings) de test</li>
+                    <li>Données réalistes avec budgets, descriptions et images</li>
+                </ul>
+            </div>
+            
+            <p style="margin-top: 15px;">⏱️ <strong>Durée estimée :</strong> 10-15 secondes</p>
+        </div>
+
+        <div class="step">
+            <h3>5️⃣ Vérifier les Données</h3>
+            <p>Retournez à la <strong>"Vue d'ensemble"</strong> pour voir vos nouvelles données :</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Statistiques mises à jour</li>
+                <li>Projets actifs</li>
+                <li>Leads récents</li>
+                <li>Rendez-vous à venir</li>
+            </ul>
+        </div>
+
+        <h2>📋 Contenu des Données de Test</h2>
+        
+        <h3>6 Projets Professionnels Bilingues</h3>
+        <div class="project-list">
+            <div class="project-card">
+                <div class="project-icon">🛒</div>
+                <div class="project-title">Plateforme E-commerce Moderne</div>
+                <div class="project-budget">35 000€</div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">📱</div>
+                <div class="project-title">Application Mobile Fitness</div>
+                <div class="project-budget">48 000€</div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">📊</div>
+                <div class="project-title">Tableau de Bord SaaS</div>
+                <div class="project-budget">62 000€</div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">🏢</div>
+                <div class="project-title">Site Vitrine Corporate</div>
+                <div class="project-budget">22 000€</div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">🔌</div>
+                <div class="project-title">Plateforme API RESTful</div>
+                <div class="project-budget">75 000€</div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">🎨</div>
+                <div class="project-title">Système de Design UI/UX</div>
+                <div class="project-budget">38 000€</div>
+            </div>
+        </div>
+
+        <p><strong>Chaque projet inclut :</strong></p>
+        <ul>
+            <li>Descriptions complètes en FR et EN</li>
+            <li>Technologies utilisées</li>
+            <li>Tags et catégories</li>
+            <li>Images Unsplash professionnelles</li>
+            <li>Dates et statuts réalistes</li>
+        </ul>
+
+        <h2>✅ Checklist Rapide</h2>
+        <div class="checklist">
+            <ul>
+                <li>Connecté au Dashboard</li>
+                <li>Serveur Supabase déployé</li>
+                <li>Test de connexion réussi (✅ vert)</li>
+                <li>Session active détectée (✅ vert)</li>
+                <li>Bouton "Initialiser les Données" actif</li>
+                <li>Données créées avec succès</li>
+                <li>Données visibles dans la Vue d'ensemble</li>
+            </ul>
+        </div>
+
+        <h2>🆘 Résolution de Problèmes</h2>
+
+        <h3>Le bouton "Initialiser les Données" est grisé</h3>
+        <p><strong>Causes possibles :</strong></p>
+        <ul>
+            <li>❌ Session expirée → Reconnectez-vous au Dashboard</li>
+            <li>❌ Serveur non disponible → Déployez le serveur (voir étape 3)</li>
+        </ul>
+
+        <h3>Le serveur ne se connecte pas</h3>
+        <p><strong>Solutions :</strong></p>
+        <ol style="padding-left: 20px;">
+            <li>Vérifiez que vous avez bien déployé le serveur :
+                <pre><code>supabase functions deploy make-server-04919ac5</code></pre>
+            </li>
+            <li>Vérifiez les logs du serveur :
+                <pre><code>supabase functions logs make-server-04919ac5</code></pre>
+            </li>
+            <li>Testez manuellement la connexion :
+                <pre><code>curl https://[VOTRE-PROJECT-ID].supabase.co/functions/v1/make-server-04919ac5/health</code></pre>
+            </li>
+        </ol>
+
+        <h3>Les données ne s'affichent pas après l'initialisation</h3>
+        <ol style="padding-left: 20px;">
+            <li>Actualisez la page (F5)</li>
+            <li>Vérifiez les logs dans la console du navigateur (F12)</li>
+            <li>Retournez à "Seed Data" et cliquez sur "🔍 Tester Connexion"</li>
+        </ol>
+
+        <h2>🎯 Prochaines Étapes</h2>
+        <p>Après l'initialisation, explorez :</p>
+        <ul>
+            <li><strong>Vue Express</strong> : Vue rapide de tous vos KPIs</li>
+            <li><strong>Leads</strong> : Gérer vos contacts et prospects</li>
+            <li><strong>Clients</strong> : Gérer votre portefeuille clients</li>
+            <li><strong>Projets</strong> : Voir et modifier vos projets</li>
+            <li><strong>Analytics</strong> : Graphiques et statistiques détaillées</li>
+        </ul>
+
+        <div class="tip">
+            <strong>Astuce :</strong> Si vous voyez une bannière bleue dans la "Vue d'ensemble" avec le message "Bienvenue sur votre Dashboard", cliquez directement sur le bouton "Initialiser les données" pour être redirigé automatiquement vers la section Seed Data.
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(0, 255, 194, 0.2);">
+            <p style="color: rgba(244, 244, 244, 0.5);">
+                Guide créé pour vous aider à démarrer rapidement avec votre Dashboard CRM
+            </p>
+        </div>
+    </div>
+</body>
+</html>

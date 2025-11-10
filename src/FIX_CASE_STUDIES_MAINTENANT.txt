@@ -1,0 +1,42 @@
+╔══════════════════════════════════════════════════════════════════╗
+║  🎯 FIX CASE STUDIES - 1 COMMANDE                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+PROBLÈME : Les case studies utilisent des clés incohérentes dans la DB
+
+SOLUTION : Normaliser les clés au format standard
+
+══════════════════════════════════════════════════════════════════
+
+OUVREZ LA CONSOLE (F12)
+
+TAPEZ :
+
+normalizeCaseStudiesKeys()
+
+══════════════════════════════════════════════════════════════════
+
+RÉSULTAT :
+
+✅ NORMALISATION RÉUSSIE !
+
+📊 Résultats:
+   - Case studies analysés: 5
+   - Clés normalisées: 3
+   - Clés déjà OK: 2
+
+🔑 Ancien → Nouveau:
+   plateforme-ecommerce-luxe → case_study_plateforme-ecommerce-luxe
+   [...]
+
+══════════════════════════════════════════════════════════════════
+
+ENSUITE, TESTEZ :
+
+Dashboard → Case Studies → Supprimer "plateforme-ecommerce-luxe"
+
+→ Vous verrez des logs détaillés
+→ La suppression fonctionnera maintenant
+→ Le case study ne réapparaîtra PLUS
+
+══════════════════════════════════════════════════════════════════

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 DÉPLOYER LES ROUTES INVOICES - Guide Complet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
+            color: #F4F4F4;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #00FFC2;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 255, 194, 0.5);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #F4F4F4;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+        }
+        
+        .alert {
+            background: linear-gradient(135deg, #ff0844 0%, #ff6b6b 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #ff0844;
+            box-shadow: 0 10px 30px rgba(255, 8, 68, 0.3);
+        }
+        
+        .alert h2 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+        
+        .alert p {
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 0;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 255, 194, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section h2 {
+            color: #00FFC2;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 2px solid #00FFC2;
+            padding-bottom: 10px;
+        }
+        
+        .section h3 {
+            color: #00FFC2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .code-block {
+            background: #0C0C0C;
+            border: 2px solid #00FFC2;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            position: relative;
+            overflow-x: auto;
+            box-shadow: 0 5px 20px rgba(0, 255, 194, 0.2);
+        }
+        
+        .code-block pre {
+            margin: 0;
+            color: #00FFC2;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #00FFC2;
+            color: #0C0C0C;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #00d9a6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 194, 0.4);
+        }
+        
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+            list-style: none;
+        }
+        
+        .steps li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 25px;
+        }
+        
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00FFC2 0%, #00d9a6 100%);
+            color: #0C0C0C;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            box-shadow: 0 5px 15px rgba(0, 255, 194, 0.4);
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        
+        .success {
+            background: rgba(0, 255, 194, 0.1);
+            border-left: 4px solid #00FFC2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        
+        .command {
+            background: #1a1a1a;
+            border: 1px solid #00FFC2;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            color: #00FFC2;
+            position: relative;
+        }
+        
+        code {
+            background: rgba(0, 255, 194, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #00FFC2;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+        
+        strong {
+            color: #00FFC2;
+        }
+        
+        .highlight {
+            background: linear-gradient(90deg, rgba(0, 255, 194, 0.2) 0%, transparent 100%);
+            border-left: 3px solid #00FFC2;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 DÉPLOYER LES ROUTES INVOICES</h1>
+        <p class="subtitle">Guide complet pour résoudre l'erreur 404 sur /invoices</p>
+        
+        <div class="alert">
+            <h2>🔴 ERREUR ACTUELLE</h2>
+            <p><strong>GET https://ptcxeqtjlxittxayffgu.supabase.co/functions/v1/make-server-04919ac5/invoices 404 (Not Found)</strong></p>
+            <p style="margin-top: 10px;">Les routes <code>/invoices</code> n'existent pas encore sur le serveur Supabase. Elles sont dans votre code local mais pas déployées.</p>
+        </div>
+
+        <div class="section">
+            <h2>📋 Étapes de déploiement</h2>
+            
+            <ol class="steps">
+                <li>
+                    <strong>Ouvrir le fichier serveur</strong>
+                    <p>Allez dans : <code>/supabase/functions/server/index.tsx</code></p>
+                </li>
+                
+                <li>
+                    <strong>Ajouter les routes INVOICES</strong>
+                    <p>Copier ce code et l'insérer juste APRÈS les routes QUOTES (vers la ligne 1600)</p>
+                    
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">📋 Copier</button>
+                        <pre>// ===========================================================================
+// INVOICES ROUTES (FACTURES)
+// ===========================================================================
+
+// Get all invoices (authenticated)
+app.get("/make-server-04919ac5/invoices", requireAuth, async (c) => {
+  try {
+    console.log("📄 Fetching all invoices...");
+    
+    const invoices = await kv.getByPrefix("invoice:");
+    
+    // Sort by creation date (most recent first)
+    const sortedInvoices = invoices.sort((a: any, b: any) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+    
+    console.log(`✅ Found ${sortedInvoices.length} invoices`);
+    
+    return c.json({
+      success: true,
+      invoices: sortedInvoices
+    });
+  } catch (error: any) {
+    console.error("❌ Error fetching invoices:", error);
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// Get single invoice by ID (authenticated)
+app.get("/make-server-04919ac5/invoices/:id", requireAuth, async (c) => {
+  try {
+    const invoiceId = c.req.param("id");
+    console.log(`📄 Fetching invoice: ${invoiceId}`);
+    
+    // Handle both formats: with or without "invoice:" prefix
+    const kvKey = invoiceId.startsWith("invoice:") ? invoiceId : `invoice:${invoiceId}`;
+    
+    const invoice = await kv.get(kvKey);
+    
+    if (!invoice) {
+      console.error(`❌ Invoice not found: ${invoiceId}`);
+      return c.json({ success: false, error: "Invoice not found" }, 404);
+    }
+    
+    console.log(`✅ Invoice found: ${invoiceId}`);
+    return c.json({
+      success: true,
+      invoice
+    });
+  } catch (error: any) {
+    console.error("❌ Error fetching invoice:", error);
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// Update existing invoice (authenticated)
+app.put("/make-server-04919ac5/invoices/:id", requireAuth, async (c) => {
+  try {
+    const invoiceId = c.req.param("id");
+    const body = await c.req.json();
+    
+    console.log(`📝 Updating invoice: ${invoiceId}`);
+    
+    // Handle both formats: with or without "invoice:" prefix
+    const kvKey = invoiceId.startsWith("invoice:") ? invoiceId : `invoice:${invoiceId}`;
+    
+    const existingInvoice = await kv.get(kvKey);
+    
+    if (!existingInvoice) {
+      console.error(`❌ Invoice not found: ${invoiceId}`);
+      return c.json({ success: false, error: "Invoice not found" }, 404);
+    }
+    
+    // Update invoice data
+    const updatedInvoice = {
+      ...existingInvoice,
+      ...body,
+      id: kvKey, // Preserve the original ID format
+      createdAt: existingInvoice.createdAt, // Preserve creation date
+      updatedAt: new Date().toISOString()
+    };
+    
+    await kv.set(kvKey, updatedInvoice);
+    
+    console.log(`✅ Invoice updated: ${invoiceId}`);
+    
+    return c.json({
+      success: true,
+      invoice: updatedInvoice,
+      message: "Invoice updated successfully"
+    });
+  } catch (error: any) {
+    console.error("❌ Error updating invoice:", error);
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// Delete invoice (authenticated)
+app.delete("/make-server-04919ac5/invoices/:id", requireAuth, async (c) => {
+  try {
+    const invoiceId = c.req.param("id");
+    
+    console.log(`🗑️ Deleting invoice: ${invoiceId}`);
+    
+    // Handle both formats: with or without "invoice:" prefix
+    const kvKey = invoiceId.startsWith("invoice:") ? invoiceId : `invoice:${invoiceId}`;
+    
+    const invoice = await kv.get(kvKey);
+    
+    if (!invoice) {
+      return c.json({ success: false, error: "Invoice not found" }, 404);
+    }
+    
+    await kv.del(kvKey);
+    console.log(`✅ Invoice deleted: ${invoiceId}`);
+    
+    return c.json({ 
+      success: true, 
+      message: "Invoice deleted successfully" 
+    });
+  } catch (error: any) {
+    console.error("❌ Error deleting invoice:", error);
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});</pre>
+                    </div>
+                </li>
+                
+                <li>
+                    <strong>Sauvegarder le fichier</strong>
+                    <p>Enregistrez <code>index.tsx</code> avec le nouveau code</p>
+                </li>
+                
+                <li>
+                    <strong>Ouvrir un Terminal</strong>
+                    <p>Dans votre projet, ouvrez un terminal/PowerShell</p>
+                </li>
+                
+                <li>
+                    <strong>Se connecter à Supabase</strong>
+                    <div class="command">
+                        <button class="copy-btn" onclick="copyCode(this)">📋 Copier</button>
+                        <pre>supabase login</pre>
+                    </div>
+                    <p class="warning">⚠️ Si cette commande ne marche pas, installez d'abord Supabase CLI :</p>
+                    <div class="command">
+                        <button class="copy-btn" onclick="copyCode(this)">📋 Copier</button>
+                        <pre>npm install -g supabase</pre>
+                    </div>
+                </li>
+                
+                <li>
+                    <strong>Lier votre projet Supabase</strong>
+                    <div class="command">
+                        <button class="copy-btn" onclick="copyCode(this)">📋 Copier</button>
+                        <pre>supabase link --project-ref ptcxeqtjlxittxayffgu</pre>
+                    </div>
+                    <p style="margin-top: 10px;">Il vous demandera votre mot de passe database (trouvable dans les settings Supabase)</p>
+                </li>
+                
+                <li>
+                    <strong>Déployer la fonction Edge</strong>
+                    <div class="command">
+                        <button class="copy-btn" onclick="copyCode(this)">📋 Copier</button>
+                        <pre>supabase functions deploy make-server-04919ac5</pre>
+                    </div>
+                    
+                    <div class="success" style="margin-top: 20px;">
+                        <strong>✅ SUCCÈS ATTENDU :</strong>
+                        <p style="margin-top: 10px;">Vous devriez voir :</p>
+                        <code style="display: block; margin-top: 10px;">✓ Deployed Function make-server-04919ac5 on project ptcxeqtjlxittxayffgu</code>
+                    </div>
+                </li>
+                
+                <li>
+                    <strong>Tester les nouvelles routes</strong>
+                    <p>Rafraîchir votre page dashboard et vérifier la console :</p>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>✅ <code>GET /invoices</code> devrait retourner 200 (au lieu de 404)</li>
+                        <li>✅ Les factures converties devraient apparaître dans l'onglet Factures</li>
+                        <li>✅ Plus de message <code>Failed to load invoices</code></li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>🔍 Vérification rapide</h2>
+            
+            <p>Après le déploiement, testez directement la route dans votre navigateur :</p>
+            
+            <div class="command">
+                <button class="copy-btn" onclick="copyCode(this)">📋 Copier URL</button>
+                <pre>https://ptcxeqtjlxittxayffgu.supabase.co/functions/v1/make-server-04919ac5/invoices</pre>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Réponse attendue :</strong></p>
+                <code style="display: block; margin-top: 10px;">{"success": true, "invoices": [...]}</code>
+                <p style="margin-top: 10px;">Au lieu de : <code>404 Not Found</code></p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🆘 Problèmes courants</h2>
+            
+            <h3>❌ "supabase: command not found"</h3>
+            <p>Installez la CLI Supabase :</p>
+            <div class="command">
+                <button class="copy-btn" onclick="copyCode(this)">📋 Copier</button>
+                <pre>npm install -g supabase</pre>
+            </div>
+            
+            <h3>❌ "Project not linked"</h3>
+            <p>Liez d'abord votre projet :</p>
+            <div class="command">
+                <button class="copy-btn" onclick="copyCode(this)">📋 Copier</button>
+                <pre>supabase link --project-ref ptcxeqtjlxittxayffgu</pre>
+            </div>
+            
+            <h3>❌ Les routes ne marchent toujours pas après déploiement</h3>
+            <p>Vérifiez que :</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>✅ Le code a bien été sauvegardé dans <code>index.tsx</code></li>
+                <li>✅ La commande deploy a réussi (pas d'erreurs rouges)</li>
+                <li>✅ Vous avez rafraîchi la page (Ctrl+F5 ou Cmd+Shift+R)</li>
+                <li>✅ Le header Authorization est bien envoyé avec le token</li>
+            </ul>
+            
+            <h3>❌ Erreur 401 Unauthorized</h3>
+            <p>Normal ! Les routes invoices nécessitent une authentification.</p>
+            <p>Assurez-vous d'être connecté au dashboard avant de charger les factures.</p>
+        </div>
+
+        <div class="section">
+            <h2>📊 Résumé de ce qui va changer</h2>
+            
+            <div class="highlight">
+                <p><strong>AVANT (état actuel) :</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>❌ GET /invoices → <code>404 Not Found</code></li>
+                    <li>❌ Factures converties disparaissent</li>
+                    <li>❌ Console affiche "Failed to load invoices"</li>
+                    <li>❌ Onglet Factures toujours vide</li>
+                </ul>
+            </div>
+            
+            <div class="success" style="margin-top: 20px;">
+                <p><strong>APRÈS (une fois déployé) :</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>✅ GET /invoices → <code>200 OK</code></li>
+                    <li>✅ Les factures sont chargées depuis Supabase</li>
+                    <li>✅ Console affiche "Loaded X invoices from server"</li>
+                    <li>✅ Les factures converties apparaissent dans l'onglet Factures</li>
+                    <li>✅ Synchronisation complète avec la database</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Code complet en un seul bloc</h2>
+            <p>Si vous préférez tout copier d'un coup, voici le code complet des 4 routes :</p>
+            
+            <div class="code-block">
+                <button class="copy-btn" onclick="copyCode(this)">📋 Copier tout</button>
+                <pre>// ===========================================================================
+// INVOICES ROUTES (FACTURES) - À ajouter après les routes QUOTES
+// ===========================================================================
+
+// GET all invoices
+app.get("/make-server-04919ac5/invoices", requireAuth, async (c) => {
+  try {
+    console.log("📄 Fetching all invoices...");
+    const invoices = await kv.getByPrefix("invoice:");
+    const sortedInvoices = invoices.sort((a: any, b: any) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+    console.log(`✅ Found ${sortedInvoices.length} invoices`);
+    return c.json({ success: true, invoices: sortedInvoices });
+  } catch (error: any) {
+    console.error("❌ Error fetching invoices:", error);
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// GET single invoice
+app.get("/make-server-04919ac5/invoices/:id", requireAuth, async (c) => {
+  try {
+    const invoiceId = c.req.param("id");
+    console.log(`📄 Fetching invoice: ${invoiceId}`);
+    const kvKey = invoiceId.startsWith("invoice:") ? invoiceId : `invoice:${invoiceId}`;
+    const invoice = await kv.get(kvKey);
+    if (!invoice) {
+      console.error(`❌ Invoice not found: ${invoiceId}`);
+      return c.json({ success: false, error: "Invoice not found" }, 404);
+    }
+    console.log(`✅ Invoice found: ${invoiceId}`);
+    return c.json({ success: true, invoice });
+  } catch (error: any) {
+    console.error("❌ Error fetching invoice:", error);
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// PUT update invoice
+app.put("/make-server-04919ac5/invoices/:id", requireAuth, async (c) => {
+  try {
+    const invoiceId = c.req.param("id");
+    const body = await c.req.json();
+    console.log(`📝 Updating invoice: ${invoiceId}`);
+    const kvKey = invoiceId.startsWith("invoice:") ? invoiceId : `invoice:${invoiceId}`;
+    const existingInvoice = await kv.get(kvKey);
+    if (!existingInvoice) {
+      console.error(`❌ Invoice not found: ${invoiceId}`);
+      return c.json({ success: false, error: "Invoice not found" }, 404);
+    }
+    const updatedInvoice = {
+      ...existingInvoice,
+      ...body,
+      id: kvKey,
+      createdAt: existingInvoice.createdAt,
+      updatedAt: new Date().toISOString()
+    };
+    await kv.set(kvKey, updatedInvoice);
+    console.log(`✅ Invoice updated: ${invoiceId}`);
+    return c.json({ success: true, invoice: updatedInvoice, message: "Invoice updated successfully" });
+  } catch (error: any) {
+    console.error("❌ Error updating invoice:", error);
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// DELETE invoice
+app.delete("/make-server-04919ac5/invoices/:id", requireAuth, async (c) => {
+  try {
+    const invoiceId = c.req.param("id");
+    console.log(`🗑️ Deleting invoice: ${invoiceId}`);
+    const kvKey = invoiceId.startsWith("invoice:") ? invoiceId : `invoice:${invoiceId}`;
+    const invoice = await kv.get(kvKey);
+    if (!invoice) {
+      return c.json({ success: false, error: "Invoice not found" }, 404);
+    }
+    await kv.del(kvKey);
+    console.log(`✅ Invoice deleted: ${invoiceId}`);
+    return c.json({ success: true, message: "Invoice deleted successfully" });
+  } catch (error: any) {
+    console.error("❌ Error deleting invoice:", error);
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});</pre>
+            </div>
+        </div>
+
+        <div class="alert" style="background: linear-gradient(135deg, #00FFC2 0%, #00d9a6 100%);">
+            <h2 style="color: #0C0C0C;">✅ APRÈS LE DÉPLOIEMENT</h2>
+            <p style="color: #0C0C0C;"><strong>Vos factures converties depuis les devis apparaîtront automatiquement dans l'onglet Factures du dashboard CRM !</strong></p>
+            <p style="color: #0C0C0C; margin-top: 10px;">Plus besoin de localStorage ou de données de test. Tout sera synchronisé avec Supabase. 🎉</p>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('pre').textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✅ Copié !';
+                button.style.background = '#00d9a6';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#00FFC2';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

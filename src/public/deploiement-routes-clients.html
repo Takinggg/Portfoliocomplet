@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Déploiement Routes Clients - Guide Visuel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #0C0C0C;
+            background: linear-gradient(135deg, #F4F4F4 0%, #E0E0E0 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00FFC2 0%, #0C0C0C 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .alert {
+            background: #FFF3CD;
+            border-left: 4px solid #FFC107;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .alert-success {
+            background: #D4EDDA;
+            border-left-color: #28A745;
+        }
+
+        .alert-info {
+            background: #D1ECF1;
+            border-left-color: #17A2B8;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #00FFC2;
+            background: #0C0C0C;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            background: #F8F9FA;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #00FFC2;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checklist li:hover {
+            background: #E9ECEF;
+            transform: translateX(5px);
+        }
+
+        .checklist li.done {
+            background: #D4EDDA;
+            border-left-color: #28A745;
+            opacity: 0.7;
+        }
+
+        .checklist li input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #00FFC2;
+        }
+
+        .step-number {
+            background: #00FFC2;
+            color: #0C0C0C;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .code-block {
+            background: #0C0C0C;
+            color: #00FFC2;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #00FFC2;
+            color: #0C0C0C;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .copy-button:hover {
+            background: #00DDA8;
+            transform: scale(1.05);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #00FFC2;
+            color: #0C0C0C;
+        }
+
+        .btn-primary:hover {
+            background: #00DDA8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 194, 0.3);
+        }
+
+        .btn-secondary {
+            background: #0C0C0C;
+            color: #F4F4F4;
+        }
+
+        .btn-secondary:hover {
+            background: #1A1A1A;
+            transform: translateY(-2px);
+        }
+
+        .routes-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .routes-table th {
+            background: #0C0C0C;
+            color: #00FFC2;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .routes-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #E9ECEF;
+        }
+
+        .routes-table tr:hover {
+            background: #F8F9FA;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .badge-get {
+            background: #007BFF;
+            color: white;
+        }
+
+        .badge-post {
+            background: #28A745;
+            color: white;
+        }
+
+        .badge-put {
+            background: #FFC107;
+            color: #0C0C0C;
+        }
+
+        .badge-delete {
+            background: #DC3545;
+            color: white;
+        }
+
+        .badge-auth {
+            background: #00FFC2;
+            color: #0C0C0C;
+        }
+
+        .progress-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #F8F9FA;
+            border-radius: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #E9ECEF;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00FFC2 0%, #00DDA8 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0C0C0C;
+            font-weight: bold;
+        }
+
+        .footer {
+            background: #F8F9FA;
+            padding: 30px;
+            text-align: center;
+            border-top: 3px solid #00FFC2;
+        }
+
+        .emoji {
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .routes-table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span class="emoji">🚀</span> Déploiement Routes Clients</h1>
+            <p>Guide Visuel Étape par Étape</p>
+        </div>
+
+        <div class="content">
+            <!-- Alert Status -->
+            <div class="alert alert-info">
+                <strong>📌 Status Actuel :</strong> Les routes clients sont implémentées dans le code local. 
+                Suivez ce guide pour les déployer sur Supabase.
+            </div>
+
+            <!-- Progress -->
+            <div class="progress-container">
+                <h3 style="margin-bottom: 15px;">Progression du Déploiement</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill">0%</div>
+                </div>
+                <p id="progressText" style="margin-top: 10px; text-align: center; color: #6C757D;">0 / 7 étapes complétées</p>
+            </div>
+
+            <!-- Routes Overview -->
+            <div class="section">
+                <h2><span class="emoji">📋</span> Routes Ajoutées (7)</h2>
+                
+                <table class="routes-table">
+                    <thead>
+                        <tr>
+                            <th>Méthode</th>
+                            <th>Route</th>
+                            <th>Description</th>
+                            <th>Auth</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge badge-get">GET</span></td>
+                            <td><code>/clients</code></td>
+                            <td>Liste tous les clients</td>
+                            <td><span class="badge badge-auth">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-get">GET</span></td>
+                            <td><code>/clients/:id</code></td>
+                            <td>Détails d'un client</td>
+                            <td><span class="badge badge-auth">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-post">POST</span></td>
+                            <td><code>/clients</code></td>
+                            <td>Créer un nouveau client</td>
+                            <td><span class="badge badge-auth">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-put">PUT</span></td>
+                            <td><code>/clients/:id</code></td>
+                            <td>Mettre à jour un client</td>
+                            <td><span class="badge badge-auth">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-delete">DELETE</span></td>
+                            <td><code>/clients/:id</code></td>
+                            <td>Supprimer un client</td>
+                            <td><span class="badge badge-auth">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-post">POST</span></td>
+                            <td><code>/clients/convert-lead/:leadId</code></td>
+                            <td>Convertir un lead en client</td>
+                            <td><span class="badge badge-auth">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-get">GET</span></td>
+                            <td><code>/clients/stats</code></td>
+                            <td>Statistiques des clients</td>
+                            <td><span class="badge badge-auth">✓</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Deployment Steps -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span> Étapes de Déploiement</h2>
+                
+                <ul class="checklist">
+                    <li onclick="toggleCheckbox(this)">
+                        <input type="checkbox" id="step1">
+                        <span class="step-number">1</span>
+                        <label for="step1">Ouvrir le Dashboard Supabase : <a href="https://supabase.com/dashboard" target="_blank">supabase.com/dashboard</a></label>
+                    </li>
+                    <li onclick="toggleCheckbox(this)">
+                        <input type="checkbox" id="step2">
+                        <span class="step-number">2</span>
+                        <label for="step2">Se connecter et sélectionner le projet <strong>maxence-portfolio</strong></label>
+                    </li>
+                    <li onclick="toggleCheckbox(this)">
+                        <input type="checkbox" id="step3">
+                        <span class="step-number">3</span>
+                        <label for="step3">Aller dans <strong>Edge Functions</strong> → Sélectionner la fonction <strong>server</strong></label>
+                    </li>
+                    <li onclick="toggleCheckbox(this)">
+                        <input type="checkbox" id="step4">
+                        <span class="step-number">4</span>
+                        <label for="step4">Cliquer sur <strong>"Deploy new version"</strong> (bouton en haut à droite)</label>
+                    </li>
+                    <li onclick="toggleCheckbox(this)">
+                        <input type="checkbox" id="step5">
+                        <span class="step-number">5</span>
+                        <label for="step5">Copier-coller le contenu complet de <code>/supabase/functions/server/index.tsx</code></label>
+                    </li>
+                    <li onclick="toggleCheckbox(this)">
+                        <input type="checkbox" id="step6">
+                        <span class="step-number">6</span>
+                        <label for="step6">Cliquer sur <strong>"Deploy"</strong> et attendre la confirmation ✅</label>
+                    </li>
+                    <li onclick="toggleCheckbox(this)">
+                        <input type="checkbox" id="step7">
+                        <span class="step-number">7</span>
+                        <label for="step7">Vérifier le déploiement avec le Health Check</label>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Verification -->
+            <div class="section">
+                <h2><span class="emoji">✅</span> Vérification du Déploiement</h2>
+                
+                <div class="alert alert-info">
+                    <strong>1. Health Check :</strong> Vérifiez que le serveur répond correctement
+                </div>
+
+                <div class="code-block">
+                    <button class="copy-button" onclick="copyToClipboard('healthCheck')">Copier</button>
+                    <pre id="healthCheck">https://pefxfxrxonhpfxdjuhmc.supabase.co/functions/v1/make-server-04919ac5/health</pre>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>Résultat attendu :</strong>
+                    <div class="code-block" style="margin-top: 10px;">
+                        <pre>{"success": true, "version": "consolidated-v1"}</pre>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <a href="https://pefxfxrxonhpfxdjuhmc.supabase.co/functions/v1/make-server-04919ac5/health" 
+                       target="_blank" 
+                       class="btn btn-primary">
+                        <span class="emoji">🔍</span> Tester le Health Check
+                    </a>
+                    <a href="https://maxence.design/#/fr/dashboard" 
+                       target="_blank" 
+                       class="btn btn-secondary">
+                        <span class="emoji">🏠</span> Ouvrir le Dashboard
+                    </a>
+                </div>
+
+                <div class="alert" style="margin-top: 30px;">
+                    <strong>2. Test dans le Dashboard :</strong>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>Se connecter : <strong>contact@maxence.design</strong> / <strong>vbz657D9</strong></li>
+                        <li>Cliquer sur l'onglet <strong>"Clients"</strong></li>
+                        <li>Vérifier : ✅ Aucune erreur 404</li>
+                        <li>Cliquer sur <strong>"Nouveau client"</strong></li>
+                        <li>Créer un client test</li>
+                        <li>Vérifier : ✅ Le client apparaît dans la liste</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Tests -->
+            <div class="section">
+                <h2><span class="emoji">🧪</span> Tests Automatiques (Optionnel)</h2>
+                
+                <p>Pour tester automatiquement toutes les routes clients, ouvrez la console navigateur (F12) dans le dashboard et exécutez :</p>
+
+                <div class="code-block">
+                    <button class="copy-button" onclick="copyToClipboard('testCode')">Copier</button>
+                    <pre id="testCode">// Importer les tests
+await import('/utils/testClientRoutes.ts');
+
+// Lancer tous les tests
+await testClientRoutes.runAll();
+
+// Ou tester individuellement
+await testClientRoutes.getAll();
+await testClientRoutes.stats();</pre>
+                </div>
+            </div>
+
+            <!-- Troubleshooting -->
+            <div class="section">
+                <h2><span class="emoji">🆘</span> Problèmes Fréquents</h2>
+                
+                <div style="background: #FFF3CD; padding: 20px; border-radius: 8px; border-left: 4px solid #FFC107;">
+                    <h3 style="margin-bottom: 15px;">❌ Erreur 404 persistante</h3>
+                    <ul style="margin-left: 20px;">
+                        <li>Vider le cache navigateur (Ctrl+Shift+Delete)</li>
+                        <li>Recharger avec Ctrl+F5 (rechargement forcé)</li>
+                        <li>Attendre 30-60 secondes (propagation)</li>
+                        <li>Vérifier les logs Supabase (Edge Functions → Logs)</li>
+                    </ul>
+                </div>
+
+                <div style="background: #FFF3CD; padding: 20px; border-radius: 8px; border-left: 4px solid #FFC107; margin-top: 15px;">
+                    <h3 style="margin-bottom: 15px;">❌ Erreur "Unauthorized"</h3>
+                    <ul style="margin-left: 20px;">
+                        <li>Se déconnecter et se reconnecter au dashboard</li>
+                        <li>Vérifier que le token est valide</li>
+                        <li>Vérifier que <code>requireAuth</code> est présent sur les routes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Documentation -->
+            <div class="section">
+                <h2><span class="emoji">📚</span> Documentation</h2>
+                
+                <div class="button-group">
+                    <a href="/ROUTES_CLIENTS_DOCUMENTATION.md" class="btn btn-primary">
+                        <span class="emoji">📖</span> Documentation Complète
+                    </a>
+                    <a href="/DEPLOIEMENT_ROUTES_CLIENTS.md" class="btn btn-secondary">
+                        <span class="emoji">📝</span> Guide Détaillé
+                    </a>
+                    <a href="/ROUTES_CLIENTS_RESUME.md" class="btn btn-secondary">
+                        <span class="emoji">📋</span> Résumé
+                    </a>
+                </div>
+            </div>
+
+            <!-- Success Alert -->
+            <div id="successAlert" class="alert alert-success" style="display: none;">
+                <strong>🎉 Félicitations !</strong><br>
+                Toutes les étapes sont complétées. Les routes clients sont maintenant déployées et fonctionnelles !
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Maxence Design - Dashboard CRM</strong></p>
+            <p style="margin-top: 10px; color: #6C757D;">
+                Déploiement Routes Clients v1.0 - Novembre 2024
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Progress tracking
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+            const checked = document.querySelectorAll('.checklist input[type="checkbox"]:checked').length;
+            const total = checkboxes.length;
+            const percentage = Math.round((checked / total) * 100);
+            
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressFill.style.width = percentage + '%';
+            progressFill.textContent = percentage + '%';
+            progressText.textContent = `${checked} / ${total} étapes complétées`;
+            
+            // Show success alert when all steps are done
+            if (checked === total) {
+                document.getElementById('successAlert').style.display = 'block';
+                document.getElementById('successAlert').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                document.getElementById('successAlert').style.display = 'none';
+            }
+            
+            // Save progress in localStorage
+            const progress = Array.from(checkboxes).map(cb => cb.checked);
+            localStorage.setItem('deploymentProgress', JSON.stringify(progress));
+        }
+
+        // Toggle checkbox on list item click
+        function toggleCheckbox(li) {
+            const checkbox = li.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            li.classList.toggle('done', checkbox.checked);
+            updateProgress();
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const button = element.previousElementSibling;
+                const originalText = button.textContent;
+                button.textContent = 'Copié !';
+                button.style.background = '#28A745';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#00FFC2';
+                }, 2000);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved progress
+            const saved = localStorage.getItem('deploymentProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+                checkboxes.forEach((checkbox, index) => {
+                    if (progress[index]) {
+                        checkbox.checked = true;
+                        checkbox.parentElement.classList.add('done');
+                    }
+                });
+            }
+            
+            // Add event listeners
+            const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    checkbox.parentElement.classList.toggle('done', checkbox.checked);
+                    updateProgress();
+                });
+            });
+            
+            updateProgress();
+        });
+    </script>
+</body>
+</html>

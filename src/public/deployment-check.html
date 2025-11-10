@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vérification Déploiement Serveur</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #0C0C0C;
+      color: #F4F4F4;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #00FFC2;
+    }
+
+    .status-card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .status-card.success {
+      border-color: #00FFC2;
+      background: rgba(0, 255, 194, 0.05);
+    }
+
+    .status-card.error {
+      border-color: #ff4444;
+      background: rgba(255, 68, 68, 0.05);
+    }
+
+    .status-card.checking {
+      border-color: #ffaa00;
+      background: rgba(255, 170, 0, 0.05);
+    }
+
+    .route-item {
+      padding: 16px;
+      background: #0C0C0C;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border-left: 4px solid #333;
+    }
+
+    .route-item.success {
+      border-left-color: #00FFC2;
+    }
+
+    .route-item.error {
+      border-left-color: #ff4444;
+    }
+
+    .route-item.checking {
+      border-left-color: #ffaa00;
+    }
+
+    .route-path {
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: #00FFC2;
+      margin-bottom: 4px;
+    }
+
+    .route-status {
+      font-size: 0.85rem;
+      color: #999;
+    }
+
+    button {
+      background: #00FFC2;
+      color: #0C0C0C;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 255, 194, 0.3);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .command-box {
+      background: #000;
+      border: 1px solid #00FFC2;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: #00FFC2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: 1px solid #00FFC2;
+      color: #00FFC2;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+    }
+
+    .copy-btn:hover {
+      background: #00FFC2;
+      color: #0C0C0C;
+    }
+
+    .icon {
+      display: inline-block;
+      margin-right: 8px;
+    }
+
+    .spinner {
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .instructions {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 24px;
+    }
+
+    .instructions h3 {
+      color: #00FFC2;
+      margin-bottom: 12px;
+    }
+
+    .instructions ol {
+      margin-left: 20px;
+    }
+
+    .instructions li {
+      margin-bottom: 8px;
+    }
+
+    .alert {
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .alert.warning {
+      background: rgba(255, 170, 0, 0.1);
+      border: 1px solid #ffaa00;
+      color: #ffaa00;
+    }
+
+    .alert.success {
+      background: rgba(0, 255, 194, 0.1);
+      border: 1px solid #00FFC2;
+      color: #00FFC2;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Vérification du Déploiement</h1>
+    <p style="margin-bottom: 24px; color: #999;">Vérification automatique des routes du serveur Supabase</p>
+
+    <div id="main-status" class="status-card checking">
+      <h2><span class="icon spinner">⏳</span> Vérification en cours...</h2>
+      <p style="margin-top: 8px; color: #999;">Connexion au serveur Supabase...</p>
+    </div>
+
+    <div id="routes-container">
+      <!-- Les routes seront ajoutées dynamiquement -->
+    </div>
+
+    <div id="action-container" style="display: none;">
+      <!-- Les actions seront ajoutées si nécessaire -->
+    </div>
+
+    <button id="check-btn" onclick="checkDeployment()">
+      <span class="icon">🔄</span> Revérifier
+    </button>
+
+    <div class="instructions">
+      <h3>📖 Instructions de déploiement</h3>
+      <ol>
+        <li>Ouvrez votre terminal dans le dossier du projet</li>
+        <li>Exécutez la commande de déploiement (voir ci-dessous)</li>
+        <li>Attendez que le déploiement se termine (30-60 secondes)</li>
+        <li>Cliquez sur "Revérifier" pour vérifier que tout fonctionne</li>
+      </ol>
+
+      <div class="command-box">
+        <code id="deploy-command">supabase functions deploy make-server-04919ac5</code>
+        <button class="copy-btn" onclick="copyCommand()">📋 Copier</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const routes = [
+      { 
+        path: '/health', 
+        method: 'GET', 
+        description: 'Health check du serveur',
+        requiresAuth: false 
+      },
+      { 
+        path: '/clients', 
+        method: 'GET', 
+        description: 'Récupération des clients',
+        requiresAuth: true
+      },
+    ];
+
+    async function checkDeployment() {
+      const btn = document.getElementById('check-btn');
+      const mainStatus = document.getElementById('main-status');
+      const routesContainer = document.getElementById('routes-container');
+      const actionContainer = document.getElementById('action-container');
+
+      btn.disabled = true;
+      mainStatus.className = 'status-card checking';
+      mainStatus.innerHTML = '<h2><span class="icon spinner">⏳</span> Vérification en cours...</h2><p style="margin-top: 8px; color: #999;">Test des routes du serveur...</p>';
+      routesContainer.innerHTML = '';
+      actionContainer.style.display = 'none';
+
+      // Récupérer le project ID depuis le contexte ou l'environnement
+      // Pour l'instant, on va essayer de le détecter depuis l'URL actuelle
+      const projectId = await getProjectId();
+
+      if (!projectId) {
+        mainStatus.className = 'status-card error';
+        mainStatus.innerHTML = '<h2><span class="icon">❌</span> Erreur</h2><p style="margin-top: 8px;">Impossible de détecter le Project ID Supabase</p>';
+        btn.disabled = false;
+        return;
+      }
+
+      const results = [];
+
+      for (const route of routes) {
+        const routeDiv = document.createElement('div');
+        routeDiv.className = 'route-item checking';
+        routeDiv.innerHTML = `
+          <div class="route-path">${route.method} ${route.path}</div>
+          <div class="route-status"><span class="spinner">⏳</span> Vérification...</div>
+        `;
+        routesContainer.appendChild(routeDiv);
+
+        const result = await checkRoute(projectId, route);
+        results.push(result);
+
+        routeDiv.className = `route-item ${result.success ? 'success' : 'error'}`;
+        routeDiv.innerHTML = `
+          <div class="route-path">${route.method} ${route.path}</div>
+          <div class="route-status">
+            <span class="icon">${result.success ? '✅' : '❌'}</span>
+            ${result.message}
+            ${result.details ? `<br><small>${result.details}</small>` : ''}
+          </div>
+        `;
+      }
+
+      const allSuccess = results.every(r => r.success);
+
+      if (allSuccess) {
+        mainStatus.className = 'status-card success';
+        mainStatus.innerHTML = `
+          <h2><span class="icon">✅</span> Serveur déployé correctement !</h2>
+          <p style="margin-top: 8px; color: #999;">Toutes les routes sont accessibles. Votre dashboard CRM est prêt à l'emploi.</p>
+        `;
+      } else {
+        mainStatus.className = 'status-card error';
+        mainStatus.innerHTML = `
+          <h2><span class="icon">❌</span> Déploiement requis</h2>
+          <p style="margin-top: 8px; color: #999;">Certaines routes ne sont pas disponibles. Vous devez déployer le serveur.</p>
+        `;
+
+        actionContainer.style.display = 'block';
+        actionContainer.innerHTML = `
+          <div class="alert warning">
+            <strong>🚨 Action requise :</strong><br>
+            Exécutez la commande de déploiement dans votre terminal (voir ci-dessous).
+          </div>
+        `;
+      }
+
+      btn.disabled = false;
+    }
+
+    async function getProjectId() {
+      try {
+        // Essayer de récupérer depuis un endpoint de santé
+        const response = await fetch('/utils/supabase/info.tsx');
+        const text = await response.text();
+        const match = text.match(/export const projectId = ["']([^"']+)["']/);
+        if (match) return match[1];
+      } catch (e) {
+        console.error('Impossible de récupérer le project ID:', e);
+      }
+
+      // Sinon demander à l'utilisateur
+      const id = prompt('Entrez votre Supabase Project ID:');
+      return id;
+    }
+
+    async function checkRoute(projectId, route) {
+      const url = `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5${route.path}`;
+      
+      try {
+        const response = await fetch(url);
+        const status = response.status;
+
+        if (route.requiresAuth) {
+          // Pour les routes protégées, 401/403 = route existe
+          if (status === 401 || status === 403) {
+            return {
+              success: true,
+              message: 'Route accessible (protection auth active)',
+              details: `Status: ${status}`
+            };
+          } else if (status === 404) {
+            return {
+              success: false,
+              message: 'Route non trouvée (404)',
+              details: 'Le serveur doit être redéployé'
+            };
+          }
+        } else {
+          // Pour les routes publiques, 200-299 = succès
+          if (status >= 200 && status < 300) {
+            return {
+              success: true,
+              message: 'Route accessible',
+              details: `Status: ${status}`
+            };
+          }
+        }
+
+        return {
+          success: false,
+          message: `Erreur HTTP ${status}`,
+          details: await response.text().catch(() => '')
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Erreur réseau',
+          details: error.message
+        };
+      }
+    }
+
+    function copyCommand() {
+      const command = document.getElementById('deploy-command').textContent;
+      navigator.clipboard.writeText(command).then(() => {
+        const btn = event.target;
+        btn.textContent = '✅ Copié !';
+        setTimeout(() => {
+          btn.textContent = '📋 Copier';
+        }, 2000);
+      });
+    }
+
+    // Lancer la vérification automatiquement au chargement
+    window.addEventListener('load', () => {
+      setTimeout(checkDeployment, 500);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║       🔧 FAQ CATEGORY NOT FOUND - FIX RAPIDE (30 SEC)        ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+ERREUR :
+═══════════════════════════════════════════════════════════════════
+
+❌ FAQ category not found: faq_category_1762631049594
+   Tried both formats: faq_category:1762631049594 and faq_category_1762631049594
+
+
+CAUSE :
+═══════════════════════════════════════════════════════════════════
+
+Cette erreur se produit quand une question FAQ référence une
+catégorie qui n'existe plus dans la base de données.
+
+Causes possibles :
+  • Catégorie supprimée manuellement
+  • Questions créées avec un ID de catégorie invalide
+  • Désynchronisation entre questions et catégories
+
+
+DIAGNOSTIC ULTRA-RAPIDE (10 SEC) :
+═══════════════════════════════════════════════════════════════════
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 1 : RECHARGER (5 SEC)                                 │
+└───────────────────────────────────────────────────────────────┘
+
+F5 ou Cmd+R
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 2 : DIAGNOSTIC (5 SEC)                                │
+└───────────────────────────────────────────────────────────────┘
+
+Console (F12) :
+
+  await window.fixFAQCategoryNotFound()
+
+Cette fonction va :
+  ✅ Lister toutes les catégories existantes
+  ✅ Lister toutes les questions
+  ✅ Détecter les questions orphelines
+  ✅ Proposer des solutions automatiques
+
+
+RÉSULTATS POSSIBLES :
+═══════════════════════════════════════════════════════════════════
+
+┌───────────────────────────────────────────────────────────────┐
+│ CAS 1 : AUCUNE CATÉGORIE TROUVÉE                             │
+└───────────────────────────────────────────────────────────────┘
+
+Message :
+
+  ⚠️ AUCUNE CATÉGORIE TROUVÉE
+  
+  Le problème est que les catégories FAQ n'existent pas encore
+  dans la base de données.
+
+SOLUTION :
+
+  await window.seedFAQData()
+
+Résultat :
+  • Crée 6 catégories avec icônes
+  • Crée 37 questions bilingues
+  • Temps : 30 secondes
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ CAS 2 : TOUT EST EN ORDRE                                    │
+└───────────────────────────────────────────────────────────────┘
+
+Message :
+
+  ✅ TOUT EST EN ORDRE !
+  
+  Toutes les questions FAQ sont liées à des catégories valides.
+
+SOLUTION :
+
+  L'erreur vient du cache du navigateur.
+  
+  1. Videz le cache : Cmd+Shift+R (Mac) ou Ctrl+Shift+R (Windows)
+  2. Rechargez : F5
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ CAS 3 : QUESTIONS ORPHELINES DÉTECTÉES (LE PLUS COURANT)     │
+└───────────────────────────────────────────────────────────────┘
+
+Message :
+
+  ⚠️ QUESTIONS ORPHELINES DÉTECTÉES !
+  
+  X question(s) référence(nt) des catégories
+  qui n'existent plus dans la base de données.
+  
+  QUESTIONS ORPHELINES :
+  
+  1. Question : Quels services proposez-vous ?
+     Catégorie manquante : faq_category_1762631049594
+
+SOLUTIONS (3 OPTIONS) :
+
+  ╔══════════════════════════════════════════════════════════╗
+  ║ OPTION 1 - SUPPRIMER LES QUESTIONS ORPHELINES           ║
+  ║ (Recommandé si vous ne voulez pas de ces questions)     ║
+  ╚══════════════════════════════════════════════════════════╝
+  
+  await window.deleteOrphanedFAQQuestions()
+  
+  ✅ Supprime automatiquement les questions orphelines
+  ⏱️ Temps : 10 secondes
+  
+  
+  ╔══════════════════════════════════════════════════════════╗
+  ║ OPTION 2 - RÉINITIALISER COMPLÈTEMENT                   ║
+  ║ (Recommandé si vous voulez repartir à zéro)             ║
+  ╚══════════════════════════════════════════════════════════╝
+  
+  await window.resetFAQCompletely()
+  
+  Puis confirmer avec :
+  
+  await window.confirmResetFAQ()
+  
+  ⚠️ Supprime TOUT et recrée :
+    • 6 catégories avec icônes ✨💰⏰💬⚡🛡️
+    • 37 questions bilingues (FR + EN)
+  
+  ⏱️ Temps : 1 minute
+  
+  
+  ╔══════════════════════════════════════════════════════════╗
+  ║ OPTION 3 - GARDER LES QUESTIONS, RECRÉER LES CATÉGORIES ║
+  ║ (Si vous voulez conserver vos questions personnalisées) ║
+  ╚══════════════════════════════════════════════════════════╝
+  
+  1. Ne supprimez PAS les questions orphelines
+  
+  2. Initialisez les catégories :
+  
+     await window.seedFAQData()
+  
+  3. Rechargez : F5
+  
+  ⚠️ Les questions orphelines seront maintenant liées aux
+     nouvelles catégories (si les IDs correspondent)
+
+
+SOLUTION ULTRA-RAPIDE (30 SEC) :
+═══════════════════════════════════════════════════════════════════
+
+La plupart du temps, la meilleure solution est OPTION 2 :
+
+┌─────┬──────────────────────────────────────┬──────────┐
+│  #  │ Action                               │ Durée    │
+├─────┼──────────────────────────────────────┼──────────┤
+│  1  │ Recharger (F5)                       │ 5 sec    │
+│  2  │ await window.resetFAQCompletely()    │ 5 sec    │
+│  3  │ await window.confirmResetFAQ()       │ 10 sec   │
+│  4  │ Recharger + Vérifier /faq            │ 10 sec   │
+├─────┼──────────────────────────────────────┼──────────┤
+│     │ TOTAL                                │ 30 sec   │
+└─────┴──────────────────────────────────────┴──────────┘
+
+
+EXEMPLE DE WORKFLOW COMPLET :
+═══════════════════════════════════════════════════════════════════
+
+Console (F12) :
+
+// 1. Diagnostic
+await window.fixFAQCategoryNotFound()
+
+// 2a. Si AUCUNE catégorie :
+await window.seedFAQData()
+
+// 2b. Si QUESTIONS ORPHELINES - Option simple :
+await window.deleteOrphanedFAQQuestions()
+
+// 2c. Si QUESTIONS ORPHELINES - Option complète :
+await window.resetFAQCompletely()
+await window.confirmResetFAQ()
+
+// 3. Recharger
+F5
+
+
+PRÉVENTION :
+═══════════════════════════════════════════════════════════════════
+
+Pour éviter cette erreur à l'avenir :
+
+1. ❌ NE PAS supprimer une catégorie si elle contient des questions
+   → Supprimez d'abord les questions de cette catégorie
+   → Ensuite supprimez la catégorie
+
+2. ✅ TOUJOURS vérifier les questions avant de supprimer une catégorie
+   → Dashboard → FAQ → Voir les questions par catégorie
+
+3. ✅ UTILISER le bouton "Initialiser FAQ" pour créer la structure
+   → Dashboard → FAQ → 🌟 Initialiser FAQ (6 cat. + 37 Q)
+
+
+VÉRIFICATION APRÈS CORRECTION :
+═══════════════════════════════════════════════════════════════════
+
+Après avoir appliqué une solution :
+
+1. Rechargez (F5)
+
+2. Allez sur /faq
+
+3. Vérifiez que vous voyez :
+
+   ╔════════════════════════════════════════════════════════╗
+   ║                                                        ║
+   ║                    ❓ Questions                        ║
+   ║                    Fréquentes                          ║
+   ║                                                        ║
+   ╚════════════════════════════════════════════════════════╝
+   
+   [Barre de recherche]
+   
+   [✨ Tous] [✨ Services] [💰 Tarifs] [⏰ Délais] [💬 Com]
+   
+   ┌─────────────────────────────────────────────────────┐
+   │ [✨] Services                                    8  │
+   │ ─────────────────────────────────────────────────── │
+   │ ▸ Quels services proposez-vous ?                   │
+   │ ▸ Travaillez-vous avec des technologies...         │
+   └─────────────────────────────────────────────────────┘
+
+4. Ouvrez la console (F12) et vérifiez qu'il n'y a AUCUNE erreur
+
+
+FONCTIONS DISPONIBLES (CONSOLE) :
+═══════════════════════════════════════════════════════════════════
+
+await window.fixFAQCategoryNotFound()      → 🔍 Diagnostic complet
+await window.deleteOrphanedFAQQuestions()  → 🗑️ Supprimer orphelines
+await window.resetFAQCompletely()          → 🔄 Réinitialiser (étape 1)
+await window.confirmResetFAQ()             → ✅ Confirmer réinit (étape 2)
+await window.seedFAQData()                 → 🌟 Créer FAQ standards
+await window.debugFAQCategories()          → 🔍 Vérifier les icônes
+await window.fixFAQCategoryIcons()         → 🔧 Corriger les icônes
+
+
+LOGS À VÉRIFIER (CONSOLE) :
+═══════════════════════════════════════════════════════════════════
+
+Après rechargement, vous devriez voir :
+
+✅ Loaded 6 FAQ categories from server:
+  📦 Services - Icon: Sparkles - Order: 0
+  📦 Tarifs & Paiement - Icon: DollarSign - Order: 1
+  📦 Processus & Délais - Icon: Clock - Order: 2
+  📦 Communication - Icon: MessageSquare - Order: 3
+  📦 Technique - Icon: Code - Order: 4
+  📦 Légal & Sécurité - Icon: Shield - Order: 5
+
+✅ FAQs loaded in server mode: 37
+
+Si vous voyez ces logs SANS erreurs, tout fonctionne ! ✅
+
+
+ERREURS CONNEXES :
+═══════════════════════════════════════════════════════════════════
+
+Si vous rencontrez d'autres erreurs FAQ :
+
+┌─────────────────────────────┬──────────────────────────────┐
+│ Erreur                      │ Solution                     │
+├─────────────────────────────┼──────────────────────────────┤
+│ 400 - Creating FAQ question │ /FAQ_ERREUR_400_FIX.txt      │
+│ 404 - Deleting FAQ category │ /FAQ_CATEGORIES_404_FIX.txt  │
+│ IDs techniques affichés     │ /FAQ_CATEGORIES_AFFICHAGE... │
+│ Icônes manquantes (filtres) │ /FAQ_ICONES_MANQUANTES_FIX...│
+│ Icônes manquantes (titres)  │ /FAQ_ICONES_TITRES_FIX.txt   │
+│ Guide complet               │ /FAQ_FIX_COMPLET_FINAL.txt   │
+└─────────────────────────────┴──────────────────────────────┘
+
+
+RÉSUMÉ TECHNIQUE :
+═══════════════════════════════════════════════════════════════════
+
+L'erreur "FAQ category not found" se produit dans :
+  /supabase/functions/server/index.tsx:1955
+
+Lors de la tentative de :
+  • Suppression d'une catégorie (DELETE)
+  • Ou modification d'une catégorie (PUT)
+
+Le serveur essaie de trouver la catégorie avec :
+  1. Le format underscore : faq_category_XXXXX
+  2. Le format colon : faq_category:XXXXX
+
+Si aucun ne fonctionne, il retourne l'erreur 404.
+
+La fonction fixFAQCategoryNotFound() détecte :
+  • Catégories manquantes
+  • Questions orphelines
+  • Références invalides
+
+Et propose des solutions automatiques.
+
+
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║  🎯 SOLUTION ULTRA-RAPIDE (30 SEC) :                         ║
+║                                                               ║
+║  1. F5                                                        ║
+║  2. await window.resetFAQCompletely()                         ║
+║  3. await window.confirmResetFAQ()                            ║
+║  4. F5 → /faq → Vérifier                                     ║
+║                                                               ║
+║  ✅ Plus d'erreurs "category not found" ! 🎉                 ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝

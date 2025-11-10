@@ -1,0 +1,240 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║        🔴 FAQ ERREUR 400 - CORRECTION IMMÉDIATE              ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+ERREUR ACTUELLE :
+═══════════════════════════════════════════════════════════════════
+
+✅ Catégories créées avec succès :
+   ✅ Created category: Services
+   ✅ Created category: Tarifs & Paiement
+   ... (toutes les 6 catégories créées)
+
+❌ Questions FAQ échouent :
+   POST /faq-questions → 400 (Bad Request)
+   → Répété 37 fois (toutes les questions)
+
+
+CAUSE IDENTIFIÉE :
+═══════════════════════════════════════════════════════════════════
+
+Le frontend (seedFAQ.ts) envoie `categoryId` mais le serveur 
+(index.tsx) attend `category`.
+
+  Frontend envoie :
+  {
+    "question": "...",
+    "answer": "...",
+    "categoryId": "faq_category_1234567890"  ❌ Nom incorrect
+  }
+
+  Serveur attend :
+  {
+    "question": "...",
+    "answer": "...",
+    "category": "faq_category_1234567890"    ✅ Nom correct
+  }
+
+
+CORRECTION APPLIQUÉE :
+═══════════════════════════════════════════════════════════════════
+
+✅ Le serveur accepte maintenant BOTH :
+   • categoryId (nouveau format)
+   • category (ancien format)
+
+✅ Logs détaillés ajoutés :
+   • Affiche exactement ce qui manque
+   • Affiche le body JSON reçu
+   • Affiche les erreurs complètes
+
+
+ACTIONS IMMÉDIATES :
+═══════════════════════════════════════════════════════════════════
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 1 : RECHARGER L'APP (10 sec)                          │
+└───────────────────────────────────────────────────────────────┘
+
+F5 ou Cmd+R pour charger les nouveaux logs
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 2 : DÉPLOYER LE SERVEUR (1 min)                       │
+└───────────────────────────────────────────────────────────────┘
+
+Le serveur DOIT être redéployé avec les corrections :
+
+OPTION A - CLI (Recommandé) :
+──────────────────────────────────────────────────────────────
+
+  supabase functions deploy make-server-04919ac5 --no-verify-jwt
+
+OPTION B - Dashboard :
+──────────────────────────────────────────────────────────────
+
+  1. https://supabase.com/dashboard
+  2. Edge Functions → make-server-04919ac5
+  3. Edit Function
+  4. Copier/coller : /supabase/functions/server/index.tsx
+  5. Deploy
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ ACTION 3 : RÉESSAYER L'INITIALISATION (30 sec)               │
+└───────────────────────────────────────────────────────────────┘
+
+1. Dashboard → FAQ
+
+2. Cliquez sur :
+   🌟 Initialiser FAQ (6 cat. + 37 Q)
+
+3. Regardez la console (F12)
+
+4. Résultat attendu :
+
+   📦 Creating FAQ categories...
+   ✅ Created category: Services
+   ✅ Created category: Tarifs & Paiement
+   ... (6 catégories)
+   
+   📋 Creating FAQ questions with FR + EN translations...
+   🔄 Attempting to create question: "Quels services proposez-vous?..."
+      Category ID: faq_category_1699876543210
+   ✅ Created question: Quels services proposez-vous?... [FR + EN]
+   
+   ... (37 questions)
+   
+   ╔════════════════════════════════════════════════════════╗
+   ║  ✅ FAQ MULTILINGUAL SEEDING COMPLETED!               ║
+   ╚════════════════════════════════════════════════════════╝
+   
+   📊 Results:
+     • 6 categories created
+     • 37 questions created (all bilingual FR/EN)
+
+
+CE QUI A ÉTÉ CORRIGÉ :
+═══════════════════════════════════════════════════════════════════
+
+1. ✅ Serveur (index.tsx) - Route POST /faq-questions
+   → Accepte maintenant `categoryId` ET `category`
+   → Logs détaillés pour debugging
+   → Sauvegarde aussi keywords et isPublished
+
+2. ✅ Frontend (seedFAQ.ts) - Fonction seedFAQData()
+   → Logs détaillés pour chaque question
+   → Affiche les erreurs 400 complètes
+   → Affiche le JSON envoyé en cas d'erreur
+
+3. ✅ Compatibilité
+   → Ancien code avec `category` fonctionne
+   → Nouveau code avec `categoryId` fonctionne
+
+
+DÉTAILS TECHNIQUES :
+═══════════════════════════════════════════════════════════════════
+
+Route POST /faq-questions - AVANT :
+──────────────────────────────────────────────────────────────
+
+const { question, answer, category } = body;
+
+if (!question || !answer || !category) {
+  return c.json({ error: "Missing required fields" }, 400);
+}
+
+
+Route POST /faq-questions - APRÈS :
+──────────────────────────────────────────────────────────────
+
+const { 
+  question, answer, 
+  category, categoryId,  // ✅ Accept both
+  keywords, keywords_en, isPublished 
+} = body;
+
+const finalCategory = categoryId || category;  // ✅ Prefer categoryId
+
+if (!question || !answer || !finalCategory) {
+  console.error("❌ Missing:", { question: !!question, ... });
+  console.error("   Body:", JSON.stringify(body, null, 2));
+  return c.json({ 
+    error: "Missing: question, answer, category/categoryId" 
+  }, 400);
+}
+
+
+VÉRIFICATION CONSOLE :
+═══════════════════════════════════════════════════════════════════
+
+Après déploiement, vous devriez voir :
+
+CONSOLE FRONTEND (F12) :
+──────────────────────────────────────────────────────────────
+
+📦 Creating FAQ categories...
+✅ Created category: Services
+✅ Created category: Tarifs & Paiement
+✅ Created category: Processus & Délais
+✅ Created category: Communication
+✅ Created category: Technique
+✅ Created category: Légal & Sécurité
+
+📋 Creating FAQ questions with FR + EN translations...
+🔄 Attempting to create question: "Quels services proposez-vous?..."
+   Category ID: faq_category_1699876543210
+✅ Created question: Quels services proposez-vous?... [FR + EN]
+
+... (37 questions au total)
+
+✅ FAQ MULTILINGUAL SEEDING COMPLETED!
+📊 Results: 6 categories + 37 questions
+
+
+CONSOLE SERVEUR (Supabase Logs) :
+──────────────────────────────────────────────────────────────
+
+✅ Created FAQ question: faq_question_1699876543210 (category: faq_category_1699876543210)
+✅ Created FAQ question: faq_question_1699876543211 (category: faq_category_1699876543210)
+... (37 questions)
+
+
+SI L'ERREUR PERSISTE :
+═══════════════════════════════════════════════════════════════════
+
+Regardez les logs détaillés dans la console (F12) :
+
+❌ Failed to create question (400): ...
+   Question data: {
+     "question": "...",
+     "answer": "...",
+     "categoryId": "..." 
+   }
+
+Cela vous dira exactement ce qui manque.
+
+
+RÉSUMÉ ULTRA-RAPIDE :
+═══════════════════════════════════════════════════════════════════
+
+┌─────┬──────────────────────────────────────┬──────────┐
+│  #  │ Action                               │ Durée    │
+├─────┼──────────────────────────────────────┼──────────┤
+│  1  │ Recharger (F5)                       │ 10 sec   │
+│  2  │ Déployer serveur                     │ 1 min    │
+│  3  │ Initialiser FAQ                      │ 30 sec   │
+├─────┼──────────────────────────────────────┼──────────┤
+│     │ TOTAL                                │ 1m 40s   │
+└─────┴──────────────────────────────────────┴──────────┘
+
+
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║  🎯 Après le déploiement, les 37 FAQ seront créées ! 🚀      ║
+║                                                               ║
+║  ⏱️ Temps total : moins de 2 minutes                          ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝

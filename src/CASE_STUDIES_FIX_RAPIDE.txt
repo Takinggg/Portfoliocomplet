@@ -1,0 +1,70 @@
+╔═══════════════════════════════════════════════════════════════╗
+║           ✅ CASE STUDIES : Fix 404 (2 MINUTES)              ║
+╚═══════════════════════════════════════════════════════════════╝
+
+❌ ERREUR:
+   404 sur /case-studies - Route not found
+
+✅ SOLUTION APPLIQUÉE:
+   Routes /case-studies ajoutées au serveur
+
+───────────────────────────────────────────────────────────────
+
+POUR CORRIGER (2 ÉTAPES):
+
+1️⃣  DÉPLOYER LE SERVEUR (2 min)
+   
+   https://supabase.com/dashboard/project/ptcxeqtjlxittxayffgu/functions
+   
+   → Éditer make-server-04919ac5
+   → Copier tout /supabase/functions/server/index.tsx
+   → Coller et Deploy
+   → Attendre 30 secondes
+
+2️⃣  CHARGER LES CASE STUDIES (10 sec)
+   
+   Dans la console (F12):
+   
+   seedCaseStudies()
+   
+   Résultat attendu:
+   🎉 3 études de cas chargées avec succès !
+
+───────────────────────────────────────────────────────────────
+
+✅ RÉSULTAT:
+
+   ✅ Route /case-studies disponible
+   ✅ Page Case Studies fonctionne
+   ✅ 3 case studies professionnelles chargées
+   ✅ Dashboard accessible
+   ✅ Plus d'erreur 404
+
+───────────────────────────────────────────────────────────────
+
+📊 CASE STUDIES INCLUSES:
+
+   1. Plateforme E-commerce Luxe
+      → +300% conversion, +215% revenus
+   
+   2. Application SaaS B2B
+      → +180% utilisateurs, -75% churn
+   
+   3. Refonte Site Corporate
+      → +250% trafic, +420% leads
+
+───────────────────────────────────────────────────────────────
+
+🔍 VÉRIFIER:
+
+   fetch('https://ptcxeqtjlxittxayffgu.supabase.co/functions/v1/make-server-04919ac5/case-studies')
+     .then(r => r.json())
+     .then(console.log)
+   
+   Devrait retourner: { success: true, caseStudies: [...], total: 3 }
+
+───────────────────────────────────────────────────────────────
+
+📖 GUIDE DÉTAILLÉ: /FIX_CASE_STUDIES_404.md
+
+╚═══════════════════════════════════════════════════════════════╝

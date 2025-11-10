@@ -1,0 +1,73 @@
+╔══════════════════════════════════════════════════════════════════╗
+║  🚀 DÉPLOYER LE FIX CASE STUDIES                                ║
+╚══════════════════════════════════════════════════════════════════╝
+
+✅ CODE CORRIGÉ !
+
+Le serveur a été mis à jour avec la fonction getByPrefixWithKeys()
+qui permet de récupérer les clés réelles de la DB.
+
+══════════════════════════════════════════════════════════════════
+
+⚠️ DÉPLOIEMENT REQUIS
+
+Le serveur doit être redéployé pour que les changements prennent effet.
+
+1️⃣ OPTION A - Via Supabase Dashboard (Recommandé)
+
+   a. Allez sur https://supabase.com/dashboard
+   b. Projet → Edge Functions
+   c. Déployez la fonction "server"
+   d. Attendez le déploiement (30-60 secondes)
+
+──────────────────────────────────────────────────────────────────
+
+2️⃣ OPTION B - Via CLI
+
+   supabase functions deploy server
+
+══════════════════════════════════════════════════════════════════
+
+✅ APRÈS DÉPLOIEMENT :
+
+1. Ouvrez la console (F12)
+
+2. Normalisez les clés :
+   
+   normalizeCaseStudiesKeys()
+
+3. Testez la suppression :
+   
+   testKVDeletion()
+
+4. Supprimez le case study problématique depuis le Dashboard
+
+══════════════════════════════════════════════════════════════════
+
+📋 CE QUI A ÉTÉ CORRIGÉ :
+
+✅ Ajout de kv.getByPrefixWithKeys() dans index.tsx
+   → Retourne les clés ET les valeurs
+
+✅ Route DELETE corrigée
+   → Trouve la vraie clé avant de supprimer
+
+✅ Route GET corrigée  
+   → Utilise getByPrefixWithKeys() pour obtenir les clés réelles
+
+✅ Route PUT corrigée
+   → Trouve la vraie clé avant de mettre à jour
+
+✅ Nouvelle route POST /normalize-keys
+   → Normalise toutes les clés au format standard
+
+══════════════════════════════════════════════════════════════════
+
+🎯 RÉSULTAT ATTENDU :
+
+Après déploiement et normalisation :
+- Les case studies supprimés ne réapparaîtront PLUS
+- Toutes les clés seront au format : case_study_{id}
+- La suppression fonctionnera correctement
+
+══════════════════════════════════════════════════════════════════

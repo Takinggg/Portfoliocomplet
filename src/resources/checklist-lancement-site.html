@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist - Lancement de Site Web</title>
+    <style>
+        @page { margin: 2cm; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #0C0C0C;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
+            color: #00FFC2;
+            margin: -20px -20px 40px -20px;
+        }
+        
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 36px;
+        }
+        
+        .category {
+            margin: 40px 0;
+            border: 2px solid #00FFC2;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .category-header {
+            background: #0C0C0C;
+            color: #00FFC2;
+            padding: 15px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-icon {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+        
+        .category-body {
+            padding: 20px;
+        }
+        
+        .checklist-item {
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-left: 4px solid #00FFC2;
+            position: relative;
+            padding-left: 50px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checklist-item:before {
+            content: "☐";
+            position: absolute;
+            left: 15px;
+            font-size: 24px;
+            color: #00FFC2;
+        }
+        
+        .priority-high {
+            border-left-color: #dc3545;
+        }
+        
+        .priority-high:after {
+            content: "🔴";
+            position: absolute;
+            right: 15px;
+        }
+        
+        .sub-item {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+        
+        .tip {
+            background: #00FFC2;
+            background: linear-gradient(135deg, #00FFC2 0%, #00e6ae 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #0C0C0C;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 0 20px 0;
+            margin-top: 60px;
+            border-top: 2px solid #00FFC2;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>✅ Checklist Complète</h1>
+        <h2 style="margin: 20px 0; border: none; padding: 0;">Lancement de Site Web</h2>
+        <p>100+ points de vérification avant la mise en ligne</p>
+    </div>
+
+    <div class="tip">
+        <strong>📝 Comment utiliser cette checklist ?</strong>
+        <p>Cochez chaque item au fur et à mesure. Les points marqués 🔴 sont prioritaires et DOIVENT être validés avant le lancement.</p>
+    </div>
+
+    <!-- SEO -->
+    <div class="category">
+        <div class="category-header">
+            <span class="category-icon">🔍</span>
+            SEO & RÉFÉRENCEMENT
+        </div>
+        <div class="category-body">
+            <div class="checklist-item priority-high">
+                Balise Title unique et optimisée sur chaque page (50-60 caractères)
+            </div>
+            <div class="checklist-item priority-high">
+                Meta Description pertinente sur chaque page (150-160 caractères)
+            </div>
+            <div class="checklist-item">
+                Structure de titres cohérente (H1 > H2 > H3)
+                <div class="sub-item">Un seul H1 par page contenant le mot-clé principal</div>
+            </div>
+            <div class="checklist-item">
+                URLs propres et descriptives (ex: /services/web-design)
+            </div>
+            <div class="checklist-item priority-high">
+                Sitemap XML généré et soumis à Google Search Console
+            </div>
+            <div class="checklist-item priority-high">
+                Fichier robots.txt configuré correctement
+            </div>
+            <div class="checklist-item">
+                Balises Open Graph (Facebook) configurées
+            </div>
+            <div class="checklist-item">
+                Twitter Cards configurées
+            </div>
+            <div class="checklist-item">
+                Favicon présent dans tous les formats
+            </div>
+            <div class="checklist-item">
+                Données structurées (Schema.org) implémentées
+                <div class="sub-item">Organization, LocalBusiness, BreadcrumbList, etc.</div>
+            </div>
+            <div class="checklist-item">
+                Attributs Alt sur toutes les images
+            </div>
+            <div class="checklist-item">
+                Liens internes optimisés (maillage interne)
+            </div>
+            <div class="checklist-item">
+                Pas de contenu dupliqué (canonical tags si nécessaire)
+            </div>
+            <div class="checklist-item">
+                404 personnalisée avec liens utiles
+            </div>
+        </div>
+    </div>
+
+    <!-- PERFORMANCE -->
+    <div class="category">
+        <div class="category-header">
+            <span class="category-icon">⚡</span>
+            PERFORMANCE & VITESSE
+        </div>
+        <div class="category-body">
+            <div class="checklist-item priority-high">
+                Score Google PageSpeed Insights > 90 (mobile & desktop)
+            </div>
+            <div class="checklist-item priority-high">
+                Core Web Vitals dans le vert
+                <div class="sub-item">LCP < 2.5s, FID < 100ms, CLS < 0.1</div>
+            </div>
+            <div class="checklist-item">
+                Images optimisées et compressées (WebP + fallback)
+            </div>
+            <div class="checklist-item">
+                Lazy loading activé sur les images
+            </div>
+            <div class="checklist-item">
+                CSS et JS minifiés
+            </div>
+            <div class="checklist-item">
+                Fonts optimisées (font-display: swap)
+            </div>
+            <div class="checklist-item">
+                Cache navigateur configuré
+            </div>
+            <div class="checklist-item">
+                Compression Gzip/Brotli activée
+            </div>
+            <div class="checklist-item">
+                CDN configuré (si applicable)
+            </div>
+            <div class="checklist-item">
+                Nombre de requêtes HTTP minimisé
+            </div>
+            <div class="checklist-item">
+                Preload des ressources critiques
+            </div>
+            <div class="checklist-item">
+                Code JavaScript non-bloquant
+            </div>
+        </div>
+    </div>
+
+    <!-- ACCESSIBILITÉ -->
+    <div class="category">
+        <div class="category-header">
+            <span class="category-icon">♿</span>
+            ACCESSIBILITÉ (WCAG 2.1)
+        </div>
+        <div class="category-body">
+            <div class="checklist-item priority-high">
+                Contraste texte/fond suffisant (ratio 4.5:1 minimum)
+            </div>
+            <div class="checklist-item priority-high">
+                Navigation au clavier fonctionnelle (Tab, Enter, Esc)
+            </div>
+            <div class="checklist-item">
+                Focus visible sur tous les éléments interactifs
+            </div>
+            <div class="checklist-item">
+                Labels sur tous les champs de formulaire
+            </div>
+            <div class="checklist-item">
+                ARIA labels appropriés
+            </div>
+            <div class="checklist-item">
+                HTML sémantique (header, nav, main, footer, article)
+            </div>
+            <div class="checklist-item">
+                Skip links (sauter au contenu principal)
+            </div>
+            <div class="checklist-item">
+                Messages d'erreur clairs et descriptifs
+            </div>
+            <div class="checklist-item">
+                Vidéos avec sous-titres
+            </div>
+            <div class="checklist-item">
+                Langue du document déclarée (lang="fr")
+            </div>
+            <div class="checklist-item">
+                Testé avec un lecteur d'écran (NVDA, JAWS, VoiceOver)
+            </div>
+        </div>
+    </div>
+
+    <!-- RESPONSIVE -->
+    <div class="category">
+        <div class="category-header">
+            <span class="category-icon">📱</span>
+            RESPONSIVE & COMPATIBILITÉ
+        </div>
+        <div class="category-body">
+            <div class="checklist-item priority-high">
+                Mobile-first : test sur iPhone (Safari)
+            </div>
+            <div class="checklist-item priority-high">
+                Mobile : test sur Android (Chrome)
+            </div>
+            <div class="checklist-item priority-high">
+                Tablette : test iPad & Android
+            </div>
+            <div class="checklist-item priority-high">
+                Desktop : test sur écrans 1920px, 1440px, 1366px
+            </div>
+            <div class="checklist-item">
+                Meta viewport correctement configuré
+            </div>
+            <div class="checklist-item">
+                Pas de scroll horizontal
+            </div>
+            <div class="checklist-item">
+                Menus fonctionnels sur mobile (hamburger)
+            </div>
+            <div class="checklist-item">
+                Boutons suffisamment grands sur mobile (44x44px min)
+            </div>
+            <div class="checklist-item">
+                Test sur Chrome, Firefox, Safari, Edge
+            </div>
+            <div class="checklist-item">
+                Images responsive (srcset, sizes)
+            </div>
+        </div>
+    </div>
+
+    <!-- SÉCURITÉ -->
+    <div class="category">
+        <div class="category-header">
+            <span class="category-icon">🔒</span>
+            SÉCURITÉ
+        </div>
+        <div class="category-body">
+            <div class="checklist-item priority-high">
+                Certificat SSL actif (HTTPS partout)
+            </div>
+            <div class="checklist-item priority-high">
+                Redirection HTTP → HTTPS automatique
+            </div>
+            <div class="checklist-item">
+                Headers de sécurité configurés
+                <div class="sub-item">Content-Security-Policy, X-Frame-Options, X-Content-Type-Options</div>
+            </div>
+            <div class="checklist-item">
+                Protection contre les injections SQL
+            </div>
+            <div class="checklist-item">
+                Protection XSS (Cross-Site Scripting)
+            </div>
+            <div class="checklist-item">
+                CSRF tokens sur les formulaires
+            </div>
+            <div class="checklist-item">
+                Mots de passe admin sécurisés (12+ caractères)
+            </div>
+            <div class="checklist-item">
+                Accès FTP/SSH sécurisés
+            </div>
+            <div class="checklist-item">
+                Base de données avec accès restreint
+            </div>
+            <div class="checklist-item">
+                Backups automatiques configurés
+            </div>
+            <div class="checklist-item">
+                Plan de récupération en cas de hack
+            </div>
+        </div>
+    </div>
+
+    <!-- FONCTIONNEL -->
+    <div class="category">
+        <div class="category-header">
+            <span class="category-icon">⚙️</span>
+            FONCTIONNEL & UX
+        </div>
+        <div class="category-body">
+            <div class="checklist-item priority-high">
+                Tous les liens fonctionnent (aucun lien cassé)
+            </div>
+            <div class="checklist-item priority-high">
+                Formulaire de contact testé et fonctionnel
+            </div>
+            <div class="checklist-item priority-high">
+                Notifications email reçues correctement
+            </div>
+            <div class="checklist-item">
+                Messages de confirmation après soumission
+            </div>
+            <div class="checklist-item">
+                Validation des champs de formulaire
+            </div>
+            <div class="checklist-item">
+                Recherche interne fonctionnelle (si applicable)
+            </div>
+            <div class="checklist-item">
+                Navigation intuitive (max 3 clics pour atteindre n'importe quelle page)
+            </div>
+            <div class="checklist-item">
+                Fil d'Ariane (breadcrumb) sur pages profondes
+            </div>
+            <div class="checklist-item">
+                Footer avec infos essentielles (contact, mentions légales)
+            </div>
+            <div class="checklist-item">
+                Liens réseaux sociaux fonctionnels
+            </div>
+            <div class="checklist-item">
+                CTA (Call-to-Action) clairs et visibles
+            </div>
+            <div class="checklist-item">
+                Temps de chargement ressenti acceptable
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENU -->
+    <div class="category">
+        <div class="category-header">
+            <span class="category-icon">📝</span>
+            CONTENU & TEXTES
+        </div>
+        <div class="category-body">
+            <div class="checklist-item priority-high">
+                Aucune faute d'orthographe ou de grammaire
+            </div>
+            <div class="checklist-item priority-high">
+                Tous les textes "Lorem Ipsum" remplacés
+            </div>
+            <div class="checklist-item">
+                Images de qualité professionnelle
+            </div>
+            <div class="checklist-item">
+                Pas d'images avec watermark
+            </div>
+            <div class="checklist-item">
+                Coordonnées correctes et à jour
+            </div>
+            <div class="checklist-item">
+                Horaires d'ouverture corrects
+            </div>
+            <div class="checklist-item">
+                Prix à jour (si applicable)
+            </div>
+            <div class="checklist-item">
+                Appels à l'action pertinents
+            </div>
+            <div class="checklist-item">
+                Ton et style cohérents sur tout le site
+            </div>
+        </div>
+    </div>
+
+    <!-- LÉGAL -->
+    <div class="category">
+        <div class="category-header">
+            <span class="category-icon">⚖️</span>
+            LÉGAL & RGPD
+        </div>
+        <div class="category-body">
+            <div class="checklist-item priority-high">
+                Page Mentions Légales complète
+                <div class="sub-item">Éditeur, hébergeur, directeur publication</div>
+            </div>
+            <div class="checklist-item priority-high">
+                Politique de Confidentialité (RGPD)
+            </div>
+            <div class="checklist-item priority-high">
+                Bannière cookies conforme CNIL
+            </div>
+            <div class="checklist-item priority-high">
+                Consentement explicite avant dépôt de cookies
+            </div>
+            <div class="checklist-item">
+                CGU / CGV (si e-commerce)
+            </div>
+            <div class="checklist-item">
+                Droit d'accès et de suppression des données
+            </div>
+            <div class="checklist-item">
+                Données personnelles chiffrées
+            </div>
+            <div class="checklist-item">
+                Durée de conservation des données définie
+            </div>
+        </div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div class="category">
+        <div class="category-header">
+            <span class="category-icon">📊</span>
+            ANALYTICS & TRACKING
+        </div>
+        <div class="category-body">
+            <div class="checklist-item priority-high">
+                Google Analytics 4 (ou autre) installé
+            </div>
+            <div class="checklist-item priority-high">
+                Google Search Console configuré
+            </div>
+            <div class="checklist-item">
+                Objectifs de conversion paramétrés
+            </div>
+            <div class="checklist-item">
+                Événements trackés (clics boutons, soumissions formulaires)
+            </div>
+            <div class="checklist-item">
+                Google Tag Manager (optionnel mais recommandé)
+            </div>
+            <div class="checklist-item">
+                Pixels réseaux sociaux (Facebook, LinkedIn, si applicable)
+            </div>
+            <div class="checklist-item">
+                Exclusion du trafic interne (IP bureau)
+            </div>
+        </div>
+    </div>
+
+    <!-- TECHNIQUE -->
+    <div class="category">
+        <div class="category-header">
+            <span class="category-icon">🛠️</span>
+            TECHNIQUE & HÉBERGEMENT
+        </div>
+        <div class="category-body">
+            <div class="checklist-item priority-high">
+                Nom de domaine pointé correctement
+            </div>
+            <div class="checklist-item priority-high">
+                DNS propagés (A, CNAME, MX)
+            </div>
+            <div class="checklist-item">
+                Emails professionnels configurés
+            </div>
+            <div class="checklist-item">
+                Test d'envoi/réception emails
+            </div>
+            <div class="checklist-item">
+                SPF, DKIM, DMARC configurés (anti-spam)
+            </div>
+            <div class="checklist-item">
+                Certificat SSL renouvelable automatiquement
+            </div>
+            <div class="checklist-item">
+                Hébergement dimensionné pour le trafic attendu
+            </div>
+            <div class="checklist-item">
+                Base de données sauvegardée
+            </div>
+            <div class="checklist-item">
+                Fichiers sources sauvegardés (Git, Dropbox, etc.)
+            </div>
+            <div class="checklist-item">
+                Logs d'erreur activés
+            </div>
+            <div class="checklist-item">
+                Monitoring uptime (UptimeRobot, etc.)
+            </div>
+        </div>
+    </div>
+
+    <!-- POST-LANCEMENT -->
+    <div class="category">
+        <div class="category-header">
+            <span class="category-icon">🚀</span>
+            POST-LANCEMENT
+        </div>
+        <div class="category-body">
+            <div class="checklist-item">
+                Annonce sur réseaux sociaux
+            </div>
+            <div class="checklist-item">
+                Email aux clients/prospects
+            </div>
+            <div class="checklist-item">
+                Mise à jour signatures email
+            </div>
+            <div class="checklist-item">
+                Mise à jour profils réseaux sociaux
+            </div>
+            <div class="checklist-item">
+                Ancien site redirigé (si applicable)
+            </div>
+            <div class="checklist-item">
+                Google My Business mis à jour
+            </div>
+            <div class="checklist-item">
+                Annuaires professionnels mis à jour
+            </div>
+            <div class="checklist-item">
+                Plan de contenu blog (3 premiers articles)
+            </div>
+            <div class="checklist-item">
+                Surveillance analytics première semaine
+            </div>
+            <div class="checklist-item">
+                Collecte premiers retours utilisateurs
+            </div>
+        </div>
+    </div>
+
+    <div class="warning">
+        <strong>⚠️ IMPORTANT :</strong> Ne mettez JAMAIS en ligne un site sans avoir validé tous les points marqués 🔴. Ce sont les éléments critiques qui peuvent impacter votre référencement, votre sécurité ou la légalité de votre site.
+    </div>
+
+    <div class="tip">
+        <strong>🎉 Félicitations !</strong>
+        <p>Si vous avez coché tous ces points, votre site est prêt pour un lancement réussi. N'oubliez pas que le lancement n'est que le début : un site web nécessite une maintenance régulière et des mises à jour de contenu.</p>
+    </div>
+
+    <div class="footer">
+        <p><strong>Maxence - Développeur Web & Designer</strong></p>
+        <p>Besoin d'un audit complet de votre site ? Contactez-moi : contact@maxence.design</p>
+        <p style="margin-top: 20px; color: #00FFC2;">© 2025 - Checklist gratuite</p>
+    </div>
+</body>
+</html>

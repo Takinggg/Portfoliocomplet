@@ -1,0 +1,458 @@
+import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useParams } from "react-router-dom";
+import "./styles/globals.css";
+
+// ==========================================
+// DEPLOYMENT CHECK MESSAGE
+// ==========================================
+if (window.location.hostname !== 'localhost') {
+  console.log(
+    '%c🚨 ERREUR 404 SUR /CLIENTS ?',
+    'font-size: 24px; font-weight: bold; color: #ff4444; background: #000; padding: 10px;'
+  );
+  console.log(
+    '%cSolution: supabase functions deploy make-server-04919ac5',
+    'font-size: 16px; color: #00FFC2; background: #0C0C0C; padding: 8px; font-family: monospace;'
+  );
+  console.log(
+    '%c📖 Guide complet: Ouvrir /LIRE_MAINTENANT.txt ou /INDEX_GUIDES.md',
+    'font-size: 14px; color: #999;'
+  );
+}
+
+// ==========================================
+// PAGES
+// ==========================================
+import HomePage from "./components/pages/HomePage";
+import ProjectsPage from "./components/pages/ProjectsPage";
+import ProjectDetailPage from "./components/pages/ProjectDetailPage";
+import ServicesPage from "./components/pages/ServicesPage";
+import AboutPage from "./components/pages/AboutPage";
+import ContactPage from "./components/pages/ContactPage";
+import BookingPage from "./components/pages/BookingPage";
+import DashboardPage from "./components/pages/DashboardPage";
+import LoginPage from "./components/pages/LoginPage";
+import { BlogPage } from "./components/pages/BlogPage";
+import { BlogPostPage } from "./components/pages/BlogPostPage";
+import { CaseStudiesPage } from "./components/pages/CaseStudiesPage";
+import { CaseStudyDetailPage } from "./components/pages/CaseStudyDetailPage";
+import FAQPage from "./components/pages/FAQPage";
+import { NewsletterConfirmPage } from "./components/pages/NewsletterConfirmPage";
+import ResourcesPage from "./components/pages/ResourcesPage";
+import TestimonialsPage from "./components/pages/TestimonialsPage";
+import ExampleDatabasePage from "./components/pages/ExampleDatabasePage";
+import SeedDataPage from "./components/pages/SeedDataPage";
+import NotFoundPage from "./components/pages/NotFoundPage";
+import NotFoundPageSimple from "./components/pages/NotFoundPageSimple";
+import NotFoundPageUltraSimple from "./components/pages/NotFoundPageUltraSimple";
+import InvoiceViewPage from "./components/pages/InvoiceViewPage";
+
+// ==========================================
+// LAYOUT COMPONENTS
+// ==========================================
+import Navigation from "./components/layout/Navigation";
+import Footer from "./components/layout/Footer";
+import { SkipNavigation } from "./components/layout/SkipNavigation";
+
+// ==========================================
+// FEATURE COMPONENTS
+// ==========================================
+import { NewsletterPopup } from "./components/newsletter/NewsletterPopup";
+import { BackToTop } from "./components/BackToTop";
+import { ScrollProgress } from "./components/ScrollProgress";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+
+// ==========================================
+// ROUTING COMPONENTS
+// ==========================================
+import { LanguageRouteSync } from "./components/routing/LanguageRouteSync";
+import { GeoRedirect } from "./components/routing/GeoRedirect";
+import { ClientSideFallback } from "./components/routing/ClientSideFallback";
+
+// ==========================================
+// PWA COMPONENTS
+// ==========================================
+import { PWAInstallPrompt } from "./components/PWAInstallPrompt";
+import { PWAUpdatePrompt } from "./components/PWAUpdatePrompt";
+
+// ==========================================
+// PROVIDERS & CONTEXT
+// ==========================================
+import { LanguageProvider } from "./utils/i18n/LanguageContext";
+
+// ==========================================
+// ANALYTICS
+// ==========================================
+import { 
+  initAnalytics, 
+  trackPageView, 
+  trackPagePerformance, 
+  initScrollTracking, 
+  initEngagementTracking 
+} from "./utils/analytics";
+import { getAnalyticsConfig, validateAnalyticsConfig } from "./utils/analyticsConfig";
+
+// ==========================================
+// SUPABASE
+// ==========================================
+import { createClient } from "./utils/supabase/client";
+
+// ==========================================
+// PWA HELPERS
+// ==========================================
+import { registerServiceWorker } from "./utils/pwaHelpers";
+
+// ==========================================
+// SERVER DIAGNOSTICS (DEV ONLY)
+// ==========================================
+if (typeof import.meta !== "undefined" && import.meta.env?.DEV) {
+  import("./utils/testServerRoutes").then((module) => {
+    console.log("🔧 Server diagnostics loaded. Run testServer.quickTest() in console.");
+  }).catch((err) => {
+    console.warn("Failed to load server diagnostics:", err);
+  });
+}
+
+// Helper: Get current language from path
+function getLanguageFromPath(): string {
+  const pathname = window.location.pathname;
+  const match = pathname.match(/^\/(en|fr)(\/|$)/);
+  return match ? match[1] : 'fr';
+}
+
+// Route wrapper components that handle navigation
+function RouteWrapper({ 
+  component: Component, 
+  currentPage,
+  ...props 
+}: any) {
+  const navigate = useNavigate();
+  const params = useParams();
+
+  const navigateTo = (page: string) => {
+    const lang = getLanguageFromPath();
+    const routes: Record<string, string> = {
+      'home': `/${lang}`,
+      'projects': `/${lang}/projects`,
+      'services': `/${lang}/services`,
+      'about': `/${lang}/about`,
+      'contact': `/${lang}/contact`,
+      'booking': `/${lang}/booking`,
+      'blog': `/${lang}/blog`,
+      'case-studies': `/${lang}/case-studies`,
+      'faq': `/${lang}/faq`,
+      'resources': `/${lang}/resources`,
+      'testimonials': `/${lang}/testimonials`,
+      'dashboard': '/dashboard',
+      'login': '/login',
+    };
+    navigate(routes[page] || `/${lang}`);
+  };
+
+  const onProjectClick = (projectId: string) => {
+    const lang = getLanguageFromPath();
+    navigate(`/${lang}/projects/${projectId}`);
+  };
+
+  const onBlogPostClick = (slug: string) => {
+    const lang = getLanguageFromPath();
+    navigate(`/${lang}/blog/${slug}`);
+  };
+
+  const handleNavigate = (page: string, id?: string) => {
+    const lang = getLanguageFromPath();
+    if (page === 'case-study' && id) {
+      navigate(`/${lang}/case-studies/${id}`);
+    } else if (page === 'blog-post' && id) {
+      navigate(`/${lang}/blog/${id}`);
+    } else if (page === 'project-detail' && id) {
+      navigate(`/${lang}/projects/${id}`);
+    } else {
+      navigateTo(page);
+    }
+  };
+
+  return (
+    <Component
+      onNavigate={navigateTo}
+      onProjectClick={onProjectClick}
+      onBlogPostClick={onBlogPostClick}
+      handleNavigate={handleNavigate}
+      currentPage={currentPage}
+      {...params}
+      {...props}
+    />
+  );
+}
+
+function AppContent() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const supabase = createClient();
+  const navigate = useNavigate();
+
+  // Initialize analytics on app startup
+  useEffect(() => {
+    const config = getAnalyticsConfig();
+    initAnalytics(config);
+    validateAnalyticsConfig();
+    trackPagePerformance();
+    initScrollTracking();
+    initEngagementTracking();
+    
+    registerServiceWorker().then((registration) => {
+      if (registration) {
+        console.log("✅ PWA activée: Service Worker enregistré");
+      }
+    });
+    
+    const initAdminTimer = setTimeout(async () => {
+      const { initAdminAccount } = await import("./utils/initAdmin");
+      await initAdminAccount();
+    }, 2000);
+    
+    const serverCheckTimer = setTimeout(async () => {
+      const { forceCheckServer } = await import("./utils/serverService");
+      const available = await forceCheckServer();
+      if (available && window.location.hostname === "localhost") {
+        console.log("✅ Serveur Supabase détecté ! Rechargez pour activer.");
+      }
+    }, 30000);
+
+    return () => {
+      clearTimeout(initAdminTimer);
+      clearTimeout(serverCheckTimer);
+    };
+  }, []);
+
+  // Check for newsletter confirmation token in URL
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromQuery = urlParams.get('newsletter_confirm');
+    const unsubscribeEmail = urlParams.get('newsletter_unsubscribe');
+    
+    if (tokenFromQuery) {
+      navigate(`/newsletter/confirm/${tokenFromQuery}`);
+      return;
+    }
+
+    if (unsubscribeEmail) {
+      handleNewsletterUnsubscribe(unsubscribeEmail);
+      window.history.replaceState({}, '', '/');
+      return;
+    }
+  }, []);
+
+  // Check authentication with Supabase Session
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session);
+    };
+    checkSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setIsAuthenticated(!!session);
+        if (event === 'SIGNED_OUT') {
+          navigate('/');
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Track page views on route change
+  useEffect(() => {
+    const pathname = window.location.pathname;
+    const pageTitle = pathname.split('/').filter(Boolean).pop() || 'home';
+    trackPageView(pathname, pageTitle);
+  }, [window.location.pathname]);
+
+  // Handle newsletter unsubscribe
+  const handleNewsletterUnsubscribe = async (email: string) => {
+    try {
+      const projectId = (window as any).SUPABASE_PROJECT_ID || "ptcxeqtjlxittxayffgu";
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/newsletter/unsubscribe/${encodeURIComponent(email)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${(window as any).SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0Y3hlcXRqbHhpdHR4YXlmZmd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIzMDY1MjYsImV4cCI6MjA3Nzg4MjUyNn0.4xmzyoXUxas6587ZFWWc95p10bNSa2MdaipYI7RHmZc"}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        alert("✅ Vous avez été désabonné de la newsletter avec succès.");
+      } else {
+        alert("❌ Une erreur s'est produite lors du désabonnement.");
+      }
+    } catch (error) {
+      console.error("Error unsubscribing:", error);
+      alert("❌ Impossible de se désabonner. Veuillez réessayer.");
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setIsAuthenticated(false);
+    navigate('/');
+  };
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+    navigate('/dashboard');
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <SkipNavigation />
+      <LanguageRouteSync />
+      <ClientSideFallback />
+      
+      <Routes>
+        {/* Protected routes */}
+        <Route 
+          path="/dashboard" 
+          element={
+            isAuthenticated ? (
+              <main id="main-content" className="flex-1" tabIndex={-1}>
+                <DashboardPage onLogout={handleLogout} onNavigate={(page) => navigate(page)} />
+              </main>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          } 
+        />
+        
+        <Route 
+          path="/login" 
+          element={
+            <main id="main-content" className="flex-1" tabIndex={-1}>
+              <LoginPage onLoginSuccess={handleLoginSuccess} onNavigate={(page) => navigate(page)} />
+            </main>
+          } 
+        />
+        
+        <Route 
+          path="/newsletter/confirm/:token" 
+          element={
+            <main id="main-content" className="flex-1" tabIndex={-1}>
+              <RouteWrapper component={NewsletterConfirmPage} currentPage="newsletter-confirm" />
+            </main>
+          } 
+        />
+        
+        <Route 
+          path="/invoice/:token" 
+          element={
+            <main id="main-content" className="flex-1" tabIndex={-1}>
+              <InvoiceViewPage />
+            </main>
+          } 
+        />
+        
+        {/* Redirect root based on geo-location */}
+        <Route path="/" element={<GeoRedirect />} />
+        <Route path="/home" element={<Navigate to="/" replace />} />
+        
+        {/* Public routes - French */}
+        <Route path="/fr" element={<PublicLayout currentPage="home"><RouteWrapper component={HomePage} currentPage="home" /></PublicLayout>} />
+        <Route path="/fr/projects" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectsPage} currentPage="projects" /></PublicLayout>} />
+        <Route path="/fr/projects/:projectId" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectDetailPage} currentPage="project-detail" /></PublicLayout>} />
+        <Route path="/fr/services" element={<PublicLayout currentPage="services"><RouteWrapper component={ServicesPage} currentPage="services" /></PublicLayout>} />
+        <Route path="/fr/about" element={<PublicLayout currentPage="about"><RouteWrapper component={AboutPage} currentPage="about" /></PublicLayout>} />
+        <Route path="/fr/contact" element={<PublicLayout currentPage="contact"><RouteWrapper component={ContactPage} currentPage="contact" /></PublicLayout>} />
+        <Route path="/fr/booking" element={<PublicLayout currentPage="booking"><RouteWrapper component={BookingPage} currentPage="booking" /></PublicLayout>} />
+        <Route path="/fr/blog" element={<PublicLayout currentPage="blog"><RouteWrapper component={BlogPage} currentPage="blog" /></PublicLayout>} />
+        <Route path="/fr/blog/:slug" element={<PublicLayout currentPage="blog"><RouteWrapper component={BlogPostPage} currentPage="blog-post" /></PublicLayout>} />
+        <Route path="/fr/case-studies" element={<PublicLayout currentPage="case-studies"><RouteWrapper component={CaseStudiesPage} currentPage="case-studies" /></PublicLayout>} />
+        <Route path="/fr/case-studies/:caseStudyId" element={<PublicLayout currentPage="case-studies"><RouteWrapper component={CaseStudyDetailPage} currentPage="case-study" /></PublicLayout>} />
+        <Route path="/fr/faq" element={<PublicLayout currentPage="faq"><RouteWrapper component={FAQPage} currentPage="faq" /></PublicLayout>} />
+        <Route path="/fr/resources" element={<PublicLayout currentPage="resources"><RouteWrapper component={ResourcesPage} currentPage="resources" /></PublicLayout>} />
+        <Route path="/fr/testimonials" element={<PublicLayout currentPage="testimonials"><RouteWrapper component={TestimonialsPage} currentPage="testimonials" /></PublicLayout>} />
+        <Route path="/fr/example" element={<PublicLayout currentPage="example"><RouteWrapper component={ExampleDatabasePage} currentPage="example" /></PublicLayout>} />
+        <Route path="/fr/seed-data" element={<PublicLayout currentPage="seed-data"><RouteWrapper component={SeedDataPage} currentPage="seed-data" /></PublicLayout>} />
+        
+        {/* Public routes - English */}
+        <Route path="/en" element={<PublicLayout currentPage="home"><RouteWrapper component={HomePage} currentPage="home" /></PublicLayout>} />
+        <Route path="/en/projects" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectsPage} currentPage="projects" /></PublicLayout>} />
+        <Route path="/en/projects/:projectId" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectDetailPage} currentPage="project-detail" /></PublicLayout>} />
+        <Route path="/en/services" element={<PublicLayout currentPage="services"><RouteWrapper component={ServicesPage} currentPage="services" /></PublicLayout>} />
+        <Route path="/en/about" element={<PublicLayout currentPage="about"><RouteWrapper component={AboutPage} currentPage="about" /></PublicLayout>} />
+        <Route path="/en/contact" element={<PublicLayout currentPage="contact"><RouteWrapper component={ContactPage} currentPage="contact" /></PublicLayout>} />
+        <Route path="/en/booking" element={<PublicLayout currentPage="booking"><RouteWrapper component={BookingPage} currentPage="booking" /></PublicLayout>} />
+        <Route path="/en/blog" element={<PublicLayout currentPage="blog"><RouteWrapper component={BlogPage} currentPage="blog" /></PublicLayout>} />
+        <Route path="/en/blog/:slug" element={<PublicLayout currentPage="blog"><RouteWrapper component={BlogPostPage} currentPage="blog-post" /></PublicLayout>} />
+        <Route path="/en/case-studies" element={<PublicLayout currentPage="case-studies"><RouteWrapper component={CaseStudiesPage} currentPage="case-studies" /></PublicLayout>} />
+        <Route path="/en/case-studies/:caseStudyId" element={<PublicLayout currentPage="case-studies"><RouteWrapper component={CaseStudyDetailPage} currentPage="case-study" /></PublicLayout>} />
+        <Route path="/en/faq" element={<PublicLayout currentPage="faq"><RouteWrapper component={FAQPage} currentPage="faq" /></PublicLayout>} />
+        <Route path="/en/resources" element={<PublicLayout currentPage="resources"><RouteWrapper component={ResourcesPage} currentPage="resources" /></PublicLayout>} />
+        <Route path="/en/testimonials" element={<PublicLayout currentPage="testimonials"><RouteWrapper component={TestimonialsPage} currentPage="testimonials" /></PublicLayout>} />
+        <Route path="/en/example" element={<PublicLayout currentPage="example"><RouteWrapper component={ExampleDatabasePage} currentPage="example" /></PublicLayout>} />
+        <Route path="/en/seed-data" element={<PublicLayout currentPage="seed-data"><RouteWrapper component={SeedDataPage} currentPage="seed-data" /></PublicLayout>} />
+        
+        {/* Catch-all routes for 404 */}
+        <Route path="/fr/*" element={<NotFoundPageUltraSimple />} />
+        <Route path="/en/*" element={<NotFoundPageUltraSimple />} />
+        <Route path="*" element={<NotFoundPageUltraSimple />} />
+      </Routes>
+      
+      <PWAInstallPrompt />
+      <PWAUpdatePrompt />
+    </div>
+  );
+}
+
+// Public page layout with Navigation and Footer
+function PublicLayout({ children, currentPage }: { children: React.ReactNode; currentPage: string }) {
+  const navigate = useNavigate();
+  
+  const buildNavPath = (page: string): string => {
+    const lang = getLanguageFromPath();
+    const routes: Record<string, string> = {
+      'home': `/${lang}`,
+      'projects': `/${lang}/projects`,
+      'services': `/${lang}/services`,
+      'about': `/${lang}/about`,
+      'contact': `/${lang}/contact`,
+      'booking': `/${lang}/booking`,
+      'blog': `/${lang}/blog`,
+      'case-studies': `/${lang}/case-studies`,
+      'faq': `/${lang}/faq`,
+      'resources': `/${lang}/resources`,
+      'testimonials': `/${lang}/testimonials`,
+      'dashboard': '/dashboard',
+    };
+    return routes[page] || `/${lang}`;
+  };
+  
+  return (
+    <>
+      <ScrollProgress />
+      <Navigation 
+        currentPage={currentPage} 
+        onNavigate={(page) => navigate(buildNavPath(page))}
+        isAuthenticated={false}
+      />
+      <main id="main-content" className="flex-1" tabIndex={-1}>
+        {children}
+      </main>
+      <Footer onNavigate={(page) => navigate(buildNavPath(page))} />
+      <NewsletterPopup />
+      <BackToTop />
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <ErrorBoundary>
+      <BrowserRouter>
+        <LanguageProvider>
+          <AppContent />
+        </LanguageProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
+  );
+}

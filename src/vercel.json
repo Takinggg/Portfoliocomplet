@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "missing": [{ "type": "filesystem" }],
+      "destination": "/"
+    }
+  ],
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": false }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}
+

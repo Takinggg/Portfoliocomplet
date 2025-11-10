@@ -1,0 +1,265 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║      📸 GUIDE VISUEL INTERFACE VERCEL - REDÉPLOIEMENT       ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÉTAPE 1 : PAGE D'ACCUEIL VERCEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+URL : https://vercel.com/dashboard
+
+┌─────────────────────────────────────────────────────────────┐
+│  Vercel                                    🔔  👤  Settings  │
+│  ─────────────────────────────────────────────────────────  │
+│                                                             │
+│  Projects                                   [+ Add New]     │
+│  ─────────────────────────────────────────────────────────  │
+│                                                             │
+│  🔍 Search projects...                                      │
+│                                                             │
+│  ┌───────────────────────────────────────────────────┐     │
+│  │  📦 maxence-design                    Production  │     │
+│  │      www.maxence.design                           │     │
+│  │      ✓ Ready  2m ago                              │     │
+│  └───────────────────────────────────────────────────┘     │
+│         ↑                                                   │
+│  CLIQUE ICI SUR TON PROJET                                 │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÉTAPE 2 : PAGE DU PROJET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌─────────────────────────────────────────────────────────────┐
+│  < Dashboard    maxence-design                              │
+│  ─────────────────────────────────────────────────────────  │
+│                                                             │
+│  Overview    Deployments    Settings    Analytics          │
+│  ─────────  ────────────                                    │
+│       ↑                                                     │
+│  CLIQUE SUR "DEPLOYMENTS"                                  │
+│                                                             │
+│  Production Deployment                                      │
+│  www.maxence.design                                         │
+│  ✓ Ready  2m ago                                            │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÉTAPE 3 : ONGLET DEPLOYMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌─────────────────────────────────────────────────────────────┐
+│  < Dashboard    maxence-design                              │
+│  ─────────────────────────────────────────────────────────  │
+│                                                             │
+│  Overview    Deployments    Settings    Analytics          │
+│              ───────────                                    │
+│                                                             │
+│  Production                                                 │
+│  ─────────────────────────────────────────────────────────  │
+│                                                             │
+│  ┌──────────────────────────────────────────────────┐      │
+│  │  ✓ Ready                                    ...  │      │
+│  │     fix: Add catch-all route for 404             │      │
+│  │     main branch    2m ago                        │      │
+│  └──────────────────────────────────────────────────┘      │
+│                                           ↑                 │
+│                               CLIQUE SUR LES 3 POINTS       │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÉTAPE 4 : MENU CONTEXTUEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│  ┌──────────────────────────────────────────────────┐      │
+│  │  ✓ Ready                                    ...  │      │
+│  │     fix: Add catch-all route for 404        │    │      │
+│  │     main branch    2m ago                   │    │      │
+│  └──────────────────────────────────────────────────┘      │
+│                                              │              │
+│                                  ┌───────────┴────────┐    │
+│                                  │  View Deployment   │    │
+│                                  │  Visit             │    │
+│                                  │  Redeploy          │    │
+│                                  │  Download Source   │    │
+│                                  └────────────────────┘    │
+│                                         ↑                   │
+│                               CLIQUE SUR "REDEPLOY"         │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÉTAPE 5 : DIALOGUE DE CONFIRMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│           ┌───────────────────────────────────┐            │
+│           │  Redeploy to Production?          │            │
+│           │                                   │            │
+│           │  This will create a new           │            │
+│           │  deployment with the same source  │            │
+│           │  code and settings.               │            │
+│           │                                   │            │
+│           │  [ ] Use existing Build Cache    │            │
+│           │      ↑                            │            │
+│           │  NE COCHE PAS CETTE CASE !        │            │
+│           │  (Laisse-la vide)                 │            │
+│           │                                   │            │
+│           │  [Cancel]  [Redeploy]             │            │
+│           │                ↑                  │            │
+│           │        CLIQUE ICI                 │            │
+│           └───────────────────────────────────┘            │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+⚠️ IMPORTANT : NE COCHE PAS "Use existing Build Cache" !
+
+   Si tu coches cette case, Vercel utilisera l'ancien build
+   et les changements dans vercel.json ne seront pas pris en
+   compte.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÉTAPE 6 : BUILD EN COURS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌─────────────────────────────────────────────────────────────┐
+│  < Dashboard    maxence-design                              │
+│  ─────────────────────────────────────────────────────────  │
+│                                                             │
+│  Overview    Deployments    Settings    Analytics          │
+│              ───────────                                    │
+│                                                             │
+│  Production                                                 │
+│  ─────────────────────────────────────────────────────────  │
+│                                                             │
+│  ┌──────────────────────────────────────────────────┐      │
+│  │  ⏳ Building...                                   │      │
+│  │     Redeploy                                      │      │
+│  │     main branch    just now                       │      │
+│  └──────────────────────────────────────────────────┘      │
+│                                                             │
+│  ATTENDS 2-3 MINUTES...                                    │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÉTAPE 7 : BUILD TERMINÉ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌─────────────────────────────────────────────────────────────┐
+│  < Dashboard    maxence-design                              │
+│  ─────────────────────────────────────────────────────────  │
+│                                                             │
+│  Overview    Deployments    Settings    Analytics          │
+│              ───────────                                    │
+│                                                             │
+│  Production                                                 │
+│  ─────────────────────────────────────────────────────────  │
+│                                                             │
+│  ┌──────────────────────────────────────────────────┐      │
+│  │  ✓ Ready                                          │      │
+│  │     Redeploy                                      │      │
+│  │     main branch    just now                       │      │
+│  │                                                    │      │
+│  │  [Visit] →                                         │      │
+│  └──────────────────────────────────────────────────┘      │
+│                                                             │
+│  ✅ DÉPLOIEMENT TERMINÉ !                                  │
+│                                                             │
+│  Tu peux maintenant tester ton site :                      │
+│  • https://www.maxence.design/fr                           │
+│  • https://www.maxence.design/en                           │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 TESTS À EFFECTUER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Ouvre ces URLs dans ton navigateur :
+
+
+TEST 1 : URL FRANÇAISE
+──────────────────────
+
+https://www.maxence.design/fr
+
+✅ Devrait afficher : HomePage en français
+
+
+TEST 2 : URL ANGLAISE
+──────────────────────
+
+https://www.maxence.design/en
+
+✅ Devrait afficher : HomePage en anglais
+
+
+TEST 3 : ACTUALISATION
+──────────────────────
+
+1. Va sur n'importe quelle page
+2. Appuie sur F5
+
+✅ Devrait : Recharger la page sans erreur 404
+
+
+TEST 4 : NAVIGATION DIRECTE
+──────────────────────
+
+https://www.maxence.design/fr/services
+
+✅ Devrait afficher : Page Services en français
+
+
+TEST 5 : URL RACINE
+──────────────────────
+
+https://www.maxence.design/
+
+✅ Devrait : Rediriger vers /fr ou /en selon ta localisation
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ RÉCAPITULATIF DES ÉTAPES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. ✅ Ouvrir https://vercel.com/dashboard
+2. ✅ Cliquer sur ton projet
+3. ✅ Aller dans l'onglet "Deployments"
+4. ✅ Cliquer sur les 3 points (...) du dernier déploiement
+5. ✅ Cliquer sur "Redeploy"
+6. ✅ NE PAS cocher "Use existing Build Cache"
+7. ✅ Cliquer sur "Redeploy"
+8. ✅ Attendre 2-3 minutes
+9. ✅ Tester les URLs
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⏱️ TEMPS TOTAL : 2-3 MINUTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+═══════════════════════════════════════════════════════════════
+
+
+🚀 LANCE-TOI MAINTENANT !
+
+
+═══════════════════════════════════════════════════════════════

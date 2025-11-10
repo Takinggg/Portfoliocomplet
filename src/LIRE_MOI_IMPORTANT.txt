@@ -1,0 +1,111 @@
+═══════════════════════════════════════════════════════════════
+  🚨 URLs BILINGUES - DÉPLOYER MAINTENANT !
+═══════════════════════════════════════════════════════════════
+
+TU VOIS FR/EN MAIS LES PAGES NE MARCHENT PAS ?
+
+Tu vois le sélecteur de langue FR/EN, mais quand tu cliques sur
+"Services", "Blog", ou "Projects", ça ne fonctionne pas ?
+
+C'EST NORMAL ! Les changements sont dans le code mais PAS ENCORE
+déployés sur Vercel.
+
+Les URLs restent comme /blog au lieu de /fr/blog.
+
+
+═══════════════════════════════════════════════════════════════
+  🚀 POUR DÉPLOYER (3 ÉTAPES)
+═══════════════════════════════════════════════════════════════
+
+1️⃣  COMMIT ET PUSH
+
+    git add .
+    git commit -m "feat: URLs bilingues /fr/ et /en/"
+    git push origin main
+
+
+2️⃣  ATTENDRE
+
+    Vercel va automatiquement détecter le push et redéployer.
+    Attends 2-5 minutes.
+    
+    Tu peux suivre le déploiement sur :
+    https://vercel.com/dashboard
+
+
+3️⃣  VÉRIFIER
+
+    Une fois déployé, va sur maxence.design
+    L'URL doit automatiquement devenir : maxence.design/fr
+    
+    Clique sur "Blog" → L'URL devient : maxence.design/fr/blog
+
+
+═══════════════════════════════════════════════════════════════
+  ✅ CE QUI A ÉTÉ FAIT
+═══════════════════════════════════════════════════════════════
+
+✅ Routes bilingues dans AppWithRouter.tsx
+✅ Redirections automatiques (/ → /fr ou /en)
+✅ Fichier vercel.json avec redirections 301 (SEO)
+✅ Synchronisation langue ↔ URL
+✅ Composants de routing complets
+
+
+═══════════════════════════════════════════════════════════════
+  📋 NOUVELLES URLs (APRÈS DÉPLOIEMENT)
+═══════════════════════════════════════════════════════════════
+
+AVANT               FRANÇAIS          ANGLAIS
+─────────────────────────────────────────────────────────────
+/                   /fr               /en
+/blog               /fr/blog          /en/blog
+/services           /fr/services      /en/services
+/projects           /fr/projects      /en/projects
+/contact            /fr/contact       /en/contact
+/about              /fr/about         /en/about
+/case-studies       /fr/case-studies  /en/case-studies
+/faq                /fr/faq           /en/faq
+/resources          /fr/resources     /en/resources
+/testimonials       /fr/testimonials  /en/testimonials
+
+
+═══════════════════════════════════════════════════════════════
+  🔍 APRÈS DÉPLOIEMENT - VÉRIFICATIONS
+═══════════════════════════════════════════════════════════════
+
+1. Va sur maxence.design
+   → Doit rediriger vers maxence.design/fr
+
+2. Clique sur "Blog"
+   → URL devient maxence.design/fr/blog
+
+3. Change la langue en EN
+   → URL devient maxence.design/en/blog
+
+4. Teste une ancienne URL : maxence.design/blog
+   → Doit rediriger vers maxence.design/fr/blog
+
+
+═══════════════════════════════════════════════════════════════
+  📖 PLUS D'INFOS
+═══════════════════════════════════════════════════════════════
+
+Guide de déploiement complet : /DEPLOYER_SUR_VERCEL.md
+Guide technique              : /README_URLS_BILINGUES.md
+
+
+═══════════════════════════════════════════════════════════════
+  ⚡ ACTION IMMÉDIATE
+═══════════════════════════════════════════════════════════════
+
+Exécute maintenant :
+
+    git add .
+    git commit -m "feat: URLs bilingues /fr/ et /en/"
+    git push origin main
+
+Puis attends 5 minutes et vérifie maxence.design !
+
+
+═══════════════════════════════════════════════════════════════

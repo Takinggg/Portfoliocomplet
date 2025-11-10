@@ -1,0 +1,37 @@
+═══════════════════════════════════════════════════════════════
+                    🚨 COMMANDE À EXÉCUTER 🚨
+═══════════════════════════════════════════════════════════════
+
+
+COPIE-COLLE CECI DANS TON TERMINAL :
+
+cd public && rm -rf _redirects && echo "/*    /index.html   200" > _redirects && cd .. && git add . && git commit -m "fix: Create _redirects file for 404 handling" && git push
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+✅ RÉSULTAT :
+
+   Toutes les erreurs 404 renverront vers :
+   https://www.maxence.design/
+   
+   Puis géo-détection automatique :
+   • Utilisateurs français → /fr
+   • Autres utilisateurs → /en
+
+
+⏰ ATTENDS 2-3 MINUTES après le push, puis teste !
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+📖 GUIDES DISPONIBLES :
+
+   • /README_URGENT_404.md         (complet)
+   • /FIX_404_SIMPLE.md             (simplifié)
+   • /CREER_REDIRECTS_MAINTENANT.txt (très court)
+
+
+═══════════════════════════════════════════════════════════════
