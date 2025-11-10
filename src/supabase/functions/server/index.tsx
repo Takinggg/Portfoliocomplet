@@ -448,6 +448,72 @@ app.delete("/make-server-04919ac5/leads/:id", requireAuth, async (c)=>{
     }, 500);
   }
 });
+
+// Convert lead to client
+app.post("/make-server-04919ac5/leads/:id/convert", requireAuth, async (c)=>{
+  try {
+    const leadId = decodeURIComponent(c.req.param("id"));
+    const lead = await kv.get(leadId);
+    
+    if (!lead) {
+      return c.json({
+        success: false,
+        error: "Lead not found"
+      }, 404);
+    }
+    
+    if (lead.status === "converted") {
+      return c.json({
+        success: false,
+        error: "Lead already converted"
+      }, 400);
+    }
+    
+    // Create new client from lead data
+    const clientId = `client:${Date.now()}@${lead.email}`;
+    const clientData = {
+      id: clientId,
+      name: lead.name,
+      email: lead.email,
+      phone: lead.phone || "",
+      company: lead.company || "",
+      address: lead.address || "",
+      status: "active",
+      revenue: 0,
+      projects: 0,
+      convertedFromLead: leadId,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    // Save client
+    await kv.set(clientId, clientData);
+    
+    // Update lead status
+    const updatedLead = {
+      ...lead,
+      status: "converted",
+      convertedToClient: clientId,
+      updatedAt: new Date().toISOString()
+    };
+    await kv.set(leadId, updatedLead);
+    
+    console.log(`✅ Converted lead ${leadId} to client ${clientId}`);
+    
+    return c.json({
+      success: true,
+      client: clientData,
+      lead: updatedLead
+    });
+  } catch (error) {
+    console.error("❌ Error converting lead:", error);
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
 console.log("✅ Leads routes added");
 // ===========================================================================
 // BOOKINGS ROUTES
@@ -586,6 +652,53 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c)=>{
   }
 });
 console.log("✅ Booking confirmation email route added");
+// ===========================================================================
+// EMAIL ROUTES - LEAD CONFIRMATION
+// ===========================================================================
+app.post("/make-server-04919ac5/emails/lead-confirmation", async (c)=>{
+  try {
+    const body = await c.req.json();
+    const { name, email, message, wantsAppointment } = body;
+    
+    if (!name || !email || !message) {
+      return c.json({
+        success: false,
+        error: "Missing required fields: name, email, message"
+      }, 400);
+    }
+    
+    // Import and use the email service
+    const { sendLeadConfirmation } = await import("./email_service.tsx");
+    
+    const emailResult = await sendLeadConfirmation({
+      name,
+      email,
+      message,
+      wantsAppointment: wantsAppointment || false
+    });
+    
+    if (emailResult.success) {
+      console.log(`📧 Lead confirmation email sent to ${email}`);
+      return c.json({
+        success: true,
+        message: "Lead confirmation email sent successfully"
+      });
+    } else {
+      console.error(`❌ Failed to send lead confirmation email: ${emailResult.error}`);
+      return c.json({
+        success: false,
+        error: emailResult.error || "Failed to send lead confirmation email"
+      }, 500);
+    }
+  } catch (error) {
+    console.error("❌ Error sending lead confirmation:", error);
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+console.log("✅ Lead confirmation email route added");
 // ===========================================================================
 // DASHBOARD STATS
 // ===========================================================================
@@ -1734,9 +1847,9 @@ console.log("✅ Seed data route added");
 console.log("📍 Available routes:");
 console.log("   AUTH: /auth/init-admin, /auth/login");
 console.log("   CLIENTS: /clients (GET/POST), /clients/:id (PUT/DELETE)");
-console.log("   LEADS: /leads (GET/POST), /leads/:id (PUT/DELETE)");
+console.log("   LEADS: /leads (GET/POST), /leads/:id (PUT/DELETE), /leads/:id/convert (POST) ✨ NEW!");
 console.log("   BOOKINGS: /bookings (GET/POST/PUT/DELETE)");
-console.log("   EMAILS: /emails/booking-confirmation (POST) ✨ NEW!");
+console.log("   EMAILS: /emails/booking-confirmation (POST), /emails/lead-confirmation (POST) ✨ NEW!");
 console.log("   DASHBOARD: /dashboard/stats");
 console.log("   QUOTES: /quotes (GET/POST), /quotes/:id (PUT/DELETE/convert/send-reminder)");
 console.log("   INVOICES: /invoices (GET), /invoices/:id (GET/PUT/DELETE/send-reminder) ✨ NEW!");
