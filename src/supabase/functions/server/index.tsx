@@ -1878,6 +1878,16 @@ app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c)=>{
       }, 400);
     }
     
+    // Convert amount to number (in case it's a string)
+    const amountNumber = typeof amount === 'string' ? parseFloat(amount) : amount;
+    
+    console.log(`💰 Payment request for invoice ${invoiceNumber}:`, {
+      receivedAmount: amount,
+      receivedType: typeof amount,
+      convertedAmount: amountNumber,
+      convertedType: typeof amountNumber
+    });
+    
     const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY");
     if (!STRIPE_SECRET_KEY) {
       console.error("❌ STRIPE_SECRET_KEY not configured");
@@ -1887,10 +1897,19 @@ app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c)=>{
       }, 500);
     }
     
-    // Convert amount to cents for Stripe (amount is in euros, Stripe expects cents)
-    const amountInCents = Math.round(amount * 100);
+    // Validate minimum amount for Stripe (€0.50 minimum)
+    if (amountNumber < 0.50) {
+      console.error(`❌ Amount too small: ${amountNumber}€ (minimum €0.50)`);
+      return c.json({
+        success: false,
+        error: "Le montant minimum pour un paiement est de €0.50"
+      }, 400);
+    }
     
-    console.log(`💰 Creating Stripe session for invoice ${invoiceNumber}: ${amount}€ (${amountInCents} cents)`);
+    // Convert amount to cents for Stripe (amount is in euros, Stripe expects cents)
+    const amountInCents = Math.round(amountNumber * 100);
+    
+    console.log(`💰 Creating Stripe session for invoice ${invoiceNumber}: ${amountNumber}€ (${amountInCents} cents)`);
     
     // Create Stripe checkout session
     const checkoutResponse = await fetch("https://api.stripe.com/v1/checkout/sessions", {

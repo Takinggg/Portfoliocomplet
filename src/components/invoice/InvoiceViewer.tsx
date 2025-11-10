@@ -71,6 +71,27 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
     try {
       setIsProcessing(true);
       
+      // Convert amount to number (in case it's stored as string)
+      const amountNumber = typeof invoice.amount === 'string' 
+        ? parseFloat(invoice.amount) 
+        : invoice.amount;
+      
+      console.log('💰 Invoice payment details:', {
+        originalAmount: invoice.amount,
+        convertedAmount: amountNumber,
+        type: typeof invoice.amount,
+        convertedType: typeof amountNumber
+      });
+      
+      // Validate minimum amount (Stripe requires €0.50 minimum)
+      if (amountNumber < 0.50) {
+        toast.error('Montant invalide', {
+          description: 'Le montant minimum pour un paiement est de €0.50'
+        });
+        setIsProcessing(false);
+        return;
+      }
+      
       // Get current URL for redirects
       const currentUrl = window.location.origin;
       const token = window.location.pathname.split('/').pop();
@@ -87,7 +108,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
           body: JSON.stringify({
             invoiceNumber: invoice.number,
             invoiceId: token,
-            amount: invoice.amount,
+            amount: amountNumber,
             currency: 'eur',
             clientName: invoice.clientName,
             clientEmail: invoice.clientEmail,
