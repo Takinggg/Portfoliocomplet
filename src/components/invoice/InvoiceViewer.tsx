@@ -70,6 +70,10 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
     try {
       setIsProcessing(true);
       
+      // Get current URL for redirects
+      const currentUrl = window.location.origin;
+      const token = window.location.pathname.split('/').pop();
+      
       // Call the Stripe endpoint via Edge Function
       const response = await fetch(
         `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/make-server-04919ac5/stripe/create-checkout-session`,
@@ -81,11 +85,13 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
           },
           body: JSON.stringify({
             invoiceNumber: invoice.number,
-            invoiceId: `invoice:${invoice.number}`,
+            invoiceId: token,
             amount: invoice.amount,
             currency: 'eur',
             clientName: invoice.clientName,
             clientEmail: invoice.clientEmail,
+            successUrl: `${currentUrl}/invoice/${token}/success`,
+            cancelUrl: `${currentUrl}/invoice/${token}`,
           }),
         }
       );

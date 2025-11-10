@@ -21,6 +21,8 @@ import NewsletterDebugPage from "./components/pages/NewsletterDebugPage";
 import ResourcesPage from "./components/pages/ResourcesPage";
 import TestimonialsPage from "./components/pages/TestimonialsPage";
 import SyncDashboardPage from "./components/pages/SyncDashboardPage";
+import InvoiceViewPage from "./components/pages/InvoiceViewPage";
+import InvoiceSuccessPage from "./components/pages/InvoiceSuccessPage";
 import Navigation from "./components/layout/Navigation";
 import Footer from "./components/layout/Footer";
 import { SkipNavigation } from "./components/layout/SkipNavigation";
@@ -351,6 +353,31 @@ function AppContent() {
         <Route path="/newsletter-debug" element={<><div className="h-[72px]" aria-hidden="true" /><main id="main-content" className="flex-1" tabIndex={-1}><NewsletterDebugPage /></main></>} />
         <Route path="/server-diagnostic" element={<><div className="h-[72px]" aria-hidden="true" /><main id="main-content" className="flex-1" tabIndex={-1}><AutoServerDiagnostic /></main></>} />
         <Route path="/sync-dashboard" element={<><div className="h-[72px]" aria-hidden="true" /><main id="main-content" className="flex-1" tabIndex={-1}><SyncDashboardPage /></main></>} />
+        
+        {/* Invoice routes - Public (no auth required, secured by token) */}
+        <Route 
+          path="/invoice/:token" 
+          element={
+            <>
+              <div className="h-[72px]" aria-hidden="true" />
+              <main id="main-content" className="flex-1" tabIndex={-1}>
+                <InvoiceViewPage />
+              </main>
+            </>
+          } 
+        />
+        <Route 
+          path="/invoice/:token/success" 
+          element={
+            <>
+              <div className="h-[72px]" aria-hidden="true" />
+              <main id="main-content" className="flex-1" tabIndex={-1}>
+                <InvoiceSuccessPage />
+              </main>
+            </>
+          } 
+        />
+        
         <Route 
           path="/newsletter/confirm/:token" 
           element={

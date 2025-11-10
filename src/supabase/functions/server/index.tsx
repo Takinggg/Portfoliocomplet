@@ -1887,6 +1887,11 @@ app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c)=>{
       }, 500);
     }
     
+    // Convert amount to cents for Stripe (amount is in euros, Stripe expects cents)
+    const amountInCents = Math.round(amount * 100);
+    
+    console.log(`💰 Creating Stripe session for invoice ${invoiceNumber}: ${amount}€ (${amountInCents} cents)`);
+    
     // Create Stripe checkout session
     const checkoutResponse = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",
@@ -1899,7 +1904,7 @@ app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c)=>{
         "line_items[0][price_data][currency]": currency,
         "line_items[0][price_data][product_data][name]": `Facture ${invoiceNumber}`,
         "line_items[0][price_data][product_data][description]": `Paiement pour la facture ${invoiceNumber}`,
-        "line_items[0][price_data][unit_amount]": amount.toString(),
+        "line_items[0][price_data][unit_amount]": amountInCents.toString(),
         "line_items[0][quantity]": "1",
         "mode": "payment",
         "success_url": successUrl || `${Deno.env.get('FRONTEND_URL')}/invoice/${invoiceId}/success?session_id={CHECKOUT_SESSION_ID}`,
