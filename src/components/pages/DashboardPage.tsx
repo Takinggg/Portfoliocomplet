@@ -3825,6 +3825,21 @@ function InvoicesView({ invoices, clients, onRefresh, loading }: any) {
                           {(invoice.status === "sent" || invoice.status === "overdue") && (
                             <Button
                               onClick={async () => {
+                                // Message de confirmation
+                                const isOverdue = invoice.status === "overdue";
+                                const action = isOverdue ? "relancer" : "renvoyer la facture";
+                                
+                                const confirmed = window.confirm(
+                                  `${isOverdue ? 'Relancer' : 'Renvoyer'} la facture ${invoice.number} par email ?\n\n` +
+                                  `Client : ${invoice.clientName}\n` +
+                                  `Email : ${invoice.clientEmail}\n` +
+                                  `Montant : ${invoice.amount?.toLocaleString('fr-FR') || 0} €\n` +
+                                  `Statut : ${isOverdue ? '⚠️ En retard' : '📤 Envoyée'}\n\n` +
+                                  `Un email ${isOverdue ? 'de relance' : 'de rappel'} sera envoyé au client.`
+                                );
+                                
+                                if (!confirmed) return;
+
                                 try {
                                   const supabaseClient = createClient();
                                   const { data: { session } } = await supabaseClient.auth.getSession();
@@ -3847,9 +3862,9 @@ function InvoicesView({ invoices, clients, onRefresh, loading }: any) {
                                   if (response.ok) {
                                     const data = await response.json();
                                     if (data.daysOverdue > 0) {
-                                      toast.success(`Relance envoyée pour ${invoice.clientName} (${data.daysOverdue}j de retard)`);
+                                      toast.success(`📧 Relance envoyée à ${invoice.clientEmail} (${data.daysOverdue}j de retard)`);
                                     } else {
-                                      toast.success(`Facture renvoyée à ${invoice.clientName}`);
+                                      toast.success(`📧 Facture renvoyée à ${invoice.clientEmail}`);
                                     }
                                     onRefresh();
                                   } else {
