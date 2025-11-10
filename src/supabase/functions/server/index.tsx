@@ -1078,7 +1078,7 @@ app.post("/make-server-04919ac5/invoices/:id/generate-link", requireAuth, async 
     
     // Store token reference in invoice
     invoice.viewToken = token;
-    invoice.viewLink = `${Deno.env.get('FRONTEND_URL') || 'https://maxence.design'}/#/invoice/${token}`;
+    invoice.viewLink = `${Deno.env.get('FRONTEND_URL') || 'https://maxence.design'}/invoice/${token}`;
     await kv.set(invoiceId, invoice);
     
     console.log(`🔐 Generated secure link for invoice ${invoice.number}: ${invoice.viewLink}`);
@@ -1212,7 +1212,7 @@ app.post("/make-server-04919ac5/invoices/:id/send-reminder", requireAuth, async 
       });
       
       // Generate link
-      viewLink = `${Deno.env.get('FRONTEND_URL') || 'https://maxence.design'}/#/invoice/${token}`;
+      viewLink = `${Deno.env.get('FRONTEND_URL') || 'https://maxence.design'}/invoice/${token}`;
       
       // Store link in invoice
       invoice.viewToken = token;
