@@ -35,6 +35,10 @@ export function ClientSideFallback() {
       '/en/resources', '/en/testimonials', '/en/example', '/en/seed-data',
       // Routes sans langue
       '/dashboard', '/login', '/home',
+      // Routes invoice (public, sécurisées par token)
+      '/invoice',
+      // Routes newsletter
+      '/newsletter',
     ];
 
     // Vérifier si la route actuelle est valide (ou une sous-route valide)
