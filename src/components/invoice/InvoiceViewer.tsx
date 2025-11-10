@@ -3,6 +3,7 @@ import { Loader2, AlertCircle, Download, Printer, CreditCard, ExternalLink } fro
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { toast } from 'sonner@2.0.3';
+import { useState } from 'react';
 
 interface InvoiceData {
   number: string;
@@ -50,6 +51,8 @@ const getStatusConfig = (status: string) => {
 };
 
 export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewerProps) {
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const handlePrint = () => {
     window.print();
   };
@@ -61,10 +64,52 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
     setTimeout(() => window.print(), 100);
   };
 
-  const handlePayment = () => {
-    toast.info('Paiement en ligne', {
-      description: 'L\'intégration Stripe sera disponible prochainement'
-    });
+  const handlePayment = async () => {
+    if (!invoice) return;
+
+    try {
+      setIsProcessing(true);
+      
+      // Call the Stripe endpoint via Edge Function
+      const response = await fetch(
+        `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/make-server-04919ac5/stripe/create-checkout-session`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            invoiceNumber: invoice.number,
+            invoiceId: `invoice:${invoice.number}`,
+            amount: invoice.amount,
+            currency: 'eur',
+            clientName: invoice.clientName,
+            clientEmail: invoice.clientEmail,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Failed to create payment session');
+      }
+
+      // Redirect to Stripe Checkout
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL returned');
+      }
+    } catch (err) {
+      console.error('Payment error:', err);
+      toast.error('Erreur de paiement', {
+        description: err instanceof Error ? err.message : 'Une erreur est survenue lors du paiement'
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   if (loading) {
@@ -152,10 +197,20 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
           {invoice.status !== 'paid' && (
             <Button
               onClick={handlePayment}
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00E5AD] font-semibold flex items-center gap-2"
+              disabled={isProcessing}
+              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00E5AD] font-semibold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <CreditCard className="w-4 h-4" />
-              Payer maintenant
+              {isProcessing ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Traitement...
+                </>
+              ) : (
+                <>
+                  <CreditCard className="w-4 h-4" />
+                  Payer maintenant
+                </>
+              )}
             </Button>
           )}
         </div>
@@ -479,11 +534,21 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
           >
             <Button
               onClick={handlePayment}
+              disabled={isProcessing}
               size="lg"
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00E5AD] font-bold text-lg px-8 shadow-xl hover:shadow-2xl transition-all"
+              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00E5AD] font-bold text-lg px-8 shadow-xl hover:shadow-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <CreditCard className="w-5 h-5 mr-2" />
-              Payer {totalAmount.toFixed(2)} € maintenant
+              {isProcessing ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Traitement en cours...
+                </>
+              ) : (
+                <>
+                  <CreditCard className="w-5 h-5 mr-2" />
+                  Payer {totalAmount.toFixed(2)} € maintenant
+                </>
+              )}
             </Button>
             <p className="text-xs text-[#888888]">
               ✓ Paiement sécurisé • Stripe • Aucune commission
