@@ -360,6 +360,18 @@ function AppContent() {
         
         {/* Invoice routes - Public (no auth required, secured by token) */}
         {/* IMPORTANT: More specific routes must come BEFORE less specific ones */}
+        {/* TEST: Hardcoded success route to debug */}
+        <Route 
+          path="/invoice/test/success" 
+          element={
+            <>
+              <div className="h-[72px]" aria-hidden="true" />
+              <main id="main-content" className="flex-1" tabIndex={-1}>
+                <InvoiceSuccessPage />
+              </main>
+            </>
+          } 
+        />
         <Route 
           path="/invoice/:token/success" 
           element={
