@@ -1,0 +1,5 @@
+# Redirect hash URLs to clean URLs (remove #)
+/#/*  /:splat  301!
+
+# SPA fallback - all other routes go to index.html
+/*    /index.html   200
