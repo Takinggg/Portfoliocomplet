@@ -396,189 +396,178 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients }: 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
+              className="space-y-5"
             >
-              {/* Layout en 2 colonnes : Prestations à gauche, Calculs à droite */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Colonne Prestations (2/3 de l'espace) */}
-                <div className="lg:col-span-2 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-medium flex items-center gap-2">
-                      <FileText className="w-5 h-5 text-[#00FFC2]" />
-                      Prestations
-                    </h3>
-                    <Button
-                      onClick={addItem}
-                      size="sm"
-                      className="bg-[#00FFC2] hover:bg-[#00FFC2]/90 text-black"
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Ajouter
-                    </Button>
-                  </div>
+              {/* Header */}
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-[#00FFC2]" />
+                  Prestations
+                </h3>
+                <Button
+                  onClick={addItem}
+                  size="sm"
+                  className="bg-[#00FFC2] hover:bg-[#00FFC2]/90 text-black font-medium"
+                >
+                  <Plus className="w-4 h-4 mr-1" />
+                  Ajouter
+                </Button>
+              </div>
 
-                  <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
-                    {items.map((item, index) => (
-                      <Card key={item.id} className="bg-white/5 border-white/10 hover:border-white/20 transition-colors">
-                        <CardContent className="p-4">
-                          <div className="flex items-start justify-between gap-2 mb-3">
-                            <Badge variant="outline" className="border-[#00FFC2]/30 text-[#00FFC2]">
-                              Prestation {index + 1}
-                            </Badge>
-                            {items.length > 1 && (
-                              <Button
-                                onClick={() => removeItem(item.id)}
-                                size="sm"
-                                variant="ghost"
-                                className="h-7 w-7 p-0 hover:bg-red-500/20 hover:text-red-400"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            )}
-                          </div>
-
-                          <div className="space-y-3">
-                            <div>
-                              <Label className="text-xs text-gray-400 mb-1.5 block">Description *</Label>
-                              <Textarea
-                                value={item.description}
-                                onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                                placeholder="Ex: Développement site web vitrine"
-                                className="bg-black/20 border-white/10 text-sm resize-none"
-                                rows={2}
-                              />
-                            </div>
-
-                            <div className="grid grid-cols-3 gap-2">
-                              <div>
-                                <Label className="text-xs text-gray-400 mb-1.5 block">Quantité</Label>
-                                <Input
-                                  type="number"
-                                  min="1"
-                                  value={item.quantity}
-                                  onChange={(e) => updateItem(item.id, 'quantity', parseFloat(e.target.value) || 1)}
-                                  className="bg-black/20 border-white/10 text-center text-white"
-                                />
-                              </div>
-
-                              <div>
-                                <Label className="text-xs text-gray-400 mb-1.5 block">Prix unitaire (€)</Label>
-                                <Input
-                                  type="number"
-                                  min="0"
-                                  step="0.01"
-                                  value={item.unitPrice}
-                                  onChange={(e) => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
-                                  className="bg-black/20 border-white/10 text-white"
-                                />
-                              </div>
-
-                              <div>
-                                <Label className="text-xs text-gray-400 mb-1.5 block">Total</Label>
-                                <div className="bg-[#00FFC2]/10 border border-[#00FFC2]/20 rounded-md px-2 py-2 text-sm text-[#00FFC2] font-semibold text-center">
-                                  {item.total.toLocaleString('fr-FR')} €
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Colonne Calculs (1/3 de l'espace) - Sticky */}
-                <div className="lg:col-span-1 space-y-4">
-                  {/* Réduction */}
-                  <Card className="bg-white/5 border-white/10 sticky top-0">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-sm flex items-center gap-2">
-                        <Calculator className="w-4 h-4 text-[#00FFC2]" />
-                        Réduction
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div>
-                        <Label className="text-xs text-gray-400 mb-1.5 block">Type</Label>
-                        <Select value={discountType} onValueChange={(value: any) => setDiscountType(value)}>
-                          <SelectTrigger className="bg-black/20 border-white/10 text-sm h-9 text-white">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="percentage">Pourcentage (%)</SelectItem>
-                            <SelectItem value="fixed">Montant fixe (€)</SelectItem>
-                          </SelectContent>
-                        </Select>
+              {/* Items list */}
+              <div className="space-y-3">
+                {items.map((item, index) => (
+                  <Card key={item.id} className="bg-white/5 border-white/10">
+                    <CardContent className="p-4">
+                      {/* Header */}
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-sm font-medium text-gray-300">
+                          Prestation {index + 1}
+                        </span>
+                        {items.length > 1 && (
+                          <Button
+                            onClick={() => removeItem(item.id)}
+                            size="sm"
+                            variant="ghost"
+                            className="h-7 w-7 p-0 hover:bg-red-500/20"
+                          >
+                            <Trash2 className="w-4 h-4 text-red-400" />
+                          </Button>
+                        )}
                       </div>
 
-                      <div>
-                        <Label className="text-xs text-gray-400 mb-1.5 block">
-                          Montant {discountType === "percentage" ? "(%)" : "(€)"}
-                        </Label>
-                        <Input
-                          type="number"
-                          min="0"
-                          max={discountType === "percentage" ? "100" : undefined}
-                          step={discountType === "percentage" ? "1" : "0.01"}
-                          value={discount}
-                          onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
-                          className="bg-black/20 border-white/10 h-9 text-white"
+                      {/* Description */}
+                      <div className="mb-3">
+                        <Label className="text-xs text-gray-400 mb-1.5 block">Description *</Label>
+                        <Textarea
+                          value={item.description}
+                          onChange={(e) => updateItem(item.id, 'description', e.target.value)}
+                          placeholder="Ex: Développement site web vitrine"
+                          className="bg-black/30 border-white/10 text-sm h-20 resize-none"
                         />
                       </div>
 
-                      {discount > 0 && (
-                        <div className="bg-orange-500/10 border border-orange-500/20 rounded-md px-3 py-2 text-center">
-                          <div className="text-xs text-orange-300/70 mb-0.5">Réduction</div>
-                          <div className="text-base text-orange-300 font-bold">
-                            - {calculateDiscount().toLocaleString('fr-FR')} €
+                      {/* Quantité / Prix / Total */}
+                      <div className="grid grid-cols-3 gap-3">
+                        <div>
+                          <Label className="text-xs text-gray-400 mb-1.5 block">Quantité</Label>
+                          <Input
+                            type="number"
+                            min="1"
+                            value={item.quantity}
+                            onChange={(e) => updateItem(item.id, 'quantity', parseFloat(e.target.value) || 1)}
+                            className="bg-black/30 border-white/10 h-10 text-center text-white"
+                          />
+                        </div>
+
+                        <div>
+                          <Label className="text-xs text-gray-400 mb-1.5 block">Prix unitaire (€)</Label>
+                          <Input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={item.unitPrice}
+                            onChange={(e) => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
+                            className="bg-black/30 border-white/10 h-10 text-white"
+                          />
+                        </div>
+
+                        <div>
+                          <Label className="text-xs text-gray-400 mb-1.5 block">Total</Label>
+                          <div className="bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-md h-10 flex items-center justify-center text-[#00FFC2] font-semibold text-sm">
+                            {item.total.toLocaleString('fr-FR')} €
                           </div>
                         </div>
-                      )}
-                    </CardContent>
-                  </Card>
-
-                  {/* Totaux */}
-                  <Card className="bg-gradient-to-br from-[#00FFC2]/10 to-[#00FFC2]/5 border-[#00FFC2]/20">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-sm flex items-center gap-2">
-                        <Euro className="w-4 h-4 text-[#00FFC2]" />
-                        Récapitulatif
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-300">Sous-total HT</span>
-                        <span className="font-semibold text-white">
-                          {calculateSubtotal().toLocaleString('fr-FR')} €
-                        </span>
-                      </div>
-                      
-                      {discount > 0 && (
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-300">Réduction</span>
-                          <span className="font-semibold text-orange-400">
-                            - {calculateDiscount().toLocaleString('fr-FR')} €
-                          </span>
-                        </div>
-                      )}
-                      
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-300">TVA</span>
-                        <span className="font-medium text-gray-400">Non applicable</span>
-                      </div>
-                      
-                      <Separator className="bg-white/20" />
-                      
-                      <div className="bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-lg p-3 text-center">
-                        <div className="text-xs text-[#00FFC2]/70 mb-1">Total TTC</div>
-                        <div className="text-2xl font-bold text-[#00FFC2]">
-                          {calculateTotal().toLocaleString('fr-FR')} €
-                        </div>
                       </div>
                     </CardContent>
                   </Card>
-                </div>
+                ))}
               </div>
+
+              <Separator className="bg-white/10" />
+
+              {/* Discount Section */}
+              <Card className="bg-white/5 border-white/10">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Calculator className="w-4 h-4 text-[#00FFC2]" />
+                    Réduction
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                      <Label className="text-xs text-gray-400 mb-1.5 block">Type de réduction</Label>
+                      <Select value={discountType} onValueChange={(value: any) => setDiscountType(value)}>
+                        <SelectTrigger className="bg-black/30 border-white/10 h-10 text-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="percentage">Pourcentage (%)</SelectItem>
+                          <SelectItem value="fixed">Montant fixe (€)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label className="text-xs text-gray-400 mb-1.5 block">
+                        Montant {discountType === "percentage" ? "(%)" : "(€)"}
+                      </Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        max={discountType === "percentage" ? "100" : undefined}
+                        step={discountType === "percentage" ? "1" : "0.01"}
+                        value={discount}
+                        onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
+                        className="bg-black/30 border-white/10 h-10 text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="text-xs text-gray-400 mb-1.5 block">Réduction appliquée</Label>
+                      <div className="bg-orange-500/10 border border-orange-500/30 rounded-md h-10 flex items-center justify-center text-orange-400 font-semibold text-sm">
+                        - {calculateDiscount().toLocaleString('fr-FR')} €
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Totals */}
+              <Card className="bg-gradient-to-br from-[#00FFC2]/10 to-[#00FFC2]/5 border-[#00FFC2]/30">
+                <CardContent className="p-5 space-y-3">
+                  <div className="flex justify-between text-base">
+                    <span className="text-gray-300">Sous-total HT</span>
+                    <span className="font-semibold text-white">
+                      {calculateSubtotal().toLocaleString('fr-FR')} €
+                    </span>
+                  </div>
+                  
+                  {discount > 0 && (
+                    <div className="flex justify-between text-base">
+                      <span className="text-gray-300">Réduction</span>
+                      <span className="font-semibold text-orange-400">
+                        - {calculateDiscount().toLocaleString('fr-FR')} €
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="flex justify-between text-base">
+                    <span className="text-gray-300">TVA</span>
+                    <span className="font-medium text-gray-400">Non applicable</span>
+                  </div>
+                  
+                  <Separator className="bg-white/20" />
+                  
+                  <div className="flex justify-between items-center pt-2">
+                    <span className="text-lg font-bold text-white">Total TTC</span>
+                    <span className="text-3xl font-bold text-[#00FFC2]">
+                      {calculateTotal().toLocaleString('fr-FR')} €
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
           )}
 
