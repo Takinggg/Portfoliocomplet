@@ -4,6 +4,7 @@ import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { toast } from 'sonner@2.0.3';
 import { useState } from 'react';
+import { projectId, publicAnonKey } from '../../utils/supabase/info';
 
 interface InvoiceData {
   number: string;
@@ -76,12 +77,12 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
       
       // Call the Stripe endpoint via Edge Function
       const response = await fetch(
-        `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/make-server-04919ac5/stripe/create-checkout-session`,
+        `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/stripe/create-checkout-session`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            'Authorization': `Bearer ${publicAnonKey}`,
           },
           body: JSON.stringify({
             invoiceNumber: invoice.number,
