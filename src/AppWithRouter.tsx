@@ -359,17 +359,7 @@ function AppContent() {
         <Route path="/sync-dashboard" element={<><div className="h-[72px]" aria-hidden="true" /><main id="main-content" className="flex-1" tabIndex={-1}><SyncDashboardPage /></main></>} />
         
         {/* Invoice routes - Public (no auth required, secured by token) */}
-        <Route 
-          path="/invoice/:token" 
-          element={
-            <>
-              <div className="h-[72px]" aria-hidden="true" />
-              <main id="main-content" className="flex-1" tabIndex={-1}>
-                <InvoiceViewPage />
-              </main>
-            </>
-          } 
-        />
+        {/* IMPORTANT: More specific routes must come BEFORE less specific ones */}
         <Route 
           path="/invoice/:token/success" 
           element={
@@ -377,6 +367,17 @@ function AppContent() {
               <div className="h-[72px]" aria-hidden="true" />
               <main id="main-content" className="flex-1" tabIndex={-1}>
                 <InvoiceSuccessPage />
+              </main>
+            </>
+          } 
+        />
+        <Route 
+          path="/invoice/:token" 
+          element={
+            <>
+              <div className="h-[72px]" aria-hidden="true" />
+              <main id="main-content" className="flex-1" tabIndex={-1}>
+                <InvoiceViewPage />
               </main>
             </>
           } 
