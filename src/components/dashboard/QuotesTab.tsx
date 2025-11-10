@@ -180,6 +180,21 @@ export function QuotesTab() {
   };
 
   const handleUpdateQuoteStatus = async (quoteId: string, newStatus: Quote["status"]) => {
+    // Message de confirmation pour l'envoi
+    if (newStatus === "sent") {
+      const quote = quotes.find(q => q.id === quoteId);
+      if (!quote?.clientEmail) {
+        toast.error("Impossible d'envoyer : pas d'email client");
+        return;
+      }
+      
+      const confirmed = window.confirm(
+        `Êtes-vous sûr de vouloir envoyer ce devis par email à ${quote.clientEmail} ?\n\nLe devis sera marqué comme "envoyé" et un email sera envoyé au client.`
+      );
+      
+      if (!confirmed) return;
+    }
+
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
@@ -202,7 +217,7 @@ export function QuotesTab() {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success(`Devis ${newStatus === "sent" ? "envoyé" : "mis à jour"} avec succès${result.emailSent ? " (email envoyé)" : ""}`);
+        toast.success(`Devis ${newStatus === "sent" ? "envoyé" : "mis à jour"} avec succès${result.emailSent ? " 📧" : ""}`);
         fetchData();
       }
     } catch (error) {
@@ -278,6 +293,17 @@ export function QuotesTab() {
   };
 
   const handleSendReminder = async (quote: Quote) => {
+    // Message de confirmation
+    const confirmed = window.confirm(
+      `Renvoyer le devis ${quote.number} par email ?\n\n` +
+      `Client : ${quote.clientName}\n` +
+      `Email : ${quote.clientEmail}\n` +
+      `Montant : ${quote.amount.toLocaleString('fr-FR')} €\n\n` +
+      `Un email de rappel sera envoyé au client.`
+    );
+    
+    if (!confirmed) return;
+
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
@@ -297,7 +323,7 @@ export function QuotesTab() {
       );
 
       if (response.ok) {
-        toast.success("Email de rappel envoyé avec succès");
+        toast.success(`📧 Email de rappel envoyé à ${quote.clientEmail}`);
       } else {
         const result = await response.json();
         toast.error(result.error || "Erreur lors de l'envoi de l'email");
