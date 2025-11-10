@@ -46,6 +46,7 @@ import NotFoundPage from "./components/pages/NotFoundPage";
 import NotFoundPageSimple from "./components/pages/NotFoundPageSimple";
 import NotFoundPageUltraSimple from "./components/pages/NotFoundPageUltraSimple";
 import InvoiceViewPage from "./components/pages/InvoiceViewPage";
+import InvoiceSuccessPage from "./components/pages/InvoiceSuccessPage";
 
 // ==========================================
 // LAYOUT COMPONENTS
@@ -343,6 +344,15 @@ function AppContent() {
           } 
         />
         
+        {/* Invoice routes - IMPORTANT: More specific routes BEFORE less specific */}
+        <Route 
+          path="/invoice/:token/success" 
+          element={
+            <main id="main-content" className="flex-1" tabIndex={-1}>
+              <InvoiceSuccessPage />
+            </main>
+          } 
+        />
         <Route 
           path="/invoice/:token" 
           element={
