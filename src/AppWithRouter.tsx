@@ -47,6 +47,7 @@ import { PWADebugPanel } from "./components/PWADebugPanel";
 import { AutoServerDiagnostic } from "./components/AutoServerDiagnostic";
 import { CORSFixAlert } from "./components/CORSFixAlert";
 import { DeploymentNeededBanner } from "./components/DeploymentNeededBanner";
+import { HashRedirectHandler } from "./components/routing/HashRedirectHandler";
 import { registerServiceWorker } from "./utils/pwaHelpers";
 // ⚠️ IMPORTS COMMENTÉS TEMPORAIREMENT - Trop de scripts ralentissent le chargement
 // import "./utils/testDatabase";
@@ -302,6 +303,9 @@ function AppContent() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Hash URL Redirect Handler - Converts /#/path to /path */}
+      <HashRedirectHandler />
+      
       {/* Deployment Needed Banner - Top of page */}
       <DeploymentNeededBanner />
       
