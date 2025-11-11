@@ -42,11 +42,22 @@ export function CRMMasterList() {
         if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
         
+        console.log(`📦 API Response for ${currentTab}:`, data);
+        
         // Extract the array from the API response
-        const items = data[currentTab] || data.data || data || [];
+        // API returns: { success: true, leads: [...] } or { success: true, clients: [...] }
+        let items = [];
+        if (data.success) {
+          // Try different possible keys
+          items = data[currentTab] || data.data || [];
+        } else {
+          items = Array.isArray(data) ? data : [];
+        }
+        
+        console.log(`✅ Extracted ${items.length} items for ${currentTab}`);
         setEntities(Array.isArray(items) ? items : []);
       } catch (error) {
-        console.error(`Erreur de chargement des ${currentTab}:`, error);
+        console.error(`❌ Erreur de chargement des ${currentTab}:`, error);
         showToast(`Erreur de chargement des ${currentTab}`, 'error');
         setEntities([]);
       } finally {
