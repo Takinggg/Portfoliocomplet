@@ -18,6 +18,8 @@ import {
 import { useCRM } from '@/contexts/CRMContext';
 import { Button } from '@/components/ui/button';
 import { motion } from 'motion/react';
+import { createClient } from '@/utils/supabase/client';
+import { publicAnonKey } from '@/utils/supabase/info';
 
 interface EntityDetail {
   id: string;
@@ -51,11 +53,21 @@ export function CRMDetailPane() {
     const fetchEntity = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/make-server-04919ac5/${currentTab}/${selectedId}`);
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        const response = await fetch(`/make-server-04919ac5/${currentTab}/${selectedId}`, {
+          headers: {
+            'Authorization': `Bearer ${session?.access_token || publicAnonKey}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        
         if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
         setEntity(data);
       } catch (error) {
+        console.error('Erreur de chargement des détails:', error);
         showToast('Erreur de chargement des détails', 'error');
         setEntity(null);
       } finally {
@@ -64,7 +76,7 @@ export function CRMDetailPane() {
     };
 
     fetchEntity();
-  }, [selectedId, currentTab]);
+  }, [selectedId, currentTab, showToast]);
 
   // Get contextual actions based on entity type
   const getActions = () => {

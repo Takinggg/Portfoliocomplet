@@ -3,6 +3,8 @@ import { Search, MoreVertical, Circle } from 'lucide-react';
 import { useCRM } from '@/contexts/CRMContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { createClient } from '@/utils/supabase/client';
+import { publicAnonKey } from '@/utils/supabase/info';
 
 interface Entity {
   id: string;
@@ -27,11 +29,21 @@ export function CRMMasterList() {
     const fetchEntities = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/make-server-04919ac5/${currentTab}`);
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        const response = await fetch(`/make-server-04919ac5/${currentTab}`, {
+          headers: {
+            'Authorization': `Bearer ${session?.access_token || publicAnonKey}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        
         if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
         setEntities(data);
       } catch (error) {
+        console.error(`Erreur de chargement des ${currentTab}:`, error);
         showToast(`Erreur de chargement des ${currentTab}`, 'error');
         setEntities([]);
       } finally {
@@ -40,7 +52,7 @@ export function CRMMasterList() {
     };
 
     fetchEntities();
-  }, [currentTab]);
+  }, [currentTab, showToast]);
 
   // Filter entities based on search
   const filteredEntities = entities.filter((entity) => {
