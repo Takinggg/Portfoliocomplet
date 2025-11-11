@@ -49,12 +49,15 @@ export function CRMMasterList() {
         let items = [];
         if (data.success) {
           // Try different possible keys
+          console.log(`🔑 Looking for key: "${currentTab}" in data:`, Object.keys(data));
           items = data[currentTab] || data.data || [];
+          console.log(`📊 Found items:`, items);
         } else {
           items = Array.isArray(data) ? data : [];
         }
         
         console.log(`✅ Extracted ${items.length} items for ${currentTab}`);
+        console.log(`🎯 Setting entities to:`, items);
         setEntities(Array.isArray(items) ? items : []);
       } catch (error) {
         console.error(`❌ Erreur de chargement des ${currentTab}:`, error);
