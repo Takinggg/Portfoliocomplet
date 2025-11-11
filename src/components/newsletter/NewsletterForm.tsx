@@ -27,6 +27,8 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
     setIsSubmitting(true);
 
     try {
+      console.log("📧 Subscribing to newsletter:", email);
+      
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/newsletter/subscribe`,
         {
@@ -35,22 +37,29 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
             "Content-Type": "application/json",
             Authorization: `Bearer ${publicAnonKey}`,
           },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ email, source: "footer" }),
         }
       );
 
+      console.log("📧 Newsletter response status:", response.status);
+      
       const data = await response.json();
+      console.log("📧 Newsletter response data:", data);
 
       if (response.ok && data.success) {
         setIsSuccess(true);
         setEmail("");
-        toast.success("Email de confirmation envoyé ! Vérifiez votre boîte de réception.");
+        toast.success("✅ Merci ! Vous êtes inscrit à la newsletter.");
         onSuccess?.();
+        
+        // Reset success after 5s
+        setTimeout(() => setIsSuccess(false), 5000);
       } else {
+        console.error("❌ Newsletter error:", data);
         toast.error(data.error || "Une erreur est survenue");
       }
     } catch (error) {
-      console.error("Newsletter subscription error:", error);
+      console.error("❌ Newsletter subscription error:", error);
       toast.error("Impossible de s'abonner pour le moment");
     } finally {
       setIsSubmitting(false);
