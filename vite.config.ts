@@ -55,6 +55,39 @@
     build: {
       target: 'esnext',
       outDir: 'dist',
+      // Code splitting optimization
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // React vendor chunk
+            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+            // UI vendor chunk (animations, icons, components)
+            'ui-vendor': ['motion/react', 'lucide-react', 'canvas-confetti'],
+            // Form vendor chunk
+            'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
+            // Radix UI vendor chunk (all @radix-ui packages)
+            'radix-vendor': [
+              '@radix-ui/react-accordion',
+              '@radix-ui/react-alert-dialog',
+              '@radix-ui/react-avatar',
+              '@radix-ui/react-checkbox',
+              '@radix-ui/react-dialog',
+              '@radix-ui/react-dropdown-menu',
+              '@radix-ui/react-label',
+              '@radix-ui/react-popover',
+              '@radix-ui/react-select',
+              '@radix-ui/react-separator',
+              '@radix-ui/react-slot',
+              '@radix-ui/react-tabs',
+              '@radix-ui/react-tooltip',
+            ],
+            // Supabase vendor chunk
+            'supabase-vendor': ['@jsr/supabase__supabase-js'],
+          },
+        },
+      },
+      // Optimize chunk size
+      chunkSizeWarningLimit: 1000,
     },
     server: {
       port: 3000,

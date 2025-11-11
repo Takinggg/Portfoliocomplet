@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useParams } from "react-router-dom";
 import "./styles/globals.css";
 
@@ -21,32 +21,36 @@ if (window.location.hostname !== 'localhost') {
 }
 
 // ==========================================
-// PAGES
+// PAGES - LAZY LOADED FOR CODE SPLITTING
 // ==========================================
+// Critical pages (loaded immediately for first render)
 import HomePage from "./components/pages/HomePage";
-import ProjectsPage from "./components/pages/ProjectsPage";
-import ProjectDetailPage from "./components/pages/ProjectDetailPage";
-import ServicesPage from "./components/pages/ServicesPage";
-import AboutPage from "./components/pages/AboutPage";
-import ContactPage from "./components/pages/ContactPage";
-import BookingPage from "./components/pages/BookingPage";
-import DashboardPage from "./components/pages/DashboardPage";
-import LoginPage from "./components/pages/LoginPage";
-import { BlogPage } from "./components/pages/BlogPage";
-import { BlogPostPage } from "./components/pages/BlogPostPage";
-import { CaseStudiesPage } from "./components/pages/CaseStudiesPage";
-import { CaseStudyDetailPage } from "./components/pages/CaseStudyDetailPage";
-import FAQPage from "./components/pages/FAQPage";
-import { NewsletterConfirmPage } from "./components/pages/NewsletterConfirmPage";
-import ResourcesPage from "./components/pages/ResourcesPage";
-import TestimonialsPage from "./components/pages/TestimonialsPage";
-import ExampleDatabasePage from "./components/pages/ExampleDatabasePage";
-import SeedDataPage from "./components/pages/SeedDataPage";
-import NotFoundPage from "./components/pages/NotFoundPage";
-import NotFoundPageSimple from "./components/pages/NotFoundPageSimple";
-import NotFoundPageUltraSimple from "./components/pages/NotFoundPageUltraSimple";
-import InvoiceViewPage from "./components/pages/InvoiceViewPage";
-import InvoiceSuccessPage from "./components/pages/InvoiceSuccessPage";
+import { LoadingSpinner } from "./components/LoadingSpinner";
+
+// Non-critical pages (lazy loaded on demand)
+const ProjectsPage = lazy(() => import("./components/pages/ProjectsPage"));
+const ProjectDetailPage = lazy(() => import("./components/pages/ProjectDetailPage"));
+const ServicesPage = lazy(() => import("./components/pages/ServicesPage"));
+const AboutPage = lazy(() => import("./components/pages/AboutPage"));
+const ContactPage = lazy(() => import("./components/pages/ContactPage"));
+const BookingPage = lazy(() => import("./components/pages/BookingPage"));
+const DashboardPage = lazy(() => import("./components/pages/DashboardPage"));
+const LoginPage = lazy(() => import("./components/pages/LoginPage"));
+const BlogPage = lazy(() => import("./components/pages/BlogPage").then(m => ({ default: m.BlogPage })));
+const BlogPostPage = lazy(() => import("./components/pages/BlogPostPage").then(m => ({ default: m.BlogPostPage })));
+const CaseStudiesPage = lazy(() => import("./components/pages/CaseStudiesPage").then(m => ({ default: m.CaseStudiesPage })));
+const CaseStudyDetailPage = lazy(() => import("./components/pages/CaseStudyDetailPage").then(m => ({ default: m.CaseStudyDetailPage })));
+const FAQPage = lazy(() => import("./components/pages/FAQPage"));
+const NewsletterConfirmPage = lazy(() => import("./components/pages/NewsletterConfirmPage").then(m => ({ default: m.NewsletterConfirmPage })));
+const ResourcesPage = lazy(() => import("./components/pages/ResourcesPage"));
+const TestimonialsPage = lazy(() => import("./components/pages/TestimonialsPage"));
+const ExampleDatabasePage = lazy(() => import("./components/pages/ExampleDatabasePage"));
+const SeedDataPage = lazy(() => import("./components/pages/SeedDataPage"));
+const NotFoundPage = lazy(() => import("./components/pages/NotFoundPage"));
+const NotFoundPageSimple = lazy(() => import("./components/pages/NotFoundPageSimple"));
+const NotFoundPageUltraSimple = lazy(() => import("./components/pages/NotFoundPageUltraSimple"));
+const InvoiceViewPage = lazy(() => import("./components/pages/InvoiceViewPage"));
+const InvoiceSuccessPage = lazy(() => import("./components/pages/InvoiceSuccessPage"));
 
 // ==========================================
 // LAYOUT COMPONENTS
@@ -311,20 +315,25 @@ function AppContent() {
       <LanguageRouteSync />
       <ClientSideFallback />
       
-      <Routes>
-        {/* Protected routes */}
-        <Route 
-          path="/dashboard" 
-          element={
-            isAuthenticated ? (
-              <main id="main-content" className="flex-1" tabIndex={-1}>
-                <DashboardPage onLogout={handleLogout} onNavigate={(page) => navigate(page)} />
-              </main>
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          } 
-        />
+      <Suspense fallback={
+        <div className="min-h-screen flex items-center justify-center bg-[#0C0C0C]">
+          <LoadingSpinner />
+        </div>
+      }>
+        <Routes>
+          {/* Protected routes */}
+          <Route 
+            path="/dashboard" 
+            element={
+              isAuthenticated ? (
+                <main id="main-content" className="flex-1" tabIndex={-1}>
+                  <DashboardPage onLogout={handleLogout} onNavigate={(page) => navigate(page)} />
+                </main>
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            } 
+          />
         
         <Route 
           path="/login" 
@@ -407,6 +416,7 @@ function AppContent() {
         <Route path="/en/*" element={<NotFoundPageUltraSimple />} />
         <Route path="*" element={<NotFoundPageUltraSimple />} />
       </Routes>
+      </Suspense>
       
       <PWAInstallPrompt />
       <PWAUpdatePrompt />
