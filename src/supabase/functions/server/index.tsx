@@ -1494,80 +1494,86 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c)=>{
     // Send welcome email
     const emailResult = await sendEmail({
       to: email,
-      subject: "🎉 Bienvenue dans la newsletter de Maxence !",
+      subject: "✨ Bienvenue dans la newsletter !",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-          <div style="background: white; border-radius: 16px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
-            <h1 style="color: #1a1a1a; font-size: 32px; margin: 0 0 20px 0; text-align: center;">
-              🎉 Bienvenue !
-            </h1>
-            
-            <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-              Bonjour,
-            </p>
-            
-            <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-              Merci de vous être inscrit à ma newsletter ! 🚀
-            </p>
-            
-            <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-              Vous recevrez régulièrement :
-            </p>
-            
-            <ul style="color: #4a5568; font-size: 16px; line-height: 1.8; margin: 0 0 30px 0;">
-              <li>💡 Des conseils et astuces en développement web</li>
-              <li>🎨 Mes derniers projets et réalisations</li>
-              <li>📚 Des ressources exclusives pour développeurs</li>
-              <li>🚀 Les dernières tendances tech</li>
-            </ul>
-            
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 30px; margin: 30px 0; text-align: center;">
-              <a href="${Deno.env.get("FRONTEND_URL") || "https://maxence.design"}" 
-                 style="display: inline-block; background: white; color: #667eea; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-                🌐 Visiter le portfolio
-              </a>
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <style>
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
+              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+              .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+              .content { background: #F4F4F4; padding: 40px 30px; }
+              .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+              .button { display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
+              .highlight { background: #00FFC2; color: #0C0C0C; padding: 2px 8px; border-radius: 4px; }
+              .benefits-box { background: white; padding: 20px; border-left: 4px solid #00FFC2; margin: 20px 0; border-radius: 4px; }
+              .benefit-item { padding: 8px 0; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">
+                <h1 style="margin: 0; font-size: 28px;">✨ Bienvenue dans la newsletter !</h1>
+              </div>
+              <div class="content">
+                <p>Bonjour,</p>
+                
+                <p>Merci de vous être inscrit à la newsletter ! 🚀</p>
+                
+                <p>Vous recevrez régulièrement des contenus exclusifs :</p>
+                
+                <div class="benefits-box">
+                  <div class="benefit-item">💡 <strong>Conseils & astuces</strong> en développement web</div>
+                  <div class="benefit-item">🎨 <strong>Mes derniers projets</strong> et réalisations</div>
+                  <div class="benefit-item">📚 <strong>Ressources exclusives</strong> pour développeurs</div>
+                  <div class="benefit-item">🚀 <strong>Tendances tech</strong> et innovations</div>
+                  <div class="benefit-item">💼 <strong>Conseils freelance</strong> et business</div>
+                </div>
+                
+                <p>Retrouvez également tous mes projets et services sur mon portfolio :</p>
+                
+                <center>
+                  <a href="${Deno.env.get("FRONTEND_URL") || "https://maxence.design"}" class="button">Voir le portfolio</a>
+                </center>
+                
+                <p style="margin-top: 30px; font-size: 14px; color: #666;">
+                  À très bientôt dans votre boîte mail ! 📬<br>
+                  <strong>Maxence FOULON</strong><br>
+                  <span style="color: #999;">Développeur Full-Stack Freelance</span>
+                </p>
+              </div>
+              <div class="footer">
+                <p style="margin: 0;">© 2025 FOULON Maxence - Développeur Web Freelance</p>
+                <p style="margin: 5px 0 0 0; opacity: 0.8;">Pour vous désinscrire, contactez-moi à contact@maxence.design</p>
+              </div>
             </div>
-            
-            <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-              À très bientôt dans votre boîte mail ! 📬
-            </p>
-            
-            <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0;">
-              <strong>Maxence</strong><br>
-              <span style="color: #a0aec0; font-size: 14px;">Développeur Full-Stack Freelance</span>
-            </p>
-            
-            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
-            
-            <p style="color: #a0aec0; font-size: 12px; line-height: 1.5; text-align: center; margin: 0;">
-              Vous recevez cet email car vous vous êtes inscrit à la newsletter sur maxence.design<br>
-              Pour vous désinscrire, contactez-moi à contact@maxence.design
-            </p>
-          </div>
-        </div>
+          </body>
+        </html>
       `,
       text: `
-🎉 Bienvenue dans la newsletter de Maxence !
+✨ Bienvenue dans la newsletter !
 
 Bonjour,
 
-Merci de vous être inscrit à ma newsletter ! 🚀
+Merci de vous être inscrit à la newsletter ! 🚀
 
 Vous recevrez régulièrement :
-- 💡 Des conseils et astuces en développement web
-- 🎨 Mes derniers projets et réalisations
-- 📚 Des ressources exclusives pour développeurs
-- 🚀 Les dernières tendances tech
+💡 Conseils & astuces en développement web
+🎨 Mes derniers projets et réalisations
+📚 Ressources exclusives pour développeurs
+🚀 Tendances tech et innovations
+💼 Conseils freelance et business
 
 Visitez mon portfolio : ${Deno.env.get("FRONTEND_URL") || "https://maxence.design"}
 
 À très bientôt dans votre boîte mail ! 📬
 
-Maxence
+Maxence FOULON
 Développeur Full-Stack Freelance
 
----
-Vous recevez cet email car vous vous êtes inscrit à la newsletter sur maxence.design
+© 2025 FOULON Maxence - Développeur Web Freelance
 Pour vous désinscrire, contactez-moi à contact@maxence.design
       `
     });
