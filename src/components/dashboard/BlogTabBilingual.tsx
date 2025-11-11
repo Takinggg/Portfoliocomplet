@@ -124,6 +124,7 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
         {
           headers: {
             'apikey': publicAnonKey,
+            'Authorization': `Bearer ${publicAnonKey}`,
             'Content-Type': 'application/json',
           },
         }

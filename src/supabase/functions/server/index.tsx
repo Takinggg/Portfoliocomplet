@@ -2240,6 +2240,17 @@ app.get("/make-server-04919ac5/blog/posts", async (c)=>{
     const category = c.req.query("category");
     const tag = c.req.query("tag");
     
+    // If requesting admin features (status=all or status=draft), require auth
+    if (status && (status === "all" || status === "draft")) {
+      const authHeader = c.req.header("Authorization") || c.req.header("apikey");
+      if (!authHeader) {
+        return c.json({
+          success: false,
+          error: "Authentication required for admin features"
+        }, 401);
+      }
+    }
+    
     let posts = await kv.getByPrefix("blog:");
     
     // Filter by status (admin only)
@@ -2247,7 +2258,7 @@ app.get("/make-server-04919ac5/blog/posts", async (c)=>{
       posts = posts.filter(post => post.status === status);
     } else if (!status) {
       // Public API: only published posts
-      posts = posts.filter(post => post.published === true);
+      posts = posts.filter(post => post.status === "published");
     }
     
     // Filter by category (language-aware)
