@@ -316,9 +316,9 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
   });
 
   return (
-    <div className="min-h-screen bg-gray-900 p-6 space-y-6">
+    <div className="min-h-screen p-6 space-y-6" style={{ backgroundColor: '#111827' }}>
       {/* Header */}
-      <div className="flex items-center justify-between bg-gray-800/50 p-4 rounded-lg border border-gray-700">
+      <div className="flex items-center justify-between p-4 rounded-lg border" style={{ backgroundColor: 'rgba(31, 41, 55, 0.8)', borderColor: '#374151' }}>
         <div className="flex items-center gap-2">
           <Globe className="w-5 h-5 text-purple-400" />
           <h2 className="text-xl font-semibold text-white">
@@ -331,13 +331,18 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
             disabled={isRefreshing}
             variant="outline"
             size="sm"
-            className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
+            style={{ backgroundColor: '#374151', borderColor: '#4b5563', color: 'white' }}
+            className="hover:bg-gray-600"
           >
             <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
           </Button>
           <Button
-            onClick={() => setIsCreateOpen(true)}
-            className="bg-purple-600 hover:bg-purple-700 text-white border-0"
+            onClick={() => {
+              resetForm();
+              setIsCreateOpen(true);
+            }}
+            style={{ backgroundColor: '#7c3aed', color: 'white', border: 'none' }}
+            className="hover:bg-purple-700"
           >
             <Plus className="w-4 h-4 mr-2" />
             Nouvel article
@@ -346,7 +351,7 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-4 bg-gray-800/50 p-4 rounded-lg border border-gray-700">
+      <div className="flex items-center gap-4 p-4 rounded-lg border" style={{ backgroundColor: 'rgba(31, 41, 55, 0.8)', borderColor: '#374151' }}>
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
@@ -371,7 +376,7 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
       {/* Posts Grid */}
       <div className="grid gap-4">
         {filteredPosts.map((post) => (
-          <Card key={post.id} className="bg-gray-800 border-gray-700 p-4">
+          <Card key={post.id} className="p-4 border" style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-start gap-4">
