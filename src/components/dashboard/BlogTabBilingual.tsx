@@ -247,6 +247,7 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
         method,
         headers: {
           'apikey': publicAnonKey,
+          'Authorization': `Bearer ${publicAnonKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
@@ -279,6 +280,7 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
           method: 'DELETE',
           headers: {
             'apikey': publicAnonKey,
+            'Authorization': `Bearer ${publicAnonKey}`,
             'Content-Type': 'application/json',
           },
         }
