@@ -73,6 +73,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { LanguageRouteSync } from "./components/routing/LanguageRouteSync";
 import { GeoRedirect } from "./components/routing/GeoRedirect";
 import { ClientSideFallback } from "./components/routing/ClientSideFallback";
+import { ScrollToTop } from "./components/routing/ScrollToTop";
 
 // ==========================================
 // PWA COMPONENTS
@@ -312,6 +313,7 @@ function AppContent() {
   return (
     <div className="min-h-screen flex flex-col">
       <SkipNavigation />
+      <ScrollToTop />
       <LanguageRouteSync />
       <ClientSideFallback />
       
