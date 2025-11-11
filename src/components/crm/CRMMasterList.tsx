@@ -58,6 +58,9 @@ export function CRMMasterList() {
         
         console.log(`✅ Extracted ${items.length} items for ${currentTab}`);
         console.log(`🎯 Setting entities to:`, items);
+        if (items.length > 0) {
+          console.log(`🔬 First item structure:`, items[0]);
+        }
         setEntities(Array.isArray(items) ? items : []);
       } catch (error) {
         console.error(`❌ Erreur de chargement des ${currentTab}:`, error);
