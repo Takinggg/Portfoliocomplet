@@ -645,6 +645,84 @@ app.delete("/make-server-04919ac5/bookings/:id", requireAuth, async (c)=>{
   }
 });
 console.log("✅ Bookings routes added");
+
+// ===========================================================================
+// CALENDAR ROUTES - AVAILABILITIES & EVENTS
+// ===========================================================================
+app.get("/make-server-04919ac5/availabilities", requireAuth, async (c)=>{
+  try {
+    const availabilities = await kv.getByPrefix("availability:");
+    return c.json({
+      success: true,
+      availabilities: availabilities || []
+    });
+  } catch (error) {
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/availabilities", requireAuth, async (c)=>{
+  try {
+    const body = await c.req.json();
+    const availabilityId = `availability:${Date.now()}`;
+    await kv.set(availabilityId, {
+      id: availabilityId,
+      ...body,
+      createdAt: new Date().toISOString()
+    });
+    return c.json({
+      success: true,
+      availability: body
+    });
+  } catch (error) {
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
+app.get("/make-server-04919ac5/events", requireAuth, async (c)=>{
+  try {
+    const events = await kv.getByPrefix("event:");
+    return c.json({
+      success: true,
+      events: events || []
+    });
+  } catch (error) {
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/events", requireAuth, async (c)=>{
+  try {
+    const body = await c.req.json();
+    const eventId = `event:${Date.now()}`;
+    await kv.set(eventId, {
+      id: eventId,
+      ...body,
+      createdAt: new Date().toISOString()
+    });
+    return c.json({
+      success: true,
+      event: body
+    });
+  } catch (error) {
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
+console.log("✅ Calendar routes added (availabilities & events)");
+
 // ===========================================================================
 // EMAIL ROUTES - BOOKING CONFIRMATION
 // ===========================================================================
