@@ -1517,7 +1517,7 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c)=>{
       id: subscriberId,
       email,
       source: source || "website",
-      status: "active",
+      status: "confirmed", // Changed from "active" - direct confirmation since no email verification
       subscribedAt: new Date().toISOString(),
       language: lang
     };
