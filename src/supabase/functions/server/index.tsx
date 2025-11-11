@@ -1476,15 +1476,18 @@ console.log("✅ Projects routes added");
 // ===========================================================================
 app.post("/make-server-04919ac5/newsletter/subscribe", async (c)=>{
   try {
-    const { email, source, language } = await c.req.json();
+    const { email: rawEmail, source, language } = await c.req.json();
     
     // Detect language from request headers or body
     const lang = language || detectLanguage(c.req.raw.headers, 'fr');
     
-    if (!email) return c.json({
+    if (!rawEmail) return c.json({
       success: false,
       error: lang === 'en' ? "Email required" : "Email requis"
     }, 400);
+    
+    // Normalize email to lowercase to prevent duplicates with case variations
+    const email = rawEmail.toLowerCase().trim();
     
     // Validate email format
     if (!email.includes("@") || !email.includes(".")) {
@@ -1494,14 +1497,16 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c)=>{
       }, 400);
     }
     
-    // Check if email already exists
+    // Check if email already exists (case-insensitive comparison)
     const existingSubscribers = await kv.getByPrefix("subscriber:");
-    const alreadySubscribed = existingSubscribers.some(sub => sub.email === email);
+    const alreadySubscribed = existingSubscribers.some(sub => 
+      sub.email && sub.email.toLowerCase() === email
+    );
     
     if (alreadySubscribed) {
       console.log(`⚠️ Email already subscribed: ${email}`);
       return c.json({
-        success: true,
+        success: false, // Changed to false so frontend shows error toast
         message: lang === 'en' ? "You are already subscribed to the newsletter" : "Vous êtes déjà inscrit à la newsletter",
         alreadySubscribed: true
       });
