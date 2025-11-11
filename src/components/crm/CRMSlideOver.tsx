@@ -12,12 +12,11 @@ export function CRMSlideOver() {
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       showToast('Action effectuée avec succès', 'success');
       closeSlideOver();
@@ -303,7 +302,6 @@ export function CRMSlideOver() {
     <AnimatePresence>
       {isSlideOverOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -312,7 +310,6 @@ export function CRMSlideOver() {
             className="fixed inset-0 bg-black/50 z-40"
           />
 
-          {/* Slide Over Panel */}
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
@@ -321,7 +318,6 @@ export function CRMSlideOver() {
             className="fixed right-0 top-0 h-full w-full max-w-lg bg-[#0A0A0A] border-l border-white/10 z-50 shadow-2xl"
           >
             <form onSubmit={handleSubmit} className="h-full flex flex-col">
-              {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-white/10">
                 <h2 className="text-xl font-bold text-white">{getTitle()}</h2>
                 <Button
@@ -335,10 +331,8 @@ export function CRMSlideOver() {
                 </Button>
               </div>
 
-              {/* Content */}
               <div className="flex-1 overflow-y-auto p-6">{renderContent()}</div>
 
-              {/* Footer */}
               <div className="p-6 border-t border-white/10 flex gap-3">
                 <Button
                   type="button"
