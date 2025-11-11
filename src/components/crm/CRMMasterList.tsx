@@ -41,7 +41,10 @@ export function CRMMasterList() {
         
         if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
-        setEntities(data);
+        
+        // Extract the array from the API response
+        const items = data[currentTab] || data.data || data || [];
+        setEntities(Array.isArray(items) ? items : []);
       } catch (error) {
         console.error(`Erreur de chargement des ${currentTab}:`, error);
         showToast(`Erreur de chargement des ${currentTab}`, 'error');

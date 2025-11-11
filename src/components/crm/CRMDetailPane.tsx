@@ -65,7 +65,10 @@ export function CRMDetailPane() {
         
         if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
-        setEntity(data);
+        
+        // Extract the entity from the API response
+        const entityData = data[currentTab.slice(0, -1)] || data.data || data;
+        setEntity(entityData);
       } catch (error) {
         console.error('Erreur de chargement des détails:', error);
         showToast('Erreur de chargement des détails', 'error');
