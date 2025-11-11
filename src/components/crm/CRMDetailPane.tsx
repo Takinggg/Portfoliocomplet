@@ -19,7 +19,7 @@ import { useCRM } from '@/contexts/CRMContext';
 import { Button } from '@/components/ui/button';
 import { motion } from 'motion/react';
 import { createClient } from '@/utils/supabase/client';
-import { publicAnonKey } from '@/utils/supabase/info';
+import { publicAnonKey, API_BASE_URL } from '@/utils/supabase/info';
 
 interface EntityDetail {
   id: string;
@@ -56,7 +56,7 @@ export function CRMDetailPane() {
         const supabase = createClient();
         const { data: { session } } = await supabase.auth.getSession();
         
-        const response = await fetch(`/make-server-04919ac5/${currentTab}/${selectedId}`, {
+        const response = await fetch(`${API_BASE_URL}/${currentTab}/${selectedId}`, {
           headers: {
             'Authorization': `Bearer ${session?.access_token || publicAnonKey}`,
             'Content-Type': 'application/json',
