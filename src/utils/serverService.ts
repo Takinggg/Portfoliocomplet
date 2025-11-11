@@ -10,12 +10,12 @@ import { getErrorMessage, type ValidationResult } from './types/shared';
 export type ServerMode = "server" | "local" | "checking";
 
 // ============================================================================
-// MODE PRODUCTION: SERVEUR UNIQUEMENT
+// MODE DEVELOPMENT: FALLBACK LOCAL SI SERVEUR INDISPONIBLE
 // ============================================================================
-const PRODUCTION_MODE = true; // Mettre à false pour réactiver les fallbacks locaux
+const PRODUCTION_MODE = false; // true pour serveur only, false pour fallback local
 
-let currentMode: ServerMode = PRODUCTION_MODE ? "server" : "local";
-let serverAvailable: boolean = PRODUCTION_MODE; // true en production
+let currentMode: ServerMode = "checking"; // Démarrer en mode checking
+let serverAvailable: boolean = false; // Détecter automatiquement
 let lastCheck: number = 0;
 const CHECK_INTERVAL = 30000; // 30 secondes
 
