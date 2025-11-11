@@ -2148,7 +2148,13 @@ function ContactSection({ onNavigate }: HomePageProps) {
     }, 3000);
   };
 
-  const needPlaceholders: Record<string, string> = {
+  const needPlaceholders: Record<string, string> = language === 'en' ? {
+    design: "Describe your vision, brand identity, and design needs 🎨",
+    automation: "Tell me more about the processes you want to automate ⚡",
+    website: "Tell me about your web project: goals, features, target audience 🌐",
+    crm: "Explain your needs in lead, client, project, and invoice management 📊",
+    other: "Describe your need in detail 💬",
+  } : {
     design: "Décrivez votre vision, votre identité de marque, et vos besoins en design 🎨",
     automation: "Dites-m'en plus sur les processus que vous souhaitez automatiser ⚡",
     website: "Parlez-moi de votre projet web : objectifs, fonctionnalités, audience cible 🌐",
@@ -2418,17 +2424,22 @@ function ContactSection({ onNavigate }: HomePageProps) {
                   {/* Badge */}
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-mint/10 border border-mint/30 mb-4">
                     <Zap className="h-3 w-3 text-mint" />
-                    <span className="text-xs text-mint">Réponse rapide</span>
+                    <span className="text-xs text-mint">{language === 'en' ? 'Fast response' : 'Réponse rapide'}</span>
                   </div>
                   
-                  <h3 className="text-2xl font-bold mb-3">Envoyer un message</h3>
+                  <h3 className="text-2xl font-bold mb-3">{language === 'en' ? 'Send a message' : 'Envoyer un message'}</h3>
                   <p className="text-neutral-400 mb-6">
-                    Décrivez votre projet en quelques lignes. Réponse garantie sous 24h.
+                    {language === 'en' 
+                      ? 'Describe your project in a few lines. Response guaranteed within 24h.'
+                      : 'Décrivez votre projet en quelques lignes. Réponse garantie sous 24h.'}
                   </p>
                   
                   {/* Features list */}
                   <div className="space-y-2 mb-6">
-                    {["Formulaire rapide", "Sans engagement", "100% gratuit"].map((feature, i) => (
+                    {(language === 'en' 
+                      ? ["Quick form", "No commitment", "100% free"]
+                      : ["Formulaire rapide", "Sans engagement", "100% gratuit"]
+                    ).map((feature, i) => (
                       <motion.div
                         key={i}
                         initial={{ opacity: 0, x: -10 }}
@@ -2444,7 +2455,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                   </div>
                   
                   <div className="flex items-center gap-2 text-mint group-hover:gap-3 transition-all">
-                    <span>Commencer</span>
+                    <span>{language === 'en' ? 'Get started' : 'Commencer'}</span>
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
@@ -2455,16 +2466,20 @@ function ContactSection({ onNavigate }: HomePageProps) {
               {!formSubmitted ? (
                 <>
                   <DialogHeader>
-                    <DialogTitle className="text-2xl">Envoyez-moi un message</DialogTitle>
+                    <DialogTitle className="text-2xl">
+                      {language === 'en' ? 'Send me a message' : 'Envoyez-moi un message'}
+                    </DialogTitle>
                     <DialogDescription>
-                      Je vous répondrai dans les 24h. Tous les champs sont requis.
+                      {language === 'en' 
+                        ? "I'll respond within 24h. All fields are required."
+                        : 'Je vous répondrai dans les 24h. Tous les champs sont requis.'}
                     </DialogDescription>
                   </DialogHeader>
 
                   <form onSubmit={handleSubmit} className="space-y-6 mt-6">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="name">Nom / Entreprise</Label>
+                        <Label htmlFor="name">{language === 'en' ? 'Name / Company' : 'Nom / Entreprise'}</Label>
                         <Input
                           id="name"
                           required
@@ -2487,7 +2502,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="need">Type de besoin</Label>
+                      <Label htmlFor="need">{language === 'en' ? 'Type of need' : 'Type de besoin'}</Label>
                       <Select
                         value={formData.need}
                         onValueChange={(value) => {
@@ -2496,26 +2511,26 @@ function ContactSection({ onNavigate }: HomePageProps) {
                         }}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Sélectionnez votre besoin" />
+                          <SelectValue placeholder={language === 'en' ? 'Select your need' : 'Sélectionnez votre besoin'} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="design">🎨 Design & Identité visuelle</SelectItem>
-                          <SelectItem value="automation">⚡ Automatisation</SelectItem>
-                          <SelectItem value="website">🌐 Site web complet</SelectItem>
-                          <SelectItem value="crm">📊 Système CRM</SelectItem>
-                          <SelectItem value="other">💬 Autre</SelectItem>
+                          <SelectItem value="design">🎨 {language === 'en' ? 'Design & Branding' : 'Design & Identité visuelle'}</SelectItem>
+                          <SelectItem value="automation">⚡ {language === 'en' ? 'Automation' : 'Automatisation'}</SelectItem>
+                          <SelectItem value="website">🌐 {language === 'en' ? 'Complete website' : 'Site web complet'}</SelectItem>
+                          <SelectItem value="crm">📊 {language === 'en' ? 'CRM System' : 'Système CRM'}</SelectItem>
+                          <SelectItem value="other">💬 {language === 'en' ? 'Other' : 'Autre'}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="message">Votre message</Label>
+                      <Label htmlFor="message">{language === 'en' ? 'Your message' : 'Votre message'}</Label>
                       <Textarea
                         id="message"
                         required
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        placeholder={selectedNeed ? needPlaceholders[selectedNeed] : "Décrivez votre projet en détail..."}
+                        placeholder={selectedNeed ? needPlaceholders[selectedNeed] : (language === 'en' ? "Describe your project in detail..." : "Décrivez votre projet en détail...")}
                         className="min-h-[150px]"
                       />
                     </div>
@@ -2524,7 +2539,11 @@ function ContactSection({ onNavigate }: HomePageProps) {
                       <Upload className="h-5 w-5 text-mint flex-shrink-0" />
                       <div className="text-sm">
                         <p className="text-neutral-400">
-                          Besoin de partager un brief ou des fichiers ? <span className="text-mint cursor-pointer hover:underline">Cliquez ici</span>
+                          {language === 'en' ? (
+                            <>Need to share a brief or files? <span className="text-mint cursor-pointer hover:underline">Click here</span></>
+                          ) : (
+                            <>Besoin de partager un brief ou des fichiers ? <span className="text-mint cursor-pointer hover:underline">Cliquez ici</span></>
+                          )}
                         </p>
                       </div>
                     </div>
@@ -2534,7 +2553,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                       className="w-full bg-mint text-black hover:bg-mint/90 h-14 text-lg rounded-xl group relative overflow-hidden"
                     >
                       <span className="relative z-10 flex items-center justify-center">
-                        Envoyer le message
+                        {language === 'en' ? 'Send message' : 'Envoyer le message'}
                         <Send className="ml-2 h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                       </span>
                     </Button>
@@ -2655,27 +2674,31 @@ function ContactSection({ onNavigate }: HomePageProps) {
             transition={{ delay: 0.85 }}
             className="text-center text-2xl font-bold mb-12"
           >
-            Pourquoi me faire <span className="text-mint">confiance ?</span>
+            {language === 'en' ? (
+              <>Why <span className="text-mint">trust me?</span></>
+            ) : (
+              <>Pourquoi me faire <span className="text-mint">confiance ?</span></>
+            )}
           </motion.h3>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {[
               { 
                 icon: Clock, 
-                title: "Réponse sous 24h", 
-                desc: "Promesse garantie",
+                title: language === 'en' ? "Response within 24h" : "Réponse sous 24h", 
+                desc: language === 'en' ? "Guaranteed promise" : "Promesse garantie",
                 gradient: "from-mint/20 to-mint/5"
               },
               { 
                 icon: Shield, 
-                title: "Confidentialité garantie", 
-                desc: "Vos données sont protégées",
+                title: language === 'en' ? "Guaranteed confidentiality" : "Confidentialité garantie", 
+                desc: language === 'en' ? "Your data is protected" : "Vos données sont protégées",
                 gradient: "from-cyan-500/20 to-cyan-500/5"
               },
               { 
                 icon: MessageCircle, 
-                title: "Échanges humains", 
-                desc: "Pas de robots, que de l'humain",
+                title: language === 'en' ? "Human exchanges" : "Échanges humains", 
+                desc: language === 'en' ? "No bots, only human" : "Pas de robots, que de l'humain",
                 gradient: "from-mint/20 to-mint/5"
               },
             ].map((item, i) => (
