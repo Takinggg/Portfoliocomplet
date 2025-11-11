@@ -7942,7 +7942,6 @@ nav a:focus-visible, [role="navigation"] a:focus-visible {
   }
 }
 
-@import "tailwindcss";
 /* virtual-fs:file:///styles/globals.css */
 :root {
   --font-size: 16px;
