@@ -80,11 +80,15 @@ export function CRMMasterList() {
 
   // Filter entities based on search
   const filteredEntities = entities.filter((entity) => {
+    if (!searchQuery) return true; // Show all if no search query
+    
     const searchLower = searchQuery.toLowerCase();
     return (
       entity.name?.toLowerCase().includes(searchLower) ||
       entity.company?.toLowerCase().includes(searchLower) ||
       entity.email?.toLowerCase().includes(searchLower) ||
+      entity.number?.toLowerCase().includes(searchLower) ||
+      entity.clientName?.toLowerCase().includes(searchLower) ||
       entity.invoice_number?.toLowerCase().includes(searchLower) ||
       entity.quote_number?.toLowerCase().includes(searchLower)
     );
