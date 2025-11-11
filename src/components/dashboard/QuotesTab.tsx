@@ -30,7 +30,6 @@ import { createClient } from "../../utils/supabase/client";
 import { QuoteGenerator } from "../invoice/QuoteGenerator";
 import { QuoteEditDialog } from "./QuoteEditDialog";
 import { QuoteCreationDialog } from "./QuoteCreationDialog";
-import { QuotesDeploymentAlert } from "./QuotesDeploymentAlert";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 import { freelanceInfo } from "../../utils/freelanceConfig";
 
@@ -380,9 +379,6 @@ export function QuotesTab() {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-6"
     >
-      {/* Deployment Alert */}
-      <QuotesDeploymentAlert />
-
       {/* Header Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-black/40 border-[#00FFC2]/20">
