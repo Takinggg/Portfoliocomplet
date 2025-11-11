@@ -224,7 +224,8 @@ app.use("/*", cors({
   allowHeaders: [
     "Content-Type",
     "Authorization", 
-    "X-Requested-With"
+    "X-Requested-With",
+    "apikey" // Required for Supabase client requests
   ],
   allowMethods: [
     "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
