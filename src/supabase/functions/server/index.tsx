@@ -1,21 +1,75 @@
 // ============================================================================
-// COMPLETE SERVER - ALL ROUTES INCLUDING QUOTES AND INVOICES
-// Optimized version that works on Supabase
+// 🚀 PORTFOLIO CRM SERVER - SUPABASE EDGE FUNCTION
 // ============================================================================
+//
+// 📋 DESCRIPTION:
+//     Complete backend API for Portfolio CRM application
+//     Includes: Projects, Clients, Invoices, Quotes, Blog, Auth, Payments
+//
+// 🎯 DEPLOYMENT INSTRUCTIONS:
+//     1. Copy this entire file
+//     2. Go to Supabase Dashboard > Edge Functions
+//     3. Create new function named: make-server-04919ac5
+//     4. Paste this code
+//     5. Deploy
+//
+// ⚙️ REQUIRED ENVIRONMENT VARIABLES (Supabase Secrets):
+//     SUPABASE_URL=https://ptcxeqtjlxittxayffgu.supabase.co
+//     SUPABASE_SERVICE_ROLE_KEY=eyJ... (service role key)
+//     SUPABASE_ANON_KEY=eyJ... (public anon key)
+//     RESEND_API_KEY=re_... (for emails)
+//     ADMIN_PASSWORD=vbz657D9 (admin access)
+//     STRIPE_SECRET_KEY=sk_... (payments)
+//     STRIPE_WEBHOOK_SECRET=whsec_... (webhooks)
+//     FRONTEND_URL=https://your-domain.com
+//
+// 🔗 ENDPOINTS:
+//     GET  /projects - List all projects
+//     POST /projects - Create new project
+//     GET  /clients - List all clients
+//     POST /clients - Create new client
+//     GET  /invoices - List all invoices
+//     POST /invoices - Create new invoice
+//     GET  /quotes - List all quotes
+//     POST /quotes - Create new quote
+//     + 40+ other endpoints (blog, auth, payments, etc.)
+//
+// ============================================================================
+
+// TypeScript declarations for Deno runtime
+declare const Deno: {
+  env: {
+    get(key: string): string | undefined;
+  };
+  serve(handler: (req: Request) => Response | Promise<Response>): void;
+};
+
 import { Hono } from "npm:hono";
 import { cors } from "npm:hono/cors";
 import { logger } from "npm:hono/logger";
 import { createClient } from "jsr:@supabase/supabase-js@2";
+
+console.log("🚀 Portfolio CRM Server starting...");
+console.log("📅 Deployment:", new Date().toISOString());
+
 const app = new Hono();
-console.log("🚀 Starting COMPLETE server with ALL routes (quotes + invoices + blog CRUD)...");
+
 // ===========================================================================
-// SUPABASE CLIENT
+// 🔧 CONFIGURATION & CLIENTS
 // ===========================================================================
-const supabase = createClient(Deno.env.get("SUPABASE_URL") ?? "", Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "");
-// ===========================================================================
-// KV STORE
-// ===========================================================================
-const kvClient = ()=>createClient(Deno.env.get("SUPABASE_URL"), Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"));
+
+// Supabase client avec service role pour accès complet
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "https://ptcxeqtjlxittxayffgu.supabase.co";
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+
+if (!SUPABASE_SERVICE_ROLE_KEY) {
+  console.error("❌ SUPABASE_SERVICE_ROLE_KEY is required!");
+}
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+// Client KV pour le stockage de données
+const kvClient = () => createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 const kv = {
   set: async (key, value)=>{
     const supabaseKv = kvClient();
@@ -158,26 +212,25 @@ async function sendEmail(params) {
 }
 console.log("✅ Email service configured");
 // ===========================================================================
-// MIDDLEWARE
+// 🔧 MIDDLEWARE CONFIGURATION
 // ===========================================================================
+
+// Logging middleware pour débugger les requêtes
 app.use('*', logger(console.log));
+
+// CORS middleware - Permet les requêtes depuis le frontend
 app.use("/*", cors({
-  origin: "*",
+  origin: "*", // Accepte toutes les origines (production: spécifier votre domaine)
   allowHeaders: [
     "Content-Type",
-    "Authorization",
+    "Authorization", 
     "X-Requested-With"
   ],
   allowMethods: [
-    "GET",
-    "POST",
-    "PUT",
-    "PATCH",
-    "DELETE",
-    "OPTIONS"
+    "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
   ],
   credentials: false,
-  maxAge: 86400
+  maxAge: 86400 // Cache preflight 24h
 }));
 const requireAuth = async (c, next)=>{
   const authHeader = c.req.header("Authorization");
@@ -204,6 +257,144 @@ const requireAuth = async (c, next)=>{
   await next();
 };
 console.log("✅ Middleware configured");
+
+// =============================================================================
+// 📋 COMPLETE API ENDPOINTS DOCUMENTATION
+// =============================================================================
+/*
+  
+  🔗 BASE URL: https://your-project.supabase.co/functions/v1/make-server-04919ac5
+  
+  📊 HEALTH & SYSTEM
+  ─────────────────────
+  GET    /health                               - Server health check
+  POST   /auth/init-admin                      - Initialize admin user
+  POST   /auth/login                           - Admin authentication
+  POST   /seed-data                           - Seed initial data (Auth required)
+  
+  👥 CLIENTS MANAGEMENT
+  ─────────────────────
+  GET    /clients                              - List all clients (Auth required)
+  POST   /clients                              - Create new client (Auth required)  
+  GET    /clients/:id                          - Get client by ID (Auth required)
+  PUT    /clients/:id                          - Update client (Auth required)
+  DELETE /clients/:id                          - Delete client (Auth required)
+  
+  🎯 LEADS & CONVERSIONS
+  ──────────────────────
+  GET    /leads                                - List all leads (Auth required)
+  POST   /leads                                - Create new lead (Public)
+  GET    /leads/:id                            - Get lead by ID (Auth required)
+  PUT    /leads/:id                            - Update lead (Auth required)
+  DELETE /leads/:id                            - Delete lead (Auth required)
+  POST   /leads/:id/convert                    - Convert lead to client (Auth required)
+  
+  📅 BOOKING SYSTEM  
+  ─────────────────
+  GET    /bookings                             - List all bookings (Auth required)
+  POST   /bookings                             - Create new booking (Public)
+  PUT    /bookings/:id                         - Update booking (Auth required)
+  DELETE /bookings/:id                         - Delete booking (Auth required)
+  GET    /availabilities                       - Get available slots (Auth required)
+  POST   /availabilities                       - Set availability (Auth required)
+  GET    /events                               - List calendar events (Auth required)
+  POST   /events                               - Create calendar event (Auth required)
+  
+  📧 EMAIL SERVICES
+  ─────────────────
+  POST   /emails/booking-confirmation          - Send booking confirmation (Public)
+  POST   /emails/lead-confirmation             - Send lead confirmation (Public)
+  
+  📊 DASHBOARD & STATS
+  ────────────────────
+  GET    /dashboard/stats                      - Get dashboard statistics (Auth required)
+  
+  💰 QUOTES MANAGEMENT
+  ────────────────────
+  GET    /quotes                               - List all quotes (Auth required)
+  POST   /quotes                               - Create new quote (Auth required)
+  GET    /quotes/:id                           - Get quote by ID (Auth required)
+  PUT    /quotes/:id                           - Update quote (Auth required)
+  DELETE /quotes/:id                           - Delete quote (Auth required)
+  POST   /quotes/:id/convert                   - Convert quote to invoice (Auth required)
+  POST   /quotes/:id/send-reminder             - Send quote reminder (Auth required)
+  
+  🧾 INVOICES MANAGEMENT
+  ──────────────────────
+  GET    /invoices                             - List all invoices (Auth required)
+  POST   /invoices                             - Create new invoice (Auth required)
+  GET    /invoices/:id                         - Get invoice by ID (Auth required)
+  PUT    /invoices/:id                         - Update invoice (Auth required)
+  DELETE /invoices/:id                         - Delete invoice (Auth required)
+  POST   /invoices/:id/generate-link           - Generate public invoice link (Auth required)
+  GET    /invoices/view/:token                 - View public invoice (Public)
+  POST   /invoices/:id/send-reminder           - Send invoice reminder (Auth required)
+  
+  🎨 PROJECTS PORTFOLIO
+  ─────────────────────
+  GET    /projects                             - List all projects (Public)
+  POST   /projects                             - Create new project (Auth required)
+  GET    /projects/:id                         - Get project by ID (Public)
+  PUT    /projects/:id                         - Update project (Auth required)
+  DELETE /projects/:id                         - Delete project (Auth required)
+  
+  📬 NEWSLETTER SYSTEM
+  ────────────────────
+  POST   /newsletter/subscribe                 - Subscribe to newsletter (Public)
+  GET    /newsletter/stats                     - Get newsletter statistics (Public)
+  GET    /newsletter/subscribers               - List subscribers (Auth required)
+  DELETE /newsletter/subscribers/:id           - Remove subscriber (Auth required)
+  POST   /newsletter/send-campaign             - Send email campaign (Auth required)
+  
+  ⭐ TESTIMONIALS
+  ──────────────
+  GET    /testimonials                         - List public testimonials (Public)
+  GET    /testimonials/admin                   - List all testimonials (Auth required)
+  POST   /testimonials                         - Create testimonial (Public)
+  PUT    /testimonials/:id                     - Update testimonial (Auth required)
+  DELETE /testimonials/:id                     - Delete testimonial (Auth required)
+  
+  📝 BLOG SYSTEM
+  ──────────────
+  GET    /blog/posts                           - List all blog posts (Public)
+  POST   /blog/posts                           - Create new post (Auth required)
+  GET    /blog/posts/:id                       - Get post by ID (Public)
+  PUT    /blog/posts/:id                       - Update post (Auth required)
+  DELETE /blog/posts/:id                       - Delete post (Auth required)
+  
+  💳 STRIPE PAYMENTS
+  ──────────────────
+  POST   /stripe/create-checkout-session       - Create payment session (Public)
+  POST   /stripe/webhook                       - Stripe webhook handler (Public)
+  
+  📝 AUTHENTICATION NOTES
+  ───────────────────────
+  • Public endpoints: No authentication required
+  • Auth required: Send "Authorization: Bearer <token>" header
+  • Admin token: Use SUPABASE_ANON_KEY for admin access
+  • User tokens: Valid Supabase auth tokens from frontend
+  
+  📄 REQUEST/RESPONSE FORMAT
+  ─────────────────────────
+  • All requests: Content-Type: application/json
+  • Success response: { success: true, data: {...} }
+  • Error response: { success: false, error: "message" }
+  • List responses: { success: true, data: [...], total?: number }
+  
+  🔧 TESTING COMMANDS
+  ───────────────────
+  curl -X GET "https://your-project.supabase.co/functions/v1/make-server-04919ac5/health"
+  curl -X GET "https://your-project.supabase.co/functions/v1/make-server-04919ac5/projects"
+  curl -X POST "https://your-project.supabase.co/functions/v1/make-server-04919ac5/leads" \
+    -H "Content-Type: application/json" \
+    -d '{"name":"Test Lead","email":"test@example.com","message":"Test message"}'
+
+*/
+
+// =============================================================================
+// 🛣️  API ROUTES IMPLEMENTATION
+// =============================================================================
+
 // ===========================================================================
 // HEALTH CHECK
 // ===========================================================================
@@ -1470,7 +1661,150 @@ app.get("/make-server-04919ac5/projects/:id", async (c)=>{
     }, 500);
   }
 });
-console.log("✅ Projects routes added");
+
+// Create new project
+app.post("/make-server-04919ac5/projects", requireAuth, async (c) => {
+  try {
+    const body = await c.req.json();
+    const { 
+      title_fr, title_en, 
+      description_fr, description_en,
+      slug, technologies, category, 
+      status, featured, images, coverImage,
+      demoUrl, githubUrl,
+      clientName_fr, clientName_en,
+      duration, year, tags,
+      challenges_fr, challenges_en,
+      features_fr, features_en 
+    } = body;
+
+    // Validation
+    if (!title_fr || !description_fr) {
+      return c.json({
+        success: false,
+        error: "Title and description in French are required"
+      }, 400);
+    }
+
+    const projectId = `project:${Date.now()}@${slug || Date.now()}`;
+    
+    const projectData = {
+      id: projectId,
+      title_fr: title_fr || "",
+      title_en: title_en || title_fr,
+      description_fr: description_fr || "",
+      description_en: description_en || description_fr,
+      slug: slug || `project-${Date.now()}`,
+      technologies: technologies || [],
+      category: category || "web-development",
+      status: status || "draft",
+      featured: featured || false,
+      images: images || [],
+      coverImage: coverImage || "",
+      demoUrl: demoUrl || null,
+      githubUrl: githubUrl || null,
+      clientName_fr: clientName_fr || "",
+      clientName_en: clientName_en || clientName_fr,
+      duration: duration || "",
+      year: year || new Date().getFullYear(),
+      tags: tags || [],
+      challenges_fr: challenges_fr || [],
+      challenges_en: challenges_en || challenges_fr,
+      features_fr: features_fr || [],
+      features_en: features_en || features_fr,
+      views: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      // Legacy fields
+      title: title_fr,
+      description: description_fr
+    };
+    
+    await kv.set(projectId, projectData);
+    console.log(`✅ Project created: ${projectId}`);
+    
+    return c.json({
+      success: true,
+      project: projectData
+    });
+  } catch (error) {
+    console.error("❌ Error creating project:", error);
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
+// Update existing project
+app.put("/make-server-04919ac5/projects/:id", requireAuth, async (c) => {
+  try {
+    const projectId = decodeURIComponent(c.req.param("id"));
+    const body = await c.req.json();
+    
+    const existingProject = await kv.get(projectId);
+    if (!existingProject) {
+      return c.json({
+        success: false,
+        error: "Project not found"
+      }, 404);
+    }
+    
+    const updatedProject = {
+      ...existingProject,
+      ...body,
+      updatedAt: new Date().toISOString(),
+      // Update legacy fields if multilingual fields provided
+      title: body.title_fr || existingProject.title_fr || existingProject.title,
+      description: body.description_fr || existingProject.description_fr || existingProject.description
+    };
+    
+    await kv.set(projectId, updatedProject);
+    console.log(`✅ Project updated: ${projectId}`);
+    
+    return c.json({
+      success: true,
+      project: updatedProject
+    });
+  } catch (error) {
+    console.error("❌ Error updating project:", error);
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
+// Delete project
+app.delete("/make-server-04919ac5/projects/:id", requireAuth, async (c) => {
+  try {
+    const projectId = decodeURIComponent(c.req.param("id"));
+    
+    const existingProject = await kv.get(projectId);
+    if (!existingProject) {
+      return c.json({
+        success: false,
+        error: "Project not found"
+      }, 404);
+    }
+    
+    await kv.del(projectId);
+    console.log(`✅ Project deleted: ${projectId}`);
+    
+    return c.json({
+      success: true,
+      message: "Project deleted successfully"
+    });
+  } catch (error) {
+    console.error("❌ Error deleting project:", error);
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
+console.log("✅ Projects CRUD routes added (GET, POST, PUT, DELETE)");
 // ===========================================================================
 // NEWSLETTER ROUTES
 // ===========================================================================
@@ -2547,9 +2881,58 @@ app.post("/make-server-04919ac5/stripe/webhook", async (c)=>{
 
 console.log("✅ Stripe payment routes added");
 
-// ===========================================================================
-// START SERVER
-// ===========================================================================
-console.log("🚀 Starting server...");
+// =============================================================================
+// 🚀 START SERVER & DEPLOYMENT VERIFICATION  
+// =============================================================================
+console.log("🚀 Starting Portfolio CRM Server...");
+console.log("📊 Features: Clients, Leads, Bookings, Quotes, Invoices, Blog, Payments");
+console.log("🔗 Base URL: /functions/v1/make-server-04919ac5");
+
+// Start the Deno server
 Deno.serve(app.fetch);
-console.log("✅ Server started successfully with QUOTES + INVOICES + BLOG CRUD + STRIPE PAYMENTS!");
+
+console.log("✅ Server started successfully!");
+console.log("📋 Next steps after deployment:");
+console.log("   1. Test health: GET /make-server-04919ac5/health");
+console.log("   2. Initialize admin: POST /make-server-04919ac5/auth/init-admin");
+console.log("   3. Test projects: GET /make-server-04919ac5/projects");
+console.log("   4. Check dashboard: GET /make-server-04919ac5/dashboard/stats");
+
+/*
+============================================================================
+🎯 POST-DEPLOYMENT CHECKLIST
+============================================================================
+
+□ 1. DEPLOY TO SUPABASE
+   • Go to Supabase Dashboard > Edge Functions
+   • Create new function named: make-server-04919ac5  
+   • Copy this entire file content and paste it
+   • Click "Deploy"
+
+□ 2. CONFIGURE ENVIRONMENT VARIABLES
+   • Go to Settings > Edge Functions > Environment Variables
+   • Add all 8 required variables:
+     - SUPABASE_URL
+     - SUPABASE_SERVICE_ROLE_KEY  
+     - SUPABASE_ANON_KEY
+     - RESEND_API_KEY
+     - ADMIN_PASSWORD
+     - STRIPE_SECRET_KEY
+     - STRIPE_WEBHOOK_SECRET
+     - FRONTEND_URL
+
+□ 3. TEST DEPLOYMENT
+   curl -X GET "https://your-project.supabase.co/functions/v1/make-server-04919ac5/health"
+   Expected: {"success": true, "message": "Server is healthy", "timestamp": "..."}
+
+□ 4. INITIALIZE DATA
+   curl -X POST "https://your-project.supabase.co/functions/v1/make-server-04919ac5/auth/init-admin"
+   Expected: {"success": true, "message": "Admin initialized"}
+
+□ 5. VERIFY FRONTEND CONNECTION
+   • Update frontend serverService.ts with deployed URL
+   • Set PRODUCTION_MODE = true
+   • Test from portfolio website
+
+============================================================================
+*/
