@@ -38,7 +38,6 @@ import {
 import { BlogPost } from "../blog/BlogPostCard";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 import { RichTextEditor } from "../blog/RichTextEditor";
-import { BilingualFields } from "../blog/BilingualFields";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { toast } from "sonner";
 

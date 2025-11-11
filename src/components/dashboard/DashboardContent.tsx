@@ -6,7 +6,7 @@ import { DashboardRouter } from "./DashboardRouter";
 import EmailSettings from "./EmailSettings";
 import { AnalyticsTab } from "./AnalyticsTab";
 import { ExpressTab } from "./ExpressTab";
-import { BlogTab } from "./BlogTab";
+import { BlogTabBilingual } from "./BlogTabBilingual";
 import { CaseStudiesTab } from "./CaseStudiesTab";
 import { NewsletterTab } from "./NewsletterTab";
 import { TestimonialsTab } from "./TestimonialsTab";
@@ -43,9 +43,9 @@ export function DashboardContent({ currentView, renderView, leads = [], clients 
     return <AnalyticsTab leads={leads} clients={clients} projects={projects} invoices={invoices} quotes={quotes} />;
   }
   
-  // Si c'est la vue blog, utiliser le composant BlogTab
+  // Si c'est la vue blog, utiliser le composant BlogTabBilingual
   if (currentView === "blog") {
-    return <BlogTab />;
+    return <BlogTabBilingual />;
   }
   
   // Si c'est la vue case-studies, utiliser le composant CaseStudiesTab
