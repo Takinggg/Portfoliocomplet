@@ -1490,10 +1490,99 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c)=>{
     };
     await kv.set(subscriberId, subscriberData);
     console.log(`✅ New subscriber: ${email}`);
+    
+    // Send welcome email
+    const emailResult = await sendEmail({
+      to: email,
+      subject: "🎉 Bienvenue dans la newsletter de Maxence !",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <div style="background: white; border-radius: 16px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+            <h1 style="color: #1a1a1a; font-size: 32px; margin: 0 0 20px 0; text-align: center;">
+              🎉 Bienvenue !
+            </h1>
+            
+            <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+              Bonjour,
+            </p>
+            
+            <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+              Merci de vous être inscrit à ma newsletter ! 🚀
+            </p>
+            
+            <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+              Vous recevrez régulièrement :
+            </p>
+            
+            <ul style="color: #4a5568; font-size: 16px; line-height: 1.8; margin: 0 0 30px 0;">
+              <li>💡 Des conseils et astuces en développement web</li>
+              <li>🎨 Mes derniers projets et réalisations</li>
+              <li>📚 Des ressources exclusives pour développeurs</li>
+              <li>🚀 Les dernières tendances tech</li>
+            </ul>
+            
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 30px; margin: 30px 0; text-align: center;">
+              <a href="${Deno.env.get("FRONTEND_URL") || "https://maxence.design"}" 
+                 style="display: inline-block; background: white; color: #667eea; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                🌐 Visiter le portfolio
+              </a>
+            </div>
+            
+            <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+              À très bientôt dans votre boîte mail ! 📬
+            </p>
+            
+            <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0;">
+              <strong>Maxence</strong><br>
+              <span style="color: #a0aec0; font-size: 14px;">Développeur Full-Stack Freelance</span>
+            </p>
+            
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+            
+            <p style="color: #a0aec0; font-size: 12px; line-height: 1.5; text-align: center; margin: 0;">
+              Vous recevez cet email car vous vous êtes inscrit à la newsletter sur maxence.design<br>
+              Pour vous désinscrire, contactez-moi à contact@maxence.design
+            </p>
+          </div>
+        </div>
+      `,
+      text: `
+🎉 Bienvenue dans la newsletter de Maxence !
+
+Bonjour,
+
+Merci de vous être inscrit à ma newsletter ! 🚀
+
+Vous recevrez régulièrement :
+- 💡 Des conseils et astuces en développement web
+- 🎨 Mes derniers projets et réalisations
+- 📚 Des ressources exclusives pour développeurs
+- 🚀 Les dernières tendances tech
+
+Visitez mon portfolio : ${Deno.env.get("FRONTEND_URL") || "https://maxence.design"}
+
+À très bientôt dans votre boîte mail ! 📬
+
+Maxence
+Développeur Full-Stack Freelance
+
+---
+Vous recevez cet email car vous vous êtes inscrit à la newsletter sur maxence.design
+Pour vous désinscrire, contactez-moi à contact@maxence.design
+      `
+    });
+    
+    if (emailResult.success) {
+      console.log(`📧 Welcome email sent to ${email}`);
+    } else {
+      console.error(`⚠️ Failed to send welcome email to ${email}:`, emailResult.error);
+    }
+    
     return c.json({
       success: true,
       message: "Inscription réussie !",
-      alreadySubscribed: false
+      alreadySubscribed: false,
+      emailSent: emailResult.success
     });
   } catch (error) {
     console.error("❌ Error subscribing:", error);
