@@ -354,13 +354,16 @@ console.log("✅ Middleware configured");
   PUT    /testimonials/:id                     - Update testimonial (Auth required)
   DELETE /testimonials/:id                     - Delete testimonial (Auth required)
   
-  📝 BLOG SYSTEM
-  ──────────────
-  GET    /blog/posts                           - List all blog posts (Public)
-  POST   /blog/posts                           - Create new post (Auth required)
-  GET    /blog/posts/:id                       - Get post by ID (Public)
-  PUT    /blog/posts/:id                       - Update post (Auth required)
+  📝 ENHANCED BILINGUAL BLOG SYSTEM
+  ─────────────────────────────────
+  GET    /blog/posts                           - List posts (Public, supports ?lang=fr/en, ?category, ?tag, ?status)
+  POST   /blog/posts                           - Create post with bilingual support (Auth required)
+  GET    /blog/posts/:slug                     - Get post by slug (Public, supports ?lang=fr/en)
+  PUT    /blog/posts/:id                       - Update post with bilingual support (Auth required)
   DELETE /blog/posts/:id                       - Delete post (Auth required)
+  GET    /blog/tags                            - Get available tags (Public, supports ?lang=fr/en)
+  GET    /blog/categories                      - Get available categories (Public, supports ?lang=fr/en)
+  GET    /blog/stats                           - Get blog statistics (Public)
   
   💳 STRIPE PAYMENTS
   ──────────────────
@@ -2228,78 +2231,248 @@ console.log("✅ Testimonials routes added");
 // ===========================================================================
 // BLOG ROUTES
 // ===========================================================================
+// Get all blog posts - ENHANCED BILINGUAL VERSION
 app.get("/make-server-04919ac5/blog/posts", async (c)=>{
   try {
-    const posts = await kv.getByPrefix("blog:");
+    const lang = c.req.query("lang") || "fr";
+    const status = c.req.query("status"); // For admin: draft, published, all
+    const category = c.req.query("category");
+    const tag = c.req.query("tag");
+    
+    let posts = await kv.getByPrefix("blog:");
+    
+    // Filter by status (admin only)
+    if (status && status !== "all") {
+      posts = posts.filter(post => post.status === status);
+    } else if (!status) {
+      // Public API: only published posts
+      posts = posts.filter(post => post.published === true);
+    }
+    
+    // Filter by category (language-aware)
+    if (category) {
+      posts = posts.filter(post => {
+        const postCategory = lang === 'en' 
+          ? (post.category_en || post.category) 
+          : (post.category_fr || post.category);
+        return postCategory.toLowerCase().includes(category.toLowerCase());
+      });
+    }
+    
+    // Filter by tag (language-aware)
+    if (tag) {
+      posts = posts.filter(post => {
+        const postTags = lang === 'en' 
+          ? (post.tags_en || post.tags || [])
+          : (post.tags_fr || post.tags || []);
+        return postTags.some(t => 
+          t.toLowerCase().includes(tag.toLowerCase())
+        );
+      });
+    }
+    
+    // Sort by publication date (newest first)
+    const sorted = posts.sort((a, b) => {
+      const dateA = new Date(a.publishedAt || a.createdAt || 0).getTime();
+      const dateB = new Date(b.publishedAt || b.createdAt || 0).getTime();
+      return dateB - dateA;
+    });
+    
+    console.log(`✅ Found ${sorted.length} blog posts (lang: ${lang}, status: ${status || 'published'})`);
+    
     return c.json({
       success: true,
-      posts
+      posts: sorted,
+      total: sorted.length,
+      filters: {
+        lang,
+        status: status || 'published',
+        category,
+        tag
+      }
     });
   } catch (error) {
+    console.error("❌ Error fetching blog posts:", error);
     return c.json({
       success: false,
       error: error.message
     }, 500);
   }
 });
+
+// Get single blog post by slug - ENHANCED BILINGUAL VERSION
 app.get("/make-server-04919ac5/blog/posts/:slug", async (c)=>{
   try {
     const slug = c.req.param("slug");
+    const lang = c.req.query("lang") || "fr";
+    
     const posts = await kv.getByPrefix("blog:");
-    const post = posts.find((p)=>p.slug === slug);
-    if (!post) return c.json({
-      success: false,
-      error: "Post not found"
-    }, 404);
+    
+    // Search by language-specific slug first, then fallback
+    let post = posts.find((p) => {
+      if (lang === 'en') {
+        return p.slug_en === slug || p.slug === slug;
+      } else {
+        return p.slug_fr === slug || p.slug === slug;
+      }
+    });
+    
+    if (!post) {
+      return c.json({
+        success: false,
+        error: "Post not found"
+      }, 404);
+    }
+    
+    // Increment view count by language
+    if (!post.viewsByLang) {
+      post.viewsByLang = { fr: 0, en: 0 };
+    }
+    post.viewsByLang[lang] = (post.viewsByLang[lang] || 0) + 1;
+    post.views = (post.views || 0) + 1;
+    
+    // Update the post with new view count
+    await kv.set(post.id, post);
+    
+    console.log(`✅ Blog post viewed: ${post.id} (${lang})`);
+    
     return c.json({
       success: true,
-      post
+      post,
+      lang,
+      url: lang === 'en' ? post.url_en : post.url_fr
     });
   } catch (error) {
+    console.error("❌ Error fetching blog post:", error);
     return c.json({
       success: false,
       error: error.message
     }, 500);
   }
 });
-// Create a new blog post
+// Create a new blog post - ENHANCED BILINGUAL VERSION
 app.post("/make-server-04919ac5/blog/posts", requireAuth, async (c)=>{
   try {
     const body = await c.req.json();
-    const { title_fr, title_en, slug, excerpt_fr, excerpt_en, content_fr, content_en, coverImage, category, tags, status } = body;
+    const { 
+      title_fr, title_en, 
+      slug_fr, slug_en,
+      excerpt_fr, excerpt_en, 
+      content_fr, content_en, 
+      coverImage, 
+      category_fr, category_en,
+      tags_fr, tags_en,
+      status,
+      readTime_fr, readTime_en,
+      seo_description_fr, seo_description_en,
+      seo_keywords_fr, seo_keywords_en
+    } = body;
+
+    // Enhanced validation
     if (!title_fr || !content_fr) {
       return c.json({
         success: false,
         error: "Title and content in French are required"
       }, 400);
     }
-    const postId = `blog:${Date.now()}@${slug || Date.now()}`;
+
+    // Generate separate slugs if not provided
+    const generateSlug = (title) => {
+      return title
+        .toLowerCase()
+        .replace(/[àáâãäå]/g, 'a')
+        .replace(/[èéêë]/g, 'e')
+        .replace(/[ìíîï]/g, 'i')
+        .replace(/[òóôõö]/g, 'o')
+        .replace(/[ùúûü]/g, 'u')
+        .replace(/[ýÿ]/g, 'y')
+        .replace(/[ñ]/g, 'n')
+        .replace(/[ç]/g, 'c')
+        .replace(/[^a-z0-9]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+    };
+
+    const finalSlugFr = slug_fr || generateSlug(title_fr);
+    const finalSlugEn = slug_en || generateSlug(title_en || title_fr);
+    
+    // Check for duplicate slugs
+    const existingPosts = await kv.getByPrefix("blog:");
+    const slugExists = existingPosts.some(post => 
+      post.slug_fr === finalSlugFr || 
+      post.slug_en === finalSlugEn ||
+      post.slug === finalSlugFr || 
+      post.slug === finalSlugEn
+    );
+    
+    if (slugExists) {
+      return c.json({
+        success: false,
+        error: "A post with this slug already exists"
+      }, 400);
+    }
+
+    const postId = `blog:${Date.now()}@${finalSlugFr}`;
     const postData = {
       id: postId,
+      
+      // Bilingual content
       title_fr: title_fr || "",
-      title_en: title_en || "",
-      slug: slug || `post-${Date.now()}`,
+      title_en: title_en || title_fr, // Fallback to French
       excerpt_fr: excerpt_fr || "",
-      excerpt_en: excerpt_en || "",
+      excerpt_en: excerpt_en || excerpt_fr,
       content_fr: content_fr || "",
-      content_en: content_en || "",
+      content_en: content_en || content_fr,
+      
+      // Bilingual SEO
+      seo_description_fr: seo_description_fr || excerpt_fr,
+      seo_description_en: seo_description_en || excerpt_en || excerpt_fr,
+      seo_keywords_fr: seo_keywords_fr || [],
+      seo_keywords_en: seo_keywords_en || seo_keywords_fr || [],
+      
+      // Bilingual slugs and URLs
+      slug_fr: finalSlugFr,
+      slug_en: finalSlugEn,
+      url_fr: `/fr/blog/${finalSlugFr}`,
+      url_en: `/en/blog/${finalSlugEn}`,
+      
+      // Bilingual categories and tags
+      category_fr: category_fr || "développement",
+      category_en: category_en || category_fr || "development",
+      tags_fr: tags_fr || [],
+      tags_en: tags_en || tags_fr || [],
+      
+      // Reading time per language
+      readTime_fr: readTime_fr || Math.ceil((content_fr || "").split(' ').length / 200),
+      readTime_en: readTime_en || Math.ceil((content_en || content_fr || "").split(' ').length / 200),
+      
+      // Media and metadata
       coverImage: coverImage || "",
-      category: category || "development",
-      tags: tags || [],
       status: status || "draft",
       published: status === "published",
       publishedAt: status === "published" ? new Date().toISOString() : null,
       views: 0,
-      readTime: body.readTime || 5,
+      viewsByLang: { fr: 0, en: 0 },
+      
+      // Timestamps
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      
       // Legacy fields for backward compatibility
       title: title_fr,
       excerpt: excerpt_fr,
-      content: content_fr
+      content: content_fr,
+      slug: finalSlugFr, // Primary slug in French
+      category: category_fr || "développement",
+      tags: tags_fr || [],
+      readTime: readTime_fr || Math.ceil((content_fr || "").split(' ').length / 200)
     };
+
     await kv.set(postId, postData);
-    console.log(`✅ Blog post created: ${postId}`);
+    console.log(`✅ Bilingual blog post created: ${postId}`);
+    console.log(`   FR: /fr/blog/${finalSlugFr}`);
+    console.log(`   EN: /en/blog/${finalSlugEn}`);
+    
     return c.json({
       success: true,
       post: postData
@@ -2312,26 +2485,111 @@ app.post("/make-server-04919ac5/blog/posts", requireAuth, async (c)=>{
     }, 500);
   }
 });
-// Update a blog post
+// Update a blog post - ENHANCED BILINGUAL VERSION
 app.put("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c)=>{
   try {
     const postId = decodeURIComponent(c.req.param("id"));
     const body = await c.req.json();
     const existingPost = await kv.get(postId);
-    if (!existingPost) return c.json({
-      success: false,
-      error: "Post not found"
-    }, 404);
+    
+    if (!existingPost) {
+      return c.json({
+        success: false,
+        error: "Post not found"
+      }, 404);
+    }
+
+    // Handle slug updates with validation
+    let updatedSlugFr = body.slug_fr || existingPost.slug_fr || existingPost.slug;
+    let updatedSlugEn = body.slug_en || existingPost.slug_en || existingPost.slug;
+    
+    // Generate slug function
+    const generateSlug = (title) => {
+      return title
+        .toLowerCase()
+        .replace(/[àáâãäå]/g, 'a')
+        .replace(/[èéêë]/g, 'e')
+        .replace(/[ìíîï]/g, 'i')
+        .replace(/[òóôõö]/g, 'o')
+        .replace(/[ùúûü]/g, 'u')
+        .replace(/[ýÿ]/g, 'y')
+        .replace(/[ñ]/g, 'n')
+        .replace(/[ç]/g, 'c')
+        .replace(/[^a-z0-9]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+    };
+
+    // Auto-generate slugs if titles changed
+    if (body.title_fr && !body.slug_fr) {
+      updatedSlugFr = generateSlug(body.title_fr);
+    }
+    if (body.title_en && !body.slug_en) {
+      updatedSlugEn = generateSlug(body.title_en);
+    }
+
+    // Check for duplicate slugs (excluding current post)
+    if (body.slug_fr || body.slug_en || body.title_fr || body.title_en) {
+      const existingPosts = await kv.getByPrefix("blog:");
+      const slugExists = existingPosts.some(post => 
+        post.id !== postId && (
+          post.slug_fr === updatedSlugFr || 
+          post.slug_en === updatedSlugEn ||
+          post.slug === updatedSlugFr || 
+          post.slug === updatedSlugEn
+        )
+      );
+      
+      if (slugExists) {
+        return c.json({
+          success: false,
+          error: "A post with this slug already exists"
+        }, 400);
+      }
+    }
+
+    // Calculate reading times if content updated
+    const readTimeFr = body.content_fr 
+      ? Math.ceil(body.content_fr.split(' ').length / 200)
+      : existingPost.readTime_fr || existingPost.readTime || 5;
+      
+    const readTimeEn = body.content_en 
+      ? Math.ceil(body.content_en.split(' ').length / 200)
+      : existingPost.readTime_en || existingPost.readTime || 5;
+
     const updatedPost = {
       ...existingPost,
       ...body,
+      
+      // Update bilingual slugs and URLs
+      slug_fr: updatedSlugFr,
+      slug_en: updatedSlugEn,
+      url_fr: `/fr/blog/${updatedSlugFr}`,
+      url_en: `/en/blog/${updatedSlugEn}`,
+      
+      // Update reading times
+      readTime_fr: readTimeFr,
+      readTime_en: readTimeEn,
+      
+      // Update SEO if not provided
+      seo_description_fr: body.seo_description_fr || body.excerpt_fr || existingPost.seo_description_fr,
+      seo_description_en: body.seo_description_en || body.excerpt_en || existingPost.seo_description_en,
+      
+      // Publishing logic
       published: body.status === "published",
-      publishedAt: body.status === "published" && !existingPost.publishedAt ? new Date().toISOString() : existingPost.publishedAt,
+      publishedAt: body.status === "published" && !existingPost.publishedAt 
+        ? new Date().toISOString() 
+        : existingPost.publishedAt,
       updatedAt: new Date().toISOString(),
-      // Update legacy fields if multilingual fields are provided
+      
+      // Update legacy fields for backward compatibility
       title: body.title_fr || existingPost.title_fr || existingPost.title,
       excerpt: body.excerpt_fr || existingPost.excerpt_fr || existingPost.excerpt,
-      content: body.content_fr || existingPost.content_fr || existingPost.content
+      content: body.content_fr || existingPost.content_fr || existingPost.content,
+      slug: updatedSlugFr, // Primary slug in French
+      category: body.category_fr || existingPost.category_fr || existingPost.category,
+      tags: body.tags_fr || existingPost.tags_fr || existingPost.tags,
+      readTime: readTimeFr
     };
     await kv.set(postId, updatedPost);
     console.log(`✅ Blog post updated: ${postId}`);
@@ -2370,7 +2628,104 @@ app.delete("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c)=>{
     }, 500);
   }
 });
-console.log("✅ ALL Blog routes added (GET/POST/PUT/DELETE)");
+// Get available blog tags - BILINGUAL
+app.get("/make-server-04919ac5/blog/tags", async (c) => {
+  try {
+    const lang = c.req.query("lang") || "fr";
+    const posts = await kv.getByPrefix("blog:");
+    
+    // Extract all tags by language
+    const allTags = new Set();
+    posts.forEach(post => {
+      const tags = lang === 'en' 
+        ? (post.tags_en || post.tags || [])
+        : (post.tags_fr || post.tags || []);
+      tags.forEach(tag => allTags.add(tag));
+    });
+    
+    const tagsArray = Array.from(allTags).sort();
+    
+    return c.json({
+      success: true,
+      tags: tagsArray,
+      lang,
+      total: tagsArray.length
+    });
+  } catch (error) {
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
+// Get available blog categories - BILINGUAL
+app.get("/make-server-04919ac5/blog/categories", async (c) => {
+  try {
+    const lang = c.req.query("lang") || "fr";
+    const posts = await kv.getByPrefix("blog:");
+    
+    // Extract all categories by language
+    const allCategories = new Set();
+    posts.forEach(post => {
+      const category = lang === 'en' 
+        ? (post.category_en || post.category)
+        : (post.category_fr || post.category);
+      if (category) allCategories.add(category);
+    });
+    
+    const categoriesArray = Array.from(allCategories).sort();
+    
+    return c.json({
+      success: true,
+      categories: categoriesArray,
+      lang,
+      total: categoriesArray.length
+    });
+  } catch (error) {
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
+// Get blog statistics - BILINGUAL
+app.get("/make-server-04919ac5/blog/stats", async (c) => {
+  try {
+    const posts = await kv.getByPrefix("blog:");
+    
+    const stats = {
+      total: posts.length,
+      published: posts.filter(p => p.published).length,
+      draft: posts.filter(p => p.status === 'draft').length,
+      totalViews: posts.reduce((sum, p) => sum + (p.views || 0), 0),
+      viewsByLang: {
+        fr: posts.reduce((sum, p) => sum + ((p.viewsByLang?.fr) || 0), 0),
+        en: posts.reduce((sum, p) => sum + ((p.viewsByLang?.en) || 0), 0)
+      },
+      mostViewedPost: posts.reduce((max, p) => 
+        (p.views || 0) > (max.views || 0) ? p : max, posts[0] || null
+      ),
+      recentPosts: posts
+        .filter(p => p.published)
+        .sort((a, b) => new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime())
+        .slice(0, 5)
+    };
+    
+    return c.json({
+      success: true,
+      stats
+    });
+  } catch (error) {
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
+console.log("✅ ALL Enhanced Bilingual Blog routes added (GET/POST/PUT/DELETE + tags/categories/stats)");
 // ===========================================================================
 // CASE STUDIES ROUTES
 // ===========================================================================
