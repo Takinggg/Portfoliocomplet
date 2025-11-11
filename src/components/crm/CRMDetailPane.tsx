@@ -50,6 +50,9 @@ export function CRMDetailPane() {
   useEffect(() => {
     if (!selectedId) return;
 
+    // CRITICAL: Reset entity immediately when ID changes to prevent showing stale data
+    setEntity(null);
+
     const fetchEntity = async () => {
       setLoading(true);
       try {
@@ -70,7 +73,9 @@ export function CRMDetailPane() {
         const data = await response.json();
         
         // Extract the entity from the API response
-        const entityData = data[currentTab.slice(0, -1)] || data.data || data;
+        // API returns: { success: true, lead/client/quote/invoice: {...} }
+        const singularTab = currentTab.slice(0, -1); // "leads" → "lead"
+        const entityData = data[singularTab] || data.data || data;
         setEntity(entityData);
       } catch (error) {
         console.error('Erreur de chargement des détails:', error);
