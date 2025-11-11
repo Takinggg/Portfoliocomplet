@@ -189,7 +189,10 @@ export default function Footer({ onNavigate }: FooterProps) {
           transition={{ delay: 0.6 }}
           className="flex items-center justify-center gap-6 mt-8 pt-8 border-t border-neutral-900"
         >
-          {["Mentions légales", "Politique de confidentialité", "CGV"].map((link) => (
+          {(language === 'en' 
+            ? ["Legal Notice", "Privacy Policy", "Terms of Service"]
+            : ["Mentions légales", "Politique de confidentialité", "CGV"]
+          ).map((link) => (
             <button
               key={link}
               className="text-xs text-neutral-500 hover:text-mint transition-colors"
