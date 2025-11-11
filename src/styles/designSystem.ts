@@ -2,17 +2,24 @@
 // Keep simple constants so the rest of the codebase can import without Tailwind types.
 
 export const colors = {
+  // Brand from landing page (dark + neon cyan)
   background: "#0C0C0C",
-  surface: "#111418",
-  surfaceSubtle: "#171a1f",
-  border: "rgba(255,255,255,0.1)",
+  surface: "#121312",
+  surfaceSubtle: "#181a1b",
+  panel: "rgba(255,255,255,0.04)",
+  panelElevated: "rgba(255,255,255,0.06)",
+  border: "rgba(255,255,255,0.10)",
   borderHover: "rgba(255,255,255,0.15)",
   text: "#ffffff",
-  textMuted: "rgba(255,255,255,0.6)",
+  textMuted: "rgba(255,255,255,0.60)",
   accent: "#00FFC2",
   accentMuted: "rgba(0,255,194,0.15)",
   accentTextOn: "#0C0C0C",
+  // Optional secondary hue for highlights
   secondary: "#7c3aed",
+  // Header gradient
+  gradientFrom: "#0C0C0C",
+  gradientTo: "#1a1a1a",
 };
 
 export const radius = {

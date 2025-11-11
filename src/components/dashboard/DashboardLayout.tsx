@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
+import { Input } from "../ui/input";
 import { colors } from "../../styles/designSystem";
 import { 
   LayoutDashboard, 
@@ -16,7 +18,11 @@ import {
   BookOpen,
   Sparkles,
   MailOpen,
-  Star
+  Star,
+  Search,
+  Menu,
+  X,
+  ChevronRight
 } from "lucide-react";
 import { ServerDeploymentAlert } from "./ServerDeploymentAlert";
 
@@ -30,6 +36,9 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ currentView, onViewChange, onLogout, children }: DashboardLayoutProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const menuSections = [
     {
       title: "Principal",
@@ -67,44 +76,69 @@ export default function DashboardLayout({ currentView, onViewChange, onLogout, c
     }
   ];
 
-  return (
-    <div
-      className="min-h-screen flex"
-      style={{ background: colors.background, color: colors.text }}
-    >
-      {/* Sidebar */}
-      <aside
-        className="hidden lg:flex flex-col"
-        style={{
-          width: 270,
-          background: colors.surface,
-          borderRight: `1px solid ${colors.border}`,
-        }}
-      >
-        <div className="px-6 py-5" style={{ borderBottom: `1px solid ${colors.border}` }}>
-          <h2 className="text-lg font-semibold tracking-tight">Dashboard CRM</h2>
-          <p className="text-xs mt-1" style={{ color: colors.textMuted }}>
-            Gestion freelance
-          </p>
+  // Filter menu items based on search
+  const filteredSections = searchQuery
+    ? menuSections.map(section => ({
+        ...section,
+        items: section.items.filter(item =>
+          item.label.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      })).filter(section => section.items.length > 0)
+    : menuSections;
+
+  const SidebarContent = () => (
+    <>
+      <div className="px-6 py-6" style={{ borderBottom: `1px solid ${colors.border}` }}>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-[#00FFC2]/10 flex items-center justify-center">
+            <LayoutDashboard className="w-5 h-5 text-[#00FFC2]" />
+          </div>
+          <div>
+            <h2 className="text-lg font-bold tracking-tight">Dashboard</h2>
+            <p className="text-xs" style={{ color: colors.textMuted }}>
+              CRM Freelance
+            </p>
+          </div>
         </div>
-        <ScrollArea className="flex-1 px-4 py-4">
-          <div className="space-y-7">
-            {menuSections.map((section) => (
-              <div key={section.title} className="space-y-2">
-                <h3 className="px-2 text-[10px] font-medium uppercase tracking-wider"
-                  style={{ color: colors.textMuted }}
-                >
-                  {section.title}
-                </h3>
-                <div className="space-y-1">
-                  {section.items.map((item) => {
-                    const active = currentView === item.id;
-                    return (
+        
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+          <Input
+            placeholder="Rechercher..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 h-9 bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-[#00FFC2]/50"
+          />
+        </div>
+      </div>
+
+      <ScrollArea className="flex-1 px-4 py-5">
+        <div className="space-y-6">
+          {filteredSections.map((section) => (
+            <div key={section.title} className="space-y-2">
+              <h3 
+                className="px-2 text-[10px] font-semibold uppercase tracking-widest"
+                style={{ color: colors.textMuted }}
+              >
+                {section.title}
+              </h3>
+              <div className="space-y-1">
+                {section.items.map((item) => {
+                  const active = currentView === item.id;
+                  return (
+                    <motion.div
+                      key={item.id}
+                      whileHover={{ x: 4 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
                       <Button
-                        key={item.id}
-                        onClick={() => onViewChange(item.id)}
+                        onClick={() => {
+                          onViewChange(item.id);
+                          setMobileMenuOpen(false);
+                        }}
                         variant="ghost"
-                        className="w-full justify-start h-9 text-sm transition-colors"
+                        className="w-full justify-start h-10 text-sm font-medium transition-all rounded-lg group"
                         style={active ? {
                           background: colors.accent,
                           color: colors.accentTextOn,
@@ -114,53 +148,120 @@ export default function DashboardLayout({ currentView, onViewChange, onLogout, c
                         }}
                       >
                         <item.icon className="h-4 w-4 mr-3" />
-                        <span>{item.label}</span>
-                        {(item.id === 'newsletter' || (item as any).badge) && (
+                        <span className="flex-1 text-left">{item.label}</span>
+                        {(item as any).badge && (
                           <span
-                            className="ml-auto rounded px-1.5 py-0.5 text-[10px] font-semibold"
+                            className="ml-auto rounded-md px-2 py-0.5 text-[10px] font-bold"
                             style={{
-                              background: colors.accent,
-                              color: colors.accentTextOn,
+                              background: active ? colors.accentTextOn : colors.accent,
+                              color: active ? colors.accent : colors.accentTextOn,
                             }}
                           >
-                            NEW
+                            {(item as any).badge}
                           </span>
                         )}
+                        {active && (
+                          <ChevronRight className="w-4 h-4 ml-2" />
+                        )}
                       </Button>
-                    );
-                  })}
-                </div>
+                    </motion.div>
+                  );
+                })}
               </div>
-            ))}
-          </div>
-        </ScrollArea>
-        <div className="p-4" style={{ borderTop: `1px solid ${colors.border}` }}>
-            <Button
-              onClick={onLogout}
-              variant="ghost"
-              className="w-full justify-start h-9 text-sm"
-              style={{ color: '#f87171' }}
-            >
-              <LogOut className="h-4 w-4 mr-3" /> Déconnexion
-            </Button>
+            </div>
+          ))}
         </div>
+      </ScrollArea>
+
+      <div className="p-4 space-y-2" style={{ borderTop: `1px solid ${colors.border}` }}>
+        <Button
+          onClick={onLogout}
+          variant="ghost"
+          className="w-full justify-start h-10 text-sm font-medium transition-colors hover:bg-red-500/10"
+          style={{ color: '#ef4444' }}
+        >
+          <LogOut className="h-4 w-4 mr-3" /> 
+          <span>Déconnexion</span>
+        </Button>
+      </div>
+    </>
+  );
+
+  return (
+    <div
+      className="min-h-screen flex"
+      style={{ background: colors.background, color: colors.text }}
+    >
+      {/* Desktop Sidebar */}
+      <aside
+        className="hidden lg:flex flex-col"
+        style={{
+          width: 280,
+          background: colors.surface,
+          borderRight: `1px solid ${colors.border}`,
+        }}
+      >
+        <SidebarContent />
       </aside>
 
-      {/* Mobile Nav (collapsible) */}
-      <div className="lg:hidden w-full" style={{ background: colors.surfaceSubtle }}>
-        <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: `1px solid ${colors.border}` }}>
-          <h2 className="text-sm font-medium">Dashboard</h2>
-          {/* Future: burger to open drawer */}
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50" style={{ background: colors.surface, borderBottom: `1px solid ${colors.border}` }}>
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-[#00FFC2]/10 flex items-center justify-center">
+              <LayoutDashboard className="w-4 h-4 text-[#00FFC2]" />
+            </div>
+            <span className="font-bold">Dashboard</span>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="w-9 h-9 p-0"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </Button>
         </div>
       </div>
 
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            />
+            <motion.aside
+              initial={{ x: -280 }}
+              animate={{ x: 0 }}
+              exit={{ x: -280 }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="lg:hidden fixed top-0 left-0 bottom-0 z-50 flex flex-col"
+              style={{
+                width: 280,
+                background: colors.surface,
+                borderRight: `1px solid ${colors.border}`,
+              }}
+            >
+              <SidebarContent />
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* Main Content */}
-      <main className="flex-1 overflow-hidden">
-        <div className="h-full overflow-y-auto" style={{ padding: '2rem' }}>
-          <div className="mb-4">
-            <ServerDeploymentAlert />
+      <main className="flex-1 overflow-hidden lg:mt-0 mt-14">
+        <div className="h-full overflow-y-auto">
+          <div className="max-w-[1600px] mx-auto p-6 lg:p-8">
+            <div className="mb-6">
+              <ServerDeploymentAlert />
+            </div>
+            {children}
           </div>
-          {children}
         </div>
       </main>
     </div>
