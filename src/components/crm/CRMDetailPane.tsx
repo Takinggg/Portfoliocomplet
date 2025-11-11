@@ -56,7 +56,10 @@ export function CRMDetailPane() {
         const supabase = createClient();
         const { data: { session } } = await supabase.auth.getSession();
         
-        const response = await fetch(`${API_BASE_URL}/${currentTab}/${selectedId}`, {
+        // Encode the ID to handle special characters like : and @
+        const encodedId = encodeURIComponent(selectedId);
+        
+        const response = await fetch(`${API_BASE_URL}/${currentTab}/${encodedId}`, {
           headers: {
             'Authorization': `Bearer ${session?.access_token || publicAnonKey}`,
             'Content-Type': 'application/json',
