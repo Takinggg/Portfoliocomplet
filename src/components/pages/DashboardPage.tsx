@@ -74,8 +74,9 @@ import { TestimonialsTab } from "../dashboard/TestimonialsTab";
 import { CalendarManagement } from "../calendar/CalendarManagement";
 import { seedTestProjects } from "../../utils/seedTestProjects";
 import { showConsoleWelcome } from "../../utils/consoleWelcome";
+import CRMPage from "../crm/CRMPage";
 
-type DashboardView = "overview" | "express" | "leads" | "clients" | "projects" | "invoices" | "quotes" | "calendar" | "analytics" | "settings" | "emails" | "blog" | "case-studies" | "newsletter" | "resources" | "testimonials" | "seed-data";
+type DashboardView = "overview" | "express" | "crm" | "leads" | "clients" | "projects" | "invoices" | "quotes" | "calendar" | "analytics" | "settings" | "emails" | "blog" | "case-studies" | "newsletter" | "resources" | "testimonials" | "seed-data";
 
 interface DashboardPageProps {
   onLogout: () => void;
@@ -420,15 +421,13 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
       items: [
         { id: "overview" as DashboardView, label: "Vue d'ensemble", icon: LayoutDashboard },
         { id: "express" as DashboardView, label: "Express", icon: Sparkles, badge: "NEW" as any },
-        { id: "leads" as DashboardView, label: "Leads", icon: Mail, badge: leads.filter(l => l.status === "new").length },
-        { id: "clients" as DashboardView, label: "Clients", icon: Users, badge: clients.length },
+        { id: "crm" as DashboardView, label: "CRM Unifié", icon: Users, badge: leads.filter(l => l.status === "new").length + clients.length },
       ]
     },
     {
       label: "Facturation",
       items: [
-        { id: "quotes" as DashboardView, label: "Devis", icon: FileText, badge: quotes.filter(q => q.status === "sent").length },
-        { id: "invoices" as DashboardView, label: "Factures", icon: DollarSign, badge: invoices.filter(i => i.status === "overdue").length },
+        { id: "crm" as DashboardView, label: "CRM (Devis & Factures)", icon: DollarSign, badge: quotes.filter(q => q.status === "sent").length + invoices.filter(i => i.status === "overdue").length },
       ]
     },
     {
@@ -664,6 +663,9 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
                 invoices={invoices}
                 quotes={quotes}
               />
+            )}
+            {currentView === "crm" && (
+              <CRMPage />
             )}
             {currentView === "leads" && (
               <LeadsView 
