@@ -9,6 +9,7 @@ import { Calendar as CalendarIcon, Clock, Video, CheckCircle2, ChevronLeft, Chev
 import { toast } from "sonner";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { useTranslation } from "../../utils/i18n/useTranslation";
+import { useLanguage } from "../../utils/i18n/LanguageContext";
 
 // Generate available time slots (every 15 minutes from 9:00 to 18:00)
 const generateDaySlots = () => {
@@ -48,6 +49,7 @@ const availabilitiesByDate: Record<string, string[]> = {
 
 export default function BookingPage() {
   const { t } = useTranslation();
+  const { language } = useLanguage();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [duration, setDuration] = useState<15 | 30 | 60>(30); // Default 30min
@@ -236,11 +238,13 @@ export default function BookingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <Badge variant="secondary" className="mb-4 bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/30">
             <CalendarIcon className="h-4 w-4 mr-2" />
-            Prise de rendez-vous
+            {language === 'en' ? 'Book an appointment' : 'Prise de rendez-vous'}
           </Badge>
-          <h1 className="mb-6">Réserver un appel gratuit</h1>
+          <h1 className="mb-6">{language === 'en' ? 'Book a free call' : 'Réserver un appel gratuit'}</h1>
           <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
-            Planifiez un appel découverte de 30 minutes pour discuter de votre projet.
+            {language === 'en' 
+              ? 'Schedule a 30-minute discovery call to discuss your project.'
+              : 'Planifiez un appel découverte de 30 minutes pour discuter de votre projet.'}
           </p>
         </div>
       </section>
@@ -252,9 +256,9 @@ export default function BookingPage() {
           <div className="mb-12">
             <div className="flex items-center justify-center space-x-4">
               {[
-                { num: 1, label: "Date & Heure" },
-                { num: 2, label: "Informations" },
-                { num: 3, label: "Confirmation" }
+                { num: 1, label: language === 'en' ? "Date & Time" : "Date & Heure" },
+                { num: 2, label: language === 'en' ? "Information" : "Informations" },
+                { num: 3, label: language === 'en' ? "Confirmation" : "Confirmation" }
               ].map((s) => (
                 <div key={s.num} className="flex items-center">
                   <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
@@ -283,17 +287,17 @@ export default function BookingPage() {
               {/* Duration Selection */}
               <Card className="bg-neutral-950/50 border-neutral-800 backdrop-blur-xl">
                 <CardHeader>
-                  <CardTitle className="text-white">Durée du rendez-vous</CardTitle>
+                  <CardTitle className="text-white">{language === 'en' ? 'Appointment duration' : 'Durée du rendez-vous'}</CardTitle>
                   <p className="text-sm text-neutral-400 mt-2">
-                    Sélectionnez la durée souhaitée pour votre appel
+                    {language === 'en' ? 'Select your desired call duration' : 'Sélectionnez la durée souhaitée pour votre appel'}
                   </p>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-3 gap-4">
                     {[
-                      { value: 15, label: "15 minutes", description: "Consultation rapide" },
-                      { value: 30, label: "30 minutes", description: "Appel découverte" },
-                      { value: 60, label: "1 heure", description: "Consultation approfondie" }
+                      { value: 15, label: "15 minutes", description: language === 'en' ? "Quick consultation" : "Consultation rapide" },
+                      { value: 30, label: "30 minutes", description: language === 'en' ? "Discovery call" : "Appel découverte" },
+                      { value: 60, label: language === 'en' ? "1 hour" : "1 heure", description: language === 'en' ? "In-depth consultation" : "Consultation approfondie" }
                     ].map((opt) => (
                       <button
                         key={opt.value}
@@ -339,10 +343,12 @@ export default function BookingPage() {
               <div className="grid lg:grid-cols-2 gap-8">
                 <Card className="bg-neutral-950/50 border-neutral-800 backdrop-blur-xl">
                   <CardHeader>
-                    <CardTitle className="text-white">Choisissez une date</CardTitle>
+                    <CardTitle className="text-white">{language === 'en' ? 'Choose a date' : 'Choisissez une date'}</CardTitle>
                     <p className="text-sm text-neutral-400 mt-2 flex items-center gap-2">
                       <span className="inline-block w-2 h-2 rounded-full bg-[#00FFC2]"></span>
-                      Le nombre indique les créneaux disponibles pour {duration}min
+                      {language === 'en' 
+                        ? `The number indicates available slots for ${duration}min`
+                        : `Le nombre indique les créneaux disponibles pour ${duration}min`}
                     </p>
                   </CardHeader>
                 <CardContent>
@@ -470,17 +476,25 @@ export default function BookingPage() {
 
               <Card className="bg-neutral-950/50 border-neutral-800 backdrop-blur-xl">
                 <CardHeader>
-                  <CardTitle className="text-white">Choisissez un horaire</CardTitle>
+                  <CardTitle className="text-white">{language === 'en' ? 'Choose a time' : 'Choisissez un horaire'}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {selectedDate ? (
                     <div className="space-y-2">
                       <p className="text-sm text-neutral-400 mb-4">
-                        {availableSlots.length} créneaux disponibles le {selectedDate.toLocaleDateString('fr-FR', { 
-                          weekday: 'long', 
-                          day: 'numeric', 
-                          month: 'long' 
-                        })}
+                        {language === 'en' ? (
+                          `${availableSlots.length} available slots on ${selectedDate.toLocaleDateString('en-US', { 
+                            weekday: 'long', 
+                            day: 'numeric', 
+                            month: 'long' 
+                          })}`
+                        ) : (
+                          `${availableSlots.length} créneaux disponibles le ${selectedDate.toLocaleDateString('fr-FR', { 
+                            weekday: 'long', 
+                            day: 'numeric', 
+                            month: 'long' 
+                          })}`
+                        )}
                       </p>
                       {availableSlots.length > 0 ? (
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">

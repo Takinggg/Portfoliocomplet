@@ -2628,14 +2628,19 @@ function ContactSection({ onNavigate }: HomePageProps) {
                 <span className="text-xs text-mint">30 minutes</span>
               </div>
               
-              <h3 className="text-2xl font-bold mb-3">Prendre un rendez-vous</h3>
+              <h3 className="text-2xl font-bold mb-3">{language === 'en' ? 'Book an appointment' : 'Prendre un rendez-vous'}</h3>
               <p className="text-neutral-400 mb-6">
-                Réservez un créneau dans mon agenda. Appel découverte de 30 min.
+                {language === 'en' 
+                  ? 'Book a slot in my calendar. 30 min discovery call.'
+                  : 'Réservez un créneau dans mon agenda. Appel découverte de 30 min.'}
               </p>
               
               {/* Features list */}
               <div className="space-y-2 mb-6">
-                {["Créneaux disponibles", "Visio ou téléphone", "100% gratuit"].map((feature, i) => (
+                {(language === 'en' 
+                  ? ["Available slots", "Video or phone", "100% free"]
+                  : ["Créneaux disponibles", "Visio ou téléphone", "100% gratuit"]
+                ).map((feature, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -10 }}
@@ -2651,7 +2656,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
               </div>
               
               <div className="flex items-center gap-2 text-mint group-hover:gap-3 transition-all">
-                <span>Voir le calendrier</span>
+                <span>{language === 'en' ? 'View calendar' : 'Voir le calendrier'}</span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
