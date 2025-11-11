@@ -1718,14 +1718,15 @@ Pour vous désinscrire, contactez-moi à contact@maxence.design
     }, 500);
   }
 });
-app.get("/make-server-04919ac5/newsletter/stats", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/newsletter/stats", async (c)=>{
   try {
     const subscribers = await kv.getByPrefix("subscriber:");
-    const activeCount = subscribers.filter((s)=>s.status === "active").length;
+    const confirmedCount = subscribers.filter((s)=>s.status === "confirmed").length;
     return c.json({
       success: true,
       total: subscribers.length,
-      active: activeCount
+      confirmed: confirmedCount,
+      confirmedCount // Keep both for compatibility
     });
   } catch (error) {
     return c.json({

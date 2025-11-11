@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { NewsletterForm } from "../newsletter/NewsletterForm";
 import { NewsletterBadge } from "../newsletter/NewsletterBadge";
 import { useTranslation } from "../../utils/i18n/useTranslation";
+import { useLanguage } from "../../utils/i18n/LanguageContext";
 import { TrustBadges } from "../TrustBadges";
 
 type Page = "home" | "projects" | "services" | "about" | "contact" | "faq";
@@ -14,6 +15,7 @@ interface FooterProps {
 export default function Footer({ onNavigate }: FooterProps) {
   const currentYear = new Date().getFullYear();
   const { t } = useTranslation();
+  const { language } = useLanguage();
 
   const navLinks = [
     { label: t("nav.services"), page: "services" as Page },
@@ -59,9 +61,13 @@ export default function Footer({ onNavigate }: FooterProps) {
               {/* Newsletter Form */}
               <div>
                 <div className="mb-3">
-                  <p className="text-sm text-white mb-1">Newsletter mensuelle</p>
+                  <p className="text-sm text-white mb-1">
+                    {language === 'en' ? 'Monthly Newsletter' : 'Newsletter mensuelle'}
+                  </p>
                   <p className="text-xs text-neutral-500">
-                    Conseils, études de cas et nouvelles exclusives
+                    {language === 'en' 
+                      ? 'Tips, case studies, and exclusive news' 
+                      : 'Conseils, études de cas et nouvelles exclusives'}
                   </p>
                 </div>
                 <NewsletterForm variant="minimal" />

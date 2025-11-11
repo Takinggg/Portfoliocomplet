@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Users, TrendingUp } from "lucide-react";
 import { motion } from "motion/react";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
+import { useLanguage } from "../../utils/i18n/LanguageContext";
 
 interface NewsletterBadgeProps {
   className?: string;
@@ -11,6 +12,7 @@ interface NewsletterBadgeProps {
 export function NewsletterBadge({ className = "", showTrend = false }: NewsletterBadgeProps) {
   const [count, setCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
+  const { language } = useLanguage();
 
   useEffect(() => {
     loadSubscriberCount();
@@ -65,7 +67,11 @@ export function NewsletterBadge({ className = "", showTrend = false }: Newslette
     >
       <Users className="h-4 w-4 text-[#00FFC2]" />
       <span className="text-sm text-[#00FFC2]">
-        {count.toLocaleString("fr-FR")} {count === 1 ? "abonné" : "abonnés"}
+        {count.toLocaleString(language === 'en' ? 'en-US' : 'fr-FR')} {
+          language === 'en' 
+            ? (count === 1 ? "subscriber" : "subscribers")
+            : (count === 1 ? "abonné" : "abonnés")
+        }
       </span>
       {showTrend && count > 0 && (
         <TrendingUp className="h-3 w-3 text-[#00FFC2] opacity-60" />
