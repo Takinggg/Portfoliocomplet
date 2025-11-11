@@ -269,6 +269,27 @@ app.get("/make-server-04919ac5/clients", requireAuth, async (c)=>{
     }, 500);
   }
 });
+app.get("/make-server-04919ac5/clients/:id", requireAuth, async (c)=>{
+  try {
+    const clientId = decodeURIComponent(c.req.param("id"));
+    const client = await kv.get(clientId);
+    if (!client) {
+      return c.json({
+        success: false,
+        error: "Client not found"
+      }, 404);
+    }
+    return c.json({
+      success: true,
+      client
+    });
+  } catch (error) {
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
 app.post("/make-server-04919ac5/clients", requireAuth, async (c)=>{
   try {
     const body = await c.req.json();
@@ -362,6 +383,27 @@ app.get("/make-server-04919ac5/leads", requireAuth, async (c)=>{
     return c.json({
       success: true,
       leads: sorted
+    });
+  } catch (error) {
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+app.get("/make-server-04919ac5/leads/:id", requireAuth, async (c)=>{
+  try {
+    const leadId = decodeURIComponent(c.req.param("id"));
+    const lead = await kv.get(leadId);
+    if (!lead) {
+      return c.json({
+        success: false,
+        error: "Lead not found"
+      }, 404);
+    }
+    return c.json({
+      success: true,
+      lead
     });
   } catch (error) {
     return c.json({
@@ -745,6 +787,29 @@ app.get("/make-server-04919ac5/quotes", requireAuth, async (c)=>{
     });
   } catch (error) {
     console.error("❌ Error fetching quotes:", error);
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+// 1.5. Get single quote by ID
+app.get("/make-server-04919ac5/quotes/:id", requireAuth, async (c)=>{
+  try {
+    const quoteId = decodeURIComponent(c.req.param("id"));
+    const quote = await kv.get(quoteId);
+    if (!quote) {
+      return c.json({
+        success: false,
+        error: "Quote not found"
+      }, 404);
+    }
+    return c.json({
+      success: true,
+      quote
+    });
+  } catch (error) {
+    console.error("❌ Error fetching quote:", error);
     return c.json({
       success: false,
       error: error.message
