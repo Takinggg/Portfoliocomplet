@@ -86,6 +86,29 @@ const kv = {
 };
 console.log("✅ KV store configured");
 // ===========================================================================
+// LANGUAGE DETECTION
+// ===========================================================================
+function detectLanguage(headers: Headers | undefined, fallback: string = 'fr'): 'fr' | 'en' {
+  if (!headers) return fallback as 'fr' | 'en';
+  
+  // Check Accept-Language header
+  const acceptLanguage = headers.get('accept-language') || headers.get('Accept-Language');
+  if (acceptLanguage) {
+    if (acceptLanguage.toLowerCase().includes('en')) return 'en';
+    if (acceptLanguage.toLowerCase().includes('fr')) return 'fr';
+  }
+  
+  // Check custom X-Language header
+  const customLang = headers.get('x-language') || headers.get('X-Language');
+  if (customLang) {
+    if (customLang.toLowerCase() === 'en') return 'en';
+    if (customLang.toLowerCase() === 'fr') return 'fr';
+  }
+  
+  return fallback as 'fr' | 'en';
+}
+
+// ===========================================================================
 // EMAIL SERVICE
 // ===========================================================================
 async function sendEmail(params) {
@@ -1453,17 +1476,21 @@ console.log("✅ Projects routes added");
 // ===========================================================================
 app.post("/make-server-04919ac5/newsletter/subscribe", async (c)=>{
   try {
-    const { email, source } = await c.req.json();
+    const { email, source, language } = await c.req.json();
+    
+    // Detect language from request headers or body
+    const lang = language || detectLanguage(c.req.raw.headers, 'fr');
+    
     if (!email) return c.json({
       success: false,
-      error: "Email requis"
+      error: lang === 'en' ? "Email required" : "Email requis"
     }, 400);
     
     // Validate email format
     if (!email.includes("@") || !email.includes(".")) {
       return c.json({
         success: false,
-        error: "Adresse email invalide"
+        error: lang === 'en' ? "Invalid email address" : "Adresse email invalide"
       }, 400);
     }
     
@@ -1475,7 +1502,7 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c)=>{
       console.log(`⚠️ Email already subscribed: ${email}`);
       return c.json({
         success: true,
-        message: "Vous êtes déjà inscrit à la newsletter",
+        message: lang === 'en' ? "You are already subscribed to the newsletter" : "Vous êtes déjà inscrit à la newsletter",
         alreadySubscribed: true
       });
     }
@@ -1486,14 +1513,97 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c)=>{
       email,
       source: source || "website",
       status: "active",
-      subscribedAt: new Date().toISOString()
+      subscribedAt: new Date().toISOString(),
+      language: lang
     };
     await kv.set(subscriberId, subscriberData);
-    console.log(`✅ New subscriber: ${email}`);
+    console.log(`✅ New subscriber: ${email} (${lang})`);
     
-    // Send welcome email
-    const emailResult = await sendEmail({
-      to: email,
+    // Send welcome email in the correct language
+    const emailContent = lang === 'en' ? {
+      subject: "✨ Welcome to the newsletter!",
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <style>
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
+              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+              .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+              .content { background: #F4F4F4; padding: 40px 30px; }
+              .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+              .button { display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
+              .highlight { background: #00FFC2; color: #0C0C0C; padding: 2px 8px; border-radius: 4px; }
+              .benefits-box { background: white; padding: 20px; border-left: 4px solid #00FFC2; margin: 20px 0; border-radius: 4px; }
+              .benefit-item { padding: 8px 0; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">
+                <h1 style="margin: 0; font-size: 28px;">✨ Welcome to the newsletter!</h1>
+              </div>
+              <div class="content">
+                <p>Hello,</p>
+                
+                <p>Thank you for subscribing to the newsletter! 🚀</p>
+                
+                <p>You will regularly receive exclusive content:</p>
+                
+                <div class="benefits-box">
+                  <div class="benefit-item">💡 <strong>Tips & tricks</strong> for web development</div>
+                  <div class="benefit-item">🎨 <strong>My latest projects</strong> and achievements</div>
+                  <div class="benefit-item">📚 <strong>Exclusive resources</strong> for developers</div>
+                  <div class="benefit-item">🚀 <strong>Tech trends</strong> and innovations</div>
+                  <div class="benefit-item">💼 <strong>Freelance advice</strong> and business tips</div>
+                </div>
+                
+                <p>Also find all my projects and services on my portfolio:</p>
+                
+                <center>
+                  <a href="${Deno.env.get("FRONTEND_URL") || "https://maxence.design"}" class="button">View portfolio</a>
+                </center>
+                
+                <p style="margin-top: 30px; font-size: 14px; color: #666;">
+                  See you soon in your mailbox! 📬<br>
+                  <strong>Maxence FOULON</strong><br>
+                  <span style="color: #999;">Full-Stack Freelance Developer</span>
+                </p>
+              </div>
+              <div class="footer">
+                <p style="margin: 0;">© 2025 FOULON Maxence - Freelance Web Developer</p>
+                <p style="margin: 5px 0 0 0; opacity: 0.8;">To unsubscribe, contact me at contact@maxence.design</p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `,
+      text: `
+✨ Welcome to the newsletter!
+
+Hello,
+
+Thank you for subscribing to the newsletter! 🚀
+
+You will regularly receive:
+💡 Tips & tricks for web development
+🎨 My latest projects and achievements
+📚 Exclusive resources for developers
+🚀 Tech trends and innovations
+💼 Freelance advice and business tips
+
+Visit my portfolio: ${Deno.env.get("FRONTEND_URL") || "https://maxence.design"}
+
+See you soon in your mailbox! 📬
+
+Maxence FOULON
+Full-Stack Freelance Developer
+
+© 2025 FOULON Maxence - Freelance Web Developer
+To unsubscribe, contact me at contact@maxence.design
+      `
+    } : {
       subject: "✨ Bienvenue dans la newsletter !",
       html: `
         <!DOCTYPE html>
@@ -1576,17 +1686,22 @@ Développeur Full-Stack Freelance
 © 2025 FOULON Maxence - Développeur Web Freelance
 Pour vous désinscrire, contactez-moi à contact@maxence.design
       `
+    };
+    
+    const emailResult = await sendEmail({
+      to: email,
+      ...emailContent
     });
     
     if (emailResult.success) {
-      console.log(`📧 Welcome email sent to ${email}`);
+      console.log(`� Welcome email sent to ${email} (${lang})`);
     } else {
       console.error(`⚠️ Failed to send welcome email to ${email}:`, emailResult.error);
     }
     
     return c.json({
       success: true,
-      message: "Inscription réussie !",
+      message: lang === 'en' ? "Successfully subscribed!" : "Inscription réussie !",
       alreadySubscribed: false,
       emailSent: emailResult.success
     });

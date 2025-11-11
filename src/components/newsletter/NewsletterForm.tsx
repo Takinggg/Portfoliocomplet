@@ -4,6 +4,7 @@ import { Input } from "../ui/input";
 import { Mail, CheckCircle2, Loader2 } from "lucide-react";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { toast } from "sonner@2.0.3";
+import { useLanguage } from "../../utils/i18n/LanguageContext";
 
 interface NewsletterFormProps {
   variant?: "default" | "minimal";
@@ -15,19 +16,20 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const { language } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email || !email.includes("@")) {
-      toast.error("Veuillez entrer une adresse email valide");
+      toast.error(language === 'en' ? "Please enter a valid email address" : "Veuillez entrer une adresse email valide");
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      console.log("📧 Subscribing to newsletter:", email);
+      console.log("📧 Subscribing to newsletter:", email, "Language:", language);
       
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/newsletter/subscribe`,
@@ -37,7 +39,11 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
             "Content-Type": "application/json",
             Authorization: `Bearer ${publicAnonKey}`,
           },
-          body: JSON.stringify({ email, source: "footer" }),
+          body: JSON.stringify({ 
+            email, 
+            source: "footer",
+            language: language // Send current language
+          }),
         }
       );
 
@@ -52,12 +58,22 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
         
         // Different message if already subscribed
         if (data.alreadySubscribed) {
-          toast.info("ℹ️ Vous êtes déjà inscrit à la newsletter !");
+          toast.info(language === 'en' 
+            ? "ℹ️ You are already subscribed to the newsletter!" 
+            : "ℹ️ Vous êtes déjà inscrit à la newsletter !"
+          );
         } else {
-          toast.success("✅ Merci ! Vous êtes maintenant inscrit à la newsletter.", {
-            description: "Vous recevrez nos prochaines actualités et conseils exclusifs.",
-            duration: 5000,
-          });
+          toast.success(
+            language === 'en' 
+              ? "✅ Thank you! You are now subscribed to the newsletter." 
+              : "✅ Merci ! Vous êtes maintenant inscrit à la newsletter.",
+            {
+              description: language === 'en'
+                ? "You will receive our latest news and exclusive tips."
+                : "Vous recevrez nos prochaines actualités et conseils exclusifs.",
+              duration: 5000,
+            }
+          );
         }
         
         onSuccess?.();
@@ -66,11 +82,15 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
         setTimeout(() => setIsSuccess(false), 5000);
       } else {
         console.error("❌ Newsletter error:", data);
-        toast.error(data.error || "Une erreur est survenue");
+        toast.error(data.error || (language === 'en' ? "An error occurred" : "Une erreur est survenue"));
       }
     } catch (error) {
       console.error("❌ Newsletter subscription error:", error);
-      toast.error("Impossible de s'abonner pour le moment. Réessayez plus tard.");
+      toast.error(
+        language === 'en' 
+          ? "Unable to subscribe at the moment. Please try again later." 
+          : "Impossible de s'abonner pour le moment. Réessayez plus tard."
+      );
     } finally {
       setIsSubmitting(false);
     }
