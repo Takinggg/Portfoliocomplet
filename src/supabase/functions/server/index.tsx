@@ -1456,8 +1456,30 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c)=>{
     const { email, source } = await c.req.json();
     if (!email) return c.json({
       success: false,
-      error: "Email required"
+      error: "Email requis"
     }, 400);
+    
+    // Validate email format
+    if (!email.includes("@") || !email.includes(".")) {
+      return c.json({
+        success: false,
+        error: "Adresse email invalide"
+      }, 400);
+    }
+    
+    // Check if email already exists
+    const existingSubscribers = await kv.getByPrefix("subscriber:");
+    const alreadySubscribed = existingSubscribers.some(sub => sub.email === email);
+    
+    if (alreadySubscribed) {
+      console.log(`⚠️ Email already subscribed: ${email}`);
+      return c.json({
+        success: true,
+        message: "Vous êtes déjà inscrit à la newsletter",
+        alreadySubscribed: true
+      });
+    }
+    
     const subscriberId = `subscriber:${Date.now()}@${email}`;
     const subscriberData = {
       id: subscriberId,
@@ -1470,7 +1492,8 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c)=>{
     console.log(`✅ New subscriber: ${email}`);
     return c.json({
       success: true,
-      message: "Subscribed successfully"
+      message: "Inscription réussie !",
+      alreadySubscribed: false
     });
   } catch (error) {
     console.error("❌ Error subscribing:", error);

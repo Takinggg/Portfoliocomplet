@@ -49,7 +49,17 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
       if (response.ok && data.success) {
         setIsSuccess(true);
         setEmail("");
-        toast.success("✅ Merci ! Vous êtes inscrit à la newsletter.");
+        
+        // Different message if already subscribed
+        if (data.alreadySubscribed) {
+          toast.info("ℹ️ Vous êtes déjà inscrit à la newsletter !");
+        } else {
+          toast.success("✅ Merci ! Vous êtes maintenant inscrit à la newsletter.", {
+            description: "Vous recevrez nos prochaines actualités et conseils exclusifs.",
+            duration: 5000,
+          });
+        }
+        
         onSuccess?.();
         
         // Reset success after 5s
@@ -60,20 +70,29 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
       }
     } catch (error) {
       console.error("❌ Newsletter subscription error:", error);
-      toast.error("Impossible de s'abonner pour le moment");
+      toast.error("Impossible de s'abonner pour le moment. Réessayez plus tard.");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (isSuccess && variant === "minimal") {
+    return (
+      <div className={`flex items-center gap-2 p-3 rounded-lg bg-[#00FFC2]/10 border border-[#00FFC2]/30 ${className}`}>
+        <CheckCircle2 className="h-4 w-4 text-[#00FFC2] flex-shrink-0" />
+        <p className="text-sm text-[#00FFC2]">✅ Inscription confirmée !</p>
+      </div>
+    );
+  }
 
   if (isSuccess && variant === "default") {
     return (
       <div className={`flex items-center gap-3 p-4 rounded-lg bg-[#00FFC2]/10 border border-[#00FFC2]/30 ${className}`}>
         <CheckCircle2 className="h-5 w-5 text-[#00FFC2] flex-shrink-0" />
         <div>
-          <p className="text-sm text-[#00FFC2] mb-1">Presque terminé !</p>
+          <p className="text-sm text-[#00FFC2] mb-1">✅ Inscription réussie !</p>
           <p className="text-xs text-white/70">
-            Vérifiez votre email et confirmez votre abonnement.
+            Merci de votre confiance. Vous recevrez nos prochaines actualités.
           </p>
         </div>
       </div>
