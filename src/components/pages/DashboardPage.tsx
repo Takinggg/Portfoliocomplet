@@ -63,6 +63,7 @@ import { LeadDetailDialog } from "../dashboard/LeadDetailDialog";
 import { InvoiceEditDialog } from "../dashboard/InvoiceEditDialog";
 import EmailSettings from "../dashboard/EmailSettings";
 import { DashboardRouter } from "../dashboard/DashboardRouter";
+import { DashboardShell } from "../dashboard/DashboardShell";
 import EmailsTab from "../dashboard/EmailsTab";
 import { QuotesTab } from "../dashboard/QuotesTab";
 import { AnalyticsTab } from "../dashboard/AnalyticsTab";
@@ -110,6 +111,16 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
   const [searchQuery, setSearchQuery] = useState("");
   const [userEmail, setUserEmail] = useState("contact@maxence.design");
   const supabase = createClient();
+  const injectedProps = { leads, clients, projects, invoices, quotes, onRefresh: async () => {/* optional refresh hook */} };
+
+  // New unified dashboard shell (replaces legacy layout + router)
+  return (
+    <DashboardShell
+      initialView="blog"
+      onLogout={onLogout}
+      injectedProps={injectedProps}
+    />
+  );
 
   // ✅ Get user email from Supabase Session + Show welcome message
   useEffect(() => {

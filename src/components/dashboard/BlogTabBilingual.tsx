@@ -37,6 +37,8 @@ import {
   Globe,
 } from "lucide-react";
 import { BilingualFields } from "../blog/BilingualFields";
+import { Panel } from "./Panel";
+import { StatCard, StatGrid } from "./StatCard";
 import { RichTextEditor } from "../blog/RichTextEditor";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { toast } from "sonner";
@@ -318,60 +320,80 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
   return (
     <div className="min-h-screen p-6 space-y-6" style={{ backgroundColor: '#111827' }}>
       {/* Header */}
-      <div className="flex items-center justify-between p-4 rounded-lg border" style={{ backgroundColor: 'rgba(31, 41, 55, 0.8)', borderColor: '#374151' }}>
-        <div className="flex items-center gap-2">
-          <Globe className="w-5 h-5 text-purple-400" />
-          <h2 className="text-xl font-semibold text-white">
-            Blog Bilingue ({posts.length} articles)
-          </h2>
+      <Panel className="p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Globe className="w-5 h-5 text-purple-400" />
+            <h2 className="text-xl font-semibold text-white">
+              Blog Bilingue ({posts.length} articles)
+            </h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={fetchPosts}
+              disabled={isRefreshing}
+              variant="outline"
+              size="sm"
+              className="bg-white/5 border-white/10 text-white hover:bg-white/10"
+            >
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            </Button>
+            <Button
+              onClick={() => {
+                resetForm();
+                setIsCreateOpen(true);
+              }}
+              className="bg-purple-600 hover:bg-purple-700 text-white border-0"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Nouvel article
+            </Button>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={fetchPosts}
-            disabled={isRefreshing}
-            variant="outline"
-            size="sm"
-            style={{ backgroundColor: '#374151', borderColor: '#4b5563', color: 'white' }}
-            className="hover:bg-gray-600"
-          >
-            <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-          </Button>
-          <Button
-            onClick={() => {
-              resetForm();
-              setIsCreateOpen(true);
-            }}
-            style={{ backgroundColor: '#7c3aed', color: 'white', border: 'none' }}
-            className="hover:bg-purple-700"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Nouvel article
-          </Button>
-        </div>
-      </div>
+      </Panel>
+
+      {/* Stats */}
+      {(() => {
+        const stats = {
+          total: posts.length,
+          published: posts.filter((p) => p.status === 'published').length,
+          draft: posts.filter((p) => p.status === 'draft').length,
+          totalViews: posts.reduce((acc, p) => acc + (p.views || 0), 0),
+        };
+        return (
+          <StatGrid>
+            <StatCard icon={<BookOpen className="h-5 w-5" />} label="Total articles" value={stats.total} />
+            <StatCard icon={<Eye className="h-5 w-5" />} label="Publiés" value={stats.published} accentColor="#22c55e" />
+            <StatCard icon={<FileText className="h-5 w-5" />} label="Brouillons" value={stats.draft} accentColor="#f59e0b" />
+            <StatCard icon={<Eye className="h-5 w-5" />} label="Vues totales" value={stats.totalViews} accentColor="#60a5fa" />
+          </StatGrid>
+        );
+      })()}
 
       {/* Filters */}
-      <div className="flex items-center gap-4 p-4 rounded-lg border" style={{ backgroundColor: 'rgba(31, 41, 55, 0.8)', borderColor: '#374151' }}>
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input
-            placeholder="Rechercher..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-          />
+      <Panel className="p-4">
+        <div className="flex items-center gap-4">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 w-4 h-4" />
+            <Input
+              placeholder="Rechercher..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 bg-white/5 border-white/10 text-white placeholder-white/40"
+            />
+          </div>
+          <Select value={filterStatus} onValueChange={(v: any) => setFilterStatus(v)}>
+            <SelectTrigger className="w-40 bg-white/5 border-white/10 text-white">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous</SelectItem>
+              <SelectItem value="published">Publiés</SelectItem>
+              <SelectItem value="draft">Brouillons</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        <Select value={filterStatus} onValueChange={(v: any) => setFilterStatus(v)}>
-          <SelectTrigger className="w-40 bg-gray-700 border-gray-600 text-white">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent className="bg-gray-800 border-gray-700">
-            <SelectItem value="all" className="text-white hover:bg-gray-700">Tous</SelectItem>
-            <SelectItem value="published" className="text-white hover:bg-gray-700">Publiés</SelectItem>
-            <SelectItem value="draft" className="text-white hover:bg-gray-700">Brouillons</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      </Panel>
 
       {/* Posts Grid */}
       <div className="grid gap-4">

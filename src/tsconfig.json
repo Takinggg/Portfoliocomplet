@@ -27,5 +27,7 @@
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
+  // Exclude Supabase Edge Functions (Deno) from app TS checks; they use Deno import specifiers and are built separately
+  "exclude": ["supabase/functions/**", "src/supabase/functions/**"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
+import { Separator } from "../ui/separator";
+import { colors } from "../../styles/designSystem";
 import { 
   LayoutDashboard, 
   Users, 
@@ -65,64 +68,98 @@ export default function DashboardLayout({ currentView, onViewChange, onLogout, c
   ];
 
   return (
-    <div className="min-h-screen bg-[#0C0C0C] flex">
+    <div
+      className="min-h-screen flex"
+      style={{ background: colors.background, color: colors.text }}
+    >
       {/* Sidebar */}
-      <aside className="w-64 bg-neutral-900 border-r border-neutral-800 flex flex-col">
-        <div className="p-6 border-b border-neutral-800">
-          <h2 className="text-xl font-bold text-white">Dashboard CRM</h2>
-          <p className="text-sm text-neutral-400 mt-1">Gestion freelance</p>
+      <aside
+        className="hidden lg:flex flex-col"
+        style={{
+          width: 270,
+          background: colors.surface,
+          borderRight: `1px solid ${colors.border}`,
+        }}
+      >
+        <div className="px-6 py-5" style={{ borderBottom: `1px solid ${colors.border}` }}>
+          <h2 className="text-lg font-semibold tracking-tight">Dashboard CRM</h2>
+          <p className="text-xs mt-1" style={{ color: colors.textMuted }}>
+            Gestion freelance
+          </p>
         </div>
-
-        <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
-          {menuSections.map((section) => (
-            <div key={section.title}>
-              <h3 className="px-3 mb-2 text-xs uppercase tracking-wider text-neutral-500">
-                {section.title}
-              </h3>
-              <div className="space-y-1">
-                {section.items.map((item) => (
-                  <Button
-                    key={item.id}
-                    onClick={() => onViewChange(item.id)}
-                    variant="ghost"
-                    className={`w-full justify-start ${
-                      currentView === item.id
-                        ? "bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
-                        : "text-neutral-300 hover:bg-neutral-800 hover:text-white"
-                    }`}
-                  >
-                    <item.icon className="h-5 w-5 mr-3" />
-                    {item.label}
-                    {(item.id === "newsletter" || (item as any).badge) && (
-                      <span className="ml-auto text-[10px] bg-[#00FFC2] text-black px-1.5 py-0.5 rounded font-semibold">
-                        NEW
-                      </span>
-                    )}
-                  </Button>
-                ))}
+        <ScrollArea className="flex-1 px-4 py-4">
+          <div className="space-y-7">
+            {menuSections.map((section) => (
+              <div key={section.title} className="space-y-2">
+                <h3 className="px-2 text-[10px] font-medium uppercase tracking-wider"
+                  style={{ color: colors.textMuted }}
+                >
+                  {section.title}
+                </h3>
+                <div className="space-y-1">
+                  {section.items.map((item) => {
+                    const active = currentView === item.id;
+                    return (
+                      <Button
+                        key={item.id}
+                        onClick={() => onViewChange(item.id)}
+                        variant="ghost"
+                        className="w-full justify-start h-9 text-sm transition-colors"
+                        style={active ? {
+                          background: colors.accent,
+                          color: colors.accentTextOn,
+                        } : {
+                          background: 'transparent',
+                          color: '#d1d5db'
+                        }}
+                      >
+                        <item.icon className="h-4 w-4 mr-3" />
+                        <span>{item.label}</span>
+                        {(item.id === 'newsletter' || (item as any).badge) && (
+                          <span
+                            className="ml-auto rounded px-1.5 py-0.5 text-[10px] font-semibold"
+                            style={{
+                              background: colors.accent,
+                              color: colors.accentTextOn,
+                            }}
+                          >
+                            NEW
+                          </span>
+                        )}
+                      </Button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
-        </nav>
-
-        <div className="p-4 border-t border-neutral-800">
-          <Button
-            onClick={onLogout}
-            variant="ghost"
-            className="w-full justify-start text-red-400 hover:bg-red-500/10 hover:text-red-300"
-          >
-            <LogOut className="h-5 w-5 mr-3" />
-            Déconnexion
-          </Button>
+            ))}
+          </div>
+        </ScrollArea>
+        <div className="p-4" style={{ borderTop: `1px solid ${colors.border}` }}>
+            <Button
+              onClick={onLogout}
+              variant="ghost"
+              className="w-full justify-start h-9 text-sm"
+              style={{ color: '#f87171' }}
+            >
+              <LogOut className="h-4 w-4 mr-3" /> Déconnexion
+            </Button>
         </div>
       </aside>
 
+      {/* Mobile Nav (collapsible) */}
+      <div className="lg:hidden w-full" style={{ background: colors.surfaceSubtle }}>
+        <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: `1px solid ${colors.border}` }}>
+          <h2 className="text-sm font-medium">Dashboard</h2>
+          {/* Future: burger to open drawer */}
+        </div>
+      </div>
+
       {/* Main Content */}
-      <main className="flex-1 overflow-auto">
-        <div className="p-8">
-          {/* Server deployment status alert */}
-          <ServerDeploymentAlert />
-          
+      <main className="flex-1 overflow-hidden">
+        <div className="h-full overflow-y-auto" style={{ padding: '2rem' }}>
+          <div className="mb-4">
+            <ServerDeploymentAlert />
+          </div>
           {children}
         </div>
       </main>
