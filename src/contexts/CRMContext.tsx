@@ -58,11 +58,12 @@ export function CRMProvider({ children }: { children: ReactNode }) {
     params.set('tab', currentTab);
     if (selectedId) params.set('id', selectedId);
     
-    const newUrl = `/dashboard/crm?${params.toString()}`;
-    if (location.pathname + location.search !== newUrl) {
-      navigate(newUrl, { replace: true });
+    // Stay on /dashboard, just update query params
+    const newSearch = `?${params.toString()}`;
+    if (location.search !== newSearch) {
+      navigate({ search: newSearch }, { replace: true });
     }
-  }, [currentTab, selectedId, navigate, location.pathname, location.search]);
+  }, [currentTab, selectedId, navigate, location.search]);
   
   // Update state from URL changes (back/forward)
   useEffect(() => {
