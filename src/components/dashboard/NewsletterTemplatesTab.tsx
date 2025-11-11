@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { toast } from "sonner@2.0.3";
+import DOMPurify from "dompurify";
 
 interface Project {
   id: string;
@@ -821,7 +822,23 @@ export function NewsletterTemplatesTab() {
           <div className="mt-4">
             <div
               className="bg-white rounded-lg overflow-hidden"
-              dangerouslySetInnerHTML={{ __html: getPreviewHTML() }}
+              dangerouslySetInnerHTML={{ 
+                __html: DOMPurify.sanitize(getPreviewHTML(), {
+                  ALLOWED_TAGS: [
+                    'html', 'head', 'title', 'meta', 'style', 'body',
+                    'div', 'span', 'p', 'br', 'a', 'img',
+                    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                    'strong', 'em', 'u', 'ul', 'ol', 'li',
+                    'table', 'thead', 'tbody', 'tr', 'th', 'td',
+                  ],
+                  ALLOWED_ATTR: [
+                    'href', 'src', 'alt', 'title', 'style', 'class', 'id',
+                    'width', 'height', 'target', 'rel', 'align', 'valign',
+                    'cellpadding', 'cellspacing', 'border', 'bgcolor',
+                  ],
+                  ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+                })
+              }}
             />
           </div>
         </DialogContent>

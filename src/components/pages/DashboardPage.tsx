@@ -323,7 +323,7 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
       label: "CRM",
       items: [
         { id: "overview" as DashboardView, label: "Vue d'ensemble", icon: LayoutDashboard },
-        { id: "express" as DashboardView, label: "Express", icon: Sparkles, badge: "NEW" as any },
+        { id: "express" as DashboardView, label: "Express", icon: Sparkles, badge: "NEW" as const },
         { id: "leads" as DashboardView, label: "Leads", icon: UserPlus, badge: leads.filter(l => l.status === "new").length },
         { id: "clients" as DashboardView, label: "Clients", icon: Users, badge: clients.length },
       ]
@@ -352,7 +352,7 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
         { id: "calendar" as DashboardView, label: "Calendrier", icon: Calendar, badge: bookings.filter(b => b.status === "pending").length },
         { id: "analytics" as DashboardView, label: "Analytics", icon: Activity },
         { id: "emails" as DashboardView, label: "Emails", icon: Zap },
-        { id: "seed-data" as DashboardView, label: "Seed Data", icon: Package, badge: projects.length === 0 ? "NEW" as any : undefined },
+        { id: "seed-data" as DashboardView, label: "Seed Data", icon: Package, badge: projects.length === 0 ? "NEW" as const : undefined },
       ]
     }
   ];
