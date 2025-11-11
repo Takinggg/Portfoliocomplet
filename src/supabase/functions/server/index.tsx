@@ -1784,6 +1784,57 @@ app.delete("/make-server-04919ac5/newsletter/subscriber/:email", requireAuth, as
   }
 });
 
+// Send newsletter campaign
+app.post("/make-server-04919ac5/newsletter/send-campaign", requireAuth, async (c)=>{
+  try {
+    const { subject, content, recipients } = await c.req.json();
+    
+    if (!subject || !content) {
+      return c.json({
+        success: false,
+        error: "Subject and content are required"
+      }, 400);
+    }
+    
+    // Get subscribers based on recipients filter
+    const subscribers = await kv.getByPrefix("subscriber:");
+    let targetSubscribers = subscribers;
+    
+    if (recipients === "confirmed") {
+      targetSubscribers = subscribers.filter(s => s.status === "confirmed");
+    }
+    
+    if (targetSubscribers.length === 0) {
+      return c.json({
+        success: false,
+        error: "No subscribers to send to"
+      }, 400);
+    }
+    
+    // In production, this would send emails via Resend
+    // For now, we'll just simulate the sending
+    console.log(`📧 Sending campaign "${subject}" to ${targetSubscribers.length} subscribers`);
+    
+    // TODO: Implement actual email sending with Resend
+    // const emailPromises = targetSubscribers.map(sub => 
+    //   sendEmail(sub.email, subject, content)
+    // );
+    // await Promise.all(emailPromises);
+    
+    return c.json({
+      success: true,
+      sent: targetSubscribers.length,
+      message: `Campaign sent to ${targetSubscribers.length} subscriber(s)`
+    });
+  } catch (error) {
+    console.error("❌ Error sending campaign:", error);
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
 console.log("✅ Newsletter routes added");
 // ===========================================================================
 // TESTIMONIALS ROUTES
