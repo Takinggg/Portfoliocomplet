@@ -1,17 +1,19 @@
 
   <!DOCTYPE html>
   <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Simple Test Page</title>
-      
-      <!-- Hash URL Redirect - Executes BEFORE React loads -->
-      <!-- Only runs when URL contains hash (#), safe for /success pages -->
-      <script src="/hash-redirect.js"></script>
-    </head>
-
-    <body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Test Page</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    
+    <!-- Hash URL Redirect - Executes BEFORE React loads -->
+    <!-- Only runs when URL contains hash (#), safe for /success pages -->
+    <script src="/hash-redirect.js"></script>
+  </head>    <body>
       <div id="root"></div>
       <script type="module" src="/src/main.tsx"></script>
     </body>
