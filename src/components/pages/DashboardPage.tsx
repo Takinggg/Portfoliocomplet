@@ -54,7 +54,7 @@ import {
   CheckCircle2,
   UserPlus
 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { createClient } from "../../utils/supabase/client";
 import { DeleteConfirmDialog } from "../dashboard/DeleteConfirmDialog";
@@ -72,7 +72,7 @@ import { CaseStudiesTab } from "../dashboard/CaseStudiesTab";
 import { NewsletterTab } from "../dashboard/NewsletterTab";
 import { ResourcesTab } from "../dashboard/ResourcesTab";
 import { TestimonialsTab } from "../dashboard/TestimonialsTab";
-import { CalendarManagement } from "../calendar/CalendarManagement";
+import CalendarManagement from "../calendar/CalendarManagement";
 import { seedTestProjects } from "../../utils/seedTestProjects";
 import { showConsoleWelcome } from "../../utils/consoleWelcome";
 import type {
@@ -338,7 +338,7 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
     {
       label: "Contenu",
       items: [
-        { id: "projects" as DashboardView, label: "Projets", icon: Briefcase, badge: projects.filter(p => p.status === "in_progress").length },
+        { id: "projects" as DashboardView, label: "Projets", icon: Briefcase, badge: projects.filter(p => p.status === "in-progress").length },
         { id: "blog" as DashboardView, label: "Blog", icon: BookOpen },
         { id: "case-studies" as DashboardView, label: "Études de cas", icon: Sparkles },
         { id: "newsletter" as DashboardView, label: "Newsletter", icon: Mail },
@@ -359,7 +359,7 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
 
   // Calculate stats
   const stats = {
-    revenue: invoices.filter(i => i.status === "paid").reduce((sum, i) => sum + i.amount, 0),
+    revenue: invoices.filter(i => i.status === "paid").reduce((sum, i) => sum + (i.amount || i.total), 0),
     revenueChange: "+23%",
     newLeads: leads.filter(l => l.status === "new").length,
     leadsChange: `+${leads.filter(l => {
@@ -368,10 +368,10 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
       weekAgo.setDate(weekAgo.getDate() - 7);
       return date > weekAgo;
     }).length}`,
-    activeProjects: projects.filter(p => p.status === "in_progress").length,
-    projectsInfo: `${projects.filter(p => p.status === "on_hold").length} en pause`,
+    activeProjects: projects.filter(p => p.status === "in-progress").length,
+    projectsInfo: `${projects.filter(p => p.status === "on-hold").length} en pause`,
     overdueInvoices: invoices.filter(i => i.status === "overdue").length,
-    overdueAmount: invoices.filter(i => i.status === "overdue").reduce((sum, i) => sum + i.amount, 0),
+    overdueAmount: invoices.filter(i => i.status === "overdue").reduce((sum, i) => sum + (i.amount || i.total), 0),
   };
 
   return (
@@ -615,9 +615,9 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
             {currentView === "analytics" && (
               <AnalyticsTab 
                 leads={leads}
-                clients={clients}
-                projects={projects}
-                invoices={invoices}
+                clients={clients as any}
+                projects={projects as any}
+                invoices={invoices as any}
                 quotes={quotes}
                 onRefresh={fetchAllData}
                 loading={loading}
@@ -991,11 +991,11 @@ function OverviewView({ stats, leads, projects, bookings, loading }: OverviewVie
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h4 className="font-medium mb-1 text-white">{project.name_fr || project.name_en || "Projet sans nom"}</h4>
+                      <h4 className="font-medium mb-1 text-white">{project.name_fr || project.name_en || project.title || "Projet sans nom"}</h4>
                       <p className="text-sm text-white/60">{project.clientName || "Client inconnu"}</p>
                     </div>
                     <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-0">
-                      {project.status === "in_progress" ? "En cours" : "Planifié"}
+                      {project.status === "in-progress" ? "En cours" : "Planifié"}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between text-sm">
@@ -4000,8 +4000,8 @@ function InvoicesView({ invoices, clients, onRefresh, loading }: InvoicesViewPro
       {/* Edit Invoice Dialog */}
       {selectedInvoice && (
         <InvoiceEditDialog
-          invoice={selectedInvoice}
-          clients={clients}
+          invoice={selectedInvoice as any}
+          clients={clients as any}
           open={showEditDialog}
           onOpenChange={setShowEditDialog}
           onRefresh={onRefresh}
@@ -4031,13 +4031,9 @@ function InvoicesView({ invoices, clients, onRefresh, loading }: InvoicesViewPro
 }
 
 // Calendar View Component
-import CalendarManagement from "../calendar/CalendarManagement";
-
-// Calendar View Component
 function CalendarView({ bookings, leads, onRefresh, loading }: CalendarViewProps) {
   console.log("📅 CalendarView - Leads:", leads?.length || 0, "Bookings:", bookings?.length || 0);
-  return <CalendarManagement bookings={bookings} leads={leads} onRefresh=
-{onRefresh} loading={loading} />;
+  return <CalendarManagement bookings={bookings} leads={leads} onRefresh={onRefresh} loading={loading} />;
 }
 
 // Seed Data View Component
@@ -4048,7 +4044,7 @@ function SeedDataView({ onRefresh }: { onRefresh: () => void }) {
   const [isInitializing, setIsInitializing] = useState(false);
   const [autoToken, setAutoToken] = useState(false);
   const [serverConnected, setServerConnected] = useState<boolean | null>(null);
-  const supabase = createClient(projectId, publicAnonKey);
+  const supabase = createClient();
 
   // Automatically get token from current session
   useEffect(() => {

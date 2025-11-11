@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { motion } from "motion/react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import {
   LineChart,
   Line,
@@ -44,32 +44,35 @@ interface Lead {
   createdAt: string;
 }
 
-interface Client {
+interface AnalyticsClient {
   id: string;
   name: string;
   email: string;
-  revenue: number;
-  status: string;
+  revenue?: number;
+  status?: string;
   createdAt: string;
 }
 
-interface Project {
+interface AnalyticsProject {
   id: string;
-  name: string;
+  name?: string;
+  name_fr?: string;
+  name_en?: string;
   status: string;
-  budget: number;
+  budget?: number;
   createdAt: string;
 }
 
-interface Invoice {
+interface AnalyticsInvoice {
   id: string;
-  amount: number;
+  amount?: number;
+  total?: number;
   status: string;
   dueDate: string;
   createdAt: string;
 }
 
-interface Quote {
+interface AnalyticsQuote {
   id: string;
   amount: number;
   status: string;
@@ -78,10 +81,10 @@ interface Quote {
 
 interface AnalyticsTabProps {
   leads: Lead[];
-  clients: Client[];
-  projects: Project[];
-  invoices: Invoice[];
-  quotes: Quote[];
+  clients: AnalyticsClient[];
+  projects: AnalyticsProject[];
+  invoices: AnalyticsInvoice[];
+  quotes: AnalyticsQuote[];
   onRefresh?: () => void;
   loading?: boolean;
 }

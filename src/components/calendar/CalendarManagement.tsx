@@ -30,18 +30,18 @@ import {
   Mail,
   Eye
 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { LeadDetailDialog } from "../dashboard/LeadDetailDialog";
 
-interface Booking {
+interface CalendarBooking {
   id: string;
   name: string;
   email: string;
   phone?: string;
   date: string;
   time: string;
-  duration: number;
+  duration?: number | string;
   status: "pending" | "confirmed" | "completed" | "cancelled";
   notes?: string;
   type?: "call" | "video" | "meeting";
@@ -54,7 +54,7 @@ interface CalendarEvent {
   date: string;
   startTime: string;
   endTime: string;
-  type: "booking" | "event" | "blocked";
+  type: "CalendarBooking" | "event" | "blocked";
   color?: string;
   description?: string;
   status?: string;
@@ -84,7 +84,7 @@ interface Lead {
 }
 
 interface CalendarManagementProps {
-  bookings: Booking[];
+  bookings: CalendarBooking[];
   leads?: Lead[];
   onRefresh: () => void;
   loading: boolean;
@@ -98,7 +98,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
   const [availabilities, setAvailabilities] = useState<Availability[]>([]);
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [showAvailabilityDialog, setShowAvailabilityDialog] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<CalendarBooking | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [showLeadDetail, setShowLeadDetail] = useState(false);
@@ -151,7 +151,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
   };
 
   // Get events for a specific date
-  const getEventsForDate = (date: Date): (Booking | CalendarEvent | Lead)[] => {
+  const getEventsForDate = (date: Date): (CalendarBooking | CalendarEvent | Lead)[] => {
     const dateStr = date.toISOString().split('T')[0];
     
     const bookingsForDate = bookings.filter(b => {
@@ -178,8 +178,8 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
     return availabilities.find(a => a.date === dateStr) || null;
   };
 
-  // Update booking status
-  const updateBookingStatus = async (bookingId: string, status: Booking["status"]) => {
+  // Update CalendarBooking status
+  const updateBookingStatus = async (bookingId: string, status: CalendarBooking["status"]) => {
     try {
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/bookings/${bookingId}`,
@@ -198,12 +198,12 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
         onRefresh();
       }
     } catch (error) {
-      console.error("Error updating booking:", error);
+      console.error("Error updating CalendarBooking:", error);
       toast.error("Erreur lors de la mise à jour");
     }
   };
 
-  // Delete booking
+  // Delete CalendarBooking
   const deleteBooking = async (bookingId: string) => {
     if (!confirm("Êtes-vous sûr de vouloir supprimer ce rendez-vous ?")) return;
 
@@ -221,7 +221,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
         onRefresh();
       }
     } catch (error) {
-      console.error("Error deleting booking:", error);
+      console.error("Error deleting CalendarBooking:", error);
       toast.error("Erreur lors de la suppression");
     }
   };
@@ -285,12 +285,12 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
 
   // Filter bookings
   const filteredBookings = useMemo(() => {
-    return bookings.filter((booking) => {
+    return bookings.filter((CalendarBooking) => {
       const matchesSearch = 
-        booking.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        booking.email.toLowerCase().includes(searchQuery.toLowerCase());
+        CalendarBooking.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        CalendarBooking.email.toLowerCase().includes(searchQuery.toLowerCase());
       
-      const matchesStatus = statusFilter === "all" || booking.status === statusFilter;
+      const matchesStatus = statusFilter === "all" || CalendarBooking.status === statusFilter;
       
       return matchesSearch && matchesStatus;
     });
@@ -311,7 +311,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       });
   }, [filteredBookings]);
 
-  const getStatusLabel = (status: Booking["status"]) => {
+  const getStatusLabel = (status: CalendarBooking["status"]) => {
     const labels = {
       pending: "En attente",
       confirmed: "Confirmé",
@@ -321,7 +321,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
     return labels[status];
   };
 
-  const getStatusColor = (status: Booking["status"]) => {
+  const getStatusColor = (status: CalendarBooking["status"]) => {
     const colors = {
       pending: "bg-yellow-500/10 text-yellow-400",
       confirmed: "bg-[#00FFC2]/10 text-[#00FFC2]",
@@ -558,7 +558,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                             
                             // Determine color based on event type
                             if ('time' in event && 'duration' in event) {
-                              // Booking
+                              // CalendarBooking
                               color = event.status === 'confirmed' 
                                 ? 'bg-[#00FFC2]' 
                                 : event.status === 'pending'
@@ -625,9 +625,9 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                             setSelectedLead(event as Lead);
                             setShowLeadDetail(true);
                           }
-                          // If it's a booking, could open booking details
+                          // If it's a CalendarBooking, could open CalendarBooking details
                           else if ('time' in event && 'duration' in event) {
-                            setSelectedBooking(event as Booking);
+                            setSelectedBooking(event as CalendarBooking);
                           }
                         }}
                         className={`p-3 bg-white/5 rounded-lg border border-white/5 hover:border-[#00FFC2]/30 transition-all ${
@@ -635,7 +635,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                         }`}
                       >
                         {'time' in event && 'duration' in event ? (
-                          // Booking (has time and duration fields)
+                          // CalendarBooking (has time and duration fields)
                           <div className="flex items-center justify-between">
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
@@ -822,9 +822,9 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                   <p className="text-sm">Aucun rendez-vous à venir</p>
                 </div>
               ) : (
-                upcomingBookings.map((booking, index) => (
+                upcomingBookings.map((CalendarBooking, index) => (
                   <motion.div
-                    key={booking.id}
+                    key={CalendarBooking.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
@@ -833,49 +833,49 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-medium text-sm">{booking.name}</h4>
-                          <Badge className={`text-xs ${getStatusColor(booking.status)}`}>
-                            {getStatusLabel(booking.status)}
+                          <h4 className="font-medium text-sm">{CalendarBooking.name}</h4>
+                          <Badge className={`text-xs ${getStatusColor(CalendarBooking.status)}`}>
+                            {getStatusLabel(CalendarBooking.status)}
                           </Badge>
                         </div>
-                        <p className="text-xs text-white/60 mb-1">{booking.email}</p>
+                        <p className="text-xs text-white/60 mb-1">{CalendarBooking.email}</p>
                         <div className="flex items-center gap-2 text-xs text-white/60">
                           <Clock className="h-3 w-3" />
-                          <span>{new Date(booking.date).toLocaleDateString('fr-FR')}</span>
+                          <span>{new Date(CalendarBooking.date).toLocaleDateString('fr-FR')}</span>
                           <span>•</span>
-                          <span>{booking.time}</span>
+                          <span>{CalendarBooking.time}</span>
                           <span>•</span>
-                          <span>{booking.duration}min</span>
+                          <span>{CalendarBooking.duration}min</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Actions */}
                     <div className="flex gap-2 mt-3 pt-3 border-t border-white/5">
-                      {booking.status === "pending" && (
+                      {CalendarBooking.status === "pending" && (
                         <Button
                           size="sm"
-                          onClick={() => updateBookingStatus(booking.id, "confirmed")}
+                          onClick={() => updateBookingStatus(CalendarBooking.id, "confirmed")}
                           className="flex-1 bg-[#00FFC2]/10 text-[#00FFC2] hover:bg-[#00FFC2]/20 h-8 text-xs"
                         >
                           <Check className="h-3 w-3 mr-1" />
                           Confirmer
                         </Button>
                       )}
-                      {booking.status === "confirmed" && (
+                      {CalendarBooking.status === "confirmed" && (
                         <Button
                           size="sm"
-                          onClick={() => updateBookingStatus(booking.id, "completed")}
+                          onClick={() => updateBookingStatus(CalendarBooking.id, "completed")}
                           className="flex-1 bg-green-500/10 text-green-400 hover:bg-green-500/20 h-8 text-xs"
                         >
                           <Check className="h-3 w-3 mr-1" />
                           Terminer
                         </Button>
                       )}
-                      {(booking.status === "pending" || booking.status === "confirmed") && (
+                      {(CalendarBooking.status === "pending" || CalendarBooking.status === "confirmed") && (
                         <Button
                           size="sm"
-                          onClick={() => updateBookingStatus(booking.id, "cancelled")}
+                          onClick={() => updateBookingStatus(CalendarBooking.id, "cancelled")}
                           variant="outline"
                           className="flex-1 border-red-500/20 text-red-400 hover:bg-red-500/10 h-8 text-xs"
                         >
@@ -885,7 +885,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                       )}
                       <Button
                         size="sm"
-                        onClick={() => deleteBooking(booking.id)}
+                        onClick={() => deleteBooking(CalendarBooking.id)}
                         variant="outline"
                         className="border-white/10 text-white/60 hover:bg-white/5 h-8 px-2"
                       >
@@ -1133,9 +1133,9 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                   ))}
 
                 {/* Actual Bookings */}
-                {filteredBookings.map((booking, index) => (
+                {filteredBookings.map((CalendarBooking, index) => (
                   <motion.div
-                    key={`booking-${booking.id}`}
+                    key={`CalendarBooking-${CalendarBooking.id}`}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: ((leads || []).filter(l => l.wantsAppointment).length + index) * 0.02 }}
@@ -1143,34 +1143,34 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
-                        <h4 className="font-medium mb-1">{booking.name}</h4>
-                        <p className="text-sm text-white/60">{booking.email}</p>
+                        <h4 className="font-medium mb-1">{CalendarBooking.name}</h4>
+                        <p className="text-sm text-white/60">{CalendarBooking.email}</p>
                       </div>
-                      <Badge className={getStatusColor(booking.status)}>
-                        {getStatusLabel(booking.status)}
+                      <Badge className={getStatusColor(CalendarBooking.status)}>
+                        {getStatusLabel(CalendarBooking.status)}
                       </Badge>
                     </div>
                     
                     <div className="space-y-2 text-sm text-white/60">
                       <div className="flex items-center gap-2">
                         <CalendarIcon className="h-4 w-4" />
-                        <span>{new Date(booking.date).toLocaleDateString('fr-FR')}</span>
+                        <span>{new Date(CalendarBooking.date).toLocaleDateString('fr-FR')}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4" />
-                        <span>{booking.time} ({booking.duration}min)</span>
+                        <span>{CalendarBooking.time} ({CalendarBooking.duration}min)</span>
                       </div>
-                      {booking.phone && (
+                      {CalendarBooking.phone && (
                         <div className="flex items-center gap-2">
                           <Phone className="h-4 w-4" />
-                          <span>{booking.phone}</span>
+                          <span>{CalendarBooking.phone}</span>
                         </div>
                       )}
                     </div>
 
-                    {booking.notes && (
+                    {CalendarBooking.notes && (
                       <p className="text-xs text-white/40 mt-3 pt-3 border-t border-white/5 line-clamp-2">
-                        {booking.notes}
+                        {CalendarBooking.notes}
                       </p>
                     )}
                   </motion.div>
@@ -1227,7 +1227,7 @@ function EventForm({ onCreate, onClose }: any) {
     date: "",
     startTime: "09:00",
     endTime: "10:00",
-    type: "event" as "booking" | "event" | "blocked",
+    type: "event" as "CalendarBooking" | "event" | "blocked",
     description: "",
     color: "#00FFC2"
   });
@@ -1449,3 +1449,4 @@ function AvailabilityForm({ onCreate, onClose }: any) {
     </div>
   );
 }
+

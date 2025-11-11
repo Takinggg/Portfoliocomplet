@@ -6,31 +6,33 @@ import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Save, X } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { projectId } from "../../utils/supabase/info";
 import { createClient } from "../../utils/supabase/client";
 
-interface Invoice {
+interface InvoiceEditInvoice {
   id: string;
-  number: string;
+  number?: string;
+  invoiceNumber?: string;
   clientId: string;
-  clientName: string;
-  amount: number;
+  clientName?: string;
+  amount?: number;
+  total?: number;
   description?: string;
   status: "draft" | "sent" | "paid" | "overdue";
   dueDate: string;
   createdAt: string;
 }
 
-interface Client {
+interface InvoiceEditClient {
   id: string;
   name: string;
   email: string;
 }
 
 interface InvoiceEditDialogProps {
-  invoice: Invoice;
-  clients: Client[];
+  invoice: InvoiceEditInvoice;
+  clients: InvoiceEditClient[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onRefresh: () => void;
@@ -180,7 +182,7 @@ export function InvoiceEditDialog({ invoice, clients, open, onOpenChange, onRefr
             <Label>Statut</Label>
             <Select
               value={editedInvoice.status}
-              onValueChange={(value) => setEditedInvoice({ ...editedInvoice, status: value as Invoice["status"] })}
+              onValueChange={(value) => setEditedInvoice({ ...editedInvoice, status: value as InvoiceEditInvoice["status"] })}
             >
               <SelectTrigger className="mt-1 bg-white/5 border-white/10 text-white">
                 <SelectValue />

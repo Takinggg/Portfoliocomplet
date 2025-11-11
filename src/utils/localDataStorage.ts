@@ -325,7 +325,26 @@ export interface LocalDashboardData {
     source: string;
     createdAt: string;
   }>;
-  stats: {
+  clients?: Array<{
+    id: string;
+    name: string;
+    email: string;
+    phone?: string;
+    company?: string;
+    status?: "active" | "inactive";
+    createdAt: string;
+  }>;
+  bookings?: Array<{
+    id: string;
+    name: string;
+    email: string;
+    date: string;
+    time: string;
+    serviceType: string;
+    status: "pending" | "confirmed" | "cancelled" | "completed";
+    createdAt: string;
+  }>;
+  stats?: {
     totalLeads: number;
     newLeads: number;
     conversionRate: number;
