@@ -66,6 +66,7 @@ import { NewsletterPopup } from "./components/newsletter/NewsletterPopup";
 import { BackToTop } from "./components/BackToTop";
 import { ScrollProgress } from "./components/ScrollProgress";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { Toaster } from "./components/ui/sonner";
 
 // ==========================================
 // ROUTING COMPONENTS
@@ -472,6 +473,7 @@ export default function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <LanguageProvider>
+          <Toaster position="top-right" richColors />
           <AppContent />
         </LanguageProvider>
       </BrowserRouter>
