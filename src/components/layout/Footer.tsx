@@ -1,7 +1,6 @@
 import { Github, Linkedin, Twitter, Mail, ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 import { NewsletterForm } from "../newsletter/NewsletterForm";
-import { NewsletterBadge } from "../newsletter/NewsletterBadge";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { useLanguage } from "../../utils/i18n/LanguageContext";
 import { TrustBadges } from "../TrustBadges";
@@ -53,13 +52,8 @@ export default function Footer({ onNavigate }: FooterProps) {
                 {t("footer.description")}
               </p>
               
-              {/* Newsletter Badge */}
-              <div className="mb-4">
-                <NewsletterBadge showTrend />
-              </div>
-              
               {/* Newsletter Form */}
-              <div>
+              <div className="mt-6">
                 <div className="mb-3">
                   <p className="text-sm text-white mb-1">
                     {language === 'en' ? 'Monthly Newsletter' : 'Newsletter mensuelle'}
