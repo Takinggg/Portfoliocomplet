@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/
 import { Loader2, Sparkles, Check, AlertCircle, Star } from "lucide-react";
 import { seedDemoData } from "../utils/seedDemoData";
 import { seedTestimonials } from "../utils/seedTestimonials";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 export function SeedDataButton() {
   const [isSeeding, setIsSeeding] = useState(false);
@@ -161,3 +161,4 @@ export function SeedDataButton() {
     </div>
   );
 }
+

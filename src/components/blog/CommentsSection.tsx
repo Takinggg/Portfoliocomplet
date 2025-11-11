@@ -7,7 +7,7 @@ import { Input } from "../ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 
 interface Comment {
@@ -386,3 +386,4 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
     </section>
   );
 }
+

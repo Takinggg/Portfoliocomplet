@@ -19,7 +19,7 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { SocialShare } from "../SocialShare";
 import { ViewCounter } from "../ViewCounter";
@@ -383,3 +383,4 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
     </div>
   );
 }
+

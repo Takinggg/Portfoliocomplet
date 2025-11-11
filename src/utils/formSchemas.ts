@@ -96,7 +96,7 @@ export const bookingFormSchema = z.object({
   
   meetingType: z
     .enum(["discovery", "consulting", "demo", "follow-up"], {
-      errorMap: () => ({ message: "Veuillez sélectionner un type de rendez-vous" })
+      message: "Veuillez sélectionner un type de rendez-vous"
     }),
   
   date: z
@@ -109,7 +109,7 @@ export const bookingFormSchema = z.object({
   
   duration: z
     .enum(["30", "60", "90"], {
-      errorMap: () => ({ message: "Veuillez sélectionner une durée" })
+      message: "Veuillez sélectionner une durée"
     }),
   
   timezone: z
@@ -158,17 +158,17 @@ export const quoteRequestSchema = z.object({
   
   projectType: z
     .enum(["website", "webapp", "ecommerce", "mobile", "api", "other"], {
-      errorMap: () => ({ message: "Veuillez sélectionner un type de projet" })
+      message: "Veuillez sélectionner un type de projet"
     }),
   
   budget: z
     .enum(["<5k", "5k-10k", "10k-25k", "25k-50k", ">50k"], {
-      errorMap: () => ({ message: "Veuillez sélectionner une fourchette budgétaire" })
+      message: "Veuillez sélectionner une fourchette budgétaire"
     }),
   
   timeline: z
     .enum(["urgent", "1month", "3months", "6months", "flexible"], {
-      errorMap: () => ({ message: "Veuillez sélectionner un délai" })
+      message: "Veuillez sélectionner un délai"
     }),
   
   description: z

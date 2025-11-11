@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Mail, CheckCircle2, Loader2 } from "lucide-react";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { useLanguage } from "../../utils/i18n/LanguageContext";
 
 interface NewsletterFormProps {
@@ -182,3 +182,4 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
     </form>
   );
 }
+

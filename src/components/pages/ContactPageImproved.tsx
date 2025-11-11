@@ -15,7 +15,7 @@ import {
   MessageSquare,
   Loader2
 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { useAnalytics, usePageTracking } from "../../utils/hooks/useAnalytics";
@@ -471,3 +471,4 @@ export default function ContactPageImproved({ onNavigate }: ContactPageImprovedP
     </div>
   );
 }
+

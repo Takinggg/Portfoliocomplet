@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Lock, Mail, ArrowLeft } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { createClient } from "../../utils/supabase/client";
 
 type Page = "home";
@@ -146,3 +146,4 @@ export default function LoginPage({ onLoginSuccess, onNavigate }: LoginPageProps
     </div>
   );
 }
+

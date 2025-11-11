@@ -5,7 +5,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Textarea } from "../ui/textarea";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { Loader2, Building, Mail, Phone, MapPin, DollarSign, User, CheckCircle2 } from "lucide-react";
 
 interface Client {
@@ -380,3 +380,4 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated }
     </Dialog>
   );
 }
+

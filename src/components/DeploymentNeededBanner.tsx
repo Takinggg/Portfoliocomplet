@@ -5,7 +5,7 @@
 
 import { useState } from "react";
 import { AlertCircle, X, Rocket } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 export function DeploymentNeededBanner() {
   const [dismissed, setDismissed] = useState(
@@ -70,3 +70,4 @@ export function DeploymentNeededBanner() {
     </div>
   );
 }
+

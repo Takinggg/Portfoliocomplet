@@ -27,7 +27,7 @@ import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { Alert, AlertDescription } from "../ui/alert";
 import { Badge } from "../ui/badge";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import * as unifiedService from "../../utils/unifiedDataService";
 import { seedTestProjects, clearTestProjects, TEST_PROJECTS } from "../../utils/seedTestProjects";
 import { createClient } from "../../utils/supabase/client";
@@ -363,3 +363,4 @@ export default function SeedDataPage() {
     </div>
   );
 }
+

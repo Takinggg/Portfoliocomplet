@@ -8,7 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Button } from "./ui/button";
 import { AlertCircle, Copy, CheckCircle, ExternalLink, X } from "lucide-react";
 import { Card } from "./ui/card";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 export function CORSFixAlert() {
   const [dismissed, setDismissed] = useState(false);
@@ -120,3 +120,4 @@ export function CORSFixAlert() {
     </Card>
   );
 }
+

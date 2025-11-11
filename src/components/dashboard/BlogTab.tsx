@@ -39,7 +39,7 @@ import { BlogPost } from "../blog/BlogPostCard";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 import { RichTextEditor } from "../blog/RichTextEditor";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 interface BlogTabProps {
   onRefresh?: () => void;
@@ -831,3 +831,4 @@ export function BlogTab({ onRefresh, loading = false }: BlogTabProps) {
     </div>
   );
 }
+

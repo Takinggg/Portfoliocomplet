@@ -24,7 +24,7 @@ import {
   Users,
   BarChart3
 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { projectId } from "../../utils/supabase/info";
 import { createClient } from "../../utils/supabase/client";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
@@ -820,3 +820,4 @@ export function ResourcesTab() {
     </div>
   );
 }
+

@@ -46,6 +46,9 @@ interface CalendarBooking {
   notes?: string;
   type?: "call" | "video" | "meeting";
   createdAt: string;
+  // Additional properties for Lead compatibility
+  message?: string;
+  wantsAppointment?: boolean;
 }
 
 interface CalendarEvent {

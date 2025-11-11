@@ -1,4 +1,4 @@
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { projectId, publicAnonKey } from "./supabase/info";
 import { createClient } from "./supabase/client";
 
@@ -135,4 +135,5 @@ export async function seedProfessionalResources(): Promise<void> {
     throw error;
   }
 }
+
 

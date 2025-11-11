@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { RefreshCw, CheckCircle, XCircle, Server, Wifi } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { checkServerAvailability } from "../utils/serverService";
 import { projectId, publicAnonKey } from "../utils/supabase/info";
 
@@ -111,3 +111,4 @@ export function TestServerConnectionButton() {
     </Button>
   );
 }
+

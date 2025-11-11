@@ -7,7 +7,7 @@ import { Textarea } from "../ui/textarea";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import { Edit, Mail, Phone, Calendar, MessageSquare, Send, Save, X, UserPlus } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { projectId } from "../../utils/supabase/info";
 import { createClient } from "../../utils/supabase/client";
 
@@ -417,3 +417,4 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
     </>
   );
 }
+

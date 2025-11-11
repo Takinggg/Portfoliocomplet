@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { BookOpen, Loader2, CheckCircle, AlertCircle, Wifi, WifiOff } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { seedBlogPostsBilingual } from "../utils/seedBlogPostsBilingual";
 import { initializeBlog, BlogServiceMode } from "../utils/blogService";
 
@@ -125,3 +125,4 @@ export function SeedBlogButton() {
     </Button>
   );
 }
+

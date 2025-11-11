@@ -41,7 +41,7 @@ import {
 import { CaseStudy } from "../../utils/freelanceConfig";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 interface CaseStudiesTabProps {
   onRefresh?: () => void;
@@ -2206,3 +2206,4 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
     </div>
   );
 }
+

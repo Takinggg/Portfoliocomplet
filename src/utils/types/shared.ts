@@ -357,3 +357,13 @@ export function isResource(value: unknown): value is Resource {
     'type' in value
   );
 }
+
+// ============================================================================
+// Validation Types
+// ============================================================================
+
+export interface ValidationResult {
+  success: boolean;
+  error?: string;
+  data?: unknown;
+}

@@ -28,6 +28,9 @@ export interface BlogPost {
   views?: number;
   published?: boolean;
   featured?: boolean;
+  // Additional properties for compatibility with BlogPostCard
+  publishedAt: string; // Maps to 'date' 
+  status: "draft" | "published"; // Maps to 'published' boolean
 }
 
 let currentMode: BlogServiceMode = "checking";

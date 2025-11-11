@@ -2,7 +2,7 @@
  * Helper pour gérer les fetch avec fallback et gestion d'erreurs améliorée
  */
 
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 export interface FetchOptions extends RequestInit {
   showErrorToast?: boolean;
@@ -183,3 +183,4 @@ export async function fetchWithLocalFallback<T>(
     return { data, fromCache: true };
   }
 }
+

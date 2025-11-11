@@ -112,7 +112,7 @@ import { registerServiceWorker } from "./utils/pwaHelpers";
 // ==========================================
 // SERVER DIAGNOSTICS (DEV ONLY)
 // ==========================================
-if (typeof import.meta !== "undefined" && import.meta.env?.DEV) {
+if (typeof import.meta !== "undefined" && (import.meta as any).env?.DEV) {
   import("./utils/testServerRoutes").then((module) => {
     console.log("🔧 Server diagnostics loaded. Run testServer.quickTest() in console.");
   }).catch((err) => {

@@ -8,15 +8,15 @@ export default defineConfig({
     react(),
     {
       name: 'copy-200-html',
-      closeBundle() {
+      async closeBundle() {
         // Copy index.html to 200.html for Vercel SPA fallback
-        const fs = require('fs');
+        const { copyFileSync, existsSync } = await import('fs');
         const buildDir = path.resolve(__dirname, 'dist');
         const indexPath = path.join(buildDir, 'index.html');
         const fallbackPath = path.join(buildDir, '200.html');
         
-        if (fs.existsSync(indexPath)) {
-          fs.copyFileSync(indexPath, fallbackPath);
+        if (existsSync(indexPath)) {
+          copyFileSync(indexPath, fallbackPath);
           console.log('✅ Created 200.html for Vercel SPA routing');
         }
       }

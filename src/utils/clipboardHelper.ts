@@ -1,4 +1,4 @@
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 /**
  * Copy text to clipboard with toast notification
@@ -48,3 +48,4 @@ export async function copyToClipboard(
     return false;
   }
 }
+

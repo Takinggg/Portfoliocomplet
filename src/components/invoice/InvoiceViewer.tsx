@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { Loader2, AlertCircle, Download, Printer, CreditCard, ExternalLink } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { useState } from 'react';
 import { projectId, publicAnonKey } from '../../utils/supabase/info';
 
@@ -619,3 +619,4 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
     </div>
   );
 }
+

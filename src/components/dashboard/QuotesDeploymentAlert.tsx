@@ -1,7 +1,7 @@
 import { AlertCircle, ExternalLink, TestTube, Plus } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Button } from "../ui/button";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { createClient } from "../../utils/supabase/client";
 
@@ -333,3 +333,4 @@ export function QuotesDeploymentAlert() {
     </Alert>
   );
 }
+
