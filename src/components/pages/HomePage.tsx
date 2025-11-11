@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import confetti from "canvas-confetti";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { useTranslation } from "../../utils/i18n/useTranslation";
+import { useLanguage } from "../../utils/i18n/LanguageContext";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 
 type Page = "contact" | "projects" | "services" | "about" | "booking" | "project-detail";
@@ -700,6 +701,7 @@ function SpotlightEffect() {
 
 export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) {
   const { t } = useTranslation();
+  const { language } = useLanguage();
   const { scrollYProgress } = useScroll();
   const scaleProgress = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
   const opacityProgress = useTransform(scrollYProgress, [0, 0.3], [1, 0.5]);
@@ -2115,6 +2117,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
 
 // Contact Section Component
 function ContactSection({ onNavigate }: HomePageProps) {
+  const { language } = useLanguage();
   const [selectedNeed, setSelectedNeed] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
@@ -2303,7 +2306,11 @@ function ContactSection({ onNavigate }: HomePageProps) {
             transition={{ delay: 0.3 }}
             className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
           >
-            Parlons de <span className="text-gradient-mint-animated">votre projet</span>
+            {language === 'en' ? (
+              <>Let's talk about <span className="text-gradient-mint-animated">your project</span></>
+            ) : (
+              <>Parlons de <span className="text-gradient-mint-animated">votre projet</span></>
+            )}
           </motion.h2>
 
           {/* Sous-texte */}
@@ -2314,7 +2321,11 @@ function ContactSection({ onNavigate }: HomePageProps) {
             transition={{ delay: 0.4 }}
             className="text-xl md:text-2xl text-neutral-400 max-w-3xl mx-auto mb-6"
           >
-            Expliquez-moi vos besoins, vos idées ou vos objectifs — je vous réponds sous <span className="text-mint font-medium">24h</span>
+            {language === 'en' ? (
+              <>Tell me about your needs, ideas, or goals — I'll respond within <span className="text-mint font-medium">24h</span></>
+            ) : (
+              <>Expliquez-moi vos besoins, vos idées ou vos objectifs — je vous réponds sous <span className="text-mint font-medium">24h</span></>
+            )}
           </motion.p>
 
           {/* Stats row */}
@@ -2326,9 +2337,9 @@ function ContactSection({ onNavigate }: HomePageProps) {
             className="flex flex-wrap items-center justify-center gap-8 mb-6"
           >
             {[
-              { icon: Clock, value: "< 24h", label: "Temps de réponse" },
-              { icon: Users, value: "50+", label: "Clients satisfaits" },
-              { icon: Star, value: "5.0", label: "Note moyenne" },
+              { icon: Clock, value: "< 24h", label: language === 'en' ? "Response time" : "Temps de réponse" },
+              { icon: Users, value: "50+", label: language === 'en' ? "Happy clients" : "Clients satisfaits" },
+              { icon: Star, value: "5.0", label: language === 'en' ? "Average rating" : "Note moyenne" },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -2359,7 +2370,9 @@ function ContactSection({ onNavigate }: HomePageProps) {
             className="text-neutral-500 hover:text-mint transition-colors inline-flex items-center gap-2 group"
           >
             <Calendar className="h-4 w-4 group-hover:rotate-12 transition-transform" />
-            <span className="underline-offset-4 group-hover:underline">Je préfère réserver un appel</span>
+            <span className="underline-offset-4 group-hover:underline">
+              {language === 'en' ? "I'd rather book a call" : "Je préfère réserver un appel"}
+            </span>
           </motion.button>
         </motion.div>
 
