@@ -75,123 +75,26 @@ import { TestimonialsTab } from "../dashboard/TestimonialsTab";
 import { CalendarManagement } from "../calendar/CalendarManagement";
 import { seedTestProjects } from "../../utils/seedTestProjects";
 import { showConsoleWelcome } from "../../utils/consoleWelcome";
-
-type DashboardView = "overview" | "express" | "leads" | "clients" | "projects" | "invoices" | "quotes" | "calendar" | "analytics" | "settings" | "emails" | "blog" | "case-studies" | "newsletter" | "resources" | "testimonials" | "seed-data";
+import type {
+  DashboardView,
+  Lead,
+  Client,
+  Project,
+  Invoice,
+  Booking,
+  Quote,
+  DashboardStats,
+  OverviewViewProps,
+  LeadsViewProps,
+  ClientsViewProps,
+  ProjectsViewProps,
+  InvoicesViewProps,
+  CalendarViewProps,
+} from "../dashboard/types";
 
 interface DashboardPageProps {
   onLogout: () => void;
   onNavigate: (page: "home") => void;
-}
-
-interface Lead {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string;
-  message: string;
-  status: "new" | "contacted" | "qualified" | "converted" | "lost";
-  source: string;
-  interests?: string[];
-  wantsAppointment?: boolean;
-  convertedToClient?: string;
-  createdAt: string;
-  updatedAt?: string;
-  // Booking-related fields (when lead is created from booking)
-  bookingId?: string;
-  bookingDate?: string;
-  bookingTime?: string;
-  bookingDuration?: number;
-}
-
-interface Client {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string;
-  company?: string;
-  revenue?: number;
-  status: "active" | "inactive";
-  source?: string;
-  convertedFrom?: string;
-  createdAt: string;
-}
-
-interface Project {
-  id: string;
-  // Bilingual fields
-  name_fr: string;
-  name_en: string;
-  description_fr?: string;
-  description_en?: string;
-  tags_fr?: string[];
-  tags_en?: string[];
-  duration_fr?: string;
-  duration_en?: string;
-  challenges_fr?: string;
-  challenges_en?: string;
-  solutions_fr?: string;
-  solutions_en?: string;
-  results_fr?: string;
-  results_en?: string;
-  category_fr?: "web" | "mobile" | "design" | "consulting" | "other";
-  category_en?: "web" | "mobile" | "design" | "consulting" | "other";
-  // Common/non-language specific fields
-  clientId?: string;
-  clientName?: string;
-  status: "planning" | "in_progress" | "review" | "completed" | "on_hold";
-  budget?: number;
-  spent?: number;
-  startDate: string;
-  endDate?: string;
-  imageUrl?: string;
-  isPinned?: boolean;
-  createdAt: string;
-  // Portfolio-specific common fields
-  technologies?: string[];
-  projectUrl?: string;
-  githubUrl?: string;
-  imageGallery?: string[];
-  testimonial?: {
-    text: string;
-    author: string;
-    role: string;
-  };
-}
-
-interface Invoice {
-  id: string;
-  number: string;
-  clientId: string;
-  clientName: string;
-  projectId?: string;
-  amount: number;
-  description?: string;
-  status: "draft" | "sent" | "paid" | "overdue";
-  dueDate: string;
-  createdAt: string;
-}
-
-interface Booking {
-  id: string;
-  name: string;
-  email: string;
-  date: string;
-  time: string;
-  duration: number;
-  status: "pending" | "confirmed" | "completed" | "cancelled";
-  createdAt: string;
-}
-
-interface Quote {
-  id: string;
-  number: string;
-  clientId: string;
-  clientName: string;
-  amount: number;
-  description?: string;
-  status: "draft" | "sent" | "accepted" | "rejected";
-  validUntil: string;
-  createdAt: string;
 }
 
 export default function DashboardPage({ onLogout, onNavigate }: DashboardPageProps) {
@@ -746,7 +649,7 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
 }
 
 // Overview View Component
-function OverviewView({ stats, leads, projects, bookings, loading }: any) {
+function OverviewView({ stats, leads, projects, bookings, loading }: OverviewViewProps) {
   const [showQuickSetup, setShowQuickSetup] = useState(true);
   const hasData = leads.length > 0 || projects.length > 0 || bookings.length > 0;
   
@@ -1110,7 +1013,8 @@ function OverviewView({ stats, leads, projects, bookings, loading }: any) {
 }
 
 // Leads View Component
-function LeadsView({ leads, onUpdateStatus, onRefresh, onDeleteLead, loading }: any) {
+// Leads View Component
+function LeadsView({ leads, onUpdateStatus, onRefresh, onDeleteLead, loading }: LeadsViewProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
@@ -1328,7 +1232,8 @@ function LeadsView({ leads, onUpdateStatus, onRefresh, onDeleteLead, loading }: 
 }
 
 // Clients View Component
-function ClientsView({ clients, onRefresh, loading }: any) {
+// Clients View Component
+function ClientsView({ clients, onRefresh, loading }: ClientsViewProps) {
   const [showConvertDialog, setShowConvertDialog] = useState(false);
   const [showNewClientDialog, setShowNewClientDialog] = useState(false);
   const [convertibleLeads, setConvertibleLeads] = useState<Lead[]>([]);
@@ -1723,7 +1628,8 @@ function ClientsView({ clients, onRefresh, loading }: any) {
 }
 
 // Projects View Component
-function ProjectsView({ projects, clients, onRefresh, loading, onViewChange }: any) {
+// Projects View Component  
+function ProjectsView({ projects, clients, onRefresh, loading, onViewChange }: ProjectsViewProps) {
   const [showNewProjectDialog, setShowNewProjectDialog] = useState(false);
   const [showEditProjectDialog, setShowEditProjectDialog] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
@@ -3341,7 +3247,8 @@ function ProjectsView({ projects, clients, onRefresh, loading, onViewChange }: a
 }
 
 // Invoices View Component
-function InvoicesView({ invoices, clients, onRefresh, loading }: any) {
+// Invoices View Component
+function InvoicesView({ invoices, clients, onRefresh, loading }: InvoicesViewProps) {
   const [showNewInvoiceDialog, setShowNewInvoiceDialog] = useState(false);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
@@ -4126,7 +4033,8 @@ function InvoicesView({ invoices, clients, onRefresh, loading }: any) {
 // Calendar View Component
 import CalendarManagement from "../calendar/CalendarManagement";
 
-function CalendarView({ bookings, leads, onRefresh, loading }: any) {
+// Calendar View Component
+function CalendarView({ bookings, leads, onRefresh, loading }: CalendarViewProps) {
   console.log("📅 CalendarView - Leads:", leads?.length || 0, "Bookings:", bookings?.length || 0);
   return <CalendarManagement bookings={bookings} leads={leads} onRefresh=
 {onRefresh} loading={loading} />;

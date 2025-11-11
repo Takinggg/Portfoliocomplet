@@ -24,6 +24,7 @@ import { useTranslation } from "../../utils/i18n/useTranslation";
 import { SocialShare } from "../SocialShare";
 import { ViewCounter } from "../ViewCounter";
 import { fetchBlogPost, fetchBlogPosts, incrementPostViews } from "../../utils/blogService";
+import DOMPurify from "dompurify";
 
 interface BlogPostPageProps {
   slug: string;
@@ -293,7 +294,19 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
         >
           <div
             className="text-white/80 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ 
+              __html: DOMPurify.sanitize(post.content, {
+                ALLOWED_TAGS: [
+                  'p', 'br', 'strong', 'em', 'u', 's', 'a', 'img',
+                  'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                  'ul', 'ol', 'li', 'blockquote', 'code', 'pre',
+                  'table', 'thead', 'tbody', 'tr', 'th', 'td',
+                  'div', 'span', 'hr'
+                ],
+                ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'id', 'target', 'rel'],
+                ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+              })
+            }}
           />
         </motion.div>
 

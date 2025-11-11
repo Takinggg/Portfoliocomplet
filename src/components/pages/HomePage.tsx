@@ -20,6 +20,31 @@ interface HomePageProps {
   onProjectClick?: (projectId: string) => void;
 }
 
+// Project type from API
+interface Project {
+  id: string;
+  title: string;
+  title_fr?: string;
+  title_en?: string;
+  name?: string; // Legacy field
+  description: string;
+  description_fr?: string;
+  description_en?: string;
+  image: string;
+  imageUrl?: string; // Legacy field
+  isPinned: boolean;
+  category: string;
+  client?: string;
+  clientName?: string; // Legacy field
+  technologies: string[];
+  status: "completed" | "in-progress" | "planning";
+  budget?: number;
+  startDate?: string;
+  endDate?: string;
+  url?: string;
+  language?: "fr" | "en";
+}
+
 // Animated Counter
 function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
   const [count, setCount] = useState(0);
@@ -582,8 +607,24 @@ function AutomationWorkflow() {
   );
 }
 
+// Bento Card Stat type
+interface BentoCardStat {
+  label: string;
+  value: string | number;
+}
+
+// Bento Card Props
+interface BentoCardProps {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+  stats: BentoCardStat[];
+  delay?: number;
+  size?: "sm" | "md" | "lg";
+}
+
 // Bento Grid Cards
-function BentoCard({ icon: Icon, title, description, stats, delay = 0, size = "md" }: any) {
+function BentoCard({ icon: Icon, title, description, stats, delay = 0, size = "md" }: BentoCardProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -628,7 +669,7 @@ function BentoCard({ icon: Icon, title, description, stats, delay = 0, size = "m
 
           {stats && (
             <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat: any, i: number) => (
+              {stats.map((stat: BentoCardStat, i: number) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0 }}
@@ -705,7 +746,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
   const { scrollYProgress } = useScroll();
   const scaleProgress = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
   const opacityProgress = useTransform(scrollYProgress, [0, 0.3], [1, 0.5]);
-  const [pinnedProjects, setPinnedProjects] = useState<any[]>([]);
+  const [pinnedProjects, setPinnedProjects] = useState<Project[]>([]);
 
   // Fetch pinned projects
   useEffect(() => {
@@ -733,7 +774,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
         
         const data = await response.json();
         const pinned = (data.projects || [])
-          .filter((p: any) => p.isPinned)
+          .filter((p: Project) => p.isPinned)
           .slice(0, 3); // Limit to 3 projects
         setPinnedProjects(pinned);
       } catch (error) {
