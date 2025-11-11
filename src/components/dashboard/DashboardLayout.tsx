@@ -26,7 +26,24 @@ import {
 } from "lucide-react";
 import { ServerDeploymentAlert } from "./ServerDeploymentAlert";
 
-type DashboardView = "overview" | "express" | "leads" | "clients" | "projects" | "invoices" | "calendar" | "analytics" | "emails" | "blog" | "case-studies" | "newsletter" | "testimonials" | "settings";
+type DashboardView = 
+  | "overview" 
+  | "express" 
+  | "leads" 
+  | "clients" 
+  | "projects" 
+  | "invoices" 
+  | "quotes"
+  | "calendar" 
+  | "analytics" 
+  | "emails" 
+  | "blog" 
+  | "case-studies" 
+  | "newsletter"
+  | "resources"
+  | "testimonials" 
+  | "seed-data"
+  | "settings";
 
 interface DashboardLayoutProps {
   currentView: DashboardView;
@@ -54,6 +71,7 @@ export default function DashboardLayout({ currentView, onViewChange, onLogout, c
         { id: "leads" as DashboardView, icon: Users, label: "Leads" },
         { id: "clients" as DashboardView, icon: Users, label: "Clients" },
         { id: "projects" as DashboardView, icon: Briefcase, label: "Projets" },
+        { id: "quotes" as DashboardView, icon: FileText, label: "Devis" },
         { id: "invoices" as DashboardView, icon: FileText, label: "Factures" },
         { id: "calendar" as DashboardView, icon: Calendar, label: "Calendrier" },
       ]

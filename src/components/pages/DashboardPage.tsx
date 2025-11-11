@@ -64,6 +64,7 @@ import { InvoiceEditDialog } from "../dashboard/InvoiceEditDialog";
 import EmailSettings from "../dashboard/EmailSettings";
 import { DashboardRouter } from "../dashboard/DashboardRouter";
 import { DashboardShell } from "../dashboard/DashboardShell";
+import DashboardLayout from "../dashboard/DashboardLayout";
 import EmailsTab from "../dashboard/EmailsTab";
 import { QuotesTab } from "../dashboard/QuotesTab";
 import { AnalyticsTab } from "../dashboard/AnalyticsTab";
@@ -386,276 +387,104 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
   };
 
   return (
-    <div className="min-h-screen bg-[#0C0C0C] text-white flex">
-      {/* Sidebar */}
-      <motion.aside 
-        initial={{ x: -20, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        className="w-72 bg-black/40 backdrop-blur-xl border-r border-[#00FFC2]/10 flex flex-col"
-      >
-        {/* Logo */}
-        <div className="p-6 border-b border-[#00FFC2]/10">
-          <button 
-            onClick={() => onNavigate("home")}
-            className="flex items-center space-x-3 group"
-          >
-            <div className="w-12 h-12 bg-gradient-to-br from-[#00FFC2] to-[#00FFC2]/60 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform">
-              <span className="text-black font-bold text-xl">M</span>
-            </div>
-            <div>
-              <div className="text-white">Dashboard</div>
-              <div className="text-xs text-[#00FFC2]/60">CRM Pro</div>
-            </div>
-          </button>
-        </div>
-
-        {/* Menu */}
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-          {menuCategories.map((category, categoryIndex) => {
-            const isOpen = openCategories.includes(category.label);
-            
-            return (
-              <div key={categoryIndex} className="mb-2">
-                {/* Category Header - Collapsible */}
-                <button
-                  onClick={() => {
-                    setOpenCategories(prev => 
-                      prev.includes(category.label)
-                        ? prev.filter(c => c !== category.label)
-                        : [...prev, category.label]
-                    );
-                  }}
-                  className="w-full flex items-center justify-between px-3 py-2 mb-1 text-xs uppercase tracking-wider text-white/40 font-semibold hover:text-white/60 transition-colors group"
-                >
-                  <span>{category.label}</span>
-                  <motion.div
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <ChevronDown className="h-3.5 w-3.5 opacity-60 group-hover:opacity-100" />
-                  </motion.div>
-                </button>
-                
-                {/* Category Items - Animated */}
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2, ease: "easeInOut" }}
-                      className="space-y-1 overflow-hidden"
-                    >
-                      {category.items.map((item) => {
-                        const Icon = item.icon;
-                        const isActive = currentView === item.id;
-                        
-                        return (
-                          <motion.button
-                            key={item.id}
-                            onClick={() => setCurrentView(item.id)}
-                            whileHover={{ x: 4 }}
-                            whileTap={{ scale: 0.98 }}
-                            className={`
-                              w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all relative overflow-hidden
-                              ${isActive 
-                                ? "bg-[#00FFC2]/10 text-[#00FFC2] border border-[#00FFC2]/20" 
-                                : "text-white/60 hover:bg-white/5 hover:text-white border border-transparent"
-                              }
-                            `}
-                          >
-                            {isActive && (
-                              <motion.div 
-                                layoutId="activeTab"
-                                className="absolute inset-0 bg-[#00FFC2]/5"
-                                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                              />
-                            )}
-                            <div className="flex items-center space-x-3 relative z-10">
-                              <Icon className="h-5 w-5" />
-                              <span className="font-medium">{item.label}</span>
-                            </div>
-                            {item.badge !== undefined && item.badge !== 0 && (
-                              <Badge 
-                                className={`relative z-10 ${
-                                  typeof item.badge === 'string' && item.badge === 'NEW'
-                                    ? 'bg-[#00FFC2] text-[#0C0C0C] animate-pulse'
-                                    : 'bg-[#00FFC2]/20 text-[#00FFC2]'
-                                }`}
-                                variant="secondary"
-                              >
-                                {item.badge}
-                              </Badge>
-                            )}
-                          </motion.button>
-                        );
-                      })}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
-        </nav>
-
-        {/* User Section */}
-        <div className="p-4 border-t border-[#00FFC2]/10">
-          <div className="flex items-center space-x-3 mb-3 px-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#00FFC2] to-[#00FFC2]/60 rounded-full flex items-center justify-center">
-              <span className="text-black font-bold text-sm">M</span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm text-white truncate">{userEmail}</p>
-              <p className="text-xs text-[#00FFC2]/60">Administrateur</p>
-            </div>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white"
-            onClick={onLogout}
-          >
-            <LogOut className="h-4 w-4 mr-2" />
-            Déconnexion
-          </Button>
-        </div>
-      </motion.aside>
-
-      {/* Main Content */}
-      <main className="flex-1 overflow-auto">
-        {/* Header */}
-        <motion.header 
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="bg-black/40 backdrop-blur-xl border-b border-[#00FFC2]/10 p-6 sticky top-0 z-10"
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl mb-1">
-                {(() => {
-                  for (const category of menuCategories) {
-                    const item = category.items.find(i => i.id === currentView);
-                    if (item) return item.label;
-                  }
-                  return "Dashboard";
-                })()}
-              </h1>
-              <p className="text-[#00FFC2]/60 text-sm">
-                {new Date().toLocaleDateString('fr-FR', { 
-                  weekday: 'long', 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}
-              </p>
-            </div>
-            <Button 
-              onClick={() => onNavigate("home")} 
-              className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
-            >
-              <ArrowUpRight className="h-4 w-4 mr-2" />
-              Voir le site
-            </Button>
-          </div>
-        </motion.header>
-
-        {/* Content */}
-        <div className="p-6">
-          <AnimatePresence mode="wait">
-            {currentView === "overview" && (
-              <OverviewView 
-                stats={stats} 
-                leads={leads.slice(0, 5)} 
-                projects={projects.slice(0, 4)}
-                bookings={bookings.slice(0, 5)}
-                loading={loading}
-              />
-            )}
-            {currentView === "express" && (
-              <ExpressTab 
-                leads={leads}
-                clients={clients}
-                projects={projects}
-                invoices={invoices}
-                quotes={quotes}
-              />
-            )}
-            {currentView === "leads" && (
-              <LeadsView 
-                leads={leads} 
-                onUpdateStatus={updateLeadStatus}
-                onDeleteLead={deleteLead}
-                onRefresh={fetchAllData}
-                loading={loading}
-              />
-            )}
-            {currentView === "clients" && (
-              <ClientsTab />
-            )}
-            {currentView === "projects" && (
-              <ProjectsView 
-                projects={projects}
-                clients={clients}
-                onRefresh={fetchAllData}
-                loading={loading}
-                onViewChange={setCurrentView}
-              />
-            )}
-            {currentView === "invoices" && (
-              <InvoicesView 
-                invoices={invoices}
-                clients={clients}
-                onRefresh={fetchAllData}
-                loading={loading}
-              />
-            )}
-            {currentView === "quotes" && (
-              <QuotesTab />
-            )}
-            {currentView === "calendar" && (
-              <CalendarView 
-                bookings={bookings}
-                leads={leads}
-                onRefresh={fetchAllData}
-                loading={loading}
-              />
-            )}
-            {currentView === "emails" && (
-              <EmailsTab />
-            )}
-            {currentView === "analytics" && (
-              <AnalyticsTab 
-                leads={leads}
-                clients={clients as any}
-                projects={projects as any}
-                invoices={invoices as any}
-                quotes={quotes}
-                onRefresh={fetchAllData}
-                loading={loading}
-              />
-            )}
-            {currentView === "blog" && (
-              <BlogTabBilingual />
-            )}
-            {currentView === "case-studies" && (
-              <CaseStudiesTab />
-            )}
-            {currentView === "newsletter" && (
-              <NewsletterTab />
-            )}
-            {currentView === "resources" && (
-              <ResourcesTab />
-            )}
-            {currentView === "testimonials" && (
-              <TestimonialsTab />
-            )}
-            {currentView === "seed-data" && (
-              <SeedDataView onRefresh={fetchAllData} />
-            )}
-          </AnimatePresence>
-        </div>
-      </main>
-    </div>
+    <DashboardLayout
+      currentView={currentView}
+      onViewChange={setCurrentView}
+      onLogout={onLogout}
+    >
+      <AnimatePresence mode="wait">
+        {currentView === "overview" && (
+          <OverviewView 
+            stats={stats} 
+            leads={leads.slice(0, 5)} 
+            projects={projects.slice(0, 4)}
+            bookings={bookings.slice(0, 5)}
+            loading={loading}
+          />
+        )}
+        {currentView === "express" && (
+          <ExpressTab 
+            leads={leads}
+            clients={clients}
+            projects={projects}
+            invoices={invoices}
+            quotes={quotes}
+          />
+        )}
+        {currentView === "leads" && (
+          <LeadsView 
+            leads={leads} 
+            onUpdateStatus={updateLeadStatus}
+            onDeleteLead={deleteLead}
+            onRefresh={fetchAllData}
+            loading={loading}
+          />
+        )}
+        {currentView === "clients" && (
+          <ClientsTab />
+        )}
+        {currentView === "projects" && (
+          <ProjectsView 
+            projects={projects}
+            clients={clients}
+            onRefresh={fetchAllData}
+            loading={loading}
+            onViewChange={setCurrentView}
+          />
+        )}
+        {currentView === "invoices" && (
+          <InvoicesView 
+            invoices={invoices}
+            clients={clients}
+            onRefresh={fetchAllData}
+            loading={loading}
+          />
+        )}
+        {currentView === "quotes" && (
+          <QuotesTab />
+        )}
+        {currentView === "calendar" && (
+          <CalendarView 
+            bookings={bookings}
+            leads={leads}
+            onRefresh={fetchAllData}
+            loading={loading}
+          />
+        )}
+        {currentView === "emails" && (
+          <EmailsTab />
+        )}
+        {currentView === "analytics" && (
+          <AnalyticsTab 
+            leads={leads}
+            clients={clients as any}
+            projects={projects as any}
+            invoices={invoices as any}
+            quotes={quotes}
+            onRefresh={fetchAllData}
+            loading={loading}
+          />
+        )}
+        {currentView === "blog" && (
+          <BlogTabBilingual />
+        )}
+        {currentView === "case-studies" && (
+          <CaseStudiesTab />
+        )}
+        {currentView === "newsletter" && (
+          <NewsletterTab />
+        )}
+        {currentView === "resources" && (
+          <ResourcesTab />
+        )}
+        {currentView === "testimonials" && (
+          <TestimonialsTab />
+        )}
+        {currentView === "seed-data" && (
+          <SeedDataView onRefresh={fetchAllData} />
+        )}
+      </AnimatePresence>
+    </DashboardLayout>
   );
 }
 
