@@ -16,7 +16,7 @@ interface Entity {
   quote_number?: string;
 }
 
-export default function CRMMasterList() {
+export function CRMMasterList() {
   const { currentTab, selectedId, setSelectedId, showToast } = useCRM();
   const [entities, setEntities] = useState<Entity[]>([]);
   const [loading, setLoading] = useState(true);

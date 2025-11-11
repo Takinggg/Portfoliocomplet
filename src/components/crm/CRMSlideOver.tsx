@@ -7,12 +7,12 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { motion, AnimatePresence } from 'motion/react';
 
-export default function CRMSlideOver() {
+export function CRMSlideOver() {
   const { isSlideOverOpen, slideOverContent, closeSlideOver, showToast } = useCRM();
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
 

@@ -38,7 +38,7 @@ interface EntityDetail {
 
 type TabType = 'overview' | 'documents' | 'notes' | 'activity';
 
-export default function CRMDetailPane() {
+export function CRMDetailPane() {
   const { currentTab, selectedId, setSelectedId, openSlideOver, showToast } = useCRM();
   const [entity, setEntity] = useState<EntityDetail | null>(null);
   const [loading, setLoading] = useState(true);
