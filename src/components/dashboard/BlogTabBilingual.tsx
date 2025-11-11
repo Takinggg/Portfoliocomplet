@@ -314,9 +314,9 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-gray-900 p-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between bg-gray-800/50 p-4 rounded-lg border border-gray-700">
         <div className="flex items-center gap-2">
           <Globe className="w-5 h-5 text-purple-400" />
           <h2 className="text-xl font-semibold text-white">
@@ -329,13 +329,13 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
             disabled={isRefreshing}
             variant="outline"
             size="sm"
-            className="bg-white/5 border-white/10 text-white"
+            className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
           >
             <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
           </Button>
           <Button
             onClick={() => setIsCreateOpen(true)}
-            className="bg-purple-600 hover:bg-purple-700 text-white"
+            className="bg-purple-600 hover:bg-purple-700 text-white border-0"
           >
             <Plus className="w-4 h-4 mr-2" />
             Nouvel article
@@ -344,24 +344,24 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 bg-gray-800/50 p-4 rounded-lg border border-gray-700">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/40 w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
             placeholder="Rechercher..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-white/5 border-white/10 text-white"
+            className="pl-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400"
           />
         </div>
         <Select value={filterStatus} onValueChange={(v: any) => setFilterStatus(v)}>
-          <SelectTrigger className="w-40 bg-white/5 border-white/10 text-white">
+          <SelectTrigger className="w-40 bg-gray-700 border-gray-600 text-white">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous</SelectItem>
-            <SelectItem value="published">Publiés</SelectItem>
-            <SelectItem value="draft">Brouillons</SelectItem>
+          <SelectContent className="bg-gray-800 border-gray-700">
+            <SelectItem value="all" className="text-white hover:bg-gray-700">Tous</SelectItem>
+            <SelectItem value="published" className="text-white hover:bg-gray-700">Publiés</SelectItem>
+            <SelectItem value="draft" className="text-white hover:bg-gray-700">Brouillons</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -369,7 +369,7 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
       {/* Posts Grid */}
       <div className="grid gap-4">
         {filteredPosts.map((post) => (
-          <Card key={post.id} className="bg-white/5 border-white/10 p-4">
+          <Card key={post.id} className="bg-gray-800 border-gray-700 p-4">
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-start gap-4">
@@ -378,11 +378,11 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
                       🇫🇷 {post.title_fr || post.title}
                     </h3>
                     {post.title_en && (
-                      <h3 className="font-medium text-white/70 mb-2">
+                      <h3 className="font-medium text-gray-300 mb-2">
                         🇬🇧 {post.title_en}
                       </h3>
                     )}
-                    <div className="flex items-center gap-4 text-sm text-white/60">
+                    <div className="flex items-center gap-4 text-sm text-gray-400">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
                         {new Date(post.createdAt).toLocaleDateString('fr-FR')}
@@ -405,12 +405,12 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
                     </div>
                     <div className="flex items-center gap-2 mt-2">
                       {post.tags_fr && post.tags_fr.map((tag) => (
-                        <Badge key={tag} variant="outline" className="text-xs border-purple-600/30 text-purple-300">
+                        <Badge key={tag} variant="outline" className="text-xs border-purple-600/30 text-purple-300 bg-purple-600/10">
                           🇫🇷 {tag}
                         </Badge>
                       ))}
                       {post.tags_en && post.tags_en.map((tag) => (
-                        <Badge key={tag} variant="outline" className="text-xs border-blue-600/30 text-blue-300">
+                        <Badge key={tag} variant="outline" className="text-xs border-blue-600/30 text-blue-300 bg-blue-600/10">
                           🇬🇧 {tag}
                         </Badge>
                       ))}
@@ -424,7 +424,7 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
                     size="sm"
                     variant="ghost"
                     onClick={() => window.open(`/blog/${post.slug}`, "_blank")}
-                    className="text-white/60 hover:text-white"
+                    className="text-gray-400 hover:text-white hover:bg-gray-700"
                   >
                     <Eye className="w-4 h-4" />
                   </Button>
@@ -433,7 +433,7 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
                   size="sm"
                   variant="ghost"
                   onClick={() => openEditDialog(post)}
-                  className="text-white/60 hover:text-white"
+                  className="text-gray-400 hover:text-white hover:bg-gray-700"
                 >
                   <Edit className="w-4 h-4" />
                 </Button>
@@ -441,7 +441,7 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
                   size="sm"
                   variant="ghost"
                   onClick={() => setDeletePost(post)}
-                  className="text-red-400 hover:text-red-300"
+                  className="text-red-400 hover:text-red-300 hover:bg-red-600/10"
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
@@ -579,10 +579,17 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
               </div>
 
               <div className="flex gap-2">
-                <Button variant="outline" onClick={closeDialog}>
+                <Button 
+                  variant="outline" 
+                  onClick={closeDialog}
+                  className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
+                >
                   Annuler
                 </Button>
-                <Button onClick={handleSubmit} className="bg-purple-600 hover:bg-purple-700">
+                <Button 
+                  onClick={handleSubmit} 
+                  className="bg-purple-600 hover:bg-purple-700 text-white border-0"
+                >
                   {editingPost ? "Modifier" : "Créer"}
                 </Button>
               </div>
@@ -603,13 +610,16 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
               </DialogDescription>
             </DialogHeader>
             <div className="flex justify-end gap-2 mt-4">
-              <Button variant="outline" onClick={() => setDeletePost(null)}>
+              <Button 
+                variant="outline" 
+                onClick={() => setDeletePost(null)}
+                className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
+              >
                 Annuler
               </Button>
               <Button
-                variant="destructive"
                 onClick={handleDelete}
-                className="bg-red-600 hover:bg-red-700"
+                className="bg-red-600 hover:bg-red-700 text-white border-0"
               >
                 Supprimer
               </Button>

@@ -61,16 +61,16 @@ export function BilingualFields({ formData, onUpdate }: BilingualFieldsProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-gray-800/30 p-4 rounded-lg border border-gray-700">
       <Tabs defaultValue="fr" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="fr">🇫🇷 Français</TabsTrigger>
-          <TabsTrigger value="en">🇬🇧 English</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 bg-gray-700">
+          <TabsTrigger value="fr" className="text-white data-[state=active]:bg-gray-600">🇫🇷 Français</TabsTrigger>
+          <TabsTrigger value="en" className="text-white data-[state=active]:bg-gray-600">🇬🇧 English</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="fr" className="space-y-4">
+        <TabsContent value="fr" className="space-y-4 mt-4">
           <div className="space-y-2">
-            <Label htmlFor="slug_fr" className="text-white/80">
+            <Label htmlFor="slug_fr" className="text-white font-medium">
               Slug (URL française)
             </Label>
             <Input
@@ -78,10 +78,10 @@ export function BilingualFields({ formData, onUpdate }: BilingualFieldsProps) {
               value={formData.slug_fr}
               onChange={(e) => onUpdate({ slug_fr: e.target.value })}
               placeholder="mon-article-en-francais"
-              className="bg-gray-800/50 border-gray-600 text-white"
+              className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
             />
-            <p className="text-xs text-white/60">
-              URL: /fr/blog/{formData.slug_fr || "mon-article"}
+            <p className="text-xs text-green-400 bg-green-600/10 px-2 py-1 rounded">
+              🔗 URL: /fr/blog/{formData.slug_fr || "mon-article"}
             </p>
           </div>
 
