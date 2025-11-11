@@ -67,7 +67,7 @@ import EmailsTab from "../dashboard/EmailsTab";
 import { QuotesTab } from "../dashboard/QuotesTab";
 import { AnalyticsTab } from "../dashboard/AnalyticsTab";
 import { ExpressTab } from "../dashboard/ExpressTab";
-import { BlogTab } from "../dashboard/BlogTab";
+import { BlogTabBilingual } from "../dashboard/BlogTabBilingual";
 import { CaseStudiesTab } from "../dashboard/CaseStudiesTab";
 import { NewsletterTab } from "../dashboard/NewsletterTab";
 import { ResourcesTab } from "../dashboard/ResourcesTab";
@@ -624,7 +624,7 @@ export default function DashboardPage({ onLogout, onNavigate }: DashboardPagePro
               />
             )}
             {currentView === "blog" && (
-              <BlogTab />
+              <BlogTabBilingual />
             )}
             {currentView === "case-studies" && (
               <CaseStudiesTab />
