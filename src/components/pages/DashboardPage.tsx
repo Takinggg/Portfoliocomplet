@@ -934,13 +934,10 @@ function OverviewView({ stats, leads, projects, bookings, loading }: any) {
               <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-0">
                 {(() => {
                   const now = new Date();
-                  console.log("🔍 DEBUG Bookings - Total:", bookings.length);
-                  console.log("🔍 DEBUG Bookings - Now:", now.toISOString());
                   
                   // Bookings à venir
                   const upcomingBookings = bookings.filter((b: Booking) => {
                     const bookingDateTime = new Date(`${b.date}T${b.time}`);
-                    console.log(`🔍 Booking: ${b.name} - Date: ${b.date} - Time: ${b.time} - Combined: ${bookingDateTime.toISOString()} - Status: ${b.status} - Future: ${bookingDateTime > now}`);
                     return bookingDateTime > now && b.status !== "cancelled";
                   });
                   
@@ -956,7 +953,6 @@ function OverviewView({ stats, leads, projects, bookings, loading }: any) {
                   );
                   
                   const total = upcomingBookings.length + leadsWithAppointment.length;
-                  console.log("🔍 DEBUG Upcoming count:", total, `(${upcomingBookings.length} bookings + ${leadsWithAppointment.length} leads)`);
                   return total;
                 })()}
                 {" "}à venir
@@ -976,25 +972,16 @@ function OverviewView({ stats, leads, projects, bookings, loading }: any) {
                     const bookingDateTime = new Date(`${b.date}T${b.time}`);
                     return bookingDateTime > now && b.status !== "cancelled";
                   })
-                  .map((b: Booking) => {
-                    console.log("🔍 DEBUG Booking:", {
-                      id: b.id,
-                      name: b.name,
-                      status: b.status,
-                      statusType: typeof b.status,
-                      fullBooking: b
-                    });
-                    return {
-                      id: b.id,
-                      name: b.name,
-                      email: b.email,
-                      date: b.date,
-                      time: b.time,
-                      duration: b.duration,
-                      status: b.status,
-                      source: 'booking' as const
-                    };
-                  });
+                  .map((b: Booking) => ({
+                    id: b.id,
+                    name: b.name,
+                    email: b.email,
+                    date: b.date,
+                    time: b.time,
+                    duration: b.duration,
+                    status: b.status,
+                    source: 'booking' as const
+                  }));
                 
                 // Créer un Set des emails qui ont déjà un booking
                 const emailsWithBooking = new Set(upcomingBookings.map(b => b.email.toLowerCase()));
@@ -1027,8 +1014,6 @@ function OverviewView({ stats, leads, projects, bookings, loading }: any) {
                     return dateA.getTime() - dateB.getTime();
                   })
                   .slice(0, 5); // Afficher seulement les 5 prochains
-                
-                console.log("🔍 DEBUG - Bookings:", upcomingBookings.length, "Leads avec RDV:", leadsWithAppointment.length);
                 
                 if (allAppointments.length === 0) {
                   return (
