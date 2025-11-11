@@ -71,7 +71,7 @@ export async function diagnosticQuotesRoutes() {
     } else {
       console.log(`⚠️ Route accessible mais erreur: ${data.error || 'Unknown'}\n`);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Erreur lors du test:', error.message);
   }
 
@@ -130,7 +130,7 @@ export async function diagnosticQuotesRoutes() {
     } else {
       console.log(`⚠️ Route accessible mais erreur: ${data.error || 'Unknown'}\n`);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Erreur lors du test:', error.message);
   }
 
@@ -161,3 +161,4 @@ if (typeof window !== 'undefined') {
   console.log('💡 Pour lancer le diagnostic, tapez dans la console :');
   console.log('   diagnosticQuotesRoutes()');
 }
+

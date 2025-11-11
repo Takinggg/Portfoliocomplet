@@ -52,7 +52,7 @@ export async function runCompleteDiagnostic(): Promise<DiagnosticResult[]> {
         : `Erreur ${response.status}: ${text}`,
       details: { status: response.status, body: json || text }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     results.push({
       test: "Health check SANS Authorization",
       status: "❌ FAIL",
@@ -91,7 +91,7 @@ export async function runCompleteDiagnostic(): Promise<DiagnosticResult[]> {
         : `Erreur ${response.status}: ${text}`,
       details: { status: response.status, body: json || text }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     results.push({
       test: "Health check AVEC Authorization",
       status: "❌ FAIL",
@@ -131,7 +131,7 @@ export async function runCompleteDiagnostic(): Promise<DiagnosticResult[]> {
         currentOrigin: window.location.origin
       }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     results.push({
       test: "CORS Preflight",
       status: "⚠️ WARNING",
@@ -163,7 +163,7 @@ export async function runCompleteDiagnostic(): Promise<DiagnosticResult[]> {
         : `Erreur ${response.status}`,
       details: json
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     results.push({
       test: "Newsletter Stats Endpoint",
       status: "❌ FAIL",
@@ -240,3 +240,4 @@ export function getDiagnosticSummary(results: DiagnosticResult[]): {
     allOk: results.every(r => r.status === "✅ OK")
   };
 }
+

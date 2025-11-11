@@ -111,7 +111,7 @@ export async function migrateTestimonialsToMultilingual() {
       alreadyMigrated: skippedCount,
       total: testimonials.length,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Migration failed:", error);
     return {
       success: false,
@@ -124,3 +124,4 @@ export async function migrateTestimonialsToMultilingual() {
 if (import.meta.main) {
   migrateTestimonialsToMultilingual();
 }
+

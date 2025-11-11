@@ -97,6 +97,8 @@ export function isInstalled(): boolean {
 /**
  * Vérifie si le navigateur supporte les PWA
  */
+import type { BeforeInstallPromptEvent } from './types/shared';
+
 export function isPWASupported(): boolean {
   return 'serviceWorker' in navigator && 'PushManager' in window;
 }
@@ -105,14 +107,14 @@ export function isPWASupported(): boolean {
  * Gère l'événement beforeinstallprompt pour Android/Desktop
  */
 export function setupInstallPrompt(): void {
-  let deferredPrompt: any = null;
+  let deferredPrompt: BeforeInstallPromptEvent | null = null;
   
   window.addEventListener('beforeinstallprompt', (e) => {
     // Empêcher le mini-infobar par défaut
     e.preventDefault();
     
     // Stocker l'événement pour l'utiliser plus tard
-    deferredPrompt = e;
+    deferredPrompt = e as BeforeInstallPromptEvent;
     
     console.log('[PWA] L\'application peut être installée');
     
@@ -126,8 +128,8 @@ export function setupInstallPrompt(): void {
     deferredPrompt = null;
     
     // Analytics: tracker l'installation
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'pwa_install', {
+    if (typeof window !== 'undefined' && (window as Window & { gtag?: Function }).gtag) {
+      (window as Window & { gtag: Function }).gtag('event', 'pwa_install', {
         event_category: 'engagement',
         event_label: 'PWA Installation',
       });
@@ -138,7 +140,7 @@ export function setupInstallPrompt(): void {
 /**
  * Affiche une bannière d'installation personnalisée
  */
-function showInstallBanner(deferredPrompt: any): void {
+function showInstallBanner(deferredPrompt: BeforeInstallPromptEvent): void {
   // Vérifier si l'utilisateur a déjà refusé l'installation
   const installDismissed = localStorage.getItem('pwa-install-dismissed');
   

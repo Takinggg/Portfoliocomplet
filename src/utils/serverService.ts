@@ -5,6 +5,7 @@
  */
 
 import { projectId, publicAnonKey } from "./supabase/info";
+import { getErrorMessage, type ValidationResult } from './types/shared';
 
 export type ServerMode = "server" | "local" | "checking";
 
@@ -209,8 +210,8 @@ export async function fetchWithFallback<T>(
     });
     
     return { data, mode: "server" };
-  } catch (error: any) {
-    console.error(`❌ Error fetching ${endpoint}:`, error.message);
+  } catch (error: unknown) {
+    console.error(`❌ Error fetching ${endpoint}:`, getErrorMessage(error));
     
     // En mode production, throw error
     if (PRODUCTION_MODE) {
@@ -223,14 +224,16 @@ export async function fetchWithFallback<T>(
   }
 }
 
+export interface ValidationResult {
+  success: boolean;
+  message: string;
+  details?: Record<string, unknown>;
+}
+
 /**
  * Vérifie que le serveur Supabase est bien déployé et accessible
  */
-export async function validateServerDeployment(): Promise<{
-  success: boolean;
-  message: string;
-  details?: any;
-}> {
+export async function validateServerDeployment(): Promise<ValidationResult> {
   console.log("🔍 Validation du déploiement serveur...");
   
   try {
@@ -286,11 +289,11 @@ export async function validateServerDeployment(): Promise<{
         projectsCount: Array.isArray(projectsData) ? projectsData.length : 0,
       },
     };
-  } catch (error: any) {
-    console.error("❌ Erreur de validation:", error);
+  } catch (error: unknown) {
+    console.error("❌ Erreur de validation:", getErrorMessage(error));
     return {
       success: false,
-      message: `Erreur: ${error.message}`,
+      message: `Erreur: ${getErrorMessage(error)}`,
     };
   }
 }

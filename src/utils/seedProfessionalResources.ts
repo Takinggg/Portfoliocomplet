@@ -130,8 +130,9 @@ export async function seedProfessionalResources(): Promise<void> {
     const result = await response.json();
     console.log("✅ Professional resources seeded:", result);
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Error seeding professional resources:", error);
     throw error;
   }
 }
+

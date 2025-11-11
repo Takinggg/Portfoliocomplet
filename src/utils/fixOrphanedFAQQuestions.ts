@@ -201,7 +201,7 @@ export async function fixOrphanedFAQQuestions(options: {
       message: `${deleteOrphans ? 'Deleted' : 'Reassigned'} ${fixedCount} orphaned questions`
     };
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Error during fix:", error);
     return { success: false, error: error.message };
   }
@@ -220,3 +220,4 @@ if (typeof window !== 'undefined') {
     return fixOrphanedFAQQuestions({ deleteOrphans: false });
   };
 }
+

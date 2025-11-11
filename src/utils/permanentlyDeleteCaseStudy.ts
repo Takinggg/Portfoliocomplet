@@ -52,7 +52,7 @@ export async function permanentlyDeleteCaseStudy(id: string): Promise<boolean> {
     console.log(`⚠️ Il ne sera PAS recréé lors de l'initialisation`);
     
     return true;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`❌ Erreur lors de la suppression permanente:`, error);
     return false;
   }
@@ -86,3 +86,4 @@ if (typeof window !== "undefined") {
   console.log("   getDeletedCaseStudies() - Liste des IDs supprimés");
   console.log("   clearDeletedCaseStudies() - Réinitialise la liste");
 }
+

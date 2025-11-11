@@ -63,7 +63,7 @@ export async function testCaseStudiesAuth() {
     console.log("Project ID:", projectId);
     console.log("Public Anon Key (first 20 chars):", publicAnonKey.substring(0, 20) + "...");
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("\n❌ Test failed with error:", error);
     console.error("Error details:", {
       message: error.message,
@@ -79,3 +79,4 @@ if (typeof window !== 'undefined') {
   (window as any).testCaseStudiesAuth = testCaseStudiesAuth;
   console.log("💡 Run testCaseStudiesAuth() in console to diagnose the issue");
 }
+

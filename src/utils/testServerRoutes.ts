@@ -118,7 +118,7 @@ export async function testServerRoutes(accessToken?: string): Promise<{
         status: response.status,
         error: success ? undefined : await response.text().catch(() => "Unknown error"),
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log(`❌ ${route.name}: FAILED - ${error.message}`);
       results.push({
         name: route.name,
@@ -162,7 +162,7 @@ export async function quickTest() {
       console.log(data);
       return false;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log("❌ Server is OFFLINE or unreachable");
     console.log(`   Error: ${error.message}`);
     return false;
@@ -200,7 +200,7 @@ export async function testClientRoutes(accessToken: string) {
       console.log(`❌ Error: ${error}`);
       return false;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(`❌ Network error: ${error.message}`);
     return false;
   }
@@ -219,3 +219,4 @@ if (typeof window !== "undefined") {
   console.log("   Run: testServer.testClientRoutes(yourAccessToken)");
   console.log("   Run: testServer.testAllRoutes(yourAccessToken)");
 }
+

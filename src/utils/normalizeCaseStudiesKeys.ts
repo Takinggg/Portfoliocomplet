@@ -58,7 +58,7 @@ export async function normalizeCaseStudiesKeys() {
   `);
 
     return result;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`
 ❌ ERREUR lors de la normalisation:
    ${error.message}
@@ -71,3 +71,4 @@ export async function normalizeCaseStudiesKeys() {
 if (typeof window !== "undefined") {
   (window as any).normalizeCaseStudiesKeys = normalizeCaseStudiesKeys;
 }
+

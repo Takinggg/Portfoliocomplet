@@ -52,7 +52,7 @@ export async function quickServerTest(): Promise<void> {
       });
       console.error("❌ Health Check échoué:", error);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     results.push({
       test: "Health Check",
       status: "❌",
@@ -90,7 +90,7 @@ export async function quickServerTest(): Promise<void> {
       });
       console.error("❌ Blog Posts échoué:", error);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     results.push({
       test: "Blog Posts",
       status: "❌",
@@ -128,7 +128,7 @@ export async function quickServerTest(): Promise<void> {
       });
       console.error("❌ Newsletter Stats échoué:", error);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     results.push({
       test: "Newsletter Stats",
       status: "❌",
@@ -167,7 +167,7 @@ export async function quickServerTest(): Promise<void> {
       });
       console.error("❌ Projects échoué:", error);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     results.push({
       test: "Projects",
       status: "❌",
@@ -261,3 +261,4 @@ export function testServer() {
 (window as any).testServer = testServer;
 
 console.log("✨ Tests serveur chargés ! Utilisez quickServerTest() ou testServer()");
+

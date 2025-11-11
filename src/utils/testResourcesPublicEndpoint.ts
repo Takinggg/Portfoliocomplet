@@ -71,7 +71,7 @@ async function testPublicResourcesEndpoint() {
       console.error("\n❌ API returned error:", data.error);
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("\n❌ Request failed with exception:");
     console.error("   Error:", error.message);
     console.error("   Type:", error.name);
@@ -123,7 +123,7 @@ async function testPublicWithAuthHeader() {
     console.log("✅ Request successful with Authorization header!");
     console.log(`📊 Found ${data.resources?.length || 0} resources`);
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Error:", error.message);
   }
 }
@@ -139,3 +139,4 @@ if (typeof window !== "undefined") {
 }
 
 export { testPublicResourcesEndpoint, testPublicWithAuthHeader };
+

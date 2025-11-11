@@ -219,7 +219,7 @@ Supprime TOUT et recrée 6 catégories + 37 questions.
       }))
     };
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur lors du diagnostic FAQ:", error);
     return { error: error.message };
   }
@@ -311,7 +311,7 @@ Rechargez la page (F5) pour voir les changements.
 
     return { deleted, remaining: questions.length - deleted };
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur:", error);
     return { error: error.message };
   }
@@ -348,7 +348,7 @@ Pour confirmer, tapez :
       message: "Run confirmResetFAQ() to confirm"
     };
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur:", error);
     return { error: error.message };
   }
@@ -428,7 +428,7 @@ Rechargez la page (F5) pour voir les changements.
 
     return { success: true };
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur:", error);
     return { error: error.message };
   }
@@ -441,3 +441,4 @@ if (typeof window !== "undefined") {
   (window as any).resetFAQCompletely = resetFAQCompletely;
   (window as any).confirmResetFAQ = confirmResetFAQ;
 }
+

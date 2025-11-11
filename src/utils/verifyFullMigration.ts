@@ -36,7 +36,7 @@ async function verifyFullMigration(): Promise<void> {
       console.log(`   ⚠️ Serveur version ${data.version} (attendu: complete-2.0.0)`);
       console.log("   → Déployez le serveur complet d'abord");
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log("   ❌ Serveur inaccessible:", error.message);
     return;
   }
@@ -56,7 +56,7 @@ async function verifyFullMigration(): Promise<void> {
       console.log(`   ⚠️ Projects: ${count} projets (attendu: 3+)`);
       results.push({ success: false, module: "Projects", count });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(`   ❌ Projects: ${error.message}`);
     results.push({ success: false, module: "Projects", count: 0, error: error.message });
   }
@@ -74,7 +74,7 @@ async function verifyFullMigration(): Promise<void> {
       console.log(`   ⚠️ Blog: ${count} articles (attendu: 3+)`);
       results.push({ success: false, module: "Blog", count });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(`   ❌ Blog: ${error.message}`);
     results.push({ success: false, module: "Blog", count: 0, error: error.message });
   }
@@ -92,7 +92,7 @@ async function verifyFullMigration(): Promise<void> {
       console.log(`   ⚠️ Case Studies: ${count} études de cas (attendu: 3+)`);
       results.push({ success: false, module: "Case Studies", count });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(`   ❌ Case Studies: ${error.message}`);
     results.push({ success: false, module: "Case Studies", count: 0, error: error.message });
   }
@@ -110,7 +110,7 @@ async function verifyFullMigration(): Promise<void> {
       console.log(`   ⚠️ FAQ: ${count} questions (attendu: 8+)`);
       results.push({ success: false, module: "FAQ", count });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(`   ❌ FAQ: ${error.message}`);
     results.push({ success: false, module: "FAQ", count: 0, error: error.message });
   }
@@ -128,7 +128,7 @@ async function verifyFullMigration(): Promise<void> {
       console.log(`   ⚠️ Testimonials: ${count} témoignages (attendu: 5+)`);
       results.push({ success: false, module: "Testimonials", count });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(`   ❌ Testimonials: ${error.message}`);
     results.push({ success: false, module: "Testimonials", count: 0, error: error.message });
   }
@@ -146,7 +146,7 @@ async function verifyFullMigration(): Promise<void> {
       console.log(`   ⚠️ Resources: ${count} ressources (attendu: 3+)`);
       results.push({ success: false, module: "Resources", count });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(`   ❌ Resources: ${error.message}`);
     results.push({ success: false, module: "Resources", count: 0, error: error.message });
   }
@@ -159,7 +159,7 @@ async function verifyFullMigration(): Promise<void> {
     
     console.log(`   ✅ Clients: ${count} clients (OK)`);
     results.push({ success: true, module: "Clients", count });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(`   ❌ Clients: ${error.message}`);
     results.push({ success: false, module: "Clients", count: 0, error: error.message });
   }
@@ -172,7 +172,7 @@ async function verifyFullMigration(): Promise<void> {
     
     console.log(`   ✅ Leads: ${count} leads (OK)`);
     results.push({ success: true, module: "Leads", count });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(`   ❌ Leads: ${error.message}`);
     results.push({ success: false, module: "Leads", count: 0, error: error.message });
   }
@@ -184,7 +184,7 @@ async function verifyFullMigration(): Promise<void> {
     
     console.log(`   ✅ Newsletter: ${data.total} abonnés (${data.confirmed} confirmés)`);
     results.push({ success: true, module: "Newsletter", count: data.total });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(`   ❌ Newsletter: ${error.message}`);
     results.push({ success: false, module: "Newsletter", count: 0, error: error.message });
   }
@@ -263,3 +263,4 @@ if (typeof window !== "undefined") {
   (window as any).verifyFullMigration = verifyFullMigration;
   console.log("💡 Run verifyFullMigration() to check migration status");
 }
+

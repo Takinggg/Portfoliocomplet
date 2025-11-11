@@ -485,7 +485,7 @@ async function seedData() {
         errorCount++;
         console.log(`  ❌ ${project.title} - ${await res.text()}`);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorCount++;
       console.log(`  ❌ ${project.title} - ${error.message}`);
     }
@@ -507,7 +507,7 @@ async function seedData() {
         errorCount++;
         console.log(`  ❌ ${post.title}`);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorCount++;
       console.log(`  ❌ ${post.title} - ${error.message}`);
     }
@@ -529,7 +529,7 @@ async function seedData() {
         errorCount++;
         console.log(`  ❌ ${cs.title}`);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorCount++;
       console.log(`  ❌ ${cs.title} - ${error.message}`);
     }
@@ -551,7 +551,7 @@ async function seedData() {
         errorCount++;
         console.log(`  ❌ ${faq.question}`);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorCount++;
       console.log(`  ❌ ${faq.question} - ${error.message}`);
     }
@@ -573,7 +573,7 @@ async function seedData() {
         errorCount++;
         console.log(`  ❌ ${testimonial.name}`);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorCount++;
       console.log(`  ❌ ${testimonial.name} - ${error.message}`);
     }
@@ -595,7 +595,7 @@ async function seedData() {
         errorCount++;
         console.log(`  ❌ ${resource.title}`);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorCount++;
       console.log(`  ❌ ${resource.title} - ${error.message}`);
     }
@@ -616,3 +616,4 @@ if (typeof window !== "undefined") {
   (window as any).seedAllData = seedData;
   console.log("💡 Run seedAllData() to populate Supabase with all data");
 }
+

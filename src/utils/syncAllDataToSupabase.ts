@@ -131,7 +131,7 @@ async function syncProjects(): Promise<SyncResult> {
     }
 
     return { category: "Projects", success: true, count };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur sync projects:", error);
     return { category: "Projects", success: false, count: 0, error: error.message };
   }
@@ -191,7 +191,7 @@ async function syncBlogPosts(): Promise<SyncResult> {
     }
 
     return { category: "Blog Posts", success: true, count };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur sync blog posts:", error);
     return { category: "Blog Posts", success: false, count: 0, error: error.message };
   }
@@ -246,7 +246,7 @@ async function syncCaseStudies(): Promise<SyncResult> {
     }
 
     return { category: "Case Studies", success: true, count };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur sync case studies:", error);
     return { category: "Case Studies", success: false, count: 0, error: error.message };
   }
@@ -292,7 +292,7 @@ async function syncFAQs(): Promise<SyncResult> {
     }
 
     return { category: "FAQs", success: true, count };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur sync FAQs:", error);
     return { category: "FAQs", success: false, count: 0, error: error.message };
   }
@@ -342,7 +342,7 @@ async function syncTestimonials(): Promise<SyncResult> {
     }
 
     return { category: "Testimonials", success: true, count };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur sync testimonials:", error);
     return { category: "Testimonials", success: false, count: 0, error: error.message };
   }
@@ -398,7 +398,7 @@ async function syncResources(): Promise<SyncResult> {
     }
 
     return { category: "Resources", success: true, count };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur sync resources:", error);
     return { category: "Resources", success: false, count: 0, error: error.message };
   }
@@ -421,7 +421,7 @@ export async function syncAllDataToSupabase(): Promise<{
   try {
     const healthResponse = await serverRequest("/health");
     console.log("✅ Serveur accessible:", healthResponse.message);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ ERREUR: Le serveur n'est pas accessible");
     console.error("   Détails:", error.message);
     return {
@@ -475,3 +475,4 @@ export async function syncAllDataToSupabase(): Promise<{
 
 console.log("📝 Utilitaire de synchronisation chargé");
 console.log("   Exécuter: window.syncAllDataToSupabase()");
+

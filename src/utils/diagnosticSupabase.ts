@@ -144,7 +144,7 @@ async function testHealthCheck(): Promise<DiagnosticResult> {
       message: "Serveur opérationnel",
       details: data
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       test: "Health Check",
       status: "❌ FAILED",
@@ -194,7 +194,7 @@ async function testCaseStudies(): Promise<DiagnosticResult> {
       message: `${count} case studies chargées`,
       details: { count }
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       test: "Case Studies",
       status: "❌ FAILED",
@@ -244,7 +244,7 @@ async function testBlogPosts(): Promise<DiagnosticResult> {
       message: `${count} articles chargés`,
       details: { count }
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       test: "Blog Posts",
       status: "❌ FAILED",
@@ -288,7 +288,7 @@ async function testAuthentication(): Promise<DiagnosticResult> {
         expiresAt: new Date(session.expires_at! * 1000).toISOString()
       }
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       test: "Authentication",
       status: "❌ FAILED",
@@ -310,3 +310,4 @@ if (typeof window !== "undefined") {
   (window as any).runSupabaseDiagnostic = runDiagnostic;
   console.log("💡 Astuce: Utilisez runSupabaseDiagnostic() dans la console pour lancer le diagnostic");
 }
+

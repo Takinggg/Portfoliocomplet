@@ -82,7 +82,7 @@ export async function diagnosticCaseStudiesKV() {
       }
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur lors du diagnostic:", error);
   }
 
@@ -126,7 +126,7 @@ export async function deleteAllCaseStudies() {
     console.log("✅ Suppression terminée!");
     console.log("💡 Vous pouvez maintenant appeler initCaseStudies() pour réinitialiser");
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur lors de la suppression:", error);
   }
 }
@@ -184,3 +184,4 @@ if (typeof window !== "undefined") {
 ══════════════════════════════════════════════════════════════════
   `);
 }
+

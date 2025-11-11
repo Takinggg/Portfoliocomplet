@@ -120,7 +120,7 @@ export async function cleanOrphanedFAQQuestions() {
       message: `Deleted ${deletedCount} orphaned questions`
     };
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Error during cleanup:", error);
     return { success: false, error: error.message };
   }
@@ -130,3 +130,4 @@ export async function cleanOrphanedFAQQuestions() {
 if (typeof window !== 'undefined') {
   (window as any).cleanOrphanedFAQQuestions = cleanOrphanedFAQQuestions;
 }
+

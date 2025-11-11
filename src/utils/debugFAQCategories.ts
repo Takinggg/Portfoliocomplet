@@ -160,7 +160,7 @@ ${withIcons.map((c: any) => `  • ${c.name}: ${c.icon}`).join('\n')}
       categories,
     };
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur lors du debug des catégories FAQ:", error);
     return { error: error.message };
   }
@@ -282,7 +282,7 @@ Rechargez la page FAQ (F5) pour voir les icônes s'afficher.
 
     return { fixed, skipped, total: categories.length };
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur lors de la correction des icônes:", error);
     return { error: error.message };
   }
@@ -293,3 +293,4 @@ if (typeof window !== "undefined") {
   (window as any).debugFAQCategories = debugFAQCategories;
   (window as any).fixFAQCategoryIcons = fixFAQCategoryIcons;
 }
+

@@ -77,7 +77,7 @@ export async function fixCaseStudiesNow() {
       console.log("Run: supabase functions deploy make-server-04919ac5");
     }
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("\n❌ Fix failed:", error);
     console.error("Error details:", error.message);
   }
@@ -91,3 +91,4 @@ if (typeof window !== 'undefined') {
   (window as any).fixCaseStudiesNow = fixCaseStudiesNow;
   console.log("💡 Run fixCaseStudiesNow() to diagnose and attempt auto-fix");
 }
+

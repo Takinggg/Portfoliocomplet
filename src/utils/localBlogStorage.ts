@@ -8,6 +8,17 @@ import { BlogPost } from "../components/blog/BlogPostCard";
 const STORAGE_KEY = "local_blog_posts";
 const STORAGE_VERSION = "v1";
 
+// Blog post category type
+export type BlogCategory = "development" | "design" | "business" | "marketing" | "other";
+
+// Author type - can be string or object
+export type BlogAuthor = string | {
+  name: string;
+  avatar?: string;
+  bio?: string;
+  role?: string;
+};
+
 export interface LocalBlogPost {
   id: string;
   slug: string;
@@ -21,9 +32,9 @@ export interface LocalBlogPost {
   content_en?: string;
   content_fr?: string;
   coverImage: string;
-  category: any; // Compatible avec "development" | "design" | "business" et autres
+  category: BlogCategory;
   tags: string[];
-  author?: any; // Compatible avec string et objet author
+  author?: BlogAuthor;
   publishedAt: string;
   readTime?: number; // Compatible avec BlogPost
   readingTime?: number; // Pour rétrocompatibilité
@@ -41,7 +52,7 @@ function normalizePost(post: LocalBlogPost): LocalBlogPost {
     // Assurer readTime existe (alias de readingTime)
     readTime: post.readTime || post.readingTime || 5,
     // Assurer author est une string si c'est un objet
-    author: typeof post.author === 'object' ? post.author.name : post.author,
+    author: typeof post.author === 'object' && post.author !== null ? post.author.name : post.author,
   };
 }
 

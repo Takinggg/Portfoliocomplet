@@ -133,7 +133,7 @@ export async function fixFAQCategoryKeys() {
       errors,
       total: categories.length,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Error fixing FAQ category keys:", error);
     return { success: false, error: error.message };
   }
@@ -263,7 +263,7 @@ export async function fixFAQQuestionKeys() {
       errors,
       total: questions.length,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Error fixing FAQ keys:", error);
     return { success: false, error: error.message };
   }
@@ -409,3 +409,4 @@ SANS AUCUNE ERREUR 404 !
 ╚══════════════════════════════════════════════════════════════════╝
   `);
 }
+

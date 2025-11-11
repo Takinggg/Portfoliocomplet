@@ -78,7 +78,7 @@ export async function testQuotesRoute() {
         rawResponse: text
       };
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Network Error:', error);
     return {
       success: false,
@@ -92,3 +92,4 @@ export async function testQuotesRoute() {
 if (typeof window !== 'undefined') {
   (window as any).testQuotesRoute = testQuotesRoute;
 }
+

@@ -189,9 +189,17 @@ export const quoteRequestSchema = z.object({
 
 export type QuoteRequestData = z.infer<typeof quoteRequestSchema>;
 
+// Form error types
+export interface FormFieldError {
+  message: string;
+  type?: string;
+}
+
+export type FormErrors = Record<string, FormFieldError | undefined>;
+
 // Helper function to get field error message
 export function getFieldError(
-  errors: any,
+  errors: FormErrors,
   fieldName: string
 ): string | undefined {
   const error = errors[fieldName];
@@ -199,7 +207,7 @@ export function getFieldError(
 }
 
 // Helper function to check if field has error
-export function hasFieldError(errors: any, fieldName: string): boolean {
+export function hasFieldError(errors: FormErrors, fieldName: string): boolean {
   return !!errors[fieldName];
 }
 

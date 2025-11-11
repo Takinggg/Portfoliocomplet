@@ -212,7 +212,7 @@ La suppression fonctionne correctement !
       `);
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Erreur lors du test:", error);
   }
 
@@ -234,3 +234,4 @@ if (typeof window !== "undefined") {
 ══════════════════════════════════════════════════════════════════
   `);
 }
+
