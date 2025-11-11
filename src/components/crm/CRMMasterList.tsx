@@ -14,8 +14,12 @@ interface Entity {
   status?: string;
   amount?: number;
   date?: string;
+  dueDate?: string;
+  number?: string; // For quotes and invoices
   invoice_number?: string;
   quote_number?: string;
+  clientName?: string; // For quotes and invoices
+  clientId?: string;
 }
 
 export function CRMMasterList() {
@@ -110,6 +114,14 @@ export function CRMMasterList() {
 
   // Get entity display name
   const getEntityName = (entity: Entity) => {
+    // For quotes and invoices, use the 'number' field
+    if (currentTab === 'invoices' && entity.number) {
+      return `Facture ${entity.number}`;
+    }
+    if (currentTab === 'quotes' && entity.number) {
+      return `Devis ${entity.number}`;
+    }
+    // For leads and clients
     if (entity.name) return entity.name;
     if (entity.company) return entity.company;
     if (entity.invoice_number) return `Facture ${entity.invoice_number}`;
@@ -123,7 +135,8 @@ export function CRMMasterList() {
       return entity.email || entity.company;
     }
     if (currentTab === 'quotes' || currentTab === 'invoices') {
-      return entity.company || entity.name;
+      // Show client name for quotes/invoices
+      return (entity as any).clientName || entity.company || entity.name || 'Client';
     }
     return '';
   };
@@ -192,9 +205,9 @@ export function CRMMasterList() {
                           }).format(entity.amount)}
                         </span>
                       )}
-                      {entity.date && (
+                      {(entity.date || entity.dueDate) && (
                         <span>
-                          {new Date(entity.date).toLocaleDateString('fr-FR', {
+                          {new Date(entity.date || entity.dueDate!).toLocaleDateString('fr-FR', {
                             day: '2-digit',
                             month: 'short',
                           })}
