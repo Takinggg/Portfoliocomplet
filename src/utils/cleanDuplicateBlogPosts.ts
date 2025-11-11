@@ -7,6 +7,11 @@
 
 import { projectId, publicAnonKey } from "./supabase/info";
 
+/**
+ * BlogPost interface with flexible properties for dynamic blog data
+ * Note: Using index signature [key: string]: any is intentional here
+ * because blog posts can have various custom fields and metadata
+ */
 interface BlogPost {
   id: string;
   slug: string;

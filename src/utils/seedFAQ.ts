@@ -1,7 +1,9 @@
 import { projectId, publicAnonKey } from "./supabase/info";
 import { createClient } from "./supabase/client";
 
-export async function seedFAQData() {
+import type { FAQCategory } from "./types/shared";
+
+export async function seedFAQ() {
   try {
     const supabase = createClient();
     const { data: { session } } = await supabase.auth.getSession();
@@ -48,7 +50,7 @@ export async function seedFAQData() {
     ];
 
     console.log("📦 Creating FAQ categories...");
-    const createdCategories: any[] = [];
+    const createdCategories: FAQCategory[] = [];
 
     for (const category of categories) {
       const response = await fetch(

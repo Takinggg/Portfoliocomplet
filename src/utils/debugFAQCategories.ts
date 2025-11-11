@@ -63,7 +63,7 @@ Vous devez initialiser les catégories FAQ :
     console.log("CATÉGORIES FAQ - DÉTAILS");
     console.log("═".repeat(70));
 
-    categories.forEach((cat: any, idx: number) => {
+    categories.forEach((cat, idx: number) => {
       console.log(`
 ┌─────────────────────────────────────────────────────────────────┐
 │ Catégorie ${idx + 1}/${categories.length}
@@ -82,8 +82,8 @@ Vous devez initialiser les catégories FAQ :
     console.log("RÉSUMÉ");
     console.log("═".repeat(70));
 
-    const withIcons = categories.filter((c: any) => c.icon);
-    const withoutIcons = categories.filter((c: any) => !c.icon);
+    const withIcons = categories.filter((c) => c.icon);
+    const withoutIcons = categories.filter((c) => !c.icon);
 
     console.log(`
 ✅ Catégories avec icônes : ${withIcons.length}
@@ -97,7 +97,7 @@ Vous devez initialiser les catégories FAQ :
 
 ${withoutIcons.length} catégories n'ont PAS d'icônes définies :
 
-${withoutIcons.map((c: any) => `  • ${c.name || c.id}`).join('\n')}
+${withoutIcons.map((c) => `  • ${c.name || c.id}`).join('\n')}
 
 🔧 SOLUTION
 ────────────────────────────────────────────────────────────────────
@@ -147,7 +147,7 @@ ICÔNES SUPPORTÉES :
   • HelpCircle (fallback)
 
 ICÔNES ACTUELLES :
-${withIcons.map((c: any) => `  • ${c.name}: ${c.icon}`).join('\n')}
+${withIcons.map((c) => `  • ${c.name}: ${c.icon}`).join('\n')}
       `);
     }
 
@@ -293,4 +293,5 @@ if (typeof window !== "undefined") {
   (window as any).debugFAQCategories = debugFAQCategories;
   (window as any).fixFAQCategoryIcons = fixFAQCategoryIcons;
 }
+
 

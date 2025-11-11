@@ -41,7 +41,7 @@ export async function fixCaseStudiesNoReload() {
       const caseStudies = JSON.parse(stored);
       
       // Vérifier les URLs
-      const invalidUrls = caseStudies.filter((cs: any) => 
+      const invalidUrls = caseStudies.filter((cs) => 
         !cs.thumbnail || 
         !cs.thumbnail.startsWith("http")
       );
@@ -59,7 +59,7 @@ export async function fixCaseStudiesNoReload() {
 📊 Case studies bilingues :
 `);
       
-      caseStudies.forEach((cs: any, index: number) => {
+      caseStudies.forEach((cs, index: number) => {
         const featuredIcon = cs.featured ? "⭐" : "•";
         console.log(`   ${featuredIcon} ${cs.title}`);
         console.log(`      Client: ${cs.client} | Catégorie: ${cs.category}`);
@@ -138,3 +138,4 @@ if (typeof window !== "undefined") {
 }
 
 export {};
+

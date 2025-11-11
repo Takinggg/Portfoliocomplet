@@ -8,7 +8,7 @@ interface DiagnosticResult {
   test: string;
   status: "✅ OK" | "❌ FAIL" | "⚠️ WARNING";
   message: string;
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 export async function runCompleteDiagnostic(): Promise<DiagnosticResult[]> {

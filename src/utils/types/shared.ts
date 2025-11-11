@@ -192,6 +192,7 @@ export interface Client extends DatabaseRecord {
   website?: string;
   status?: 'lead' | 'active' | 'inactive';
   notes?: string;
+  tags?: string[];
 }
 
 export interface Subscriber extends DatabaseRecord {

@@ -24,7 +24,7 @@ export async function testBlogBilingual() {
     if (responseFr.ok) {
       const postsFr = await responseFr.json();
       console.log(`✅ ${postsFr.length} articles trouvés en français`);
-      postsFr.forEach((post: any, i: number) => {
+      postsFr.forEach((post, i: number) => {
         console.log(`   ${i + 1}. ${post.title} (${post.slug})`);
       });
     } else {
@@ -45,7 +45,7 @@ export async function testBlogBilingual() {
     if (responseEn.ok) {
       const postsEn = await responseEn.json();
       console.log(`✅ ${postsEn.length} articles trouvés en anglais`);
-      postsEn.forEach((post: any, i: number) => {
+      postsEn.forEach((post, i: number) => {
         console.log(`   ${i + 1}. ${post.title} (${post.slug})`);
       });
     } else {
@@ -125,3 +125,4 @@ if (typeof window !== 'undefined') {
   (window as any).testBlogBilingual = testBlogBilingual;
   (window as any).testLanguageSwitching = testLanguageSwitching;
 }
+

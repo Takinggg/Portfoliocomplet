@@ -14,6 +14,10 @@ const ignoredPatterns = [
   /Failed to load resource.*gravatar/i,
 ];
 
+/**
+ * Override console.error to filter third-party messages
+ * Note: Using any[] for args is intentional - console methods accept any types
+ */
 console.error = (...args: any[]) => {
   const message = args.join(' ');
   
@@ -25,6 +29,10 @@ console.error = (...args: any[]) => {
   }
 };
 
+/**
+ * Override console.warn to filter third-party messages
+ * Note: Using any[] for args is intentional - console methods accept any types
+ */
 console.warn = (...args: any[]) => {
   const message = args.join(' ');
   

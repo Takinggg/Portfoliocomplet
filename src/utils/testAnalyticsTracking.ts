@@ -153,7 +153,7 @@ async function checkAnalyticsStats() {
       
       if (data.stats.recentConversions?.length > 0) {
         console.log("\n🎯 Conversions récentes:");
-        data.stats.recentConversions.forEach((conv: any) => {
+        data.stats.recentConversions.forEach((conv) => {
           console.log(`  - ${conv.type} (${new Date(conv.timestamp).toLocaleString()})`);
         });
       }
@@ -188,3 +188,4 @@ if (typeof window !== "undefined") {
 }
 
 export { generateTestData, createTestSession, checkAnalyticsStats };
+

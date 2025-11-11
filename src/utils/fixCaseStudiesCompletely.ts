@@ -50,14 +50,14 @@ export async function fixCaseStudiesCompletely() {
       console.log(`✅ ${caseStudies.length} case studies chargées`);
       
       // Vérifier les URLs
-      const invalidUrls = caseStudies.filter((cs: any) => 
+      const invalidUrls = caseStudies.filter((cs) => 
         !cs.thumbnail || 
         !cs.thumbnail.startsWith("http")
       );
       
       if (invalidUrls.length > 0) {
         console.error("❌ ATTENTION : Certaines URLs d'images sont invalides !");
-        console.error("URLs problématiques :", invalidUrls.map((cs: any) => ({
+        console.error("URLs problématiques :", invalidUrls.map((cs) => ({
           id: cs.id,
           thumbnail: cs.thumbnail
         })));
@@ -75,7 +75,7 @@ export async function fixCaseStudiesCompletely() {
 📊 ${caseStudies.length} case studies bilingues :
 `);
       
-      caseStudies.forEach((cs: any, index: number) => {
+      caseStudies.forEach((cs, index: number) => {
         const featuredIcon = cs.featured ? "⭐" : "•";
         console.log(`   ${featuredIcon} ${cs.title || cs.title}`);
         console.log(`      Client: ${cs.client}`);
@@ -174,3 +174,4 @@ if (typeof window !== "undefined") {
 }
 
 export {};
+

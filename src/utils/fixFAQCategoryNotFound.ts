@@ -109,8 +109,8 @@ Temps : 30 secondes
     // Step 3: Find orphaned questions (questions without valid category)
     console.log("🔍 Étape 3/3 : Recherche de questions orphelines...\n");
 
-    const validCategoryIds = categories.map((c: any) => c.id);
-    const orphanedQuestions = questions.filter((q: any) => {
+    const validCategoryIds = categories.map((c) => c.id);
+    const orphanedQuestions = questions.filter((q) => {
       const categoryId = q.categoryId || q.category;
       return categoryId && !validCategoryIds.includes(categoryId);
     });
@@ -133,7 +133,7 @@ Toutes les questions FAQ sont liées à des catégories valides.
 🎯 CATÉGORIES DISPONIBLES (${validCategoryIds.length})
 ────────────────────────────────────────────────────────────────────
 
-${categories.map((c: any, i: number) => `${i + 1}. ${c.name || c.id} (${c.icon || 'no icon'})`).join('\n')}
+${categories.map((c, i: number) => `${i + 1}. ${c.name || c.id} (${c.icon || 'no icon'})`).join('\n')}
 
 📝 QUESTIONS (${questions.length})
 ────────────────────────────────────────────────────────────────────
@@ -172,7 +172,7 @@ QUESTIONS ORPHELINES :
 ────────────────────────────────────────────────────────────────────
     `);
 
-    orphanedQuestions.forEach((q: any, i: number) => {
+    orphanedQuestions.forEach((q, i: number) => {
       console.log(`
 ${i + 1}. Question : ${q.question || q.id}
    Catégorie manquante : ${q.categoryId || q.category}
@@ -212,7 +212,7 @@ Supprime TOUT et recrée 6 catégories + 37 questions.
       categories: validCategoryIds.length,
       questions: questions.length,
       orphaned: orphanedQuestions.length,
-      orphanedQuestions: orphanedQuestions.map((q: any) => ({
+      orphanedQuestions: orphanedQuestions.map((q) => ({
         id: q.id,
         question: q.question,
         invalidCategory: q.categoryId || q.category
@@ -255,7 +255,7 @@ export async function deleteOrphanedFAQQuestions() {
     );
     const categoriesData = await categoriesRes.json();
     const categories = categoriesData.categories || [];
-    const validCategoryIds = categories.map((c: any) => c.id);
+    const validCategoryIds = categories.map((c) => c.id);
 
     const questionsRes = await fetch(
       `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/faq`,
@@ -264,7 +264,7 @@ export async function deleteOrphanedFAQQuestions() {
     const questionsData = await questionsRes.json();
     const questions = questionsData.faqs || [];
 
-    const orphanedQuestions = questions.filter((q: any) => {
+    const orphanedQuestions = questions.filter((q) => {
       const categoryId = q.categoryId || q.category;
       return categoryId && !validCategoryIds.includes(categoryId);
     });
@@ -441,4 +441,6 @@ if (typeof window !== "undefined") {
   (window as any).resetFAQCompletely = resetFAQCompletely;
   (window as any).confirmResetFAQ = confirmResetFAQ;
 }
+
+
 

@@ -48,11 +48,11 @@ export async function checkProjectIdsFormat() {
     }
     
     // Vérifier le format des IDs
-    const projectsWithOldFormat = allProjects.filter((p: any) => 
+    const projectsWithOldFormat = allProjects.filter((p) => 
       p.id && typeof p.id === 'string' && p.id.startsWith('project_')
     );
     
-    const projectsWithNewFormat = allProjects.filter((p: any) => 
+    const projectsWithNewFormat = allProjects.filter((p) => 
       p.id && typeof p.id === 'string' && !p.id.startsWith('project_')
     );
     
@@ -62,7 +62,7 @@ export async function checkProjectIdsFormat() {
     
     if (projectsWithOldFormat.length > 0) {
       console.log("⚠️ PROJETS AVEC ANCIEN FORMAT DÉTECTÉS :\n");
-      projectsWithOldFormat.forEach((p: any, i: number) => {
+      projectsWithOldFormat.forEach((p, i: number) => {
         console.log(`  ${i + 1}. ${p.name || 'Sans nom'}`);
         console.log(`     ID actuel : ${p.id}`);
         console.log(`     Langue : ${p.language || 'non spécifiée'}`);
@@ -86,7 +86,7 @@ export async function checkProjectIdsFormat() {
     
     console.log("✅ Tous les projets sont au bon format !\n");
     
-    projectsWithNewFormat.forEach((p: any, i: number) => {
+    projectsWithNewFormat.forEach((p, i: number) => {
       console.log(`  ${i + 1}. ${p.name || 'Sans nom'} (${p.language || 'fr'})`);
     });
     console.log("");
@@ -127,3 +127,5 @@ Cela va :
 Si des projets ont l'ancien format, utilisez :
   seedProjetTaskFlow()    ← Pour créer de nouveaux projets
 `);
+
+

@@ -24,7 +24,7 @@ setTimeout(async () => {
       const projectCount = projects.length;
       
       // Check for broken IDs (old format with project_ prefix)
-      const brokenProjects = projects.filter((p: any) => 
+      const brokenProjects = projects.filter((p) => 
         p.id && p.id.startsWith('project_')
       );
       
@@ -73,3 +73,4 @@ Ensuite, allez sur /projects pour les voir ! 🚀
 }, 2000);
 
 export {};
+

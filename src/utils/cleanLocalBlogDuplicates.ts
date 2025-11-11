@@ -24,7 +24,7 @@ function cleanupLocalBlogDuplicates() {
 
     // Dédupliquer par ID
     const seen = new Set<string>();
-    const cleanedPosts = posts.filter((post: any) => {
+    const cleanedPosts = posts.filter((post) => {
       if (seen.has(post.id)) {
         return false;
       }
@@ -54,3 +54,4 @@ function cleanupLocalBlogDuplicates() {
 cleanupLocalBlogDuplicates();
 
 export default cleanupLocalBlogDuplicates;
+

@@ -42,7 +42,7 @@ export async function fixOrphanedFAQQuestions(options: {
     
     const categoriesData = await categoriesResponse.json();
     const categories = categoriesData.categories || [];
-    const validCategoryIds = new Set(categories.map((cat: any) => cat.id));
+    const validCategoryIds = new Set(categories.map((cat) => cat.id));
     
     console.log(`✅ Found ${categories.length} valid categories:`, Array.from(validCategoryIds));
     
@@ -50,7 +50,7 @@ export async function fixOrphanedFAQQuestions(options: {
     let targetCategoryId = defaultCategoryId;
     if (!deleteOrphans && !targetCategoryId) {
       // Try to find a "General" or "Autre" category
-      const generalCategory = categories.find((cat: any) => 
+      const generalCategory = categories.find((cat) => 
         cat.name.toLowerCase().includes('général') || 
         cat.name.toLowerCase().includes('general') ||
         cat.name.toLowerCase().includes('autre') ||
@@ -109,7 +109,7 @@ export async function fixOrphanedFAQQuestions(options: {
     console.log(`📋 Found ${questions.length} total questions`);
     
     // Step 3: Find orphaned questions
-    const orphanedQuestions = questions.filter((q: any) => {
+    const orphanedQuestions = questions.filter((q) => {
       const categoryId = q.category || q.categoryId;
       const isOrphaned = !validCategoryIds.has(categoryId);
       
@@ -220,4 +220,5 @@ if (typeof window !== 'undefined') {
     return fixOrphanedFAQQuestions({ deleteOrphans: false });
   };
 }
+
 

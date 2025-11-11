@@ -46,7 +46,7 @@ export async function normalizeCaseStudiesKeys() {
 `);
 
     if (result.changes && result.changes.length > 0) {
-      result.changes.forEach((change: any) => {
+      result.changes.forEach((change) => {
         console.log(`   ${change.oldKey} → ${change.newKey}`);
       });
     } else {
@@ -71,4 +71,5 @@ export async function normalizeCaseStudiesKeys() {
 if (typeof window !== "undefined") {
   (window as any).normalizeCaseStudiesKeys = normalizeCaseStudiesKeys;
 }
+
 

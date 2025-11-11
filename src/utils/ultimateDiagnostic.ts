@@ -4,6 +4,26 @@
  * Ce script teste TOUT et donne un diagnostic PRÉCIS
  */
 
+interface DiagnosticTestResult {
+  status?: number;
+  exists?: boolean;
+  contentType?: string | null;
+  hasRoot?: boolean;
+  size?: number;
+  content?: unknown;
+  isHTML?: boolean;
+  error?: string;
+}
+
+interface DiagnosticResults {
+  url: string;
+  pathname: string;
+  hostname: string;
+  timestamp: string;
+  tests: Record<string, DiagnosticTestResult>;
+  recommendation: string;
+}
+
 export async function runUltimateDiagnostic() {
   console.clear();
   console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00FFC2; font-weight: bold;');
@@ -11,7 +31,7 @@ export async function runUltimateDiagnostic() {
   console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00FFC2; font-weight: bold;');
   console.log('');
 
-  const results: any = {
+  const results: DiagnosticResults = {
     url: window.location.href,
     pathname: window.location.pathname,
     hostname: window.location.hostname,
@@ -42,7 +62,7 @@ export async function runUltimateDiagnostic() {
       console.log('    → Contient <div id="root">:', html.includes('id="root"') ? '✅ OUI' : '❌ NON');
       console.log('    → Taille:', html.length, 'bytes');
     }
-  } catch (e: any) {
+  } catch (e) {
     results.tests.file200 = { error: e.message };
     console.log('  200.html: ❌ ERREUR', e.message);
   }
@@ -54,7 +74,7 @@ export async function runUltimateDiagnostic() {
       exists: resIndex.status === 200,
     };
     console.log('  index.html:', resIndex.status === 200 ? '✅ EXISTE' : '❌ MANQUANT', `(${resIndex.status})`);
-  } catch (e: any) {
+  } catch (e) {
     results.tests.indexHtml = { error: e.message };
     console.log('  index.html: ❌ ERREUR', e.message);
   }
@@ -72,7 +92,7 @@ export async function runUltimateDiagnostic() {
       results.tests.vercelJson.content = json;
       console.log('    → Contenu:', JSON.stringify(json, null, 2));
     }
-  } catch (e: any) {
+  } catch (e) {
     results.tests.vercelJson = { error: e.message };
     console.log('  vercel.json: ❌ ERREUR', e.message);
   }
@@ -108,7 +128,7 @@ export async function runUltimateDiagnostic() {
       if (res.status === 404) {
         console.log(`    → ⚠️ ROUTE RETOURNE 404 !`);
       }
-    } catch (e: any) {
+    } catch (e) {
       results.tests[`route_${route.replace(/\//g, '_')}`] = { error: e.message };
       console.log(`  ${route}: ❌ ERREUR`, e.message);
     }
@@ -286,3 +306,4 @@ if (typeof window !== 'undefined') {
     window.runUltimateDiagnostic = runUltimateDiagnostic;
   }
 }
+

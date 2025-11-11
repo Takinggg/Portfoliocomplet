@@ -45,7 +45,7 @@ export async function fixFAQCategoryKeys() {
     console.log(`📦 Found ${categories.length} FAQ categories`);
 
     // Step 2: Find categories with ":" in their IDs
-    const categoriesToFix = categories.filter((cat: any) => 
+    const categoriesToFix = categories.filter((cat) => 
       cat.id && cat.id.includes("faq_category:")
     );
 
@@ -59,7 +59,7 @@ export async function fixFAQCategoryKeys() {
     }
 
     console.log(`🔧 Found ${categoriesToFix.length} categories to fix:`);
-    categoriesToFix.forEach((cat: any) => {
+    categoriesToFix.forEach((cat) => {
       console.log(`  - ${cat.id} → ${cat.id.replace(":", "_")}`);
     });
 
@@ -177,7 +177,7 @@ export async function fixFAQQuestionKeys() {
     console.log(`📦 Found ${questions.length} FAQ questions`);
 
     // Step 2: Find questions with ":" in their IDs
-    const questionsToFix = questions.filter((q: any) => 
+    const questionsToFix = questions.filter((q) => 
       q.id && q.id.includes("faq_question:")
     );
 
@@ -191,7 +191,7 @@ export async function fixFAQQuestionKeys() {
     }
 
     console.log(`🔧 Found ${questionsToFix.length} questions to fix:`);
-    questionsToFix.forEach((q: any) => {
+    questionsToFix.forEach((q) => {
       console.log(`  - ${q.id} → ${q.id.replace(":", "_")}`);
     });
 
@@ -409,4 +409,5 @@ SANS AUCUNE ERREUR 404 !
 ╚══════════════════════════════════════════════════════════════════╝
   `);
 }
+
 

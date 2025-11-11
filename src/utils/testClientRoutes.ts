@@ -64,10 +64,12 @@ export async function testGetAllClients() {
   }
 }
 
+import type { Client } from './types/shared';
+
 /**
  * Test: Create a new client
  */
-export async function testCreateClient(clientData?: any) {
+export async function testCreateClient(clientData?: Partial<Client>) {
   console.log('🧪 Testing POST /clients...');
   
   const token = getAccessToken();
@@ -161,7 +163,7 @@ export async function testGetClient(clientId: string) {
 /**
  * Test: Update a client
  */
-export async function testUpdateClient(clientId: string, updates: any) {
+export async function testUpdateClient(clientId: string, updates: Partial<Client>) {
   console.log(`🧪 Testing PUT /clients/${clientId}...`);
   
   const token = getAccessToken();

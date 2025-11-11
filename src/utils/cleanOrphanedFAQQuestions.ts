@@ -35,7 +35,7 @@ export async function cleanOrphanedFAQQuestions() {
     
     const categoriesData = await categoriesResponse.json();
     const categories = categoriesData.categories || [];
-    const validCategoryIds = new Set(categories.map((cat: any) => cat.id));
+    const validCategoryIds = new Set(categories.map((cat) => cat.id));
     
     console.log(`✅ Found ${categories.length} valid categories:`, Array.from(validCategoryIds));
     
@@ -58,7 +58,7 @@ export async function cleanOrphanedFAQQuestions() {
     console.log(`📋 Found ${questions.length} total questions`);
     
     // Step 3: Find orphaned questions
-    const orphanedQuestions = questions.filter((q: any) => {
+    const orphanedQuestions = questions.filter((q) => {
       const categoryId = q.category || q.categoryId;
       const isOrphaned = !validCategoryIds.has(categoryId);
       
@@ -130,4 +130,5 @@ export async function cleanOrphanedFAQQuestions() {
 if (typeof window !== 'undefined') {
   (window as any).cleanOrphanedFAQQuestions = cleanOrphanedFAQQuestions;
 }
+
 

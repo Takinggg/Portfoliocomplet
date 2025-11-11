@@ -29,9 +29,9 @@ export async function testDatabaseConnection() {
     const projectsData = await projectsRes.json();
     console.log(`✅ Projets trouvés: ${projectsData.projects?.length || 0}`);
     if (projectsData.projects?.length > 0) {
-      const pinnedProjects = projectsData.projects.filter((p: any) => p.isPinned);
+      const pinnedProjects = projectsData.projects.filter((p) => p.isPinned);
       console.log(`   📌 Projets épinglés: ${pinnedProjects.length}`);
-      pinnedProjects.forEach((p: any) => {
+      pinnedProjects.forEach((p) => {
         console.log(`      - ${p.name} (${p.category})`);
       });
     }
@@ -172,3 +172,4 @@ if (typeof window !== "undefined") {
 Exemple: testDB.test()
   `);
 }
+

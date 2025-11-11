@@ -57,7 +57,7 @@ async function listResources() {
     
     if (data.success) {
       console.log(`✅ Found ${data.resources.length} resources:`);
-      data.resources.forEach((r: any, idx: number) => {
+      data.resources.forEach((r, idx: number) => {
         console.log(`  ${idx + 1}. ${r.title} (${r.category}) - ${r.downloads} downloads`);
       });
       return data.resources;
@@ -179,9 +179,9 @@ async function getAnalytics() {
       if (data.analytics.byResource.length > 0) {
         console.log("\n  Top resources:");
         data.analytics.byResource
-          .sort((a: any, b: any) => b.count - a.count)
+          .sort((a, b) => b.count - a.count)
           .slice(0, 5)
-          .forEach((r: any, idx: number) => {
+          .forEach((r, idx: number) => {
             console.log(`    ${idx + 1}. ${r.resourceTitle} - ${r.count} downloads`);
           });
       }
@@ -319,3 +319,4 @@ export {
   createResourcesBucket,
   quickTests
 };
+

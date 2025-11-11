@@ -18,7 +18,7 @@ interface DiagnosticResult {
   test: string;
   status: "✅ SUCCESS" | "❌ FAILED" | "⚠️ WARNING";
   message: string;
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 export async function runDiagnostic(): Promise<void> {

@@ -15,7 +15,7 @@ interface TestResult {
   test: string;
   status: "✅" | "❌" | "⚠️";
   message: string;
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 export async function quickServerTest(): Promise<void> {

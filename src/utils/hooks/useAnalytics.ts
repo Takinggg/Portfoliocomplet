@@ -90,7 +90,7 @@ export function useTimeTracking(pageName: string) {
 export function useErrorTracking() {
   const { trackError } = useAnalytics();
 
-  return useCallback((error: Error, errorInfo?: any) => {
+  return useCallback((error: Error, errorInfo?: React.ErrorInfo | Record<string, unknown>) => {
     trackError(
       error.name || "UnknownError",
       error.message,

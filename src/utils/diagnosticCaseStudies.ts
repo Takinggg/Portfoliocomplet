@@ -30,7 +30,7 @@ export async function diagnosticCaseStudiesKV() {
       console.log(`✅ API publique retourne: ${publicData.caseStudies?.length || 0} case studies`);
       if (publicData.caseStudies && publicData.caseStudies.length > 0) {
         console.table(
-          publicData.caseStudies.map((cs: any) => ({
+          publicData.caseStudies.map((cs) => ({
             id: cs.id,
             title: cs.title?.fr || cs.title?.en || "NO TITLE",
             published: cs.published !== false ? "Oui" : "Non",
@@ -63,14 +63,14 @@ export async function diagnosticCaseStudiesKV() {
     
     if (publicData?.caseStudies?.length > 0) {
       const deleted = deletedIds ? JSON.parse(deletedIds) : [];
-      const shouldBeDeleted = publicData.caseStudies.filter((cs: any) => 
+      const shouldBeDeleted = publicData.caseStudies.filter((cs) => 
         deleted.includes(cs.id)
       );
       
       if (shouldBeDeleted.length > 0) {
         console.log("❌ PROBLÈME DÉTECTÉ:");
         console.log(`   ${shouldBeDeleted.length} case studies devraient être supprimés mais sont toujours présents:`);
-        shouldBeDeleted.forEach((cs: any) => {
+        shouldBeDeleted.forEach((cs) => {
           console.log(`   - ${cs.id}: ${cs.title?.fr || cs.title?.en}`);
         });
         console.log("\n💡 SOLUTION:");
@@ -184,4 +184,5 @@ if (typeof window !== "undefined") {
 ══════════════════════════════════════════════════════════════════
   `);
 }
+
 

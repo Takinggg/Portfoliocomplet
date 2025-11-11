@@ -98,7 +98,7 @@ async function getConfirmUrl(email: string) {
   
   try {
     const subscribers = await getSubscribers();
-    const subscriber = subscribers?.find((s: any) => s.email === email);
+    const subscriber = subscribers?.find((s) => s.email === email);
     
     if (!subscriber) {
       console.error(`❌ Subscriber not found: ${email}`);
@@ -214,3 +214,4 @@ if (typeof window !== "undefined") {
 }
 
 export default testNewsletter;
+

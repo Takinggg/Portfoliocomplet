@@ -5,6 +5,7 @@
  * au démarrage de l'application (3 secondes après le chargement)
  */
 
+import type { Project } from "./types/shared";
 import { projectId, publicAnonKey } from './supabase/info';
 
 let hasRun = false; // Éviter l'exécution multiple
@@ -50,7 +51,7 @@ async function autoFixProjectIds() {
     // NOTE: Le serveur gère maintenant automatiquement les deux formats d'ID
     // (avec et sans préfixe "project_"), donc cette réparation n'est plus nécessaire.
     // On désactive la détection pour éviter tout conflit.
-    const brokenProjects: any[] = [];
+    const brokenProjects: Project[] = [];
 
     if (brokenProjects.length === 0) {
       return; // Auto-fix désactivé, le serveur normalise automatiquement les IDs
@@ -88,7 +89,7 @@ async function autoFixProjectIds() {
         );
 
         // Étape B: Recréer avec bon ID (le serveur générera un nouveau bon ID)
-        const projectData = { ...project };
+        const projectData = { ...project } as Partial<Project> & { createdAt?: string; updatedAt?: string };
         delete projectData.id;
         delete projectData.createdAt;
         delete projectData.updatedAt;

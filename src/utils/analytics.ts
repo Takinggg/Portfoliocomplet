@@ -292,7 +292,7 @@ async function checkServerAvailability(): Promise<boolean> {
 }
 
 // Send analytics event to server (only if server is available)
-async function sendToServer(endpoint: string, data: any) {
+async function sendToServer(endpoint: string, data: Record<string, unknown>) {
   try {
     const projectId = (window as any).__SUPABASE_PROJECT_ID__;
     const anonKey = (window as any).__SUPABASE_ANON_KEY__;
@@ -702,7 +702,7 @@ export const analytics = {
   },
 
   // Set custom user properties
-  setUserProperty: (propertyName: string, value: any) => {
+  setUserProperty: (propertyName: string, value: unknown) => {
     if (typeof window !== "undefined" && (window as any).gtag) {
       (window as any).gtag("set", "user_properties", {
         [propertyName]: value,
@@ -818,11 +818,11 @@ export function initEngagementTracking() {
 // TypeScript declarations for global analytics
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
-    dataLayer?: any[];
-    plausible?: (...args: any[]) => void;
-    clarity?: (...args: any[]) => void;
-    Sentry?: any;
+    gtag?: (...args: unknown[]) => void;
+    dataLayer?: unknown[];
+    plausible?: (...args: unknown[]) => void;
+    clarity?: (...args: unknown[]) => void;
+    Sentry?: unknown;
     __GA4_ID__?: string;
     __CLARITY_ID__?: string;
     __SENTRY_DSN__?: string;

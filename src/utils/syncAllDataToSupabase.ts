@@ -4,6 +4,7 @@
  */
 
 import { projectId, publicAnonKey } from "./supabase/info";
+import { getErrorMessage } from "./types/shared";
 
 const BASE_URL = `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5`;
 
@@ -38,7 +39,7 @@ async function serverRequest(endpoint: string, options: RequestInit = {}) {
 /**
  * Helper pour set des valeurs dans le KV store
  */
-async function kvSet(key: string, value: any): Promise<void> {
+async function kvSet(key: string, value: unknown): Promise<void> {
   await serverRequest("/kv/set", {
     method: "POST",
     body: JSON.stringify({ key, value }),
@@ -133,7 +134,7 @@ async function syncProjects(): Promise<SyncResult> {
     return { category: "Projects", success: true, count };
   } catch (error: unknown) {
     console.error("❌ Erreur sync projects:", error);
-    return { category: "Projects", success: false, count: 0, error: error.message };
+    return { category: "Projects", success: false, count: 0, error: getErrorMessage(error) };
   }
 }
 
@@ -193,7 +194,7 @@ async function syncBlogPosts(): Promise<SyncResult> {
     return { category: "Blog Posts", success: true, count };
   } catch (error: unknown) {
     console.error("❌ Erreur sync blog posts:", error);
-    return { category: "Blog Posts", success: false, count: 0, error: error.message };
+    return { category: "Blog Posts", success: false, count: 0, error: getErrorMessage(error) };
   }
 }
 
@@ -248,7 +249,7 @@ async function syncCaseStudies(): Promise<SyncResult> {
     return { category: "Case Studies", success: true, count };
   } catch (error: unknown) {
     console.error("❌ Erreur sync case studies:", error);
-    return { category: "Case Studies", success: false, count: 0, error: error.message };
+    return { category: "Case Studies", success: false, count: 0, error: getErrorMessage(error) };
   }
 }
 
@@ -294,7 +295,7 @@ async function syncFAQs(): Promise<SyncResult> {
     return { category: "FAQs", success: true, count };
   } catch (error: unknown) {
     console.error("❌ Erreur sync FAQs:", error);
-    return { category: "FAQs", success: false, count: 0, error: error.message };
+    return { category: "FAQs", success: false, count: 0, error: getErrorMessage(error) };
   }
 }
 
@@ -344,7 +345,7 @@ async function syncTestimonials(): Promise<SyncResult> {
     return { category: "Testimonials", success: true, count };
   } catch (error: unknown) {
     console.error("❌ Erreur sync testimonials:", error);
-    return { category: "Testimonials", success: false, count: 0, error: error.message };
+    return { category: "Testimonials", success: false, count: 0, error: getErrorMessage(error) };
   }
 }
 
@@ -400,7 +401,7 @@ async function syncResources(): Promise<SyncResult> {
     return { category: "Resources", success: true, count };
   } catch (error: unknown) {
     console.error("❌ Erreur sync resources:", error);
-    return { category: "Resources", success: false, count: 0, error: error.message };
+    return { category: "Resources", success: false, count: 0, error: getErrorMessage(error) };
   }
 }
 
@@ -423,11 +424,11 @@ export async function syncAllDataToSupabase(): Promise<{
     console.log("✅ Serveur accessible:", healthResponse.message);
   } catch (error: unknown) {
     console.error("❌ ERREUR: Le serveur n'est pas accessible");
-    console.error("   Détails:", error.message);
+    console.error("   Détails:", getErrorMessage(error));
     return {
       success: false,
       results: [],
-      summary: `❌ Échec: serveur non accessible (${error.message})`
+      summary: `❌ Échec: serveur non accessible (${getErrorMessage(error)})`
     };
   }
 
@@ -475,4 +476,5 @@ export async function syncAllDataToSupabase(): Promise<{
 
 console.log("📝 Utilitaire de synchronisation chargé");
 console.log("   Exécuter: window.syncAllDataToSupabase()");
+
 

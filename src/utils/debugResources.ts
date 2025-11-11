@@ -35,7 +35,7 @@ async function debugResources() {
       console.log(`✅ Admin endpoint: ${adminData.resources?.length || 0} resources`);
       if (adminData.resources?.length > 0) {
         console.log("\n   Resources found:");
-        adminData.resources.forEach((r: any, idx: number) => {
+        adminData.resources.forEach((r, idx: number) => {
           console.log(`   ${idx + 1}. ${r.title}`);
           console.log(`      ID: ${r.id}`);
           console.log(`      Category: ${r.category}`);
@@ -66,7 +66,7 @@ async function debugResources() {
       console.log(`✅ Public endpoint: ${publicData.resources?.length || 0} resources`);
       if (publicData.resources?.length > 0) {
         console.log("\n   Resources found:");
-        publicData.resources.forEach((r: any, idx: number) => {
+        publicData.resources.forEach((r, idx: number) => {
           console.log(`   ${idx + 1}. ${r.title}`);
           console.log(`      isPublished: ${r.isPublished}`);
         });
@@ -169,3 +169,4 @@ if (typeof window !== "undefined") {
 }
 
 export { debugResources, fixResourcesPublished };
+

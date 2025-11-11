@@ -57,7 +57,7 @@ async function testPublicResourcesEndpoint() {
       
       if (count > 0) {
         console.log("\n📚 Resources:");
-        data.resources.forEach((r: any, idx: number) => {
+        data.resources.forEach((r, idx: number) => {
           console.log(`   ${idx + 1}. ${r.title}`);
           console.log(`      Category: ${r.category}`);
           console.log(`      Published: ${r.isPublished}`);
@@ -139,4 +139,5 @@ if (typeof window !== "undefined") {
 }
 
 export { testPublicResourcesEndpoint, testPublicWithAuthHeader };
+
 

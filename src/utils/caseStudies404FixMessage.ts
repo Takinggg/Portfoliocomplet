@@ -9,7 +9,7 @@ if (typeof window !== "undefined") {
     if (stored) {
       try {
         const caseStudies = JSON.parse(stored);
-        const invalidUrls = caseStudies.filter((cs: any) => 
+        const invalidUrls = caseStudies.filter((cs) => 
           cs.thumbnail && !cs.thumbnail.startsWith("http")
         );
         
@@ -24,7 +24,7 @@ if (typeof window !== "undefined") {
 📋 Case studies problématiques :
 `);
           
-          invalidUrls.forEach((cs: any) => {
+          invalidUrls.forEach((cs) => {
             console.warn(`   ❌ ${cs.id} : "${cs.thumbnail}"`);
           });
           
@@ -61,3 +61,4 @@ if (typeof window !== "undefined") {
 }
 
 export {};
+

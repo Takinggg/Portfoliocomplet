@@ -370,13 +370,13 @@ export async function checkBilingualProjects() {
       
       console.log("═".repeat(60));
       console.log(`🇫🇷 French projects: ${frData.projects?.length || 0}`);
-      frData.projects?.forEach((p: any) => {
+      frData.projects?.forEach((p) => {
         console.log(`   • ${p.name} (${p.category})`);
       });
       
       console.log("");
       console.log(`🇬🇧 English projects: ${enData.projects?.length || 0}`);
-      enData.projects?.forEach((p: any) => {
+      enData.projects?.forEach((p) => {
         console.log(`   • ${p.name} (${p.category})`);
       });
       console.log("═".repeat(60));
@@ -404,3 +404,4 @@ if (typeof window !== 'undefined') {
   console.log("   • seedBilingualProjects() - Seed 6 projects in FR + EN (12 total)");
   console.log("   • checkBilingualProjects() - Check projects by language");
 }
+

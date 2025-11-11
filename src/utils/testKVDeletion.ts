@@ -26,7 +26,7 @@ export async function testKVDeletion() {
     const countBefore = beforeData.caseStudies?.length || 0;
     console.log(`✅ ${countBefore} case studies présents AVANT le test`);
     
-    const idsBefore = beforeData.caseStudies?.map((cs: any) => cs.id) || [];
+    const idsBefore = beforeData.caseStudies?.map((cs) => cs.id) || [];
     console.log("📋 IDs AVANT:", idsBefore);
 
     // 2. Créer un case study de test
@@ -108,7 +108,7 @@ export async function testKVDeletion() {
     });
     const afterCreateData = await afterCreateResponse.json();
     const foundAfterCreate = afterCreateData.caseStudies?.find(
-      (cs: any) => cs.id === testCaseStudy.id
+      (cs) => cs.id === testCaseStudy.id
     );
 
     if (!foundAfterCreate) {
@@ -172,12 +172,12 @@ Case study encore présent:
     });
     const afterDeleteData = await afterDeleteResponse.json();
     const foundAfterDelete = afterDeleteData.caseStudies?.find(
-      (cs: any) => cs.id === testCaseStudy.id
+      (cs) => cs.id === testCaseStudy.id
     );
 
     console.log(`📊 Total case studies après suppression: ${afterDeleteData.caseStudies?.length}`);
     
-    const idsAfter = afterDeleteData.caseStudies?.map((cs: any) => cs.id) || [];
+    const idsAfter = afterDeleteData.caseStudies?.map((cs) => cs.id) || [];
     console.log("📋 IDs APRÈS:", idsAfter);
 
     if (foundAfterDelete) {
@@ -234,4 +234,5 @@ if (typeof window !== "undefined") {
 ══════════════════════════════════════════════════════════════════
   `);
 }
+
 
