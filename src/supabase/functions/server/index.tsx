@@ -1418,6 +1418,23 @@ app.get("/make-server-04919ac5/newsletter/stats", requireAuth, async (c)=>{
     }, 500);
   }
 });
+
+// Get all newsletter subscribers for admin
+app.get("/make-server-04919ac5/newsletter/subscribers", requireAuth, async (c)=>{
+  try {
+    const subscribers = await kv.getByPrefix("subscriber:");
+    return c.json({
+      success: true,
+      subscribers
+    });
+  } catch (error) {
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
 console.log("✅ Newsletter routes added");
 // ===========================================================================
 // TESTIMONIALS ROUTES
@@ -1437,6 +1454,23 @@ app.get("/make-server-04919ac5/testimonials", async (c)=>{
     }, 500);
   }
 });
+
+// Get all testimonials for admin (including non-approved)
+app.get("/make-server-04919ac5/testimonials/admin", requireAuth, async (c)=>{
+  try {
+    const testimonials = await kv.getByPrefix("testimonial:");
+    return c.json({
+      success: true,
+      testimonials
+    });
+  } catch (error) {
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
 console.log("✅ Testimonials routes added");
 // ===========================================================================
 // BLOG ROUTES
