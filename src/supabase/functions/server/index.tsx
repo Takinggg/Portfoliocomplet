@@ -1811,20 +1811,39 @@ app.post("/make-server-04919ac5/newsletter/send-campaign", requireAuth, async (c
       }, 400);
     }
     
-    // In production, this would send emails via Resend
-    // For now, we'll just simulate the sending
+    // Send emails to all subscribers
     console.log(`📧 Sending campaign "${subject}" to ${targetSubscribers.length} subscribers`);
     
-    // TODO: Implement actual email sending with Resend
-    // const emailPromises = targetSubscribers.map(sub => 
-    //   sendEmail(sub.email, subject, content)
-    // );
-    // await Promise.all(emailPromises);
+    let successCount = 0;
+    let errorCount = 0;
+    
+    for (const subscriber of targetSubscribers) {
+      try {
+        const emailResult = await sendEmail({
+          to: subscriber.email,
+          subject: subject,
+          html: content
+        });
+        
+        if (emailResult.success) {
+          successCount++;
+        } else {
+          errorCount++;
+          console.error(`Failed to send to ${subscriber.email}:`, emailResult.error);
+        }
+      } catch (error) {
+        errorCount++;
+        console.error(`Error sending to ${subscriber.email}:`, error);
+      }
+    }
+    
+    console.log(`✅ Campaign sent: ${successCount} success, ${errorCount} errors`);
     
     return c.json({
       success: true,
-      sent: targetSubscribers.length,
-      message: `Campaign sent to ${targetSubscribers.length} subscriber(s)`
+      sent: successCount,
+      errors: errorCount,
+      message: `Campaign sent to ${successCount}/${targetSubscribers.length} subscriber(s)`
     });
   } catch (error) {
     console.error("❌ Error sending campaign:", error);
