@@ -727,21 +727,17 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
         clearTimeout(timeoutId);
         
         if (!response.ok) {
-          console.log('ℹ️ No projects from server (expected if not deployed yet)');
           setPinnedProjects([]); // Set empty array to continue rendering
           return;
         }
         
         const data = await response.json();
-        console.log('📁 Total projects:', data.projects?.length || 0);
         const pinned = (data.projects || [])
           .filter((p: any) => p.isPinned)
           .slice(0, 3); // Limit to 3 projects
-        console.log('⭐ Pinned projects:', pinned.length, pinned.map((p: any) => p.name));
         setPinnedProjects(pinned);
       } catch (error) {
         // Silent error - server might not be deployed yet
-        console.log('ℹ️ Projects fetch failed (expected if server not deployed)');
         setPinnedProjects([]); // Set empty array to continue rendering
       }
     };
