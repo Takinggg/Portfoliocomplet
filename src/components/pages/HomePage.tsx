@@ -1497,7 +1497,9 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                             <TrendingDown className="h-4 w-4 text-red-400" />
                           </div>
                           <div className="flex-1">
-                            <div className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">Avant</div>
+                            <div className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">
+                              {language === 'en' ? 'Before' : 'Avant'}
+                            </div>
                             <p className="text-sm text-neutral-300 leading-relaxed">{cas.problem}</p>
                           </div>
                         </div>
@@ -1522,7 +1524,9 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                             <Zap className="h-4 w-4 text-mint" />
                           </div>
                           <div className="flex-1">
-                            <div className="text-xs font-bold text-mint uppercase tracking-wider mb-2">Après</div>
+                            <div className="text-xs font-bold text-mint uppercase tracking-wider mb-2">
+                              {language === 'en' ? 'After' : 'Après'}
+                            </div>
                             <p className="text-sm text-white leading-relaxed font-medium">{cas.solution}</p>
                           </div>
                         </div>
@@ -2101,7 +2105,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 onClick={() => onNavigate("projects")}
                 className="bg-neutral-900 hover:bg-neutral-800 border-2 border-neutral-800 hover:border-mint/30 h-14 px-8 rounded-2xl group"
               >
-                Voir tous les projets
+                {language === 'en' ? 'View all projects' : 'Voir tous les projets'}
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </motion.div>
@@ -2774,7 +2778,9 @@ function ContactSection({ onNavigate }: HomePageProps) {
           {/* Decorative line */}
           <div className="flex items-center gap-4 mb-8 max-w-md mx-auto">
             <div className="flex-1 h-px bg-gradient-to-r from-transparent to-neutral-800" />
-            <span className="text-neutral-500 text-sm">Ou contactez-moi directement</span>
+            <span className="text-neutral-500 text-sm">
+              {language === 'en' ? 'Or contact me directly' : 'Ou contactez-moi directement'}
+            </span>
             <div className="flex-1 h-px bg-gradient-to-l from-transparent to-neutral-800" />
           </div>
           
@@ -2825,7 +2831,9 @@ function ContactSection({ onNavigate }: HomePageProps) {
             >
               <Sparkles className="h-4 w-4 text-mint" />
             </motion.div>
-            <span className="text-xs text-neutral-400">Tous les canaux sont actifs</span>
+            <span className="text-xs text-neutral-400">
+              {language === 'en' ? 'All channels are active' : 'Tous les canaux sont actifs'}
+            </span>
           </motion.div>
         </motion.div>
       </div>
