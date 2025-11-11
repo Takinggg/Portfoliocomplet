@@ -1513,6 +1513,38 @@ app.get("/make-server-04919ac5/newsletter/subscribers", requireAuth, async (c)=>
   }
 });
 
+// Delete newsletter subscriber
+app.delete("/make-server-04919ac5/newsletter/subscriber/:email", requireAuth, async (c)=>{
+  try {
+    const email = decodeURIComponent(c.req.param("email"));
+    
+    // Find subscriber by email
+    const subscribers = await kv.getByPrefixWithKeys("subscriber:");
+    const subscriber = subscribers.find(s => s.value.email === email);
+    
+    if (!subscriber) {
+      return c.json({
+        success: false,
+        error: "Subscriber not found"
+      }, 404);
+    }
+    
+    await kv.del(subscriber.key);
+    console.log(`✅ Subscriber deleted: ${email}`);
+    
+    return c.json({
+      success: true,
+      message: "Subscriber deleted successfully"
+    });
+  } catch (error) {
+    console.error("❌ Error deleting subscriber:", error);
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
 console.log("✅ Newsletter routes added");
 // ===========================================================================
 // TESTIMONIALS ROUTES
