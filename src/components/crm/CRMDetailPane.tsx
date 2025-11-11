@@ -41,10 +41,135 @@ interface EntityDetail {
 type TabType = 'overview' | 'documents' | 'notes' | 'activity';
 
 export function CRMDetailPane() {
-  const { currentTab, selectedId, setSelectedId, openSlideOver, showToast } = useCRM();
+  const { currentTab, selectedId, setSelectedId, openSlideOver, showToast, triggerRefresh } = useCRM();
   const [entity, setEntity] = useState<EntityDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [converting, setConverting] = useState(false);
+
+  // Convert lead to client
+  const handleConvertLead = async () => {
+    if (!entity || converting) return;
+    
+    setConverting(true);
+    try {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      const encodedId = encodeURIComponent(selectedId);
+      
+      const response = await fetch(`${API_BASE_URL}/leads/${encodedId}/convert`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session?.access_token || publicAnonKey}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) throw new Error('Conversion failed');
+      const data = await response.json();
+      
+      showToast('Lead converti en client avec succès !', 'success');
+      setSelectedId(null); // Close detail pane
+      triggerRefresh(); // Trigger list refresh
+    } catch (error) {
+      console.error('Error converting lead:', error);
+      showToast('Erreur lors de la conversion', 'error');
+    } finally {
+      setConverting(false);
+    }
+  };
+
+  // Convert quote to invoice
+  const handleConvertQuote = async () => {
+    if (!entity || converting) return;
+    
+    setConverting(true);
+    try {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      const encodedId = encodeURIComponent(selectedId);
+      
+      const response = await fetch(`${API_BASE_URL}/quotes/${encodedId}/convert`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session?.access_token || publicAnonKey}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) throw new Error('Conversion failed');
+      const data = await response.json();
+      
+      showToast('Devis converti en facture avec succès !', 'success');
+      setSelectedId(null);
+      triggerRefresh();
+    } catch (error) {
+      console.error('Error converting quote:', error);
+      showToast('Erreur lors de la conversion', 'error');
+    } finally {
+      setConverting(false);
+    }
+  };
+
+  // Update quote status
+  const handleUpdateQuoteStatus = async (newStatus: string) => {
+    if (!entity || converting) return;
+    
+    setConverting(true);
+    try {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      const encodedId = encodeURIComponent(selectedId);
+      
+      const response = await fetch(`${API_BASE_URL}/quotes/${encodedId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${session?.access_token || publicAnonKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      
+      if (!response.ok) throw new Error('Update failed');
+      
+      showToast(`Statut mis à jour: ${newStatus}`, 'success');
+      setEntity({ ...entity, status: newStatus });
+    } catch (error) {
+      console.error('Error updating status:', error);
+      showToast('Erreur lors de la mise à jour', 'error');
+    } finally {
+      setConverting(false);
+    }
+  };
+
+  // Send reminder email
+  const handleSendReminder = async () => {
+    if (!entity || converting) return;
+    
+    setConverting(true);
+    try {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      const encodedId = encodeURIComponent(selectedId);
+      
+      const response = await fetch(`${API_BASE_URL}/${currentTab}/${encodedId}/send-reminder`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session?.access_token || publicAnonKey}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) throw new Error('Send failed');
+      
+      showToast('Email envoyé avec succès !', 'success');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      showToast('Erreur lors de l\'envoi de l\'email', 'error');
+    } finally {
+      setConverting(false);
+    }
+  };
 
   // Fetch entity details
   useEffect(() => {
@@ -95,15 +220,16 @@ export function CRMDetailPane() {
       case 'leads':
         return [
           {
-            label: 'Convertir en Client',
+            label: converting ? 'Conversion...' : 'Convertir en Client',
             icon: ArrowRight,
-            onClick: () => openSlideOver('convert-lead'),
+            onClick: handleConvertLead,
             variant: 'default' as const,
+            disabled: converting || entity?.status === 'converted',
           },
           {
-            label: 'Envoyer Email',
-            icon: Send,
-            onClick: () => showToast('Fonctionnalité à venir', 'info'),
+            label: 'Modifier',
+            icon: FileText,
+            onClick: () => openSlideOver('edit-lead'),
             variant: 'outline' as const,
           },
         ];
@@ -116,31 +242,34 @@ export function CRMDetailPane() {
             variant: 'default' as const,
           },
           {
-            label: 'Nouvelle Facture',
+            label: 'Modifier',
             icon: FileText,
-            onClick: () => openSlideOver('new-invoice'),
+            onClick: () => openSlideOver('edit-client'),
             variant: 'outline' as const,
           },
         ];
       case 'quotes':
         return [
           {
-            label: 'Convertir en Facture',
+            label: converting ? 'Conversion...' : 'Convertir en Facture',
             icon: ArrowRight,
-            onClick: () => openSlideOver('convert-quote'),
+            onClick: handleConvertQuote,
             variant: 'default' as const,
+            disabled: converting || entity?.status === 'converted' || entity?.status !== 'accepted',
           },
           {
             label: 'Envoyer',
             icon: Send,
-            onClick: () => showToast('Fonctionnalité à venir', 'info'),
+            onClick: handleSendReminder,
             variant: 'outline' as const,
+            disabled: converting,
           },
           {
-            label: 'Marquer Accepté',
+            label: entity?.status === 'accepted' ? 'Accepté ✓' : 'Marquer Accepté',
             icon: Check,
-            onClick: () => showToast('Fonctionnalité à venir', 'info'),
+            onClick: () => handleUpdateQuoteStatus('accepted'),
             variant: 'outline' as const,
+            disabled: converting || entity?.status === 'accepted',
           },
         ];
       case 'invoices':
@@ -148,19 +277,14 @@ export function CRMDetailPane() {
           {
             label: 'Envoyer',
             icon: Send,
-            onClick: () => showToast('Fonctionnalité à venir', 'info'),
+            onClick: handleSendReminder,
             variant: 'default' as const,
+            disabled: converting,
           },
           {
-            label: 'Marquer Payée',
-            icon: Check,
-            onClick: () => showToast('Fonctionnalité à venir', 'info'),
-            variant: 'outline' as const,
-          },
-          {
-            label: 'Télécharger PDF',
-            icon: Download,
-            onClick: () => showToast('Fonctionnalité à venir', 'info'),
+            label: 'Modifier',
+            icon: FileText,
+            onClick: () => openSlideOver('edit-invoice'),
             variant: 'outline' as const,
           },
         ];
@@ -226,6 +350,7 @@ export function CRMDetailPane() {
                 key={index}
                 variant={action.variant}
                 onClick={action.onClick}
+                disabled={action.disabled || converting}
                 className="gap-2"
               >
                 <Icon className="w-4 h-4" />

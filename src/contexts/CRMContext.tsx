@@ -17,11 +17,15 @@ interface CRMState {
   setCurrentTab: (tab: EntityType) => void;
   setSelectedId: (id: string | null) => void;
   
-  // Modal/Slideov state
+  // Modal/Slideover state
   isSlideOverOpen: boolean;
-  slideOverContent: 'convert-lead' | 'new-quote' | 'new-invoice' | 'edit' | null;
-  openSlideOver: (content: 'convert-lead' | 'new-quote' | 'new-invoice' | 'edit') => void;
+  slideOverContent: 'convert-lead' | 'new-quote' | 'new-invoice' | 'edit-lead' | 'edit-client' | 'edit-quote' | 'edit-invoice' | null;
+  openSlideOver: (content: 'convert-lead' | 'new-quote' | 'new-invoice' | 'edit-lead' | 'edit-client' | 'edit-quote' | 'edit-invoice') => void;
   closeSlideOver: () => void;
+  
+  // Refresh mechanism
+  refreshKey: number;
+  triggerRefresh: () => void;
   
   // Notifications
   showToast: (message: string, type?: 'success' | 'error' | 'info') => void;
@@ -51,6 +55,11 @@ export function CRMProvider({ children }: { children: ReactNode }) {
   const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
   const [slideOverContent, setSlideOverContent] = useState<CRMState['slideOverContent']>(null);
   const [toastMessage, setToastMessage] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
+  
+  const triggerRefresh = () => {
+    setRefreshKey(prev => prev + 1);
+  };
   
   // Sync URL with state (deep linking)
   useEffect(() => {
@@ -106,6 +115,8 @@ export function CRMProvider({ children }: { children: ReactNode }) {
       slideOverContent,
       openSlideOver,
       closeSlideOver,
+      refreshKey,
+      triggerRefresh,
       showToast,
     }}>
       {children}

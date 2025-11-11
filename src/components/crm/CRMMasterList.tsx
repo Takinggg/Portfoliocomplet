@@ -23,7 +23,7 @@ interface Entity {
 }
 
 export function CRMMasterList() {
-  const { currentTab, selectedId, setSelectedId, showToast } = useCRM();
+  const { currentTab, selectedId, setSelectedId, showToast, refreshKey } = useCRM();
   const [entities, setEntities] = useState<Entity[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,10 +49,8 @@ export function CRMMasterList() {
         console.log(`📦 API Response for ${currentTab}:`, data);
         
         // Extract the array from the API response
-        // API returns: { success: true, leads: [...] } or { success: true, clients: [...] }
         let items = [];
         if (data.success) {
-          // Try different possible keys
           console.log(`🔑 Looking for key: "${currentTab}" in data:`, Object.keys(data));
           items = data[currentTab] || data.data || [];
           console.log(`📊 Found items:`, items);
@@ -60,8 +58,14 @@ export function CRMMasterList() {
           items = Array.isArray(data) ? data : [];
         }
         
+        // CRITICAL: Auto-hide converted entities (leads & quotes)
+        if (currentTab === 'leads' || currentTab === 'quotes') {
+          const before = items.length;
+          items = items.filter((item: Entity) => item.status !== 'converted');
+          console.log(`🔒 Filtered ${before - items.length} converted ${currentTab}`);
+        }
+        
         console.log(`✅ Extracted ${items.length} items for ${currentTab}`);
-        console.log(`🎯 Setting entities to:`, items);
         if (items.length > 0) {
           console.log(`🔬 First item structure:`, items[0]);
         }
@@ -76,7 +80,7 @@ export function CRMMasterList() {
     };
 
     fetchEntities();
-  }, [currentTab, showToast]);
+  }, [currentTab, showToast, refreshKey]); // Add refreshKey to trigger refresh
 
   // Filter entities based on search
   const filteredEntities = entities.filter((entity) => {
