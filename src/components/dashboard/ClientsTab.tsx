@@ -49,6 +49,7 @@ interface Lead {
 
 export function ClientsTab() {
   const [clients, setClients] = useState<Client[]>([]);
+  const [leads, setLeads] = useState<Lead[]>([]); // Add leads state
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -62,6 +63,7 @@ export function ClientsTab() {
 
   useEffect(() => {
     fetchClients();
+    fetchLeads(); // Fetch leads on mount
   }, []);
 
   const fetchClients = async () => {
@@ -139,6 +141,29 @@ export function ClientsTab() {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchLeads = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/leads`,
+        {
+          headers: { 
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        }
+      );
+      
+      if (response.ok) {
+        const data = await response.json();
+        setLeads(data.leads || []);
+      }
+    } catch (error) {
+      console.error("Error fetching leads:", error);
     }
   };
 
@@ -504,6 +529,7 @@ export function ClientsTab() {
         open={showEditDialog}
         onOpenChange={setShowEditDialog}
         onClientUpdated={fetchClients}
+        leads={leads}
       />
 
       {/* Delete Confirmation Dialog */}

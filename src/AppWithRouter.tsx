@@ -9,7 +9,7 @@ import ServicesPage from "./components/pages/ServicesPage";
 import AboutPage from "./components/pages/AboutPage";
 import ContactPage from "./components/pages/ContactPage";
 import BookingPage from "./components/pages/BookingPage";
-import DashboardPage from "./components/pages/DashboardPage";
+import ModernDashboard from "./components/dashboard/ModernDashboard";
 import LoginPage from "./components/pages/LoginPage";
 import { BlogPage } from "./components/pages/BlogPage";
 import { BlogPostPage } from "./components/pages/BlogPostPage";
@@ -330,7 +330,7 @@ function AppContent() {
                 {/* Spacer for deployment banner */}
                 <div className="h-[72px]" aria-hidden="true" />
                 <main id="main-content" className="flex-1" tabIndex={-1}>
-                  <DashboardPage onLogout={handleLogout} onNavigate={(page) => navigate(`/${page}`)} />
+                  <ModernDashboard onLogout={handleLogout} onNavigate={(page) => navigate(`/${page}`)} />
                 </main>
               </>
             ) : (

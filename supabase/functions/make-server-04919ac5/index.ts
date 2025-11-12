@@ -880,7 +880,7 @@ app.delete("/make-server-04919ac5/bookings/:id", requireAuth, async (c)=>{
       console.log("❌ Booking not found in KV with any format");
       // Essayons de lister tous les bookings pour voir ce qui existe
       const allBookings = await kv.getByPrefix("booking:");
-      console.log("📋 All bookings in KV:", allBookings.map(b => ({ id: b.id, email: b.email })));
+      console.log("📋 All bookings in KV:", allBookings.map((b: any) => ({ id: b.id, email: b.email })));
     }
     
     // Supprimer avec la clé correcte
@@ -902,7 +902,672 @@ app.delete("/make-server-04919ac5/bookings/:id", requireAuth, async (c)=>{
     }, 500);
   }
 });
+
+// Route ADMIN pour supprimer TOUS les bookings (nettoyage)
+app.delete("/make-server-04919ac5/bookings", requireAuth, async (c)=>{
+  try {
+    console.log("🗑️ DELETE ALL bookings request");
+    
+    // Récupérer tous les bookings AVEC leurs clés
+    const allBookingsWithKeys = await kv.getByPrefixWithKeys("booking:");
+    console.log(`📋 Found ${allBookingsWithKeys.length} bookings to delete`);
+    
+    // Supprimer chaque booking en utilisant la CLÉ, pas l'ID
+    let deleted = 0;
+    for (const item of allBookingsWithKeys) {
+      console.log(`🗑️ Deleting key: ${item.key}`);
+      await kv.del(item.key);
+      deleted++;
+    }
+    
+    console.log(`✅ Deleted ${deleted} bookings`);
+    
+    return c.json({
+      success: true,
+      message: `Deleted ${deleted} bookings`,
+      count: deleted
+    });
+  } catch (error: any) {
+    console.error("❌ DELETE ALL bookings error:", error);
+    return c.json({
+      success: false,
+      error: error.message
+    }, 500);
+  }
+});
+
 console.log("✅ Bookings routes added");
+
+// =============================================================================
+// 📧 EMAIL NOTIFICATIONS FOR BOOKINGS
+// =============================================================================
+
+// Route: POST /make-server-04919ac5/emails/booking-confirmation
+// Description: Envoyer un email de confirmation ou d'annulation de RDV
+app.post("/make-server-04919ac5/emails/booking-confirmation", async (c) => {
+  try {
+    const body = await c.req.json();
+    const { to, name, date, time, service, status, message } = body;
+
+    if (!to || !name || !date || !time) {
+      return c.json({ success: false, error: "Missing required fields" }, 400);
+    }
+
+    const resendKey = Deno.env.get("RESEND_API_KEY");
+    if (!resendKey) {
+      console.error("❌ RESEND_API_KEY not configured");
+      return c.json({ success: false, error: "Email service not configured" }, 500);
+    }
+
+    // Formater la date
+    const formattedDate = new Date(date).toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    // Déterminer le sujet et le contenu selon le statut
+    let subject = '';
+    let html = '';
+    
+    // Style commun pour tous les emails (DA maxence.design)
+    const commonStyles = `
+      body { 
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.6; 
+        color: #e0e0e0; 
+        background: #000000;
+        margin: 0;
+        padding: 0;
+      }
+      .email-wrapper { 
+        background: #000000; 
+        padding: 40px 20px; 
+      }
+      .container { 
+        max-width: 600px; 
+        margin: 0 auto; 
+        background: #0C0C0C;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(0, 255, 194, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 255, 194, 0.05);
+      }
+      .header { 
+        background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
+        padding: 40px 30px;
+        text-align: center;
+        border-bottom: 2px solid rgba(0, 255, 194, 0.2);
+      }
+      .logo {
+        font-size: 28px;
+        font-weight: 700;
+        color: #00FFC2;
+        margin-bottom: 10px;
+        letter-spacing: -0.5px;
+      }
+      .header-icon { 
+        font-size: 48px; 
+        margin-bottom: 15px;
+        filter: drop-shadow(0 4px 12px rgba(0, 255, 194, 0.3));
+      }
+      h1 {
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0;
+        line-height: 1.3;
+      }
+      .content { 
+        background: #0C0C0C;
+        padding: 40px 30px;
+      }
+      .content p {
+        color: #d0d0d0;
+        margin: 0 0 15px 0;
+      }
+      .detail { 
+        background: rgba(255, 255, 255, 0.02);
+        padding: 18px 20px;
+        margin: 12px 0;
+        border-radius: 8px;
+        border-left: 3px solid #00FFC2;
+        backdrop-filter: blur(10px);
+        color: #d0d0d0;
+      }
+      .detail strong {
+        color: #00FFC2;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 4px;
+      }
+      .detail span {
+        color: #ffffff;
+      }
+      .alert-box {
+        background: rgba(255, 193, 7, 0.1);
+        border: 1px solid rgba(255, 193, 7, 0.3);
+        border-radius: 8px;
+        padding: 18px 20px;
+        margin: 20px 0;
+        color: #ffc107;
+        line-height: 1.6;
+      }
+      .alert-box strong {
+        color: #ffc107;
+        display: block;
+        margin-bottom: 4px;
+      }
+      .cta-button {
+        display: inline-block;
+        background: linear-gradient(135deg, #00FFC2 0%, #00d9a5 100%);
+        color: #000000;
+        padding: 14px 32px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        margin: 20px 0;
+        box-shadow: 0 4px 16px rgba(0, 255, 194, 0.3);
+        transition: transform 0.2s;
+      }
+      .footer { 
+        text-align: center;
+        padding: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        color: #999;
+        font-size: 13px;
+      }
+      .footer p {
+        color: #999;
+        margin: 5px 0;
+      }
+      .footer a {
+        color: #00FFC2;
+        text-decoration: none;
+      }
+      .divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, rgba(0, 255, 194, 0.2) 50%, transparent 100%);
+        margin: 30px 0;
+      }
+    `;
+    
+    if (status === 'confirmed') {
+      subject = `✅ Rendez-vous confirmé - ${formattedDate} à ${time}`;
+      html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>${commonStyles}</style>
+        </head>
+        <body>
+          <div class="email-wrapper">
+            <div class="container">
+              <div class="header">
+                <div class="logo">maxence.design</div>
+                <div class="header-icon">✅</div>
+                <h1>Rendez-vous Confirmé</h1>
+              </div>
+              <div class="content">
+                <p>Bonjour <strong style="color: #fff;">${name}</strong>,</p>
+                <p>Votre rendez-vous a été <strong style="color: #00FFC2;">confirmé</strong> avec succès.</p>
+                
+                <div class="divider"></div>
+                
+                <div class="detail">
+                  <strong>📅 Date</strong><br>
+                  <span style="color: #ffffff; font-size: 16px;">${formattedDate}</span>
+                </div>
+                <div class="detail">
+                  <strong>🕐 Heure</strong><br>
+                  <span style="color: #ffffff; font-size: 16px;">${time}</span>
+                </div>
+                ${service ? `<div class="detail"><strong>💼 Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
+                ${message ? `<div class="detail"><strong>📝 Note</strong><br><span style="color: #ffffff;">${message}</span></div>` : ''}
+                
+                <div class="divider"></div>
+                
+                <p style="color: #00FFC2; font-weight: 600; margin-top: 25px;">Nous vous attendons avec plaisir !</p>
+                <p style="font-size: 14px;">Si vous avez besoin de modifier ou d'annuler ce rendez-vous, merci de nous contacter au plus tôt.</p>
+                
+                <div class="footer">
+                  <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                  <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+    } else if (status === 'cancelled') {
+      subject = `❌ Rendez-vous annulé - ${formattedDate} à ${time}`;
+      html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>${commonStyles}</style>
+        </head>
+        <body>
+          <div class="email-wrapper">
+            <div class="container">
+              <div class="header">
+                <div class="logo">maxence.design</div>
+                <div class="header-icon">❌</div>
+                <h1>Rendez-vous Annulé</h1>
+              </div>
+              <div class="content">
+                <p>Bonjour <strong style="color: #fff;">${name}</strong>,</p>
+                <p>Votre rendez-vous a été <strong style="color: #ff6b6b;">annulé</strong>.</p>
+                
+                <div class="divider"></div>
+                
+                <div class="detail">
+                  <strong>📅 Date</strong><br>
+                  <span style="color: #ffffff; font-size: 16px;">${formattedDate}</span>
+                </div>
+                <div class="detail">
+                  <strong>🕐 Heure</strong><br>
+                  <span style="color: #ffffff; font-size: 16px;">${time}</span>
+                </div>
+                ${service ? `<div class="detail"><strong>💼 Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
+                ${message ? `<div class="alert-box"><strong>📝 Raison</strong><br>${message}</div>` : ''}
+                
+                <div class="divider"></div>
+                
+                <p style="margin-top: 25px;">Si vous souhaitez reprendre un nouveau rendez-vous, n'hésitez pas à nous contacter.</p>
+                
+                <div class="footer">
+                  <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                  <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+    } else if (status === 'modified') {
+      subject = `🔄 Rendez-vous modifié - ${formattedDate} à ${time}`;
+      html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>${commonStyles}</style>
+        </head>
+        <body>
+          <div class="email-wrapper">
+            <div class="container">
+              <div class="header">
+                <div class="logo">maxence.design</div>
+                <div class="header-icon">🔄</div>
+                <h1>Rendez-vous Modifié</h1>
+              </div>
+              <div class="content">
+                <p>Bonjour <strong style="color: #fff;">${name}</strong>,</p>
+                <p>Votre rendez-vous a été <strong style="color: #ffc107;">modifié</strong>.</p>
+                
+                ${message ? `<div class="alert-box"><strong>⚠️ Changement</strong><br>${message}</div>` : ''}
+                
+                <div class="divider"></div>
+                
+                <h3 style="color: #00FFC2; font-size: 18px; margin: 20px 0 15px 0;">📅 Nouvelles informations</h3>
+                
+                <div class="detail">
+                  <strong>📅 Nouvelle date</strong><br>
+                  <span style="color: #ffffff; font-size: 16px;">${formattedDate}</span>
+                </div>
+                <div class="detail">
+                  <strong>🕐 Nouvelle heure</strong><br>
+                  <span style="color: #ffffff; font-size: 16px;">${time}</span>
+                </div>
+                ${service ? `<div class="detail"><strong>💼 Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
+                
+                <div class="divider"></div>
+                
+                <p style="margin-top: 25px;">Si ces nouvelles informations ne vous conviennent pas, merci de nous contacter au plus tôt.</p>
+                
+                <div class="footer">
+                  <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                  <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+    } else {
+      // Status = pending (nouveau RDV)
+      subject = `⏳ Nouveau rendez-vous - ${formattedDate} à ${time}`;
+      html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>${commonStyles}</style>
+        </head>
+        <body>
+          <div class="email-wrapper">
+            <div class="container">
+              <div class="header">
+                <div class="logo">maxence.design</div>
+                <div class="header-icon">⏳</div>
+                <h1>Demande de Rendez-vous Reçue</h1>
+              </div>
+              <div class="content">
+                <p>Bonjour <strong style="color: #fff;">${name}</strong>,</p>
+                <p>Nous avons bien reçu votre demande de rendez-vous.</p>
+                
+                <div class="divider"></div>
+                
+                <div class="detail">
+                  <strong>📅 Date souhaitée</strong><br>
+                  <span style="color: #ffffff; font-size: 16px;">${formattedDate}</span>
+                </div>
+                <div class="detail">
+                  <strong>🕐 Heure souhaitée</strong><br>
+                  <span style="color: #ffffff; font-size: 16px;">${time}</span>
+                </div>
+                ${service ? `<div class="detail"><strong>💼 Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
+                ${message ? `<div class="detail"><strong>📝 Message</strong><br><span style="color: #ffffff; font-size: 16px;">${message}</span></div>` : ''}
+                
+                <div class="divider"></div>
+                
+                <p style="color: #ffc107; font-weight: 600; margin-top: 25px;">Votre demande est en attente de confirmation. Nous vous contacterons très prochainement pour valider ce rendez-vous.</p>
+                
+                <div class="footer">
+                  <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                  <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+    }
+
+    // Envoyer l'email via Resend
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${resendKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "Maxence Design <contact@maxence.design>",
+        to: [to],
+        subject,
+        html
+      }),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      console.log(`✅ Email ${status} sent to ${to}`);
+      return c.json({ success: true, message: `Email sent to ${to}`, emailId: result.id });
+    } else {
+      console.error("❌ Resend API error:", result);
+      return c.json({ success: false, error: result.message || "Failed to send email" }, 500);
+    }
+  } catch (error: any) {
+    console.error("❌ Email sending error:", error);
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+console.log("✅ Booking email notifications added");
+
+// ===========================================================================
+// CRON ROUTES - AUTOMATED TASKS
+// ===========================================================================
+console.log("⏰ Adding CRON routes for automation...");
+
+// Route pour relances automatiques des factures impayées
+app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c) => {
+  try {
+    console.log("🔔 Running invoice reminders cron job...");
+    
+    const invoices = await kv.getByPrefix("invoice:");
+    const now = new Date();
+    const remindersConfig = [
+      { days: 7, label: "J+7" },
+      { days: 15, label: "J+15" },
+      { days: 30, label: "J+30 - URGENT" }
+    ];
+    
+    let sentCount = 0;
+    const resendKey = Deno.env.get("RESEND_API_KEY");
+    
+    for (const invoice of invoices) {
+      if (invoice.status !== 'unpaid' && invoice.status !== 'overdue') continue;
+      
+      const dueDate = invoice.dueDate ? new Date(invoice.dueDate) : new Date(invoice.createdAt);
+      const daysPastDue = Math.floor((now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24));
+      
+      // Vérifier si on doit envoyer un reminder
+      const shouldRemind = remindersConfig.some(config => 
+        daysPastDue === config.days || 
+        (daysPastDue > config.days && daysPastDue < config.days + 1)
+      );
+      
+      if (shouldRemind && invoice.clientEmail) {
+        const reminderType = daysPastDue >= 30 ? 'urgent' : daysPastDue >= 15 ? 'second' : 'first';
+        
+        const subject = `${reminderType === 'urgent' ? '🚨 URGENT' : '💼'} Rappel Facture N°${invoice.id.substring(0, 8).toUpperCase()}`;
+        const html = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>${commonStyles}</style>
+          </head>
+          <body>
+            <div class="email-wrapper">
+              <div class="container">
+                <div class="header">
+                  <div class="logo">maxence.design</div>
+                  <div class="header-icon">${reminderType === 'urgent' ? '🚨' : '💼'}</div>
+                  <h1>Rappel de Paiement</h1>
+                </div>
+                <div class="content">
+                  <p>Bonjour <strong style="color: #fff;">${invoice.clientName}</strong>,</p>
+                  <p>Nous vous rappelons que la facture suivante est en attente de paiement depuis <strong style="color: #ffc107;">${daysPastDue} jours</strong>.</p>
+                  
+                  <div class="divider"></div>
+                  
+                  <div class="detail">
+                    <strong>📄 Facture</strong><br>
+                    <span style="color: #ffffff; font-size: 16px;">N°${invoice.id.substring(0, 8).toUpperCase()}</span>
+                  </div>
+                  <div class="detail">
+                    <strong>💰 Montant</strong><br>
+                    <span style="color: #ffffff; font-size: 18px; font-weight: bold;">${invoice.amount.toLocaleString('fr-FR')} €</span>
+                  </div>
+                  <div class="detail">
+                    <strong>📅 Date d'échéance</strong><br>
+                    <span style="color: #ff6b6b; font-size: 16px;">${dueDate.toLocaleDateString('fr-FR')}</span>
+                  </div>
+                  
+                  ${reminderType === 'urgent' ? `
+                    <div class="alert-box" style="background: rgba(255, 107, 107, 0.1); border-color: rgba(255, 107, 107, 0.3); color: #ff6b6b;">
+                      <strong>⚠️ Action Requise</strong><br>
+                      Cette facture est en retard de plus de 30 jours. Merci de régulariser votre situation dans les plus brefs délais pour éviter toute interruption de service.
+                    </div>
+                  ` : `
+                    <div class="divider"></div>
+                    <p style="margin-top: 25px;">Merci de procéder au règlement dans les meilleurs délais. Si vous avez déjà effectué le paiement, veuillez ignorer ce message.</p>
+                  `}
+                  
+                  <div class="footer">
+                    <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                    <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </body>
+          </html>
+        `;
+        
+        const response = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "Maxence Design <contact@maxence.design>",
+            to: [invoice.clientEmail],
+            subject,
+            html
+          }),
+        });
+        
+        if (response.ok) {
+          console.log(`✅ Reminder sent for invoice ${invoice.id} (${daysPastDue} days overdue)`);
+          sentCount++;
+        }
+      }
+    }
+    
+    return c.json({ 
+      success: true, 
+      message: `Sent ${sentCount} invoice reminders`,
+      sentCount 
+    });
+  } catch (error: any) {
+    console.error("❌ Error sending invoice reminders:", error);
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+// Route pour rappels de rendez-vous (24h avant)
+app.post("/make-server-04919ac5/cron/send-booking-reminders", async (c) => {
+  try {
+    console.log("🔔 Running booking reminders cron job...");
+    
+    const bookings = await kv.getByPrefix("booking:");
+    const now = new Date();
+    const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    
+    let sentCount = 0;
+    const resendKey = Deno.env.get("RESEND_API_KEY");
+    
+    for (const booking of bookings) {
+      if (booking.status !== 'confirmed') continue;
+      
+      const bookingDate = new Date(booking.date);
+      const isTomorrow = bookingDate.toDateString() === tomorrow.toDateString();
+      
+      if (isTomorrow && booking.email) {
+        const formattedDate = bookingDate.toLocaleDateString('fr-FR', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        
+        const subject = `🔔 Rappel: Votre RDV demain à ${booking.time}`;
+        const html = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>${commonStyles}</style>
+          </head>
+          <body>
+            <div class="email-wrapper">
+              <div class="container">
+                <div class="header">
+                  <div class="logo">maxence.design</div>
+                  <div class="header-icon">🔔</div>
+                  <h1>Rappel de Rendez-vous</h1>
+                </div>
+                <div class="content">
+                  <p>Bonjour <strong style="color: #fff;">${booking.name}</strong>,</p>
+                  <p>Nous vous rappelons que vous avez un rendez-vous <strong style="color: #00FFC2;">demain</strong>.</p>
+                  
+                  <div class="divider"></div>
+                  
+                  <div class="detail">
+                    <strong>📅 Date</strong><br>
+                    <span style="color: #ffffff; font-size: 16px;">${formattedDate}</span>
+                  </div>
+                  <div class="detail">
+                    <strong>🕐 Heure</strong><br>
+                    <span style="color: #00FFC2; font-size: 20px; font-weight: bold;">${booking.time}</span>
+                  </div>
+                  ${booking.service ? `
+                    <div class="detail">
+                      <strong>💼 Service</strong><br>
+                      <span style="color: #ffffff; font-size: 16px;">${booking.service}</span>
+                    </div>
+                  ` : ''}
+                  
+                  <div class="divider"></div>
+                  
+                  <p style="color: #00FFC2; font-weight: 600; margin-top: 25px;">À demain ! 👋</p>
+                  <p style="color: #b0b0b0; font-size: 14px; margin-top: 15px;">
+                    Si vous avez besoin de modifier ou d'annuler ce rendez-vous, merci de nous contacter dès que possible.
+                  </p>
+                  
+                  <div class="footer">
+                    <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                    <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </body>
+          </html>
+        `;
+        
+        const response = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "Maxence Design <contact@maxence.design>",
+            to: [booking.email],
+            subject,
+            html
+          }),
+        });
+        
+        if (response.ok) {
+          console.log(`✅ Reminder sent for booking ${booking.id} (${booking.name})`);
+          sentCount++;
+        }
+      }
+    }
+    
+    return c.json({ 
+      success: true, 
+      message: `Sent ${sentCount} booking reminders`,
+      sentCount 
+    });
+  } catch (error: any) {
+    console.error("❌ Error sending booking reminders:", error);
+    return c.json({ success: false, error: error.message }, 500);
+  }
+});
+
+console.log("✅ CRON routes added");
 
 // ===========================================================================
 // CALENDAR ROUTES - AVAILABILITIES & EVENTS
@@ -987,38 +1652,8 @@ console.log("✅ Calendar routes added (availabilities & events)");
 app.post("/make-server-04919ac5/emails/booking-confirmation", async (c)=>{
   try {
     const body = await c.req.json();
-    const { name, email, phone, date, time, duration, service, oldDate, newDate, isUpdate } = body;
+    const { name, email, phone, date, time, duration, service } = body;
     
-    // Si c'est une mise à jour de RDV
-    if (isUpdate && oldDate && newDate) {
-      const { sendBookingUpdateEmail } = await import("./email_service.tsx");
-      
-      const emailResult = await sendBookingUpdateEmail({
-        email,
-        name,
-        oldDate,
-        newDate,
-        time,
-        service
-      });
-      
-      if (emailResult.success) {
-        console.log(`📧 Booking update email sent to ${email}`);
-        return c.json({
-          success: true,
-          message: "Booking update email sent successfully"
-        });
-      } else {
-        console.error(`❌ Failed to send booking update email: ${emailResult.error}`);
-        return c.json({
-          success: false,
-          error: emailResult.error || "Failed to send booking update email"
-        }, 500);
-      }
-    }
-    
-    // Sinon, envoi de confirmation normal
-    // Validation uniquement pour les confirmations (pas pour les updates)
     if (!name || !email || !date || !time || !duration) {
       return c.json({
         success: false,
@@ -1060,57 +1695,6 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c)=>{
   }
 });
 console.log("✅ Booking confirmation email route added");
-
-// ===========================================================================
-// EMAIL ROUTES - BOOKING UPDATE NOTIFICATION
-// ===========================================================================
-app.post("/make-server-04919ac5/bookings/update-notification", async (c)=>{
-  try {
-    const body = await c.req.json();
-    const { email, name, oldDate, newDate, time, service } = body;
-    
-    if (!email || !name || !oldDate || !newDate || !time) {
-      return c.json({
-        success: false,
-        error: "Missing required fields: email, name, oldDate, newDate, time"
-      }, 400);
-    }
-    
-    // Import and use the email service
-    const { sendBookingUpdateEmail } = await import("./email_service.tsx");
-    
-    const emailResult = await sendBookingUpdateEmail({
-      email,
-      name,
-      oldDate,
-      newDate,
-      time,
-      service
-    });
-    
-    if (emailResult.success) {
-      console.log(`📧 Booking update notification sent to ${email}`);
-      return c.json({
-        success: true,
-        message: "Booking update notification sent successfully"
-      });
-    } else {
-      console.error(`❌ Failed to send booking update notification: ${emailResult.error}`);
-      return c.json({
-        success: false,
-        error: emailResult.error || "Failed to send booking update notification"
-      }, 500);
-    }
-  } catch (error) {
-    console.error("❌ Error sending booking update notification:", error);
-    return c.json({
-      success: false,
-      error: error.message
-    }, 500);
-  }
-});
-console.log("✅ Booking update notification route added");
-
 // ===========================================================================
 // EMAIL ROUTES - LEAD CONFIRMATION
 // ===========================================================================
@@ -3477,6 +4061,15 @@ console.log("   4. Check dashboard: GET /make-server-04919ac5/dashboard/stats");
    • Update frontend serverService.ts with deployed URL
    • Set PRODUCTION_MODE = true
    • Test from portfolio website
+
+□ 6. SETUP CRON JOBS (Optional - for automation)
+   • Go to Dashboard > Database > Cron Jobs (pg_cron extension)
+   • Add daily job for invoice reminders:
+     SELECT cron.schedule('invoice-reminders', '0 9 * * *', 
+       'SELECT net.http_post(url := ''https://your-project.supabase.co/functions/v1/make-server-04919ac5/cron/send-invoice-reminders'')');
+   • Add daily job for booking reminders:
+     SELECT cron.schedule('booking-reminders', '0 10 * * *',
+       'SELECT net.http_post(url := ''https://your-project.supabase.co/functions/v1/make-server-04919ac5/cron/send-booking-reminders'')');
 
 ============================================================================
 */

@@ -34,7 +34,7 @@ const ServicesPage = lazy(() => import("./components/pages/ServicesPage"));
 const AboutPage = lazy(() => import("./components/pages/AboutPage"));
 const ContactPage = lazy(() => import("./components/pages/ContactPage"));
 const BookingPage = lazy(() => import("./components/pages/BookingPage"));
-const DashboardPage = lazy(() => import("./components/pages/DashboardPage"));
+const ModernDashboard = lazy(() => import("./components/dashboard/ModernDashboard"));
 const LoginPage = lazy(() => import("./components/pages/LoginPage"));
 const BlogPage = lazy(() => import("./components/pages/BlogPage").then(m => ({ default: m.BlogPage })));
 const BlogPostPage = lazy(() => import("./components/pages/BlogPostPage").then(m => ({ default: m.BlogPostPage })));
@@ -330,7 +330,7 @@ function AppContent() {
             element={
               isAuthenticated ? (
                 <main id="main-content" className="flex-1" tabIndex={-1}>
-                  <DashboardPage onLogout={handleLogout} onNavigate={(page) => navigate(page)} />
+                  <ModernDashboard onLogout={handleLogout} onNavigate={(page) => navigate(page)} />
                 </main>
               ) : (
                 <Navigate to="/login" replace />

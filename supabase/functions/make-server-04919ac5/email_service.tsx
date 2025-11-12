@@ -168,87 +168,6 @@ export const emailTemplates = {
     text: `Bonjour ${data.name},\n\nVotre rendez-vous est confirmé !\n\nDétails :\n- Date : ${new Date(data.date).toLocaleDateString('fr-FR')}\n- Heure : ${data.time}\n- Durée : ${data.duration} minutes\n${data.service ? `- Service : ${data.service}\n` : ''}\nUn rappel vous sera envoyé 24 heures avant notre rendez-vous.\n\nÀ très bientôt,\nVotre Freelance`
   }),
 
-  // Booking update email (when date/time changes)
-  bookingUpdate: (data: {
-    name: string;
-    oldDate: string;
-    newDate: string;
-    time: string;
-    service?: string;
-  }): EmailTemplate => ({
-    subject: "📅 Modification de votre rendez-vous",
-    html: `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <style>
-            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
-            .content { background: #F4F4F4; padding: 40px 30px; }
-            .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
-            .date-change { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 20px 0; }
-            .date-box { padding: 15px 20px; border-radius: 8px; text-align: center; }
-            .old-date { background: #ffebee; color: #c62828; text-decoration: line-through; }
-            .new-date { background: #e8f5e9; color: #2e7d32; font-weight: bold; border: 2px solid #00FFC2; }
-            .arrow { font-size: 24px; color: #666; }
-            .info-box { background: white; border-left: 4px solid #00FFC2; padding: 20px; margin: 20px 0; border-radius: 4px; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1 style="margin: 0; font-size: 28px;">📅 Rendez-vous modifié</h1>
-            </div>
-            <div class="content">
-              <p>Bonjour <strong>${data.name}</strong>,</p>
-              
-              <p>Votre rendez-vous${data.service ? ` pour <strong>${data.service}</strong>` : ''} a été déplacé :</p>
-              
-              <div class="date-change">
-                <div class="date-box old-date">
-                  <div style="font-size: 12px; opacity: 0.8;">Ancienne date</div>
-                  <div style="font-size: 18px; margin-top: 5px;">${data.oldDate}</div>
-                  <div style="font-size: 14px; margin-top: 5px;">${data.time}</div>
-                </div>
-                
-                <div class="arrow">→</div>
-                
-                <div class="date-box new-date">
-                  <div style="font-size: 12px; opacity: 0.8;">Nouvelle date</div>
-                  <div style="font-size: 18px; margin-top: 5px;">${data.newDate}</div>
-                  <div style="font-size: 14px; margin-top: 5px;">${data.time}</div>
-                </div>
-              </div>
-              
-              <div class="info-box">
-                <p style="margin: 0;"><strong>📋 Récapitulatif :</strong></p>
-                <ul style="margin: 10px 0;">
-                  ${data.service ? `<li><strong>Service :</strong> ${data.service}</li>` : ''}
-                  <li><strong>Date :</strong> ${data.newDate}</li>
-                  <li><strong>Heure :</strong> ${data.time}</li>
-                </ul>
-              </div>
-              
-              <p>Si vous avez des questions ou si cette modification ne vous convient pas, n'hésitez pas à nous contacter.</p>
-              
-              <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                À bientôt,<br>
-                <strong>Votre Freelance</strong>
-              </p>
-            </div>
-            <div class="footer">
-              <p style="margin: 0;">© 2025 FOULON Maxence - Développeur Web Freelance</p>
-              <p style="margin: 5px 0 0 0; opacity: 0.8;">Cet email a été envoyé automatiquement suite à une modification de rendez-vous.</p>
-            </div>
-          </div>
-        </body>
-      </html>
-    `,
-    text: `Bonjour ${data.name},\n\nVotre rendez-vous${data.service ? ` pour ${data.service}` : ''} a été déplacé :\n\nAncienne date : ${data.oldDate} à ${data.time}\nNouvelle date : ${data.newDate} à ${data.time}\n\nSi vous avez des questions ou si cette modification ne vous convient pas, n'hésitez pas à nous contacter.\n\nÀ bientôt,\nVotre Freelance`
-  }),
-
   // Invoice email
   invoiceEmail: (data: {
     clientName: string;
@@ -641,30 +560,6 @@ export async function sendBookingConfirmation(booking: {
     date: booking.date,
     time: booking.time,
     duration: booking.duration,
-    service: booking.service,
-  });
-
-  return sendEmail({
-    to: booking.email,
-    subject: template.subject,
-    html: template.html,
-    text: template.text,
-  });
-}
-
-export async function sendBookingUpdateEmail(booking: {
-  email: string;
-  name: string;
-  oldDate: string;
-  newDate: string;
-  time: string;
-  service?: string;
-}) {
-  const template = emailTemplates.bookingUpdate({
-    name: booking.name,
-    oldDate: booking.oldDate,
-    newDate: booking.newDate,
-    time: booking.time,
     service: booking.service,
   });
 

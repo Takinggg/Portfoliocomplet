@@ -6,7 +6,7 @@ import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
-import { Loader2, Building, Mail, Phone, MapPin, DollarSign, User, CheckCircle2 } from "lucide-react";
+import { Loader2, Building, Mail, Phone, MapPin, DollarSign, User, CheckCircle2, Sparkles } from "lucide-react";
 
 interface Client {
   id: string;
@@ -20,14 +20,23 @@ interface Client {
   createdAt: string;
 }
 
+interface Lead {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+}
+
 interface ClientEditDialogProps {
   client: Client | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onClientUpdated: () => void;
+  leads?: Lead[];  // Optional leads for smart selection
 }
 
-export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated }: ClientEditDialogProps) {
+export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, leads = [] }: ClientEditDialogProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -38,6 +47,43 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated }
     status: "active" as "active" | "inactive" | "prospect",
   });
   const [saving, setSaving] = useState(false);
+  const [selectedLeadId, setSelectedLeadId] = useState<string>("");
+
+  // Filter out leads that are already converted
+  const availableLeads = leads.filter(lead => 
+    !lead.id.includes("converted") // Simple filter, adjust based on your data structure
+  );
+
+  const handleLeadSelect = (leadId: string) => {
+    setSelectedLeadId(leadId);
+    const selectedLead = availableLeads.find(l => l.id === leadId);
+    if (selectedLead) {
+      setFormData(prev => ({
+        ...prev,
+        name: selectedLead.name || prev.name,
+        email: selectedLead.email || prev.email,
+        phone: selectedLead.phone || prev.phone,
+        company: selectedLead.company || prev.company,
+      }));
+      toast.success("Informations du lead chargées !");
+    }
+  };
+
+  const resetLeadSelection = () => {
+    setSelectedLeadId("");
+    // Only reset if it's a new client (not editing)
+    if (!client) {
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        address: "",
+        revenue: "",
+        status: "active",
+      });
+    }
+  };
 
   useEffect(() => {
     if (open) {
@@ -51,6 +97,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated }
           revenue: client.revenue?.toString() || "",
           status: client.status || "active",
         });
+        setSelectedLeadId(""); // Reset lead selection when editing
       } else {
         // Reset form for new client
         setFormData({
@@ -62,6 +109,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated }
           revenue: "",
           status: "active",
         });
+        setSelectedLeadId("");
       }
     }
   }, [client, open]);
@@ -104,6 +152,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated }
           address: formData.address.trim(),
           revenue: formData.revenue ? parseFloat(formData.revenue) : 0,
           status: formData.status,
+          ...(selectedLeadId && { lead_id: selectedLeadId }), // Include lead_id if converting from lead
         }),
       });
 
@@ -184,6 +233,60 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated }
         {/* Content */}
         <div className="overflow-y-auto max-h-[calc(90vh-180px)] px-6 py-6">
           <div className="space-y-6">
+            {/* Smart Lead Selector - Only show for new clients */}
+            {!client && availableLeads.length > 0 && (
+              <div className="p-4 rounded-xl border border-[#00FFC2]/30 bg-gradient-to-br from-[#00FFC2]/5 to-transparent">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 rounded-lg bg-[#00FFC2]/10 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-[#00FFC2]" />
+                  </div>
+                  <div>
+                    <Label className="text-white font-medium text-base">Conversion intelligente depuis un lead</Label>
+                    <p className="text-xs text-gray-400">Sélectionnez un lead pour pré-remplir les informations</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div>
+                    <Label className="text-gray-300 flex items-center gap-2 mb-2">
+                      <User className="w-4 h-4" />
+                      Sélectionner un lead (optionnel)
+                    </Label>
+                    <Select value={selectedLeadId} onValueChange={handleLeadSelect}>
+                      <SelectTrigger className="bg-white/5 border-white/10 h-11 text-base text-white">
+                        <SelectValue placeholder="Choisir un lead..." />
+                      </SelectTrigger>
+                      <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+                        {availableLeads.map((lead) => (
+                          <SelectItem key={lead.id} value={lead.id} className="text-white hover:bg-white/10">
+                            <div className="flex items-center gap-2">
+                              <User className="w-4 h-4" />
+                              <div>
+                                <div className="font-medium">{lead.name}</div>
+                                <div className="text-xs text-gray-400">{lead.email}</div>
+                              </div>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {selectedLeadId && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={resetLeadSelection}
+                      className="w-full border-white/20 hover:bg-white/5 text-gray-300"
+                    >
+                      Réinitialiser et créer client vierge
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Informations principales */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-4">
