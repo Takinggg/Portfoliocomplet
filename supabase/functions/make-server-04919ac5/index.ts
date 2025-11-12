@@ -2434,11 +2434,11 @@ app.post("/make-server-04919ac5/projects", requireAuth, async (c) => {
     const { 
       title_fr, title_en, 
       description_fr, description_en,
-      slug, technologies, category, 
+      slug_fr, slug_en, technologies, category, 
       status, featured, images, coverImage,
       demoUrl, githubUrl,
       clientName_fr, clientName_en,
-      duration, year, tags,
+      duration, year, tags_fr, tags_en,
       challenges_fr, challenges_en,
       features_fr, features_en 
     } = body;
@@ -2451,7 +2451,7 @@ app.post("/make-server-04919ac5/projects", requireAuth, async (c) => {
       }, 400);
     }
 
-    const projectId = `project:${Date.now()}@${slug || Date.now()}`;
+    const projectId = `project:${Date.now()}@${slug_fr || Date.now()}`;
     
     const projectData = {
       id: projectId,
@@ -2459,7 +2459,8 @@ app.post("/make-server-04919ac5/projects", requireAuth, async (c) => {
       title_en: title_en || title_fr,
       description_fr: description_fr || "",
       description_en: description_en || description_fr,
-      slug: slug || `project-${Date.now()}`,
+      slug_fr: slug_fr || `project-${Date.now()}`,
+      slug_en: slug_en || slug_fr || `project-${Date.now()}`,
       technologies: technologies || [],
       category: category || "web-development",
       status: status || "draft",
@@ -2472,7 +2473,8 @@ app.post("/make-server-04919ac5/projects", requireAuth, async (c) => {
       clientName_en: clientName_en || clientName_fr,
       duration: duration || "",
       year: year || new Date().getFullYear(),
-      tags: tags || [],
+      tags_fr: tags_fr || [],
+      tags_en: tags_en || tags_fr || [],
       challenges_fr: challenges_fr || [],
       challenges_en: challenges_en || challenges_fr,
       features_fr: features_fr || [],
@@ -2480,9 +2482,11 @@ app.post("/make-server-04919ac5/projects", requireAuth, async (c) => {
       views: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      // Legacy fields
+      // Legacy fields for compatibility
       title: title_fr,
-      description: description_fr
+      description: description_fr,
+      slug: slug_fr || `project-${Date.now()}`,
+      tags: tags_fr || []
     };
     
     await kv.set(projectId, projectData);
