@@ -83,6 +83,12 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
         
         const data = await response.json();
         setProjects(data.projects || []);
+        console.log(`✅ Loaded ${data.projects?.length || 0} projects for language: ${language}`);
+        if (data.projects?.length > 0) {
+          console.log('📋 First project sample:', data.projects[0]);
+          console.log('📝 Title field:', data.projects[0].title);
+          console.log('📝 Name field:', data.projects[0].name);
+        }
       } catch (error) {
         console.error('Error fetching projects:', error);
         // Will fall back to demo projects

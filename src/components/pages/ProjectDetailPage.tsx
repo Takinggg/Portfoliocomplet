@@ -397,9 +397,9 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 mb-6">
                 <Target className="h-4 w-4 text-red-400" />
-                <span className="text-sm text-red-400">Défis</span>
+                <span className="text-sm text-red-400">{t('projects.detail.challenges')}</span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold">Challenges Rencontrés</h2>
+              <h2 className="text-3xl md:text-4xl font-bold">{t('projects.detail.challengesTitle')}</h2>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -468,9 +468,9 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-mint/10 border border-mint/20 mb-6">
                 <CheckCircle2 className="h-4 w-4 text-mint" />
-                <span className="text-sm text-mint">Fonctionnalités</span>
+                <span className="text-sm text-mint">{t('projects.detail.features')}</span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold">Fonctionnalités Clés</h2>
+              <h2 className="text-3xl md:text-4xl font-bold">{t('projects.detail.featuresTitle')}</h2>
             </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

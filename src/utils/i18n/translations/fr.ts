@@ -381,7 +381,11 @@ export default {
       "bookCall": "Réserver un appel",
       "year": "Année",
       "duration": "Durée",
-      "client": "Client"
+      "client": "Client",
+      "challenges": "Défis",
+      "challengesTitle": "Challenges Rencontrés",
+      "features": "Fonctionnalités",
+      "featuresTitle": "Fonctionnalités Clés"
     },
     "card": {
       "completedProject": "Projet réalisé",
