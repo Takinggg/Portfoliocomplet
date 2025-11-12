@@ -1776,6 +1776,16 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
                                   </span>
                                 )}
                               </div>
+                              {/* Interests for leads */}
+                              {item.type === 'lead' && item.interests && item.interests.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mt-2">
+                                  {item.interests.map((interest: string, idx: number) => (
+                                    <span key={idx} className="text-xs px-2 py-0.5 rounded-md bg-[#00FFC2]/10 text-[#00FFC2] border border-[#00FFC2]/20">
+                                      {interest}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           </div>
 
