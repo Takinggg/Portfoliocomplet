@@ -2166,14 +2166,15 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
 // Contact Section Component
 function ContactSection({ onNavigate }: HomePageProps) {
   const { language } = useLanguage();
+  const { t } = useTranslation();
   const [selectedNeed, setSelectedNeed] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    need: "",
     message: "",
   });
 
@@ -2181,8 +2182,8 @@ function ContactSection({ onNavigate }: HomePageProps) {
     e.preventDefault();
     
     // Validation
-    if (!formData.name || !formData.email || !formData.need || !formData.message) {
-      toast.error(language === 'en' ? 'Please fill in all fields' : 'Veuillez remplir tous les champs');
+    if (!formData.name || !formData.email || !formData.message || selectedReasons.length === 0) {
+      toast.error(language === 'en' ? 'Please fill in all fields and select at least one interest' : 'Veuillez remplir tous les champs et sélectionner au moins un intérêt');
       return;
     }
 
@@ -2192,17 +2193,6 @@ function ContactSection({ onNavigate }: HomePageProps) {
       // Get Supabase credentials from environment
       const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
       const publicAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-      // Map need value to readable label
-      const needLabels: Record<string, { en: string; fr: string }> = {
-        design: { en: 'Design & Branding', fr: 'Design & Identité visuelle' },
-        automation: { en: 'Automation', fr: 'Automatisation' },
-        website: { en: 'Complete website', fr: 'Site web complet' },
-        crm: { en: 'CRM System', fr: 'Système CRM' },
-        other: { en: 'Other', fr: 'Autre' }
-      };
-      
-      const needLabel = needLabels[formData.need]?.[language] || formData.need;
 
       // Send lead to backend
       const response = await fetch(
@@ -2220,7 +2210,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
             message: formData.message,
             source: "homepage_contact",
             status: "new",
-            interests: [needLabel],
+            interests: selectedReasons,
             createdAt: new Date().toISOString()
           }),
         }
@@ -2262,7 +2252,8 @@ function ContactSection({ onNavigate }: HomePageProps) {
         setTimeout(() => {
           setMessageDialogOpen(false);
           setFormSubmitted(false);
-          setFormData({ name: "", email: "", need: "", message: "" });
+          setFormData({ name: "", email: "", message: "" });
+          setSelectedReasons([]);
           setSelectedNeed("");
         }, 3000);
       } else {
@@ -2274,7 +2265,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, language]);
+  }, [formData, selectedReasons, language]);
 
   const handleInputChange = useCallback((field: keyof typeof formData) => 
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -2635,26 +2626,54 @@ function ContactSection({ onNavigate }: HomePageProps) {
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="need">{language === 'en' ? 'Type of need' : 'Type de besoin'}</Label>
-                      <Select
-                        value={formData.need}
-                        onValueChange={(value) => {
-                          setFormData({ ...formData, need: value });
-                          setSelectedNeed(value);
-                        }}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder={language === 'en' ? 'Select your need' : 'Sélectionnez votre besoin'} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="design">{language === 'en' ? 'Design & Branding' : 'Design & Identité visuelle'}</SelectItem>
-                          <SelectItem value="automation">{language === 'en' ? 'Automation' : 'Automatisation'}</SelectItem>
-                          <SelectItem value="website">{language === 'en' ? 'Complete website' : 'Site web complet'}</SelectItem>
-                          <SelectItem value="crm">{language === 'en' ? 'CRM System' : 'Système CRM'}</SelectItem>
-                          <SelectItem value="other">{language === 'en' ? 'Other' : 'Autre'}</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    {/* Interests - Multiple checkboxes */}
+                    <div className="space-y-3">
+                      <Label className="text-white">{t("contact.form.interestedIn")}</Label>
+                      <div className="grid md:grid-cols-2 gap-3">
+                        {[
+                          "contact.form.reasons.0",
+                          "contact.form.reasons.1",
+                          "contact.form.reasons.2",
+                          "contact.form.reasons.3",
+                          "contact.form.reasons.4",
+                          "contact.form.reasons.5"
+                        ].map((reasonKey, index) => {
+                          const reason = t(reasonKey);
+                          const isSelected = selectedReasons.includes(reason);
+                          return (
+                            <button
+                              key={index}
+                              type="button"
+                              onClick={() => {
+                                if (isSelected) {
+                                  setSelectedReasons(selectedReasons.filter(r => r !== reason));
+                                } else {
+                                  setSelectedReasons([...selectedReasons, reason]);
+                                }
+                              }}
+                              className={`
+                                flex items-center gap-3 p-3 rounded-lg transition-all cursor-pointer text-left
+                                ${isSelected 
+                                  ? 'bg-mint/10 border-2 border-mint' 
+                                  : 'bg-neutral-900/50 border border-neutral-800 hover:border-mint/20'
+                                }
+                              `}
+                            >
+                              <div className={`
+                                w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0
+                                ${isSelected ? 'border-mint' : 'border-neutral-600'}
+                              `}>
+                                {isSelected && (
+                                  <div className="w-2.5 h-2.5 rounded-full bg-mint" />
+                                )}
+                              </div>
+                              <span className={`text-sm ${isSelected ? 'text-white font-medium' : 'text-neutral-400'}`}>
+                                {reason}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
 
                     <div className="space-y-2">
@@ -2664,7 +2683,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                         required
                         value={formData.message}
                         onChange={handleInputChange('message')}
-                        placeholder={selectedNeed ? needPlaceholders[selectedNeed] : (language === 'en' ? "Describe your project in detail..." : "Décrivez votre projet en détail...")}
+                        placeholder={language === 'en' ? "Describe your project in detail..." : "Décrivez votre projet en détail..."}
                         className="min-h-[150px]"
                       />
                     </div>
