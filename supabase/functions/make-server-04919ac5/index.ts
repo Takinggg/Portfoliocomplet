@@ -636,7 +636,7 @@ app.get("/make-server-04919ac5/leads/:id", requireAuth, async (c)=>{
 app.post("/make-server-04919ac5/leads", async (c)=>{
   try {
     const body = await c.req.json();
-    const { name, email, phone, message, budget, timeline, projectType, source } = body;
+    const { name, email, phone, message, budget, timeline, projectType, source, interests } = body;
     if (!name || !email) {
       return c.json({
         success: false,
@@ -654,6 +654,7 @@ app.post("/make-server-04919ac5/leads", async (c)=>{
       timeline: timeline || "",
       projectType: projectType || "",
       source: source || "website",
+      interests: interests || [],
       status: "new",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
