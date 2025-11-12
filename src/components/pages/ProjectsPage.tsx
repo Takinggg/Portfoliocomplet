@@ -528,6 +528,9 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
           <div className="space-y-24">
             {featuredProjects.map((project, index) => {
               const FeaturedIcon = project.icon || getCategoryIcon(project.category || 'other');
+              const projectTitle = project.title || project.name;
+              const projectDescription = project.description || project.subtitle || '';
+              
               return (
                 <motion.div
                   key={project.id}
@@ -539,16 +542,31 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
                 >
                   {/* Visual */}
                   <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
-                    <div className="relative rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-900 p-12 group cursor-pointer hover:border-mint/20 transition-all">
-                      <div className="absolute inset-0 bg-gradient-to-br from-mint/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      <div className="relative z-10 flex items-center justify-center">
-                        <motion.div
-                          whileHover={{ scale: 1.1, rotate: 10 }}
-                          className="w-40 h-40 rounded-3xl bg-gradient-to-br from-mint/20 to-mint/5 border border-mint/30 flex items-center justify-center"
-                        >
-                          <FeaturedIcon className="h-20 w-20 text-mint" />
-                        </motion.div>
-                      </div>
+                    <div className="relative rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-900 group cursor-pointer hover:border-mint/20 transition-all">
+                      {project.imageUrl ? (
+                        <div className="relative aspect-[4/3]">
+                          <ImageWithFallback
+                            src={project.imageUrl}
+                            alt={projectTitle}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-br from-mint/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                      ) : (
+                        <div className="p-12">
+                          <div className="absolute inset-0 bg-gradient-to-br from-mint/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                          <div className="relative z-10 flex items-center justify-center">
+                            <motion.div
+                              whileHover={{ scale: 1.1, rotate: 10 }}
+                              className="w-40 h-40 rounded-3xl bg-gradient-to-br from-mint/20 to-mint/5 border border-mint/30 flex items-center justify-center"
+                            >
+                              <FeaturedIcon className="h-20 w-20 text-mint" />
+                            </motion.div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -558,8 +576,8 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
                       {t(`projects.card.categories.${project.category}`) || t('projects.card.categories.other')}
                     </Badge>
                     
-                    <h3 className="text-4xl font-bold mb-4">{project.title}</h3>
-                    <p className="text-lg text-neutral-400 mb-8 leading-relaxed">{project.description}</p>
+                    <h3 className="text-4xl font-bold mb-4">{projectTitle}</h3>
+                    <p className="text-lg text-neutral-400 mb-8 leading-relaxed">{projectDescription}</p>
 
                     {/* Challenge & Impact */}
                     <div className="space-y-6 mb-10">
