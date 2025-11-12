@@ -54,13 +54,17 @@ async function checkServerAvailability(): Promise<boolean> {
  * Normalise un article en fonction de la langue
  */
 function normalizePostForLanguage(post: BlogPost, lang: string): BlogPost {
-  const langSuffix = lang === "en" ? "_en" : "_fr";
+  const isEn = lang === "en";
   
   return {
     ...post,
-    title: post[`title${langSuffix}`] || post.title,
-    excerpt: post[`excerpt${langSuffix}`] || post.excerpt,
-    content: post[`content${langSuffix}`] || post.content,
+    title: isEn ? (post.title_en || post.title_fr || post.title) : (post.title_fr || post.title),
+    slug: isEn ? (post.slug_en || post.slug_fr || post.slug) : (post.slug_fr || post.slug),
+    excerpt: isEn ? (post.excerpt_en || post.excerpt_fr || post.excerpt) : (post.excerpt_fr || post.excerpt),
+    content: isEn ? (post.content_en || post.content_fr || post.content) : (post.content_fr || post.content),
+    category: isEn ? (post.category_en || post.category_fr || post.category) : (post.category_fr || post.category),
+    tags: isEn ? (post.tags_en || post.tags_fr || post.tags) : (post.tags_fr || post.tags),
+    readTime: isEn ? (post.readTime_en || post.readTime_fr || post.readTime) : (post.readTime_fr || post.readTime),
   };
 }
 
