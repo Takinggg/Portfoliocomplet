@@ -2190,6 +2190,14 @@ function ContactSection({ onNavigate }: HomePageProps) {
     setIsSubmitting(true);
 
     try {
+      // Debug: Log what we're sending
+      console.log('📤 Sending lead data:', {
+        name: formData.name,
+        email: formData.email,
+        interests: selectedReasons,
+        source: "homepage_contact"
+      });
+
       // Send lead to backend
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/leads`,
