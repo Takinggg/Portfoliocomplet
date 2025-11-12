@@ -602,9 +602,6 @@ app.get("/make-server-04919ac5/leads", requireAuth, async (c)=>{
     const leads = await kv.getByPrefix("lead:");
     const sorted = leads.sort((a, b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     
-    // Debug: Check if interests are present
-    console.log("📤 Returning leads, first lead interests:", sorted[0]?.interests);
-    
     return c.json({
       success: true,
       leads: sorted
@@ -642,9 +639,6 @@ app.post("/make-server-04919ac5/leads", async (c)=>{
     const body = await c.req.json();
     const { name, email, phone, message, budget, timeline, projectType, source, interests } = body;
     
-    // Debug log
-    console.log("📥 Received lead data:", { name, email, source, interests });
-    
     if (!name || !email) {
       return c.json({
         success: false,
@@ -667,8 +661,6 @@ app.post("/make-server-04919ac5/leads", async (c)=>{
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    
-    console.log("💾 Saving lead with interests:", leadData.interests);
     
     await kv.set(leadId, leadData);
     return c.json({
