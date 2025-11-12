@@ -2423,7 +2423,9 @@ app.get("/make-server-04919ac5/projects", async (c)=>{
           : (project.challenges_fr || project.challenges || []),
         features: isEn
           ? (project.features_en || project.features_fr || project.features || [])
-          : (project.features_fr || project.features || [])
+          : (project.features_fr || project.features || []),
+        // Normalize image URL (coverImage or imageUrl)
+        imageUrl: project.imageUrl || project.coverImage || project.image || ""
       };
     });
     
@@ -2496,7 +2498,9 @@ app.get("/make-server-04919ac5/projects/:id", async (c)=>{
         : (project.challenges_fr || project.challenges || []),
       features: isEn
         ? (project.features_en || project.features_fr || project.features || [])
-        : (project.features_fr || project.features || [])
+        : (project.features_fr || project.features || []),
+      // Normalize image URL (coverImage or imageUrl)
+      imageUrl: project.imageUrl || project.coverImage || project.image || ""
     };
     
     console.log(`✅ Project found and normalized for ${lang}: ${normalizedProject.id}`);
