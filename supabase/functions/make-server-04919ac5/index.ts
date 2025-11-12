@@ -2393,8 +2393,42 @@ app.get("/make-server-04919ac5/projects", async (c)=>{
   try {
     const lang = c.req.query("lang") || "fr";
     const projects = await kv.getByPrefix("project:");
-    const sorted = projects.sort((a, b)=>new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
-    console.log(`✅ Found ${sorted.length} bilingual projects (${lang})`);
+    
+    // Normalize projects for the requested language
+    const normalizedProjects = projects.map(project => {
+      const isEn = lang === 'en';
+      return {
+        ...project,
+        // Normalize main fields
+        title: isEn 
+          ? (project.title_en || project.title_fr || project.title || project.name)
+          : (project.title_fr || project.title || project.name),
+        name: isEn 
+          ? (project.title_en || project.title_fr || project.title || project.name)
+          : (project.title_fr || project.title || project.name),
+        description: isEn
+          ? (project.description_en || project.description_fr || project.description)
+          : (project.description_fr || project.description),
+        clientName: isEn
+          ? (project.clientName_en || project.clientName_fr || project.clientName || project.client)
+          : (project.clientName_fr || project.clientName || project.client),
+        slug: isEn
+          ? (project.slug_en || project.slug_fr || project.slug)
+          : (project.slug_fr || project.slug),
+        tags: isEn
+          ? (project.tags_en || project.tags_fr || project.tags || [])
+          : (project.tags_fr || project.tags || []),
+        challenges: isEn
+          ? (project.challenges_en || project.challenges_fr || project.challenges || [])
+          : (project.challenges_fr || project.challenges || []),
+        features: isEn
+          ? (project.features_en || project.features_fr || project.features || [])
+          : (project.features_fr || project.features || [])
+      };
+    });
+    
+    const sorted = normalizedProjects.sort((a, b)=>new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+    console.log(`✅ Found ${sorted.length} bilingual projects (normalized for ${lang})`);
     return c.json({
       success: true,
       projects: sorted
@@ -2435,10 +2469,40 @@ app.get("/make-server-04919ac5/projects/:id", async (c)=>{
       }, 404);
     }
     
-    console.log(`✅ Project found: ${project.id}`);
+    // Normalize project for the requested language
+    const isEn = lang === 'en';
+    const normalizedProject = {
+      ...project,
+      title: isEn 
+        ? (project.title_en || project.title_fr || project.title || project.name)
+        : (project.title_fr || project.title || project.name),
+      name: isEn 
+        ? (project.title_en || project.title_fr || project.title || project.name)
+        : (project.title_fr || project.title || project.name),
+      description: isEn
+        ? (project.description_en || project.description_fr || project.description)
+        : (project.description_fr || project.description),
+      clientName: isEn
+        ? (project.clientName_en || project.clientName_fr || project.clientName || project.client)
+        : (project.clientName_fr || project.clientName || project.client),
+      slug: isEn
+        ? (project.slug_en || project.slug_fr || project.slug)
+        : (project.slug_fr || project.slug),
+      tags: isEn
+        ? (project.tags_en || project.tags_fr || project.tags || [])
+        : (project.tags_fr || project.tags || []),
+      challenges: isEn
+        ? (project.challenges_en || project.challenges_fr || project.challenges || [])
+        : (project.challenges_fr || project.challenges || []),
+      features: isEn
+        ? (project.features_en || project.features_fr || project.features || [])
+        : (project.features_fr || project.features || [])
+    };
+    
+    console.log(`✅ Project found and normalized for ${lang}: ${normalizedProject.id}`);
     return c.json({
       success: true,
-      project
+      project: normalizedProject
     });
   } catch (error) {
     console.error(`❌ Error fetching project:`, error);
