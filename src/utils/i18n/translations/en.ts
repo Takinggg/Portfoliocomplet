@@ -396,6 +396,24 @@ export default {
         "dashboard": "Dashboard",
         "other": "Other"
       }
+    },
+    "featured": {
+      "badge": "Featured",
+      "title": "Detailed Case Studies",
+      "subtitle": "Discover how these projects transformed my clients' processes",
+      "challenge": "CHALLENGE",
+      "results": "RESULTS",
+      "automated": "Automated",
+      "saved": "Saved"
+    },
+    "resultsSection": {
+      "title": "Results in Numbers",
+      "subtitle": "The measurable impact of my automations",
+      "stats": {
+        "timeSaved": "Time saved on average",
+        "hoursPerWeek": "Gained per week",
+        "automationRate": "Automation rate"
+      }
     }
   },
   "caseStudies": {

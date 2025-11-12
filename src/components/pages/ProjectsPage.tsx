@@ -476,13 +476,13 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/20 bg-mint/5 backdrop-blur-sm mb-6">
               <Star className="h-4 w-4 text-mint" />
-              <span className="text-sm text-mint font-medium">Featured</span>
+              <span className="text-sm text-mint font-medium">{t('projects.featured.badge')}</span>
             </div>
             <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              Études de cas détaillées
+              {t('projects.featured.title')}
             </h2>
             <p className="text-xl text-neutral-400 leading-relaxed">
-              Découvrez comment ces projets ont transformé les processus de mes clients
+              {t('projects.featured.subtitle')}
             </p>
           </motion.div>
 
@@ -516,7 +516,7 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
                   {/* Content */}
                   <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
                     <Badge className="mb-6 bg-mint/10 border-mint/20 text-mint">
-                      {project.category === "automation" ? "Automatisation" : project.category === "ai" ? "Intelligence Artificielle" : "Dashboard"}
+                      {t(`projects.card.categories.${project.category}`) || t('projects.card.categories.other')}
                     </Badge>
                     
                     <h3 className="text-4xl font-bold mb-4">{project.title}</h3>
@@ -525,13 +525,13 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
                     {/* Challenge & Impact */}
                     <div className="space-y-6 mb-10">
                       <div>
-                        <div className="text-xs text-mint mb-2 font-medium tracking-wider">CHALLENGE</div>
+                        <div className="text-xs text-mint mb-2 font-medium tracking-wider">{t('projects.featured.challenge')}</div>
                         <p className="text-neutral-400 leading-relaxed">
                           Automatiser les tâches répétitives tout en maintenant la qualité et la fiabilité du système.
                         </p>
                       </div>
                       <div>
-                        <div className="text-xs text-mint mb-3 font-medium tracking-wider">RÉSULTATS</div>
+                        <div className="text-xs text-mint mb-3 font-medium tracking-wider">{t('projects.featured.results')}</div>
                         <div className="grid grid-cols-3 gap-4">
                           <div className="rounded-xl border border-neutral-900 bg-neutral-950/50 p-4 text-center">
                             <div className="text-2xl font-bold text-mint mb-1">{project.impact}</div>
@@ -539,11 +539,11 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
                           </div>
                           <div className="rounded-xl border border-neutral-900 bg-neutral-950/50 p-4 text-center">
                             <div className="text-2xl font-bold text-white mb-1">100%</div>
-                            <div className="text-xs text-neutral-500">Automatisé</div>
+                            <div className="text-xs text-neutral-500">{t('projects.featured.automated')}</div>
                           </div>
                           <div className="rounded-xl border border-neutral-900 bg-neutral-950/50 p-4 text-center">
                             <div className="text-2xl font-bold text-white mb-1">5h</div>
-                            <div className="text-xs text-neutral-500">Économisées</div>
+                            <div className="text-xs text-neutral-500">{t('projects.featured.saved')}</div>
                           </div>
                         </div>
                       </div>
@@ -578,18 +578,18 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Résultats en chiffres
+              {t('projects.resultsSection.title')}
             </h2>
             <p className="text-xl text-neutral-400">
-              L'impact mesurable de mes automatisations
+              {t('projects.resultsSection.subtitle')}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { icon: TrendingDown, value: "83%", label: "Temps économisé en moyenne", color: "mint" },
-              { icon: Clock, value: "15h", label: "Gagnées par semaine", color: "white" },
-              { icon: Zap, value: "100%", label: "Taux d'automatisation", color: "mint" },
+              { icon: TrendingDown, value: "83%", label: t('projects.resultsSection.stats.timeSaved'), color: "mint" },
+              { icon: Clock, value: "15h", label: t('projects.resultsSection.stats.hoursPerWeek'), color: "white" },
+              { icon: Zap, value: "100%", label: t('projects.resultsSection.stats.automationRate'), color: "mint" },
             ].map((stat, index) => (
               <motion.div
                 key={index}
