@@ -358,7 +358,10 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
                     className="group cursor-pointer"
-                    onClick={() => onProjectClick?.(project.id)}
+                    onClick={() => {
+                      const slug = language === 'en' ? (project.slug_en || project.slug_fr || project.slug) : (project.slug_fr || project.slug);
+                      onProjectClick?.(slug || project.id);
+                    }}
                   >
                     <div className="relative h-full rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-900 hover:border-mint/20 transition-all duration-300">
                       {/* Image or Icon Visual */}
@@ -548,7 +551,10 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
 
                     <Button 
                       variant="outline"
-                      onClick={() => onProjectClick?.(project.id)}
+                      onClick={() => {
+                        const slug = language === 'en' ? (project.slug_en || project.slug_fr || project.slug) : (project.slug_fr || project.slug);
+                        onProjectClick?.(slug || project.id);
+                      }}
                       className="border-neutral-800 hover:border-mint/20 hover:bg-neutral-950 rounded-lg"
                     >
                       {t('projects.card.viewProject')}

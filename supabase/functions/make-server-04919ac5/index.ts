@@ -2409,20 +2409,33 @@ app.get("/make-server-04919ac5/projects", async (c)=>{
 });
 app.get("/make-server-04919ac5/projects/:id", async (c)=>{
   try {
-    const projectId = decodeURIComponent(c.req.param("id"));
-    console.log(`🔍 Fetching project: ${projectId}`);
+    const identifier = decodeURIComponent(c.req.param("id"));
+    const lang = c.req.query("lang") || "fr";
+    console.log(`🔍 Fetching project: ${identifier} (lang: ${lang})`);
     
-    const project = await kv.get(projectId);
+    // Try to get by ID first
+    let project = await kv.get(identifier);
+    
+    // If not found by ID, search by slug
+    if (!project) {
+      console.log(`🔎 Not found by ID, searching by slug...`);
+      const allProjects = await kv.getByPrefix("project:");
+      project = allProjects.find((p: any) => 
+        p.slug === identifier || 
+        p.slug_fr === identifier || 
+        p.slug_en === identifier
+      );
+    }
     
     if (!project) {
-      console.log(`❌ Project not found: ${projectId}`);
+      console.log(`❌ Project not found: ${identifier}`);
       return c.json({
         success: false,
         error: "Project not found"
       }, 404);
     }
     
-    console.log(`✅ Project found: ${projectId}`);
+    console.log(`✅ Project found: ${project.id}`);
     return c.json({
       success: true,
       project
