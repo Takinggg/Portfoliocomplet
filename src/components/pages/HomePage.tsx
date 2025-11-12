@@ -2190,10 +2190,6 @@ function ContactSection({ onNavigate }: HomePageProps) {
     setIsSubmitting(true);
 
     try {
-      // Get Supabase credentials from environment
-      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-      const publicAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
       // Send lead to backend
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/leads`,
