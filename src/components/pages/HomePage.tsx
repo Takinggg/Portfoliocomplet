@@ -2193,6 +2193,17 @@ function ContactSection({ onNavigate }: HomePageProps) {
       const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
       const publicAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+      // Map need value to readable label
+      const needLabels: Record<string, { en: string; fr: string }> = {
+        design: { en: 'Design & Branding', fr: 'Design & Identité visuelle' },
+        automation: { en: 'Automation', fr: 'Automatisation' },
+        website: { en: 'Complete website', fr: 'Site web complet' },
+        crm: { en: 'CRM System', fr: 'Système CRM' },
+        other: { en: 'Other', fr: 'Autre' }
+      };
+      
+      const needLabel = needLabels[formData.need]?.[language] || formData.need;
+
       // Send lead to backend
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/leads`,
@@ -2206,10 +2217,10 @@ function ContactSection({ onNavigate }: HomePageProps) {
             name: formData.name,
             email: formData.email,
             phone: "",
-            message: `${formData.need}: ${formData.message}`,
+            message: formData.message,
             source: "homepage_contact",
             status: "new",
-            interests: [formData.need],
+            interests: [needLabel],
             createdAt: new Date().toISOString()
           }),
         }
