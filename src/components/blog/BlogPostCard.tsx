@@ -192,7 +192,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
     );
   }
 
-  // Default variant
+  // Default variant - Improved layout
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -202,9 +202,9 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
       onClick={onClick}
       className="cursor-pointer group"
     >
-      <Card className="bg-white/5 border-white/10 hover:bg-white/[0.07] hover:border-[#00FFC2]/30 transition-all overflow-hidden h-full flex flex-col">
+      <Card className="bg-[#0C0C0C] border-white/10 hover:bg-white/[0.03] hover:border-[#00FFC2]/40 transition-all overflow-hidden h-full flex flex-col">
         {post.coverImage && (
-          <div className="relative h-48 overflow-hidden">
+          <div className="relative h-56 overflow-hidden">
             <ImageWithFallback
               src={post.coverImage}
               alt={post.title}
@@ -212,58 +212,98 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            
+            {/* Category Badge */}
             <Badge
-              className="absolute top-3 right-3"
-              style={{ backgroundColor: `${config.color}20`, color: config.color, border: `1px solid ${config.color}40` }}
+              className="absolute top-4 left-4"
+              style={{ 
+                backgroundColor: config.color, 
+                color: '#0C0C0C',
+                fontWeight: 600
+              }}
             >
               {config.label}
             </Badge>
+
+            {/* Views counter */}
+            {post.views && post.views > 0 && (
+              <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1.5">
+                <Eye className="h-3 w-3 text-white/80" />
+                <span className="text-xs text-white/90 font-medium">{post.views}</span>
+              </div>
+            )}
           </div>
         )}
-        <div className="p-5 flex flex-col flex-1">
+        
+        <div className="p-6 flex flex-col flex-1">
+          {/* Category if no image */}
           {!post.coverImage && (
             <Badge
-              className="mb-3 w-fit"
-              style={{ backgroundColor: `${config.color}20`, color: config.color, border: `1px solid ${config.color}40` }}
+              className="mb-4 w-fit"
+              style={{ 
+                backgroundColor: `${config.color}20`, 
+                color: config.color, 
+                border: `1px solid ${config.color}40`,
+                fontWeight: 600
+              }}
             >
               {config.label}
             </Badge>
           )}
-          <h3 className="text-xl text-white mb-2 line-clamp-2 group-hover:text-[#00FFC2] transition-colors">
+          
+          {/* Title */}
+          <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-[#00FFC2] transition-colors leading-tight">
             {post.title}
           </h3>
-          <p className="text-white/60 text-sm mb-4 line-clamp-3 flex-1">
+          
+          {/* Excerpt */}
+          <p className="text-white/70 text-sm mb-4 line-clamp-3 flex-1 leading-relaxed">
             {post.excerpt}
           </p>
-          <div className="flex flex-wrap gap-2 mb-4">
-            {post.tags.slice(0, 3).map((tag) => (
-              <Badge key={tag} className="bg-white/5 text-white/50 border-white/10 text-xs">
-                <Tag className="h-3 w-3 mr-1" />
-                {tag}
-              </Badge>
-            ))}
-          </div>
-          <div className="flex items-center justify-between pt-4 border-t border-white/10">
-            <div className="flex items-center gap-3 text-xs text-white/40">
-              <span className="flex items-center gap-1">
-                <Calendar className="h-3 w-3" />
-                {new Date(post.publishedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock className="h-3 w-3" />
-                {post.readTime} min
-              </span>
-              {post.views && post.views > 0 && (
-                <span className="flex items-center gap-1">
-                  <Eye className="h-3 w-3" />
-                  {post.views > 999 ? `${(post.views / 1000).toFixed(1)}k` : post.views}
-                </span>
+          
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {post.tags.slice(0, 3).map((tag) => (
+                <Badge 
+                  key={tag} 
+                  className="bg-white/5 text-white/60 border-white/10 text-xs hover:bg-white/10 transition-colors"
+                >
+                  <Tag className="h-3 w-3 mr-1" />
+                  {tag}
+                </Badge>
+              ))}
+              {post.tags.length > 3 && (
+                <Badge className="bg-white/5 text-white/40 border-white/10 text-xs">
+                  +{post.tags.length - 3}
+                </Badge>
               )}
             </div>
+          )}
+          
+          {/* Footer metadata */}
+          <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
+            <div className="flex items-center gap-4 text-xs text-white/50">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5" />
+                {new Date(post.publishedAt).toLocaleDateString('fr-FR', { 
+                  day: 'numeric', 
+                  month: 'short',
+                  year: 'numeric'
+                })}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5" />
+                {post.readTime} min
+              </span>
+            </div>
+            
+            {/* Read more arrow */}
             <motion.div
-              className="flex items-center gap-1 text-[#00FFC2] text-sm opacity-0 group-hover:opacity-100 transition-opacity"
-              whileHover={{ x: 3 }}
+              className="flex items-center gap-2 text-[#00FFC2] text-sm font-medium"
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
             >
               <span>Lire</span>
               <ArrowRight className="h-4 w-4" />
@@ -274,3 +314,4 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
     </motion.div>
   );
 }
+
