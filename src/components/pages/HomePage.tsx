@@ -236,9 +236,9 @@ function AutomationWorkflow() {
 
   // Code typing animation
   const codeSnippets = {
-    design: `// Figma to Code\nconst Design = () => (\n  <motion.div\n    initial={{ opacity: 0 }}\n    animate={{ opacity: 1 }}\n  >\n    ✨ Pixel Perfect\n  </motion.div>\n);`,
-    code: `// Automation Magic\nconst automate = async () => {\n  await buildSite();\n  await optimize();\n  await deploy();\n  return '🚀 Live!';\n};`,
-    preview: `// Live Preview\nfunction Website() {\n  return (\n    <Hero>\n      <h1>Ready! 💚</h1>\n    </Hero>\n  );\n}`
+    design: `// Figma to Code\nconst Design = () => (\n  <motion.div\n    initial={{ opacity: 0 }}\n    animate={{ opacity: 1 }}\n  >\n    Pixel Perfect\n  </motion.div>\n);`,
+    code: `// Automation Magic\nconst automate = async () => {\n  await buildSite();\n  await optimize();\n  await deploy();\n  return 'Live!';\n};`,
+    preview: `// Live Preview\nfunction Website() {\n  return (\n    <Hero>\n      <h1>Ready!</h1>\n    </Hero>\n  );\n}`
   };
 
   const [displayedCode, setDisplayedCode] = useState('');
@@ -2202,17 +2202,17 @@ function ContactSection({ onNavigate }: HomePageProps) {
   []);
 
   const needPlaceholders: Record<string, string> = language === 'en' ? {
-    design: "Describe your vision, brand identity, and design needs 🎨",
-    automation: "Tell me more about the processes you want to automate ⚡",
-    website: "Tell me about your web project: goals, features, target audience 🌐",
-    crm: "Explain your needs in lead, client, project, and invoice management 📊",
-    other: "Describe your need in detail 💬",
+    design: "Describe your vision, brand identity, and design needs",
+    automation: "Tell me more about the processes you want to automate",
+    website: "Tell me about your web project: goals, features, target audience",
+    crm: "Explain your needs in lead, client, project, and invoice management",
+    other: "Describe your need in detail",
   } : {
-    design: "Décrivez votre vision, votre identité de marque, et vos besoins en design 🎨",
-    automation: "Dites-m'en plus sur les processus que vous souhaitez automatiser ⚡",
-    website: "Parlez-moi de votre projet web : objectifs, fonctionnalités, audience cible 🌐",
-    crm: "Expliquez vos besoins en gestion de leads, clients, projets et facturation 📊",
-    other: "Décrivez votre besoin en détail 💬",
+    design: "Décrivez votre vision, votre identité de marque, et vos besoins en design",
+    automation: "Dites-m'en plus sur les processus que vous souhaitez automatiser",
+    website: "Parlez-moi de votre projet web : objectifs, fonctionnalités, audience cible",
+    crm: "Expliquez vos besoins en gestion de leads, clients, projets et facturation",
+    other: "Décrivez votre besoin en détail",
   };
 
   return (
@@ -2335,7 +2335,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 className="text-4xl"
               >
-                👋
+                Hello
               </motion.div>
               <div className="absolute inset-0 bg-mint/20 rounded-full blur-xl -z-10 group-hover:blur-2xl transition-all"></div>
             </div>
@@ -2567,11 +2567,11 @@ function ContactSection({ onNavigate }: HomePageProps) {
                           <SelectValue placeholder={language === 'en' ? 'Select your need' : 'Sélectionnez votre besoin'} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="design">🎨 {language === 'en' ? 'Design & Branding' : 'Design & Identité visuelle'}</SelectItem>
-                          <SelectItem value="automation">⚡ {language === 'en' ? 'Automation' : 'Automatisation'}</SelectItem>
-                          <SelectItem value="website">🌐 {language === 'en' ? 'Complete website' : 'Site web complet'}</SelectItem>
-                          <SelectItem value="crm">📊 {language === 'en' ? 'CRM System' : 'Système CRM'}</SelectItem>
-                          <SelectItem value="other">💬 {language === 'en' ? 'Other' : 'Autre'}</SelectItem>
+                          <SelectItem value="design">{language === 'en' ? 'Design & Branding' : 'Design & Identité visuelle'}</SelectItem>
+                          <SelectItem value="automation">{language === 'en' ? 'Automation' : 'Automatisation'}</SelectItem>
+                          <SelectItem value="website">{language === 'en' ? 'Complete website' : 'Site web complet'}</SelectItem>
+                          <SelectItem value="crm">{language === 'en' ? 'CRM System' : 'Système CRM'}</SelectItem>
+                          <SelectItem value="other">{language === 'en' ? 'Other' : 'Autre'}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
