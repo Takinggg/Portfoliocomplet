@@ -13,6 +13,7 @@ import { useTranslation } from "../../utils/i18n/useTranslation";
 import { useLanguage } from "../../utils/i18n/LanguageContext";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { fetchWithCache } from "../../utils/apiCache";
+import { toast } from "sonner";
 
 type Page = "contact" | "projects" | "services" | "about" | "booking" | "project-detail";
 
@@ -2168,6 +2169,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
   const [selectedNeed, setSelectedNeed] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -2175,25 +2177,93 @@ function ContactSection({ onNavigate }: HomePageProps) {
     message: "",
   });
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Confetti animation
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ["#00FFC2", "#0C0C0C", "#F4F4F4"],
-    });
+    // Validation
+    if (!formData.name || !formData.email || !formData.need || !formData.message) {
+      toast.error(language === 'en' ? 'Please fill in all fields' : 'Veuillez remplir tous les champs');
+      return;
+    }
 
-    setFormSubmitted(true);
-    
-    setTimeout(() => {
-      setMessageDialogOpen(false);
-      setFormSubmitted(false);
-      setFormData({ name: "", email: "", need: "", message: "" });
-    }, 3000);
-  }, []);
+    setIsSubmitting(true);
+
+    try {
+      // Get Supabase credentials from environment
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const publicAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+      // Send lead to backend
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/leads`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${publicAnonKey}`,
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: "",
+            message: `${formData.need}: ${formData.message}`,
+            source: "homepage_contact",
+            status: "new",
+            interests: [formData.need],
+            createdAt: new Date().toISOString()
+          }),
+        }
+      );
+
+      if (response.ok) {
+        // Success animation
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ["#00FFC2", "#0C0C0C", "#F4F4F4"],
+        });
+
+        toast.success(language === 'en' ? 'Message sent successfully!' : 'Message envoyé avec succès !');
+        setFormSubmitted(true);
+        
+        // Send confirmation email (optional, don't wait)
+        try {
+          await fetch(
+            `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/emails/lead-confirmation`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${publicAnonKey}`,
+              },
+              body: JSON.stringify({
+                email: formData.email,
+                name: formData.name,
+                message: formData.message,
+              }),
+            }
+          );
+        } catch (emailError) {
+          console.error("Error sending confirmation email:", emailError);
+        }
+        
+        setTimeout(() => {
+          setMessageDialogOpen(false);
+          setFormSubmitted(false);
+          setFormData({ name: "", email: "", need: "", message: "" });
+          setSelectedNeed("");
+        }, 3000);
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error(language === 'en' ? 'Error sending message. Please try again.' : 'Erreur lors de l\'envoi. Veuillez réessayer.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [formData, language]);
 
   const handleInputChange = useCallback((field: keyof typeof formData) => 
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -2603,11 +2673,20 @@ function ContactSection({ onNavigate }: HomePageProps) {
 
                     <Button
                       type="submit"
+                      disabled={isSubmitting || formSubmitted}
                       className="w-full bg-mint text-black hover:bg-mint/90 h-14 text-lg rounded-xl group relative overflow-hidden"
                     >
                       <span className="relative z-10 flex items-center justify-center">
-                        {language === 'en' ? 'Send message' : 'Envoyer le message'}
-                        <Send className="ml-2 h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                        {isSubmitting ? (
+                          language === 'en' ? 'Sending...' : 'Envoi en cours...'
+                        ) : formSubmitted ? (
+                          language === 'en' ? 'Sent!' : 'Envoyé !'
+                        ) : (
+                          <>
+                            {language === 'en' ? 'Send message' : 'Envoyer le message'}
+                            <Send className="ml-2 h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                          </>
+                        )}
                       </span>
                     </Button>
                   </form>
