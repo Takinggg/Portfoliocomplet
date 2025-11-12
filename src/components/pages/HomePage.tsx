@@ -388,9 +388,9 @@ function AutomationWorkflow() {
                         ) : (
                           <span className={
                             line.includes('const') || line.includes('function') || line.includes('await') || line.includes('return') 
-                              ? 'text-purple-400' 
+                              ? 'text-mint' 
                               : line.includes('=>') || line.includes('async')
-                              ? 'text-blue-400'
+                              ? 'text-mint'
                               : line.includes('motion') || line.includes('Hero')
                               ? 'text-mint'
                               : 'text-neutral-400'
