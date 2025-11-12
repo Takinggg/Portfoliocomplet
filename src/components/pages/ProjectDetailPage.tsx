@@ -219,46 +219,67 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
               )}
 
               {/* Meta Info */}
-              <div className="flex flex-wrap gap-6 mb-8">
+              <div className="grid grid-cols-2 gap-4 mb-8">
                 {project.year && (
-                  <div className="flex items-center gap-2 text-neutral-400">
-                    <Calendar className="h-5 w-5" />
-                    <span>{project.year}</span>
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
+                    <div className="flex-shrink-0">
+                      <Calendar className="h-5 w-5 text-mint" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-neutral-500 mb-0.5">{t('projects.detail.year')}</div>
+                      <div className="text-white font-medium">{project.year}</div>
+                    </div>
                   </div>
                 )}
                 {project.duration && (
-                  <div className="flex items-center gap-2 text-neutral-400">
-                    <Clock className="h-5 w-5" />
-                    <span>{project.duration}</span>
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
+                    <div className="flex-shrink-0">
+                      <Clock className="h-5 w-5 text-mint" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-neutral-500 mb-0.5">{t('projects.detail.duration')}</div>
+                      <div className="text-white font-medium">{project.duration}</div>
+                    </div>
                   </div>
                 )}
-                {project.client && (
-                  <div className="flex items-center gap-2 text-neutral-400">
-                    <User className="h-5 w-5" />
-                    <span>{project.client}</span>
+                {(project.clientName || project.client) && (
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 col-span-2">
+                    <div className="flex-shrink-0">
+                      <User className="h-5 w-5 text-mint" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-neutral-500 mb-0.5">{t('projects.detail.client')}</div>
+                      <div className="text-white font-medium">{project.clientName || project.client}</div>
+                    </div>
                   </div>
                 )}
               </div>
 
               {/* Tags */}
               {project.tags && project.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {project.tags.map((tag: string, idx: number) => (
-                    <Badge key={idx} variant="secondary" className="bg-neutral-900 border-neutral-800 text-neutral-400">
-                      {tag}
-                    </Badge>
-                  ))}
+                <div className="mb-6">
+                  <div className="text-xs text-neutral-500 mb-3 uppercase tracking-wider">Tags</div>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag: string, idx: number) => (
+                      <Badge key={idx} variant="secondary" className="bg-neutral-900 border-neutral-800 text-neutral-400">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               )}
 
               {/* Technologies */}
               {project.technologies && project.technologies.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {project.technologies.map((tech: string, idx: number) => (
-                    <Badge key={idx} className="bg-mint/10 border-mint/20 text-mint">
-                      {tech}
-                    </Badge>
-                  ))}
+                <div className="mb-8">
+                  <div className="text-xs text-neutral-500 mb-3 uppercase tracking-wider">Technologies</div>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech: string, idx: number) => (
+                      <Badge key={idx} className="bg-mint/10 border-mint/20 text-mint">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -362,6 +383,46 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
         </section>
       )}
 
+      {/* Challenges List (if array) */}
+      {project.challenges && Array.isArray(project.challenges) && project.challenges.length > 0 && (
+        <section className="py-24 px-6 border-t border-neutral-900">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-12"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 mb-6">
+                <Target className="h-4 w-4 text-red-400" />
+                <span className="text-sm text-red-400">Défis</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold">Challenges Rencontrés</h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {project.challenges.map((challenge: string, idx: number) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="p-6 rounded-xl bg-neutral-950/50 border border-neutral-900 hover:border-red-500/20 transition-all"
+                >
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 text-sm font-bold">
+                      {idx + 1}
+                    </div>
+                    <p className="text-neutral-300 leading-relaxed">{challenge}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Solution Section */}
       {project.solution && (
         <section className="py-24 px-6 bg-neutral-950/30">
@@ -388,6 +449,46 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
                   {project.solution}
                 </p>
               </motion.div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Features List */}
+      {project.features && Array.isArray(project.features) && project.features.length > 0 && (
+        <section className="py-24 px-6 border-t border-neutral-900">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-12"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-mint/10 border border-mint/20 mb-6">
+                <CheckCircle2 className="h-4 w-4 text-mint" />
+                <span className="text-sm text-mint">Fonctionnalités</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold">Fonctionnalités Clés</h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {project.features.map((feature: string, idx: number) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="p-6 rounded-xl bg-neutral-950/50 border border-neutral-900 hover:border-mint/20 transition-all group"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-mint/10 border border-mint/20 flex items-center justify-center group-hover:bg-mint group-hover:border-mint transition-all">
+                      <CheckCircle2 className="h-4 w-4 text-mint group-hover:text-black transition-colors" />
+                    </div>
+                    <p className="text-neutral-300 leading-relaxed flex-1">{feature}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
