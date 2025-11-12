@@ -484,6 +484,12 @@ export default {
     "publishedOn": "Published on",
     "share": "Share",
     "relatedPosts": "Related Posts",
+    "card": {
+      "read": "Read",
+      "minutes": "min",
+      "featured": "Featured Article",
+      "views": "views"
+    },
     "newsletter": {
       "title": "Receive my articles by email",
       "subtitle": "Subscribe to my newsletter to stay updated",

@@ -484,6 +484,12 @@ export default {
     "publishedOn": "Publié le",
     "share": "Partager",
     "relatedPosts": "Articles similaires",
+    "card": {
+      "read": "Lire",
+      "minutes": "min",
+      "featured": "Article Vedette",
+      "views": "vues"
+    },
     "newsletter": {
       "title": "Recevez mes articles par email",
       "subtitle": "Inscrivez-vous à ma newsletter pour ne rien manquer",

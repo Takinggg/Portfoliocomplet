@@ -4,6 +4,7 @@ import { Card } from "../ui/card";
 import { Calendar, Clock, ArrowRight, Tag, Eye } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { ViewCounter } from "../ViewCounter";
+import { useTranslation } from "../../utils/i18n/useTranslation";
 
 export interface BlogPost {
   id: string;
@@ -42,6 +43,8 @@ interface BlogPostCardProps {
 }
 
 export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCardProps) {
+  const { t, language } = useTranslation();
+  
   const categoryConfig: Record<string, { label: string; color: string }> = {
     development: { label: "Développement", color: "#00FFC2" },
     design: { label: "Design", color: "#00D9A6" },
@@ -141,7 +144,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
                 className="absolute top-4 left-4"
                 style={{ backgroundColor: `${config.color}`, color: '#0C0C0C' }}
               >
-                ⭐ Article Vedette
+                ⭐ {t('blog.card.featured')}
               </Badge>
             </div>
           )}
@@ -182,7 +185,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
                 className="flex items-center gap-2 text-[#00FFC2]"
                 whileHover={{ x: 5 }}
               >
-                <span className="text-sm">Lire</span>
+                <span className="text-sm">{t('blog.card.read')}</span>
                 <ArrowRight className="h-4 w-4" />
               </motion.div>
             </div>
@@ -287,7 +290,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
             <div className="flex items-center gap-4 text-xs text-white/50">
               <span className="flex items-center gap-1.5">
                 <Calendar className="h-3.5 w-3.5" />
-                {new Date(post.publishedAt).toLocaleDateString('fr-FR', { 
+                {new Date(post.publishedAt).toLocaleDateString(language === 'en' ? 'en-US' : 'fr-FR', { 
                   day: 'numeric', 
                   month: 'short',
                   year: 'numeric'
@@ -305,7 +308,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
               whileHover={{ x: 5 }}
               transition={{ duration: 0.2 }}
             >
-              <span>Lire</span>
+              <span>{t('blog.card.read')}</span>
               <ArrowRight className="h-4 w-4" />
             </motion.div>
           </div>
