@@ -1,18 +1,9 @@
 # Script de deploiement du serveur Supabase Edge Function
-# Copie les fichiers du dossier src/supabase/functions/server vers supabase/functions/make-server-04919ac5
+# Note: Le serveur principal est dans supabase/functions/make-server-04919ac5/index.ts
+# Ce script n'est plus necessaire - le fichier est deja a la bonne place
 
-Write-Host "Deploiement du serveur Supabase..." -ForegroundColor Cyan
-
-# Creer le dossier de destination si necessaire
-$destDir = "supabase\functions\make-server-04919ac5"
-if (!(Test-Path $destDir)) {
-    New-Item -ItemType Directory -Path $destDir -Force | Out-Null
-    Write-Host "Dossier cree: $destDir" -ForegroundColor Green
-}
-
-# Copier index.tsx comme index.ts (Supabase prefere .ts)
-Copy-Item "src\supabase\functions\server\index.tsx" "$destDir\index.ts" -Force
-Write-Host "Copie: index.ts" -ForegroundColor Green
+Write-Host "INFO: Le serveur est deja dans supabase/functions/make-server-04919ac5/index.ts" -ForegroundColor Yellow
+Write-Host "Aucune copie necessaire. Deployer directement depuis Supabase Dashboard." -ForegroundColor Green
 
 # Copier email_service.tsx
 Copy-Item "src\supabase\functions\server\email_service.tsx" "$destDir\email_service.tsx" -Force

@@ -72,7 +72,7 @@ Une fois vérifié, les emails seront envoyés depuis `contact@maxence.design` �
 
 2. Ouvre ta fonction **server**
 
-3. Copie TOUT le contenu de `src/supabase/functions/server/index.tsx`
+3. Copie TOUT le contenu de `supabase/functions/make-server-04919ac5/index.ts`
 
 4. Colle dans l'éditeur Supabase
 
@@ -112,7 +112,7 @@ Une fois vérifié, les emails seront envoyés depuis `contact@maxence.design` �
 
 ## 🎨 Personnaliser l'email de bienvenue
 
-L'email est dans `src/supabase/functions/server/index.tsx` ligne ~1465
+L'email est dans `supabase/functions/make-server-04919ac5/index.ts` ligne ~1465
 
 Tu peux modifier :
 - Le sujet : `subject: "..."`

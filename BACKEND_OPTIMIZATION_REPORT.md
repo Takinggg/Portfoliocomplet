@@ -2,7 +2,7 @@
 
 ## 📊 Statistiques du Code
 
-- **Fichier**: `src/supabase/functions/server/index.tsx`
+- **Fichier**: `supabase/functions/make-server-04919ac5/index.ts`
 - **Lignes de code**: 2,520 lignes
 - **Routes API**: 54 endpoints actifs
 - **Taille**: ~140 KB
@@ -218,4 +218,4 @@ Le code est production-ready. Les optimisations suggérées sont des améliorati
 
 _Rapport généré le: 11 janvier 2025_  
 _Analysé par: GitHub Copilot_  
-_Fichier: src/supabase/functions/server/index.tsx (2,520 lignes)_
+_Fichier: supabase/functions/make-server-04919ac5/index.ts (4,330 lignes)_

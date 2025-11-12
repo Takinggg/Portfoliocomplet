@@ -67,7 +67,7 @@ Pour recevoir les confirmations de paiement:
 
 ## Fichiers impactés
 
-- `src/supabase/functions/server/index.tsx` - Endpoints Stripe
+- `supabase/functions/make-server-04919ac5/index.ts` - Endpoints Stripe
 - `src/components/invoice/InvoiceViewer.tsx` - Bouton de paiement
 - `src/utils/stripe/stripeService.ts` - Service Stripe
 - `.env.example` - Configuration requise

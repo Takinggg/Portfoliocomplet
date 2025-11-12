@@ -69,7 +69,7 @@
 ### Priorité 🔴 HAUTE (à faire maintenant)
 1. **Déployer le backend sur Supabase**
    ```bash
-   # Copier tout src/supabase/functions/server/index.tsx
+   # Copier tout supabase/functions/make-server-04919ac5/index.ts
    # Coller dans Supabase Edge Functions Editor
    # Cliquer "Deploy"
    ```

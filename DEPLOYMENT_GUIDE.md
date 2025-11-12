@@ -40,7 +40,7 @@ FRONTEND_URL=https://votre-domaine.com
 
 ### 4. **Structure requise**
 
-La fonction est dans : `src/supabase/functions/server/index.tsx`
+La fonction est dans : `supabase/functions/make-server-04919ac5/index.ts`
 Elle doit être déployée comme : `make-server-04919ac5`
 
 ### 5. **Test après déploiement**
