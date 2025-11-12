@@ -1,6 +1,7 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
 import "./styles/globals.css";
+import { lazyRetry } from "./utils/lazyRetry";
 
 // ==========================================
 // DEPLOYMENT CHECK MESSAGE
@@ -27,30 +28,30 @@ if (window.location.hostname !== 'localhost') {
 import HomePage from "./components/pages/HomePage";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 
-// Non-critical pages (lazy loaded on demand)
-const ProjectsPage = lazy(() => import("./components/pages/ProjectsPage"));
-const ProjectDetailPage = lazy(() => import("./components/pages/ProjectDetailPage"));
-const ServicesPage = lazy(() => import("./components/pages/ServicesPage"));
-const AboutPage = lazy(() => import("./components/pages/AboutPage"));
-const ContactPage = lazy(() => import("./components/pages/ContactPage"));
-const BookingPage = lazy(() => import("./components/pages/BookingPage"));
-const ModernDashboard = lazy(() => import("./components/dashboard/ModernDashboard"));
-const LoginPage = lazy(() => import("./components/pages/LoginPage"));
-const BlogPage = lazy(() => import("./components/pages/BlogPage").then(m => ({ default: m.BlogPage })));
-const BlogPostPage = lazy(() => import("./components/pages/BlogPostPage").then(m => ({ default: m.BlogPostPage })));
-const CaseStudiesPage = lazy(() => import("./components/pages/CaseStudiesPage").then(m => ({ default: m.CaseStudiesPage })));
-const CaseStudyDetailPage = lazy(() => import("./components/pages/CaseStudyDetailPage").then(m => ({ default: m.CaseStudyDetailPage })));
-const FAQPage = lazy(() => import("./components/pages/FAQPage"));
-const NewsletterConfirmPage = lazy(() => import("./components/pages/NewsletterConfirmPage").then(m => ({ default: m.NewsletterConfirmPage })));
-const ResourcesPage = lazy(() => import("./components/pages/ResourcesPage"));
-const TestimonialsPage = lazy(() => import("./components/pages/TestimonialsPage"));
-const ExampleDatabasePage = lazy(() => import("./components/pages/ExampleDatabasePage"));
-const SeedDataPage = lazy(() => import("./components/pages/SeedDataPage"));
-const NotFoundPage = lazy(() => import("./components/pages/NotFoundPage"));
-const NotFoundPageSimple = lazy(() => import("./components/pages/NotFoundPageSimple"));
-const NotFoundPageUltraSimple = lazy(() => import("./components/pages/NotFoundPageUltraSimple"));
-const InvoiceViewPage = lazy(() => import("./components/pages/InvoiceViewPage"));
-const InvoiceSuccessPage = lazy(() => import("./components/pages/InvoiceSuccessPage"));
+// Non-critical pages (lazy loaded on demand with retry on failure)
+const ProjectsPage = lazyRetry(() => import("./components/pages/ProjectsPage"));
+const ProjectDetailPage = lazyRetry(() => import("./components/pages/ProjectDetailPage"));
+const ServicesPage = lazyRetry(() => import("./components/pages/ServicesPage"));
+const AboutPage = lazyRetry(() => import("./components/pages/AboutPage"));
+const ContactPage = lazyRetry(() => import("./components/pages/ContactPage"));
+const BookingPage = lazyRetry(() => import("./components/pages/BookingPage"));
+const ModernDashboard = lazyRetry(() => import("./components/dashboard/ModernDashboard"));
+const LoginPage = lazyRetry(() => import("./components/pages/LoginPage"));
+const BlogPage = lazyRetry(() => import("./components/pages/BlogPage").then(m => ({ default: m.BlogPage })));
+const BlogPostPage = lazyRetry(() => import("./components/pages/BlogPostPage").then(m => ({ default: m.BlogPostPage })));
+const CaseStudiesPage = lazyRetry(() => import("./components/pages/CaseStudiesPage").then(m => ({ default: m.CaseStudiesPage })));
+const CaseStudyDetailPage = lazyRetry(() => import("./components/pages/CaseStudyDetailPage").then(m => ({ default: m.CaseStudyDetailPage })));
+const FAQPage = lazyRetry(() => import("./components/pages/FAQPage"));
+const NewsletterConfirmPage = lazyRetry(() => import("./components/pages/NewsletterConfirmPage").then(m => ({ default: m.NewsletterConfirmPage })));
+const ResourcesPage = lazyRetry(() => import("./components/pages/ResourcesPage"));
+const TestimonialsPage = lazyRetry(() => import("./components/pages/TestimonialsPage"));
+const ExampleDatabasePage = lazyRetry(() => import("./components/pages/ExampleDatabasePage"));
+const SeedDataPage = lazyRetry(() => import("./components/pages/SeedDataPage"));
+const NotFoundPage = lazyRetry(() => import("./components/pages/NotFoundPage"));
+const NotFoundPageSimple = lazyRetry(() => import("./components/pages/NotFoundPageSimple"));
+const NotFoundPageUltraSimple = lazyRetry(() => import("./components/pages/NotFoundPageUltraSimple"));
+const InvoiceViewPage = lazyRetry(() => import("./components/pages/InvoiceViewPage"));
+const InvoiceSuccessPage = lazyRetry(() => import("./components/pages/InvoiceSuccessPage"));
 
 // ==========================================
 // LAYOUT COMPONENTS
