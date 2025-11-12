@@ -1,7 +1,7 @@
 import { Button } from "../ui/button";
 import { ArrowRight, Workflow, LayoutDashboard, Sparkles, TrendingDown, Clock, Star, Zap, Users, Award, CheckCircle2, ArrowUpRight, Code2, Palette, Brain, Github, Linkedin, Twitter, Send, Play, ChevronDown, CheckCircle, BarChart3, Target, Rocket, Hexagon, Cpu, Database, Globe, Lock, Layers, MessageSquare, Calendar, Shield, Check, Upload, Phone, MessageCircle, Briefcase } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useInView } from "motion/react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -12,6 +12,7 @@ import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { useLanguage } from "../../utils/i18n/LanguageContext";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
+import { fetchWithCache } from "../../utils/apiCache";
 
 type Page = "contact" | "projects" | "services" | "about" | "booking" | "project-detail";
 
@@ -716,14 +717,14 @@ function HexagonPattern() {
 function SpotlightEffect() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    setMousePosition({ x: e.clientX, y: e.clientY });
+  }, []);
 
+  useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [handleMouseMove]);
 
   return (
     <motion.div
@@ -748,49 +749,54 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
   const opacityProgress = useTransform(scrollYProgress, [0, 0.3], [1, 0.5]);
   const [pinnedProjects, setPinnedProjects] = useState<Project[]>([]);
 
-  // Fetch pinned projects
+  // Fetch pinned projects with cache
   useEffect(() => {
     const fetchPinnedProjects = async () => {
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout (reduced)
-        
-        const response = await fetch(
-          `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/projects`,
-          {
-            headers: {
-              Authorization: `Bearer ${publicAnonKey}`,
-            },
-            signal: controller.signal,
-          }
+        const data = await fetchWithCache(
+          `pinned_projects_${language}`,
+          async () => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
+            
+            const response = await fetch(
+              `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/projects?lang=${language}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${publicAnonKey}`,
+                },
+                signal: controller.signal,
+              }
+            );
+            
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+              return { projects: [] };
+            }
+            
+            return response.json();
+          },
+          5 * 60 * 1000 // 5 minutes cache
         );
         
-        clearTimeout(timeoutId);
-        
-        if (!response.ok) {
-          setPinnedProjects([]); // Set empty array to continue rendering
-          return;
-        }
-        
-        const data = await response.json();
         const pinned = (data.projects || [])
           .filter((p: Project) => p.isPinned)
-          .slice(0, 3); // Limit to 3 projects
+          .slice(0, 3);
         setPinnedProjects(pinned);
       } catch (error) {
-        // Silent error - server might not be deployed yet
-        setPinnedProjects([]); // Set empty array to continue rendering
+        setPinnedProjects([]);
       }
     };
     fetchPinnedProjects();
-  }, []);
+  }, [language]);
 
-  // Handler for project click
-  const handleProjectClick = (projectId: string) => {
+  // Handler for project click (memoized)
+  const handleProjectClick = useCallback((projectId: string) => {
     if (onProjectClick) {
       onProjectClick(projectId);
     }
-  };
+  }, [onProjectClick]);
 
   return (
     <div className="w-full bg-[#0C0C0C] text-white overflow-hidden">
@@ -1892,12 +1898,12 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     initial={{ opacity: 0, scale: 0 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ delay }}
                     animate={{
                       y: [0, -20, 0],
                       rotate: [0, 10, -10, 0],
                     }}
                     transition={{
+                      delay,
                       y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
                       rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
                     }}
@@ -2169,7 +2175,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     
     // Confetti animation
@@ -2187,7 +2193,13 @@ function ContactSection({ onNavigate }: HomePageProps) {
       setFormSubmitted(false);
       setFormData({ name: "", email: "", need: "", message: "" });
     }, 3000);
-  };
+  }, []);
+
+  const handleInputChange = useCallback((field: keyof typeof formData) => 
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setFormData(prev => ({ ...prev, [field]: e.target.value }));
+    }, 
+  []);
 
   const needPlaceholders: Record<string, string> = language === 'en' ? {
     design: "Describe your vision, brand identity, and design needs 🎨",
@@ -2268,12 +2280,12 @@ function ContactSection({ onNavigate }: HomePageProps) {
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay }}
               animate={{
                 y: [0, -15, 0],
                 rotate: [0, 5, -5, 0],
               }}
               transition={{
+                delay,
                 y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
                 rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" },
               }}
@@ -2525,7 +2537,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                           id="name"
                           required
                           value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          onChange={handleInputChange('name')}
                           placeholder="John Doe"
                         />
                       </div>
@@ -2536,7 +2548,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                           type="email"
                           required
                           value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          onChange={handleInputChange('email')}
                           placeholder="john@example.com"
                         />
                       </div>
@@ -2570,7 +2582,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                         id="message"
                         required
                         value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        onChange={handleInputChange('message')}
                         placeholder={selectedNeed ? needPlaceholders[selectedNeed] : (language === 'en' ? "Describe your project in detail..." : "Décrivez votre projet en détail...")}
                         className="min-h-[150px]"
                       />
