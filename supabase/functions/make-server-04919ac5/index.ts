@@ -2409,17 +2409,26 @@ app.get("/make-server-04919ac5/projects", async (c)=>{
 });
 app.get("/make-server-04919ac5/projects/:id", async (c)=>{
   try {
-    const projectId = c.req.param("id");
-    const project = await kv.get(`project:${projectId}`);
-    if (!project) return c.json({
-      success: false,
-      error: "Project not found"
-    }, 404);
+    const projectId = decodeURIComponent(c.req.param("id"));
+    console.log(`🔍 Fetching project: ${projectId}`);
+    
+    const project = await kv.get(projectId);
+    
+    if (!project) {
+      console.log(`❌ Project not found: ${projectId}`);
+      return c.json({
+        success: false,
+        error: "Project not found"
+      }, 404);
+    }
+    
+    console.log(`✅ Project found: ${projectId}`);
     return c.json({
       success: true,
       project
     });
   } catch (error) {
+    console.error(`❌ Error fetching project:`, error);
     return c.json({
       success: false,
       error: error.message
