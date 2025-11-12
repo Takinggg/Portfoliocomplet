@@ -50,6 +50,16 @@ import { logger } from "npm:hono/logger";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { sendQuoteEmail, sendInvoiceLink } from "./email_service.tsx";
 
+// Type definitions for Hono (inline to avoid import issues)
+type HonoContext = any; // Simplifié pour Deno
+type HonoNext = () => Promise<void> | void;
+
+// Utility to get error message from unknown error
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return getErrorMessage(error);
+  return String(error);
+}
+
 console.log("🚀 Portfolio CRM Server starting...");
 console.log("📅 Deployment:", new Date().toISOString());
 
@@ -72,69 +82,69 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 // Client KV pour le stockage de données
 const kvClient = () => createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 const kv = {
-  set: async (key, value)=>{
+  set: async (key: string, value: any): Promise<void> => {
     const supabaseKv = kvClient();
     const { error } = await supabaseKv.from("kv_store_04919ac5").upsert({
       key,
       value
     });
     if (error) {
-      throw new Error(error.message);
+      throw new Error(getErrorMessage(error));
     }
   },
-  get: async (key)=>{
+  get: async (key: string): Promise<any> => {
     const supabaseKv = kvClient();
     const { data, error } = await supabaseKv.from("kv_store_04919ac5").select("value").eq("key", key).maybeSingle();
     if (error) {
-      throw new Error(error.message);
+      throw new Error(getErrorMessage(error));
     }
     return data?.value;
   },
-  del: async (key)=>{
+  del: async (key: string): Promise<void> => {
     const supabaseKv = kvClient();
     const { error } = await supabaseKv.from("kv_store_04919ac5").delete().eq("key", key);
     if (error) {
-      throw new Error(error.message);
+      throw new Error(getErrorMessage(error));
     }
   },
-  mset: async (keys, values)=>{
+  mset: async (keys: string[], values: any[]): Promise<void> => {
     const supabaseKv = kvClient();
-    const { error } = await supabaseKv.from("kv_store_04919ac5").upsert(keys.map((k, i)=>({
+    const { error } = await supabaseKv.from("kv_store_04919ac5").upsert(keys.map((k: string, i: number)=>({
         key: k,
         value: values[i]
       })));
     if (error) {
-      throw new Error(error.message);
+      throw new Error(getErrorMessage(error));
     }
   },
-  mget: async (keys)=>{
+  mget: async (keys: string[]): Promise<any[]> => {
     const supabaseKv = kvClient();
     const { data, error } = await supabaseKv.from("kv_store_04919ac5").select("value").in("key", keys);
     if (error) {
-      throw new Error(error.message);
+      throw new Error(getErrorMessage(error));
     }
-    return data?.map((d)=>d.value) ?? [];
+    return data?.map((d: any)=>d.value) ?? [];
   },
-  mdel: async (keys)=>{
+  mdel: async (keys: string[]): Promise<void> => {
     const supabaseKv = kvClient();
     const { error } = await supabaseKv.from("kv_store_04919ac5").delete().in("key", keys);
     if (error) {
-      throw new Error(error.message);
+      throw new Error(getErrorMessage(error));
     }
   },
-  getByPrefix: async (prefix)=>{
+  getByPrefix: async (prefix: string): Promise<any[]> => {
     const supabaseKv = kvClient();
     const { data, error } = await supabaseKv.from("kv_store_04919ac5").select("key, value").like("key", prefix + "%");
     if (error) {
-      throw new Error(error.message);
+      throw new Error(getErrorMessage(error));
     }
-    return data?.map((d)=>d.value) ?? [];
+    return data?.map((d: any)=>d.value) ?? [];
   },
-  getByPrefixWithKeys: async (prefix)=>{
+  getByPrefixWithKeys: async (prefix: string): Promise<any[]> => {
     const supabaseKv = kvClient();
     const { data, error } = await supabaseKv.from("kv_store_04919ac5").select("key, value").like("key", prefix + "%");
     if (error) {
-      throw new Error(error.message);
+      throw new Error(getErrorMessage(error));
     }
     return data ?? [];
   }
@@ -166,7 +176,15 @@ function detectLanguage(headers: Headers | undefined, fallback: string = 'fr'): 
 // ===========================================================================
 // EMAIL SERVICE
 // ===========================================================================
-async function sendEmail(params) {
+interface EmailParams {
+  from?: string;
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
+}
+
+async function sendEmail(params: EmailParams): Promise<{ success: boolean; error?: string }> {
   const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
   if (!RESEND_API_KEY) {
     console.error("RESEND_API_KEY not configured");
@@ -207,7 +225,7 @@ async function sendEmail(params) {
     console.error("Error sending email:", error);
     return {
       success: false,
-      error: error.message
+      error: (error as Error).message
     };
   }
 }
@@ -236,7 +254,7 @@ app.use("*", cors({
   credentials: true,
   maxAge: 86400 // Cache preflight 24h
 }));
-const requireAuth = async (c, next)=>{
+const requireAuth = async (c: HonoContext, next: HonoNext): Promise<Response | void> => {
   const authHeader = c.req.header("Authorization");
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return c.json({
@@ -405,7 +423,7 @@ console.log("✅ Middleware configured");
 // ===========================================================================
 // HEALTH CHECK
 // ===========================================================================
-app.get("/make-server-04919ac5/health", (c)=>{
+app.get("/make-server-04919ac5/health", (c: HonoContext) =>{
   return c.json({
     success: true,
     message: "COMPLETE server running (quotes + invoices + blog CRUD)",
@@ -416,12 +434,12 @@ console.log("✅ Health check added");
 // ===========================================================================
 // AUTH ROUTES
 // ===========================================================================
-app.post("/make-server-04919ac5/auth/init-admin", async (c)=>{
+app.post("/make-server-04919ac5/auth/init-admin", async (c: HonoContext) =>{
   try {
     const ADMIN_EMAIL = "contact@maxence.design";
     const ADMIN_PASSWORD = Deno.env.get("ADMIN_PASSWORD") ?? "vbz657D9";
     const { data: existingUser } = await supabase.auth.admin.listUsers();
-    const userExists = existingUser?.users?.some((u)=>u.email === ADMIN_EMAIL);
+    const userExists = existingUser?.users?.some((u: any) => u.email === ADMIN_EMAIL);
     if (userExists) {
       return c.json({
         success: true,
@@ -447,11 +465,11 @@ app.post("/make-server-04919ac5/auth/init-admin", async (c)=>{
     console.error("Error creating admin:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.post("/make-server-04919ac5/auth/login", async (c)=>{
+app.post("/make-server-04919ac5/auth/login", async (c: HonoContext) =>{
   try {
     const { email, password } = await c.req.json();
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -467,7 +485,7 @@ app.post("/make-server-04919ac5/auth/login", async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 401);
   }
 });
@@ -475,7 +493,7 @@ console.log("✅ Auth routes added");
 // ===========================================================================
 // CLIENTS ROUTES
 // ===========================================================================
-app.get("/make-server-04919ac5/clients", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/clients", requireAuth, async (c: HonoContext) =>{
   try {
     const clients = await kv.getByPrefix("client:");
     const sorted = clients.sort((a, b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -486,11 +504,11 @@ app.get("/make-server-04919ac5/clients", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.get("/make-server-04919ac5/clients/:id", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/clients/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const clientId = decodeURIComponent(c.req.param("id"));
     const client = await kv.get(clientId);
@@ -507,11 +525,11 @@ app.get("/make-server-04919ac5/clients/:id", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.post("/make-server-04919ac5/clients", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/clients", requireAuth, async (c: HonoContext) =>{
   try {
     const body = await c.req.json();
     const { name, email, phone, company, address, status, revenue } = body;
@@ -543,11 +561,11 @@ app.post("/make-server-04919ac5/clients", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.put("/make-server-04919ac5/clients/:id", requireAuth, async (c)=>{
+app.put("/make-server-04919ac5/clients/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const clientId = c.req.param("id");
     const body = await c.req.json();
@@ -569,11 +587,11 @@ app.put("/make-server-04919ac5/clients/:id", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.delete("/make-server-04919ac5/clients/:id", requireAuth, async (c)=>{
+app.delete("/make-server-04919ac5/clients/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const clientId = c.req.param("id");
     const existing = await kv.get(clientId);
@@ -589,7 +607,7 @@ app.delete("/make-server-04919ac5/clients/:id", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -597,7 +615,7 @@ console.log("✅ Clients routes added");
 // ===========================================================================
 // LEADS ROUTES
 // ===========================================================================
-app.get("/make-server-04919ac5/leads", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/leads", requireAuth, async (c: HonoContext) =>{
   try {
     const leads = await kv.getByPrefix("lead:");
     const sorted = leads.sort((a, b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -609,11 +627,11 @@ app.get("/make-server-04919ac5/leads", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.get("/make-server-04919ac5/leads/:id", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/leads/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const leadId = decodeURIComponent(c.req.param("id"));
     const lead = await kv.get(leadId);
@@ -630,11 +648,11 @@ app.get("/make-server-04919ac5/leads/:id", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.post("/make-server-04919ac5/leads", async (c)=>{
+app.post("/make-server-04919ac5/leads", async (c: HonoContext) =>{
   try {
     const body = await c.req.json();
     const { name, email, phone, message, budget, timeline, projectType, source, interests } = body;
@@ -670,11 +688,11 @@ app.post("/make-server-04919ac5/leads", async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.put("/make-server-04919ac5/leads/:id", requireAuth, async (c)=>{
+app.put("/make-server-04919ac5/leads/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const leadId = c.req.param("id");
     const body = await c.req.json();
@@ -696,11 +714,11 @@ app.put("/make-server-04919ac5/leads/:id", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.delete("/make-server-04919ac5/leads/:id", requireAuth, async (c)=>{
+app.delete("/make-server-04919ac5/leads/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const leadId = c.req.param("id");
     await kv.del(leadId);
@@ -711,13 +729,13 @@ app.delete("/make-server-04919ac5/leads/:id", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Convert lead to client
-app.post("/make-server-04919ac5/leads/:id/convert", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/leads/:id/convert", requireAuth, async (c: HonoContext) =>{
   try {
     const leadId = decodeURIComponent(c.req.param("id"));
     const lead = await kv.get(leadId);
@@ -776,7 +794,7 @@ app.post("/make-server-04919ac5/leads/:id/convert", requireAuth, async (c)=>{
     console.error("❌ Error converting lead:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -785,7 +803,7 @@ console.log("✅ Leads routes added");
 // ===========================================================================
 // BOOKINGS ROUTES
 // ===========================================================================
-app.get("/make-server-04919ac5/bookings", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/bookings", requireAuth, async (c: HonoContext) =>{
   try {
     const bookings = await kv.getByPrefix("booking:");
     const sorted = bookings.sort((a, b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -796,11 +814,11 @@ app.get("/make-server-04919ac5/bookings", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.post("/make-server-04919ac5/bookings", async (c)=>{
+app.post("/make-server-04919ac5/bookings", async (c: HonoContext) =>{
   try {
     const body = await c.req.json();
     const { name, email, phone, date, time, service, message } = body;
@@ -825,11 +843,11 @@ app.post("/make-server-04919ac5/bookings", async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.put("/make-server-04919ac5/bookings/:id", requireAuth, async (c)=>{
+app.put("/make-server-04919ac5/bookings/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const bookingId = c.req.param("id");
     const body = await c.req.json();
@@ -850,11 +868,11 @@ app.put("/make-server-04919ac5/bookings/:id", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.delete("/make-server-04919ac5/bookings/:id", requireAuth, async (c)=>{
+app.delete("/make-server-04919ac5/bookings/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const bookingId = c.req.param("id");
     console.log("🗑️ DELETE booking request - ID received:", bookingId);
@@ -902,13 +920,13 @@ app.delete("/make-server-04919ac5/bookings/:id", requireAuth, async (c)=>{
     console.error("❌ DELETE booking error:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Route ADMIN pour supprimer TOUS les bookings (nettoyage)
-app.delete("/make-server-04919ac5/bookings", requireAuth, async (c)=>{
+app.delete("/make-server-04919ac5/bookings", requireAuth, async (c: HonoContext) =>{
   try {
     console.log("🗑️ DELETE ALL bookings request");
     
@@ -935,7 +953,7 @@ app.delete("/make-server-04919ac5/bookings", requireAuth, async (c)=>{
     console.error("❌ DELETE ALL bookings error:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -943,12 +961,150 @@ app.delete("/make-server-04919ac5/bookings", requireAuth, async (c)=>{
 console.log("✅ Bookings routes added");
 
 // =============================================================================
-// 📧 EMAIL NOTIFICATIONS FOR BOOKINGS
+// 📧 EMAIL STYLES & NOTIFICATIONS
 // =============================================================================
+
+// Style commun pour tous les emails (DA maxence.design)
+const commonStyles = `
+  body { 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6; 
+    color: #e0e0e0; 
+    background: #000000;
+    margin: 0;
+    padding: 0;
+  }
+  .email-wrapper { 
+    background: #000000; 
+    padding: 40px 20px; 
+  }
+  .container { 
+    max-width: 600px; 
+    margin: 0 auto; 
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    border: 1px solid #00FFC2;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 255, 194, 0.15);
+  }
+  .header { 
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    padding: 30px;
+    text-align: center;
+    border-bottom: 2px solid #00FFC2;
+  }
+  .logo { 
+    color: #00FFC2; 
+    font-size: 28px; 
+    font-weight: 700; 
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .tagline {
+    color: #888;
+    font-size: 12px;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .content { 
+    padding: 40px 30px; 
+  }
+  h1 { 
+    color: #00FFC2; 
+    font-size: 24px; 
+    margin: 0 0 20px 0;
+    font-weight: 600;
+  }
+  .info-box {
+    background: rgba(0, 255, 194, 0.05);
+    border: 1px solid rgba(0, 255, 194, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .info-row:last-child {
+    border-bottom: none;
+  }
+  .info-label {
+    color: #888;
+    font-size: 14px;
+  }
+  .info-value {
+    color: #e0e0e0;
+    font-weight: 600;
+  }
+  .button { 
+    display: inline-block;
+    background: linear-gradient(135deg, #00FFC2 0%, #00CC9A 100%);
+    color: #000000;
+    padding: 14px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 255, 194, 0.3);
+    transition: all 0.3s ease;
+  }
+  .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 255, 194, 0.4);
+  }
+  .footer { 
+    background: rgba(255, 255, 255, 0.02);
+    padding: 25px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .footer-text { 
+    color: #666; 
+    font-size: 13px; 
+    margin: 5px 0;
+  }
+  .footer-link {
+    color: #00FFC2;
+    text-decoration: none;
+  }
+  .footer-link:hover {
+    text-decoration: underline;
+  }
+  .status-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .status-confirmed {
+    background: rgba(0, 255, 194, 0.1);
+    color: #00FFC2;
+    border: 1px solid rgba(0, 255, 194, 0.3);
+  }
+  .status-cancelled {
+    background: rgba(255, 68, 68, 0.1);
+    color: #ff4444;
+    border: 1px solid rgba(255, 68, 68, 0.3);
+  }
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 194, 0.3), transparent);
+    margin: 30px 0;
+  }
+`;
 
 // Route: POST /make-server-04919ac5/emails/booking-confirmation
 // Description: Envoyer un email de confirmation ou d'annulation de RDV
-app.post("/make-server-04919ac5/emails/booking-confirmation", async (c) => {
+app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoContext) => {
   try {
     const body = await c.req.json();
     const { to, name, date, time, service, status, message } = body;
@@ -1326,7 +1482,7 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c) => {
     }
   } catch (error: any) {
     console.error("❌ Email sending error:", error);
-    return c.json({ success: false, error: error.message }, 500);
+    return c.json({ success: false, error: getErrorMessage(error) }, 500);
   }
 });
 
@@ -1338,7 +1494,7 @@ console.log("✅ Booking email notifications added");
 console.log("⏰ Adding CRON routes for automation...");
 
 // Route pour relances automatiques des factures impayées
-app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c) => {
+app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c: HonoContext) => {
   try {
     console.log("🔔 Running invoice reminders cron job...");
     
@@ -1453,12 +1609,12 @@ app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c) => {
     });
   } catch (error: any) {
     console.error("❌ Error sending invoice reminders:", error);
-    return c.json({ success: false, error: error.message }, 500);
+    return c.json({ success: false, error: getErrorMessage(error) }, 500);
   }
 });
 
 // Route pour rappels de rendez-vous (24h avant)
-app.post("/make-server-04919ac5/cron/send-booking-reminders", async (c) => {
+app.post("/make-server-04919ac5/cron/send-booking-reminders", async (c: HonoContext) => {
   try {
     console.log("🔔 Running booking reminders cron job...");
     
@@ -1567,7 +1723,7 @@ app.post("/make-server-04919ac5/cron/send-booking-reminders", async (c) => {
     });
   } catch (error: any) {
     console.error("❌ Error sending booking reminders:", error);
-    return c.json({ success: false, error: error.message }, 500);
+    return c.json({ success: false, error: getErrorMessage(error) }, 500);
   }
 });
 
@@ -1576,7 +1732,7 @@ console.log("✅ CRON routes added");
 // ===========================================================================
 // CALENDAR ROUTES - AVAILABILITIES & EVENTS
 // ===========================================================================
-app.get("/make-server-04919ac5/availabilities", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/availabilities", requireAuth, async (c: HonoContext) =>{
   try {
     const availabilities = await kv.getByPrefix("availability:");
     return c.json({
@@ -1586,12 +1742,12 @@ app.get("/make-server-04919ac5/availabilities", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
-app.post("/make-server-04919ac5/availabilities", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/availabilities", requireAuth, async (c: HonoContext) =>{
   try {
     const body = await c.req.json();
     const availabilityId = `availability:${Date.now()}`;
@@ -1607,12 +1763,12 @@ app.post("/make-server-04919ac5/availabilities", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
-app.get("/make-server-04919ac5/events", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/events", requireAuth, async (c: HonoContext) =>{
   try {
     const events = await kv.getByPrefix("event:");
     return c.json({
@@ -1622,12 +1778,12 @@ app.get("/make-server-04919ac5/events", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
-app.post("/make-server-04919ac5/events", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/events", requireAuth, async (c: HonoContext) =>{
   try {
     const body = await c.req.json();
     const eventId = `event:${Date.now()}`;
@@ -1643,7 +1799,7 @@ app.post("/make-server-04919ac5/events", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -1653,7 +1809,7 @@ console.log("✅ Calendar routes added (availabilities & events)");
 // ===========================================================================
 // EMAIL ROUTES - BOOKING CONFIRMATION
 // ===========================================================================
-app.post("/make-server-04919ac5/emails/booking-confirmation", async (c)=>{
+app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoContext) =>{
   try {
     const body = await c.req.json();
     const { name, email, phone, date, time, duration, service } = body;
@@ -1694,7 +1850,7 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c)=>{
     console.error("❌ Error sending booking confirmation:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -1702,7 +1858,7 @@ console.log("✅ Booking confirmation email route added");
 // ===========================================================================
 // EMAIL ROUTES - LEAD CONFIRMATION
 // ===========================================================================
-app.post("/make-server-04919ac5/emails/lead-confirmation", async (c)=>{
+app.post("/make-server-04919ac5/emails/lead-confirmation", async (c: HonoContext) =>{
   try {
     const body = await c.req.json();
     const { name, email, message, wantsAppointment } = body;
@@ -1741,7 +1897,7 @@ app.post("/make-server-04919ac5/emails/lead-confirmation", async (c)=>{
     console.error("❌ Error sending lead confirmation:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -1749,7 +1905,7 @@ console.log("✅ Lead confirmation email route added");
 // ===========================================================================
 // DASHBOARD STATS
 // ===========================================================================
-app.get("/make-server-04919ac5/dashboard/stats", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/dashboard/stats", requireAuth, async (c: HonoContext) =>{
   try {
     const [leads, clients, bookings] = await Promise.all([
       kv.getByPrefix("lead:"),
@@ -1771,7 +1927,7 @@ app.get("/make-server-04919ac5/dashboard/stats", requireAuth, async (c)=>{
     console.error("❌ Error fetching dashboard stats:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -1781,7 +1937,7 @@ console.log("✅ Dashboard stats route added");
 // ===========================================================================
 console.log("📋 Adding QUOTES routes...");
 // 1. Get all quotes
-app.get("/make-server-04919ac5/quotes", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/quotes", requireAuth, async (c: HonoContext) =>{
   try {
     const quotes = await kv.getByPrefix("quote:");
     const sorted = quotes.sort((a, b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -1794,12 +1950,12 @@ app.get("/make-server-04919ac5/quotes", requireAuth, async (c)=>{
     console.error("❌ Error fetching quotes:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // 1.5. Get single quote by ID
-app.get("/make-server-04919ac5/quotes/:id", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/quotes/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const quoteId = decodeURIComponent(c.req.param("id"));
     const quote = await kv.get(quoteId);
@@ -1817,12 +1973,12 @@ app.get("/make-server-04919ac5/quotes/:id", requireAuth, async (c)=>{
     console.error("❌ Error fetching quote:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // 2. Create a new quote
-app.post("/make-server-04919ac5/quotes", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/quotes", requireAuth, async (c: HonoContext) =>{
   try {
     const body = await c.req.json();
     const { number, clientId, clientName, clientEmail, clientAddress, amount, description, validUntil, status, metadata } = body;
@@ -1859,12 +2015,12 @@ app.post("/make-server-04919ac5/quotes", requireAuth, async (c)=>{
     console.error("❌ Error creating quote:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // 3. Update a quote
-app.put("/make-server-04919ac5/quotes/:id", requireAuth, async (c)=>{
+app.put("/make-server-04919ac5/quotes/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const quoteId = decodeURIComponent(c.req.param("id"));
     const body = await c.req.json();
@@ -1889,12 +2045,12 @@ app.put("/make-server-04919ac5/quotes/:id", requireAuth, async (c)=>{
     console.error("❌ Error updating quote:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // 4. Delete a quote
-app.delete("/make-server-04919ac5/quotes/:id", requireAuth, async (c)=>{
+app.delete("/make-server-04919ac5/quotes/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const quoteId = decodeURIComponent(c.req.param("id"));
     const existingQuote = await kv.get(quoteId);
@@ -1912,12 +2068,12 @@ app.delete("/make-server-04919ac5/quotes/:id", requireAuth, async (c)=>{
     console.error("❌ Error deleting quote:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // 5. Convert quote to invoice
-app.post("/make-server-04919ac5/quotes/:id/convert", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/quotes/:id/convert", requireAuth, async (c: HonoContext) =>{
   try {
     const quoteId = decodeURIComponent(c.req.param("id"));
     const quote = await kv.get(quoteId);
@@ -1969,12 +2125,12 @@ app.post("/make-server-04919ac5/quotes/:id/convert", requireAuth, async (c)=>{
     console.error("❌ Error converting:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // 6. Send reminder
-app.post("/make-server-04919ac5/quotes/:id/send-reminder", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/quotes/:id/send-reminder", requireAuth, async (c: HonoContext) =>{
   try {
     const quoteId = decodeURIComponent(c.req.param("id"));
     const quote = await kv.get(quoteId);
@@ -2018,7 +2174,7 @@ app.post("/make-server-04919ac5/quotes/:id/send-reminder", requireAuth, async (c
     console.error("❌ Error sending reminder:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -2028,7 +2184,7 @@ console.log("✅ ALL 6 QUOTES ROUTES ADDED!");
 // ===========================================================================
 console.log("💰 Adding INVOICES routes...");
 // 1. Get all invoices
-app.get("/make-server-04919ac5/invoices", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/invoices", requireAuth, async (c: HonoContext) =>{
   try {
     const invoices = await kv.getByPrefix("invoice:");
     const sorted = invoices.sort((a, b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -2041,12 +2197,12 @@ app.get("/make-server-04919ac5/invoices", requireAuth, async (c)=>{
     console.error("❌ Error fetching invoices:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // 2. Get single invoice
-app.get("/make-server-04919ac5/invoices/:id", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/invoices/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const invoiceId = decodeURIComponent(c.req.param("id"));
     const invoice = await kv.get(invoiceId);
@@ -2063,13 +2219,13 @@ app.get("/make-server-04919ac5/invoices/:id", requireAuth, async (c)=>{
     console.error("❌ Error fetching invoice:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // 2.5. Create new invoice
-app.post("/make-server-04919ac5/invoices", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/invoices", requireAuth, async (c: HonoContext) =>{
   try {
     const body = await c.req.json();
     
@@ -2123,13 +2279,13 @@ app.post("/make-server-04919ac5/invoices", requireAuth, async (c)=>{
     console.error("❌ Error creating invoice:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // 3. Update invoice
-app.put("/make-server-04919ac5/invoices/:id", requireAuth, async (c)=>{
+app.put("/make-server-04919ac5/invoices/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const invoiceId = decodeURIComponent(c.req.param("id"));
     const body = await c.req.json();
@@ -2153,12 +2309,12 @@ app.put("/make-server-04919ac5/invoices/:id", requireAuth, async (c)=>{
     console.error("❌ Error updating invoice:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // 4. Delete invoice
-app.delete("/make-server-04919ac5/invoices/:id", requireAuth, async (c)=>{
+app.delete("/make-server-04919ac5/invoices/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const invoiceId = decodeURIComponent(c.req.param("id"));
     const existingInvoice = await kv.get(invoiceId);
@@ -2176,13 +2332,13 @@ app.delete("/make-server-04919ac5/invoices/:id", requireAuth, async (c)=>{
     console.error("❌ Error deleting invoice:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Generate secure link for invoice (new system)
-app.post("/make-server-04919ac5/invoices/:id/generate-link", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/invoices/:id/generate-link", requireAuth, async (c: HonoContext) =>{
   try {
     const invoiceId = decodeURIComponent(c.req.param("id"));
     const invoice = await kv.get(invoiceId);
@@ -2222,13 +2378,13 @@ app.post("/make-server-04919ac5/invoices/:id/generate-link", requireAuth, async 
     console.error("❌ Error generating invoice link:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // View invoice by token (public route - no auth required)
-app.get("/make-server-04919ac5/invoices/view/:token", async (c)=>{
+app.get("/make-server-04919ac5/invoices/view/:token", async (c: HonoContext) =>{
   try {
     const token = c.req.param("token");
     const tokenKey = `invoice_token:${token}`;
@@ -2295,13 +2451,13 @@ app.get("/make-server-04919ac5/invoices/view/:token", async (c)=>{
     console.error("❌ Error viewing invoice:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Send invoice reminder
-app.post("/make-server-04919ac5/invoices/:id/send-reminder", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/invoices/:id/send-reminder", requireAuth, async (c: HonoContext) =>{
   try {
     const invoiceId = decodeURIComponent(c.req.param("id"));
     const invoice = await kv.get(invoiceId);
@@ -2385,7 +2541,7 @@ app.post("/make-server-04919ac5/invoices/:id/send-reminder", requireAuth, async 
     console.error("❌ Error sending invoice reminder:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -2393,7 +2549,7 @@ console.log("✅ ALL 5 INVOICES ROUTES ADDED (including send-reminder)!");
 // ===========================================================================
 // PROJECTS ROUTES
 // ===========================================================================
-app.get("/make-server-04919ac5/projects", async (c)=>{
+app.get("/make-server-04919ac5/projects", async (c: HonoContext) =>{
   try {
     const lang = c.req.query("lang") || "fr";
     const projects = await kv.getByPrefix("project:");
@@ -2443,11 +2599,11 @@ app.get("/make-server-04919ac5/projects", async (c)=>{
     console.error("❌ Error fetching projects:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.get("/make-server-04919ac5/projects/:id", async (c)=>{
+app.get("/make-server-04919ac5/projects/:id", async (c: HonoContext) =>{
   try {
     const identifier = decodeURIComponent(c.req.param("id"));
     const lang = c.req.query("lang") || "fr";
@@ -2516,13 +2672,13 @@ app.get("/make-server-04919ac5/projects/:id", async (c)=>{
     console.error(`❌ Error fetching project:`, error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Create new project
-app.post("/make-server-04919ac5/projects", requireAuth, async (c) => {
+app.post("/make-server-04919ac5/projects", requireAuth, async (c: HonoContext) => {
   try {
     const body = await c.req.json();
     const { 
@@ -2594,13 +2750,13 @@ app.post("/make-server-04919ac5/projects", requireAuth, async (c) => {
     console.error("❌ Error creating project:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Update existing project
-app.put("/make-server-04919ac5/projects/:id", requireAuth, async (c) => {
+app.put("/make-server-04919ac5/projects/:id", requireAuth, async (c: HonoContext) => {
   try {
     const projectId = decodeURIComponent(c.req.param("id"));
     const body = await c.req.json();
@@ -2633,13 +2789,13 @@ app.put("/make-server-04919ac5/projects/:id", requireAuth, async (c) => {
     console.error("❌ Error updating project:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Delete project
-app.delete("/make-server-04919ac5/projects/:id", requireAuth, async (c) => {
+app.delete("/make-server-04919ac5/projects/:id", requireAuth, async (c: HonoContext) => {
   try {
     const projectId = decodeURIComponent(c.req.param("id"));
     
@@ -2662,7 +2818,7 @@ app.delete("/make-server-04919ac5/projects/:id", requireAuth, async (c) => {
     console.error("❌ Error deleting project:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -2671,7 +2827,7 @@ console.log("✅ Projects CRUD routes added (GET, POST, PUT, DELETE)");
 // ===========================================================================
 // NEWSLETTER ROUTES
 // ===========================================================================
-app.post("/make-server-04919ac5/newsletter/subscribe", async (c)=>{
+app.post("/make-server-04919ac5/newsletter/subscribe", async (c: HonoContext) =>{
   try {
     const { email: rawEmail, source, language } = await c.req.json();
     
@@ -2911,11 +3067,11 @@ Pour vous désinscrire, contactez-moi à contact@maxence.design
     console.error("❌ Error subscribing:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
-app.get("/make-server-04919ac5/newsletter/stats", async (c)=>{
+app.get("/make-server-04919ac5/newsletter/stats", async (c: HonoContext) =>{
   try {
     const subscribers = await kv.getByPrefix("subscriber:");
     const confirmedCount = subscribers.filter((s)=>s.status === "confirmed").length;
@@ -2928,13 +3084,13 @@ app.get("/make-server-04919ac5/newsletter/stats", async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Get all newsletter subscribers for admin
-app.get("/make-server-04919ac5/newsletter/subscribers", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/newsletter/subscribers", requireAuth, async (c: HonoContext) =>{
   try {
     const subscribers = await kv.getByPrefix("subscriber:");
     return c.json({
@@ -2944,13 +3100,13 @@ app.get("/make-server-04919ac5/newsletter/subscribers", requireAuth, async (c)=>
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Delete newsletter subscriber
-app.delete("/make-server-04919ac5/newsletter/subscriber/:email", requireAuth, async (c)=>{
+app.delete("/make-server-04919ac5/newsletter/subscriber/:email", requireAuth, async (c: HonoContext) =>{
   try {
     const email = decodeURIComponent(c.req.param("email"));
     
@@ -2976,13 +3132,13 @@ app.delete("/make-server-04919ac5/newsletter/subscriber/:email", requireAuth, as
     console.error("❌ Error deleting subscriber:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Send newsletter campaign
-app.post("/make-server-04919ac5/newsletter/send-campaign", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/newsletter/send-campaign", requireAuth, async (c: HonoContext) =>{
   try {
     const { subject, content, recipients } = await c.req.json();
     
@@ -3046,7 +3202,7 @@ app.post("/make-server-04919ac5/newsletter/send-campaign", requireAuth, async (c
     console.error("❌ Error sending campaign:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -3055,7 +3211,7 @@ console.log("✅ Newsletter routes added");
 // ===========================================================================
 // TESTIMONIALS ROUTES
 // ===========================================================================
-app.get("/make-server-04919ac5/testimonials", async (c)=>{
+app.get("/make-server-04919ac5/testimonials", async (c: HonoContext) =>{
   try {
     const testimonials = await kv.getByPrefix("testimonial:");
     const approved = testimonials.filter((t)=>t.approved);
@@ -3066,13 +3222,13 @@ app.get("/make-server-04919ac5/testimonials", async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Get all testimonials for admin (including non-approved)
-app.get("/make-server-04919ac5/testimonials/admin", requireAuth, async (c)=>{
+app.get("/make-server-04919ac5/testimonials/admin", requireAuth, async (c: HonoContext) =>{
   try {
     const testimonials = await kv.getByPrefix("testimonial:");
     return c.json({
@@ -3082,7 +3238,7 @@ app.get("/make-server-04919ac5/testimonials/admin", requireAuth, async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -3092,7 +3248,7 @@ console.log("✅ Testimonials routes added");
 // BLOG ROUTES
 // ===========================================================================
 // Get all blog posts - ENHANCED BILINGUAL VERSION
-app.get("/make-server-04919ac5/blog/posts", async (c)=>{
+app.get("/make-server-04919ac5/blog/posts", async (c: HonoContext) =>{
   try {
     const lang = c.req.query("lang") || "fr";
     const status = c.req.query("status"); // For admin: draft, published, all
@@ -3136,7 +3292,7 @@ app.get("/make-server-04919ac5/blog/posts", async (c)=>{
         const postTags = lang === 'en' 
           ? (post.tags_en || post.tags || [])
           : (post.tags_fr || post.tags || []);
-        return postTags.some(t => 
+        return postTags.some((t: string) => 
           t.toLowerCase().includes(tag.toLowerCase())
         );
       });
@@ -3166,13 +3322,13 @@ app.get("/make-server-04919ac5/blog/posts", async (c)=>{
     console.error("❌ Error fetching blog posts:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Get single blog post by slug - ENHANCED BILINGUAL VERSION
-app.get("/make-server-04919ac5/blog/posts/:slug", async (c)=>{
+app.get("/make-server-04919ac5/blog/posts/:slug", async (c: HonoContext) =>{
   try {
     const slug = c.req.param("slug");
     const lang = c.req.query("lang") || "fr";
@@ -3217,12 +3373,12 @@ app.get("/make-server-04919ac5/blog/posts/:slug", async (c)=>{
     console.error("❌ Error fetching blog post:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // Create a new blog post - ENHANCED BILINGUAL VERSION
-app.post("/make-server-04919ac5/blog/posts", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/blog/posts", requireAuth, async (c: HonoContext) =>{
   try {
     const body = await c.req.json();
     const { 
@@ -3248,7 +3404,7 @@ app.post("/make-server-04919ac5/blog/posts", requireAuth, async (c)=>{
     }
 
     // Generate separate slugs if not provided
-    const generateSlug = (title) => {
+    const generateSlug = (title: string): string => {
       return title
         .toLowerCase()
         .replace(/[àáâãäå]/g, 'a')
@@ -3352,12 +3508,12 @@ app.post("/make-server-04919ac5/blog/posts", requireAuth, async (c)=>{
     console.error("❌ Error creating blog post:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // Update a blog post - ENHANCED BILINGUAL VERSION
-app.put("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c)=>{
+app.put("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const postId = decodeURIComponent(c.req.param("id"));
     const body = await c.req.json();
@@ -3375,7 +3531,7 @@ app.put("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c)=>{
     let updatedSlugEn = body.slug_en || existingPost.slug_en || existingPost.slug;
     
     // Generate slug function
-    const generateSlug = (title) => {
+    const generateSlug = (title: string): string => {
       return title
         .toLowerCase()
         .replace(/[àáâãäå]/g, 'a')
@@ -3472,12 +3628,12 @@ app.put("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c)=>{
     console.error("❌ Error updating blog post:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // Delete a blog post
-app.delete("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c)=>{
+app.delete("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const postId = decodeURIComponent(c.req.param("id"));
     const existingPost = await kv.get(postId);
@@ -3495,23 +3651,23 @@ app.delete("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c)=>{
     console.error("❌ Error deleting blog post:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 // Get available blog tags - BILINGUAL
-app.get("/make-server-04919ac5/blog/tags", async (c) => {
+app.get("/make-server-04919ac5/blog/tags", async (c: HonoContext) => {
   try {
     const lang = c.req.query("lang") || "fr";
     const posts = await kv.getByPrefix("blog:");
     
     // Extract all tags by language
-    const allTags = new Set();
+    const allTags = new Set<string>();
     posts.forEach(post => {
       const tags = lang === 'en' 
         ? (post.tags_en || post.tags || [])
         : (post.tags_fr || post.tags || []);
-      tags.forEach(tag => allTags.add(tag));
+      tags.forEach((tag: string) => allTags.add(tag));
     });
     
     const tagsArray = Array.from(allTags).sort();
@@ -3525,13 +3681,13 @@ app.get("/make-server-04919ac5/blog/tags", async (c) => {
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Get available blog categories - BILINGUAL
-app.get("/make-server-04919ac5/blog/categories", async (c) => {
+app.get("/make-server-04919ac5/blog/categories", async (c: HonoContext) => {
   try {
     const lang = c.req.query("lang") || "fr";
     const posts = await kv.getByPrefix("blog:");
@@ -3556,13 +3712,13 @@ app.get("/make-server-04919ac5/blog/categories", async (c) => {
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
 
 // Get blog statistics - BILINGUAL
-app.get("/make-server-04919ac5/blog/stats", async (c) => {
+app.get("/make-server-04919ac5/blog/stats", async (c: HonoContext) => {
   try {
     const posts = await kv.getByPrefix("blog:");
     
@@ -3591,7 +3747,7 @@ app.get("/make-server-04919ac5/blog/stats", async (c) => {
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -3600,7 +3756,7 @@ console.log("✅ ALL Enhanced Bilingual Blog routes added (GET/POST/PUT/DELETE +
 // ===========================================================================
 // CASE STUDIES ROUTES
 // ===========================================================================
-app.get("/make-server-04919ac5/case-studies", async (c)=>{
+app.get("/make-server-04919ac5/case-studies", async (c: HonoContext) =>{
   try {
     const caseStudies = await kv.getByPrefix("case-study:");
     return c.json({
@@ -3610,7 +3766,7 @@ app.get("/make-server-04919ac5/case-studies", async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -3618,7 +3774,7 @@ console.log("✅ Case studies routes added");
 // ===========================================================================
 // RESOURCES ROUTES
 // ===========================================================================
-app.get("/make-server-04919ac5/resources", async (c)=>{
+app.get("/make-server-04919ac5/resources", async (c: HonoContext) =>{
   try {
     const resources = await kv.getByPrefix("resource:");
     return c.json({
@@ -3628,7 +3784,7 @@ app.get("/make-server-04919ac5/resources", async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -3636,7 +3792,7 @@ console.log("✅ Resources routes added");
 // ===========================================================================
 // FAQ ROUTES
 // ===========================================================================
-app.get("/make-server-04919ac5/faq", async (c)=>{
+app.get("/make-server-04919ac5/faq", async (c: HonoContext) =>{
   try {
     const questions = await kv.getByPrefix("faq:");
     return c.json({
@@ -3646,7 +3802,7 @@ app.get("/make-server-04919ac5/faq", async (c)=>{
   } catch (error) {
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -3654,7 +3810,7 @@ console.log("✅ FAQ routes added");
 // ===========================================================================
 // SEED DATA ROUTE - Initialize all data
 // ===========================================================================
-app.post("/make-server-04919ac5/seed-data", requireAuth, async (c)=>{
+app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) =>{
   try {
     console.log("🌱 Starting data seeding...");
     // Seed 3 test projects
@@ -3914,7 +4070,7 @@ app.post("/make-server-04919ac5/seed-data", requireAuth, async (c)=>{
     console.error("❌ Error seeding data:", error);
     return c.json({
       success: false,
-      error: error.message
+      error: getErrorMessage(error)
     }, 500);
   }
 });
@@ -3944,7 +4100,7 @@ console.log("✅ COMPLETE server configured with ALL routes including QUOTES + I
 // ===========================================================================
 // STRIPE PAYMENT ROUTES
 // ===========================================================================
-app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c)=>{
+app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c: HonoContext) =>{
   try {
     const body = await c.req.json();
     const { invoiceNumber, invoiceId, amount, currency = 'eur', clientName, clientEmail, successUrl, cancelUrl } = body;
@@ -4049,13 +4205,13 @@ app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c)=>{
     console.error("❌ Error creating checkout session:", error);
     return c.json({
       success: false,
-      error: error.message || "Failed to create checkout session"
+      error: getErrorMessage(error) || "Failed to create checkout session"
     }, 500);
   }
 });
 
 // Webhook to handle Stripe events (for production)
-app.post("/make-server-04919ac5/stripe/webhook", async (c)=>{
+app.post("/make-server-04919ac5/stripe/webhook", async (c: HonoContext) =>{
   try {
     const body = await c.req.text();
     const signature = c.req.header("stripe-signature");
@@ -4101,7 +4257,7 @@ app.post("/make-server-04919ac5/stripe/webhook", async (c)=>{
     
   } catch (error) {
     console.error("❌ Webhook error:", error);
-    return c.json({ success: false, error: error.message }, 500);
+    return c.json({ success: false, error: getErrorMessage(error) }, 500);
   }
 });
 
