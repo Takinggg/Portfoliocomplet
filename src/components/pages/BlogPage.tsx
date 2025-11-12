@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion } from "motion/react";
 import { BlogPostCard, BlogPost } from "../blog/BlogPostCard";
 import { BlogFilters } from "../blog/BlogFilters";
@@ -9,6 +9,7 @@ import { useTranslation } from "../../utils/i18n/useTranslation";
 import { GridSkeleton, BlogPostCardSkeleton, PageHeaderSkeleton } from "../ui/loading-skeletons";
 import { PageTransition } from "../PageTransition";
 import { fetchBlogPosts, BlogServiceMode } from "../../utils/blogService";
+import { fetchWithCache } from "../../utils/apiCache";
 
 interface BlogPageProps {
   onBlogPostClick: (slug: string) => void;
@@ -27,20 +28,27 @@ export function BlogPage({ onBlogPostClick }: BlogPageProps) {
     loadPosts();
   }, [language]);
 
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     setLoading(true);
     try {
-      const { posts: fetchedPosts, mode: serviceMode } = await fetchBlogPosts(language);
+      // Use cache for blog posts (5 minutes cache per language)
+      const result = await fetchWithCache(
+        `blog_posts_${language}`,
+        async () => {
+          return await fetchBlogPosts(language);
+        },
+        5 * 60 * 1000 // 5 minutes
+      );
       
       // Only show published posts for users
-      const publishedPosts = fetchedPosts.filter(
+      const publishedPosts = result.posts.filter(
         (post: BlogPost) => post.status === "published"
       );
       
       setPosts(publishedPosts);
-      setMode(serviceMode);
+      setMode(result.mode);
       
-      if (serviceMode === "local") {
+      if (result.mode === "local") {
         console.log(`📍 Mode local activé: ${publishedPosts.length} articles`);
       } else {
         console.log(`✅ Serveur connecté: ${publishedPosts.length} articles`);
@@ -52,7 +60,7 @@ export function BlogPage({ onBlogPostClick }: BlogPageProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [language]);
 
   // Extract all unique tags
   const allTags = useMemo(() => {
@@ -89,15 +97,27 @@ export function BlogPage({ onBlogPostClick }: BlogPageProps) {
     });
   }, [posts, searchQuery, selectedCategory, selectedTags]);
 
-  const handleTagClick = (tag: string) => {
+  const handleTagClick = useCallback((tag: string) => {
     setSelectedTags(prev =>
       prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
     );
-  };
+  }, []);
 
-  const featuredPost = filteredPosts[0];
-  const recentPosts = filteredPosts.slice(1, 4);
-  const regularPosts = filteredPosts.slice(4);
+  const handleSearchChange = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
+
+  const handleCategoryChange = useCallback((category: string | null) => {
+    setSelectedCategory(category);
+  }, []);
+
+  const handlePostClick = useCallback((slug: string) => {
+    onBlogPostClick(slug);
+  }, [onBlogPostClick]);
+
+  const featuredPost = useMemo(() => filteredPosts[0], [filteredPosts]);
+  const recentPosts = useMemo(() => filteredPosts.slice(1, 4), [filteredPosts]);
+  const regularPosts = useMemo(() => filteredPosts.slice(4), [filteredPosts]);
 
   if (loading) {
     return (
@@ -229,7 +249,7 @@ export function BlogPage({ onBlogPostClick }: BlogPageProps) {
                   <BlogPostCard
                     post={featuredPost}
                     variant="featured"
-                    onClick={() => onBlogPostClick(featuredPost.slug)}
+                    onClick={() => handlePostClick(featuredPost.slug)}
                   />
                 </motion.div>
               )}
@@ -244,7 +264,7 @@ export function BlogPage({ onBlogPostClick }: BlogPageProps) {
                         key={`${post.id}-${post.slug}-${index}`}
                         post={post}
                         variant="compact"
-                        onClick={() => onBlogPostClick(post.slug)}
+                        onClick={() => handlePostClick(post.slug)}
                       />
                     ))}
                   </div>
@@ -267,7 +287,7 @@ export function BlogPage({ onBlogPostClick }: BlogPageProps) {
                       <BlogPostCard
                         key={`${post.id}-${post.slug}-${index}`}
                         post={post}
-                        onClick={() => onBlogPostClick(post.slug)}
+                        onClick={() => handlePostClick(post.slug)}
                       />
                     ))}
                   </div>
@@ -314,9 +334,9 @@ export function BlogPage({ onBlogPostClick }: BlogPageProps) {
             <aside className="lg:sticky lg:top-24 lg:h-fit">
               <BlogFilters
                 searchQuery={searchQuery}
-                onSearch={setSearchQuery}
+                onSearch={handleSearchChange}
                 selectedCategory={selectedCategory}
-                onCategoryChange={setSelectedCategory}
+                onCategoryChange={handleCategoryChange}
                 selectedTags={selectedTags}
                 onTagClick={handleTagClick}
                 availableTags={allTags}

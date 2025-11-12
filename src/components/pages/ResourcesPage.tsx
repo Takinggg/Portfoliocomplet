@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { useTranslation } from "../../utils/i18n/useTranslation";
+import { fetchWithCache } from "../../utils/apiCache";
 
 interface Resource {
   id: string;
@@ -113,24 +114,30 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
     fetchResources();
   }, [language]); // Reload when language changes
 
-  const fetchResources = async () => {
+  const fetchResources = useCallback(async () => {
     setLoading(true);
     try {
       console.log(`📚 [FRONTEND] Fetching resources from API (lang: ${language})...`);
       
-      // Utiliser le service avec fallback local - PASSER LA LANGUE !
-      const { fetchResources } = await import("../../utils/dataService");
-      const { resources: loadedResources, mode } = await fetchResources(language);
+      // Use cache for resources (10 minutes cache per language)
+      const result = await fetchWithCache(
+        `resources_${language}`,
+        async () => {
+          const { fetchResources } = await import("../../utils/dataService");
+          return await fetchResources(language);
+        },
+        10 * 60 * 1000 // 10 minutes
+      );
       
-      console.log(`✅ Resources loaded in ${mode} mode (${language}):`, loadedResources.length);
-      setResources(loadedResources);
+      console.log(`✅ Resources loaded in ${result.mode} mode (${language}):`, result.resources.length);
+      setResources(result.resources);
     } catch (error) {
       console.error("❌ Error fetching resources:", error);
       setResources([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [language]);
 
   const handleDownload = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -211,29 +218,44 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
     }
   };
 
-  const openDownloadDialog = (resource: Resource) => {
+  const openDownloadDialog = useCallback((resource: Resource) => {
     setSelectedResource(resource);
     setDownloadDialogOpen(true);
-  };
+  }, []);
 
-  const filteredResources = resources.filter(resource => {
-    const matchesCategory = filterCategory === "all" || resource.category === filterCategory;
-    const matchesSearch = !searchQuery || 
-      resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      resource.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      resource.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    return matchesCategory && matchesSearch;
-  });
+  const filteredResources = useMemo(() => {
+    return resources.filter(resource => {
+      const matchesCategory = filterCategory === "all" || resource.category === filterCategory;
+      const matchesSearch = !searchQuery || 
+        resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        resource.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        resource.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      
+      return matchesCategory && matchesSearch;
+    });
+  }, [resources, filterCategory, searchQuery]);
 
-  const stats = {
+  const stats = useMemo(() => ({
     total: resources.length,
     downloads: resources.reduce((sum, r) => sum + r.downloads, 0),
     categories: Object.keys(CATEGORY_CONFIG).map(cat => ({
       category: cat,
       count: resources.filter(r => r.category === cat).length
     }))
-  };
+  }), [resources, CATEGORY_CONFIG]);
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  }, []);
+
+  const handleCategoryClick = useCallback((category: string) => {
+    setFilterCategory(category);
+  }, []);
+
+  const handleResetFilters = useCallback(() => {
+    setFilterCategory("all");
+    setSearchQuery("");
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0C0C0C] text-white">
@@ -287,7 +309,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
               <Input
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
                 placeholder={t.resources.filters.search}
                 className="pl-10 bg-black/40 border-[#00FFC2]/20 focus:border-[#00FFC2]/40"
               />
@@ -297,7 +319,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
             <div className="flex items-center gap-2 flex-wrap">
               <Button
                 variant={filterCategory === "all" ? "default" : "outline"}
-                onClick={() => setFilterCategory("all")}
+                onClick={() => handleCategoryClick("all")}
                 className={filterCategory === "all" ? "bg-[#00FFC2] text-black" : "border-[#00FFC2]/20"}
               >
                 {t.resources.filters.all}
@@ -308,7 +330,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
                   <Button
                     key={key}
                     variant={filterCategory === key ? "default" : "outline"}
-                    onClick={() => setFilterCategory(key)}
+                    onClick={() => handleCategoryClick(key)}
                     className={filterCategory === key ? "bg-[#00FFC2] text-black" : "border-[#00FFC2]/20"}
                   >
                     <Icon className="h-4 w-4 mr-2" />
@@ -360,10 +382,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
             <FileText className="h-16 w-16 text-white/20 mx-auto mb-4" />
             <p className="text-white/40">{t.resources.noResults.message}</p>
             <Button
-              onClick={() => {
-                setSearchQuery("");
-                setFilterCategory("all");
-              }}
+              onClick={handleResetFilters}
               variant="outline"
               className="mt-4 border-[#00FFC2]/20"
             >
