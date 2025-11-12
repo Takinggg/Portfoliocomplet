@@ -180,11 +180,14 @@ function AppContent() {
     };
     console.log("💡 Newsletter debug helper loaded! Run: newsletterDebug()");
     
-    (window as any).serverDiagnostic = () => {
-      navigate('/server-diagnostic');
-      console.log("🔧 Opening Server Diagnostic page...");
-    };
-    console.log("💡 Server diagnostic helper loaded! Run: serverDiagnostic()");
+    // Server diagnostic - DEV only
+    if (import.meta.env.DEV) {
+      (window as any).serverDiagnostic = () => {
+        navigate('/server-diagnostic');
+        console.log("🔧 Opening Server Diagnostic page...");
+      };
+      console.log("💡 Server diagnostic helper loaded! Run: serverDiagnostic()");
+    }
     
     (window as any).syncDashboard = () => {
       navigate('/sync-dashboard');
@@ -369,8 +372,8 @@ function AppContent() {
         />
         
         {/* Special pages without navigation */}
-        <Route path="/newsletter-debug" element={<><div className="h-[72px]" aria-hidden="true" /><main id="main-content" className="flex-1" tabIndex={-1}><NewsletterDebugPage /></main></>} />
-        <Route path="/server-diagnostic" element={<><div className="h-[72px]" aria-hidden="true" /><main id="main-content" className="flex-1" tabIndex={-1}><AutoServerDiagnostic /></main></>} />
+        {import.meta.env.DEV && <Route path="/newsletter-debug" element={<><div className="h-[72px]" aria-hidden="true" /><main id="main-content" className="flex-1" tabIndex={-1}><NewsletterDebugPage /></main></>} />}
+        {import.meta.env.DEV && <Route path="/server-diagnostic" element={<><div className="h-[72px]" aria-hidden="true" /><main id="main-content" className="flex-1" tabIndex={-1}><AutoServerDiagnostic /></main></>} />}
         <Route path="/sync-dashboard" element={<><div className="h-[72px]" aria-hidden="true" /><main id="main-content" className="flex-1" tabIndex={-1}><SyncDashboardPage /></main></>} />
         
         {/* Invoice routes - Public (no auth required, secured by token) */}
@@ -463,7 +466,7 @@ function AppContent() {
       <PWAInstallPrompt />
       <PWAUpdatePrompt />
       <NetworkStatus />
-      <PWADebugPanel />
+      {import.meta.env.DEV && <PWADebugPanel />}
       
       {/* Server Status Alert - Always show to inform about deployment status */}
       <ServerStatusAlert />
