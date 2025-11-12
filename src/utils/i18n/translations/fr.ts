@@ -736,7 +736,7 @@ export default {
       "reasons": {
         "0": "Audit d'automatisation gratuit",
         "1": "Projet d'automatisation CRM",
-        "2": "Dashboard Notion ou Airtable",
+        "2": "Design UI/UX / Redesign UI/UX",
         "3": "Intégration IA (chatbot, GPT)",
         "4": "Formation sur les outils no-code",
         "5": "Autre demande"

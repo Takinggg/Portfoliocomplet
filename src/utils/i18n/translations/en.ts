@@ -736,7 +736,7 @@ export default {
       "reasons": {
         "0": "Free automation audit",
         "1": "CRM automation project",
-        "2": "Notion or Airtable dashboard",
+        "2": "UI/UX Design / UI/UX Redesign",
         "3": "AI integration (chatbot, GPT)",
         "4": "No-code tools training",
         "5": "Other request"

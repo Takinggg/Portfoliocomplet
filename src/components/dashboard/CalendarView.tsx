@@ -90,6 +90,8 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
   const [pendingChanges, setPendingChanges] = useState<PendingChange[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
+  console.log('📅 CalendarView rendered with', bookings.length, 'bookings');
+
   // Appliquer les changements en attente aux bookings affichés
   const displayedBookings = useMemo(() => {
     return bookings.map(booking => {
@@ -136,6 +138,8 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
 
   // Générer les jours à afficher selon le mode
   const days = useMemo(() => {
+    console.log('📅 Generating calendar days for:', viewMode, 'current date:', currentDate);
+    
     if (viewMode === 'month') {
       const start = startOfWeek(startOfMonth(currentDate), { weekStartsOn: 1 });
       const end = endOfWeek(endOfMonth(currentDate), { weekStartsOn: 1 });
@@ -147,6 +151,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
         day = addDays(day, 1);
       }
       
+      console.log('📅 Generated', days.length, 'days for month view');
       return days;
     } else if (viewMode === 'week') {
       const start = startOfWeek(currentDate, { weekStartsOn: 1 });
@@ -156,8 +161,10 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
         days.push(addDays(start, i));
       }
       
+      console.log('📅 Generated', days.length, 'days for week view');
       return days;
     } else {
+      console.log('📅 Generated 1 day for day view');
       return [currentDate];
     }
   }, [currentDate, viewMode]);
