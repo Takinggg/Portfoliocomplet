@@ -43,6 +43,7 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
     email: lead.email,
     phone: lead.phone || "",
     message: lead.message,
+    interests: lead.interests || [],
   });
 
   const [emailData, setEmailData] = useState({
@@ -198,6 +199,7 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
                           email: lead.email,
                           phone: lead.phone || "",
                           message: lead.message,
+                          interests: lead.interests || [],
                         });
                       }}
                     >
@@ -329,6 +331,68 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
                     </div>
                   </div>
                 )}
+              </>
+            )}
+
+            {/* Interests Editor in Edit Mode */}
+            {isEditing && (
+              <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+                <Label className="text-white/60 text-xs uppercase tracking-wide mb-3 block">Intérêts</Label>
+                <div className="grid md:grid-cols-2 gap-3">
+                  {[
+                    "Audit d'automatisation gratuit",
+                    "Projet d'automatisation CRM",
+                    "Design UI/UX / Redesign UI/UX",
+                    "Intégration IA (chatbot, GPT)",
+                    "Formation sur les outils no-code",
+                    "Autre demande"
+                  ].map((reason, index) => {
+                    const isSelected = editedLead.interests.includes(reason);
+                    return (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => {
+                          if (isSelected) {
+                            setEditedLead({
+                              ...editedLead,
+                              interests: editedLead.interests.filter(r => r !== reason)
+                            });
+                          } else {
+                            setEditedLead({
+                              ...editedLead,
+                              interests: [...editedLead.interests, reason]
+                            });
+                          }
+                        }}
+                        className={`
+                          flex items-center gap-3 p-3 rounded-lg transition-all text-left
+                          ${isSelected 
+                            ? 'bg-[#00FFC2]/10 border-2 border-[#00FFC2]' 
+                            : 'bg-neutral-900/50 border border-neutral-800 hover:border-[#00FFC2]/20'
+                          }
+                        `}
+                      >
+                        <div className={`
+                          w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0
+                          ${isSelected ? 'border-[#00FFC2]' : 'border-neutral-600'}
+                        `}>
+                          {isSelected && (
+                            <div className="w-2.5 h-2.5 rounded-full bg-[#00FFC2]" />
+                          )}
+                        </div>
+                        <span className={`text-sm ${isSelected ? 'text-white font-medium' : 'text-neutral-400'}`}>
+                          {reason}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {!isEditing && (
+              <>
 
                 {lead.wantsAppointment && (
                   <div className="bg-[#00FFC2]/10 border border-[#00FFC2]/20 rounded-lg p-4">
