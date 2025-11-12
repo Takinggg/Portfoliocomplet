@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback, memo } from "react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { motion } from "motion/react";
@@ -25,6 +25,7 @@ import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { GridSkeleton, ProjectCardSkeleton, PageHeaderSkeleton } from "../ui/loading-skeletons";
 import { PageTransition } from "../PageTransition";
+import { fetchWithCache } from "../../utils/apiCache";
 
 type Page = "contact" | "booking";
 
@@ -64,33 +65,42 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch projects from backend
+  // Fetch projects from backend with caching
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch(
-          `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/projects?lang=${language}`,
-          {
-            headers: {
-              Authorization: `Bearer ${publicAnonKey}`,
-            },
-          }
+        const data = await fetchWithCache(
+          `projects_${language}`,
+          async () => {
+            const response = await fetch(
+              `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/projects?lang=${language}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${publicAnonKey}`,
+                },
+              }
+            );
+            
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            return response.json();
+          },
+          5 * 60 * 1000 // 5 minutes cache
         );
         
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
         setProjects(data.projects || []);
-        console.log(`✅ Loaded ${data.projects?.length || 0} projects for language: ${language}`);
-        if (data.projects?.length > 0) {
-          console.log('📋 First project sample:', data.projects[0]);
-          console.log('📝 Title field:', data.projects[0].title);
-          console.log('📝 Name field:', data.projects[0].name);
+        if (import.meta.env.DEV) {
+          console.log(`✅ Loaded ${data.projects?.length || 0} projects for language: ${language}`);
+          if (data.projects?.length > 0) {
+            console.log('📋 First project sample:', data.projects[0]);
+          }
         }
       } catch (error) {
-        console.error('Error fetching projects:', error);
+        if (import.meta.env.DEV) {
+          console.error('Error fetching projects:', error);
+        }
         // Will fall back to demo projects
       } finally {
         setLoading(false);
@@ -188,9 +198,12 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
   ];
 
   // Use demo projects if no real projects exist
-  const displayProjects = projects.length > 0 ? projects : demoProjects;
+  const displayProjects = useMemo(() => 
+    projects.length > 0 ? projects : demoProjects,
+    [projects]
+  );
 
-  const filters = [
+  const filters = useMemo(() => [
     { id: "all", label: t('projects.filters.all') },
     { id: "web", label: t('projects.filters.web') },
     { id: "mobile", label: t('projects.filters.mobile') },
@@ -200,10 +213,10 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
     { id: "ai", label: t('projects.filters.ai') },
     { id: "dashboard", label: t('projects.filters.dashboard') },
     { id: "other", label: t('projects.filters.other') },
-  ];
+  ], [t]);
 
-  // Get icon for category
-  const getCategoryIcon = (category: string) => {
+  // Get icon for category (memoized)
+  const getCategoryIcon = useCallback((category: string) => {
     const icons: Record<string, any> = {
       web: Code2,
       mobile: Briefcase,
@@ -215,18 +228,41 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
       other: Rocket,
     };
     return icons[category] || Briefcase;
-  };
+  }, []);
 
-  const filteredProjects = displayProjects.filter(project => {
-    const projectCategory = project.category || 'other';
-    const matchesFilter = activeFilter === "all" || projectCategory === activeFilter;
-    const matchesSearch = 
-      (project.name || project.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (project.description || project.subtitle || '').toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
+  // Filter projects (memoized for performance)
+  const filteredProjects = useMemo(() => 
+    displayProjects.filter(project => {
+      const projectCategory = project.category || 'other';
+      const matchesFilter = activeFilter === "all" || projectCategory === activeFilter;
+      const matchesSearch = 
+        (project.name || project.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (project.description || project.subtitle || '').toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesFilter && matchesSearch;
+    }),
+    [displayProjects, activeFilter, searchQuery]
+  );
 
-  const featuredProjects = displayProjects.filter(p => p.featured || p.isPinned).slice(0, 3);
+  const featuredProjects = useMemo(() => 
+    displayProjects.filter(p => p.featured || p.isPinned).slice(0, 3),
+    [displayProjects]
+  );
+
+  // Memoized handlers
+  const handleFilterChange = useCallback((filterId: string) => {
+    setActiveFilter(filterId);
+  }, []);
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  }, []);
+
+  const handleProjectClick = useCallback((project: any) => {
+    const slug = language === 'en' 
+      ? (project.slug_en || project.slug_fr || project.slug) 
+      : (project.slug_fr || project.slug);
+    onProjectClick?.(slug || project.id);
+  }, [language, onProjectClick]);
 
   if (loading) {
     return (
@@ -311,7 +347,7 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
                   key={filter.id}
                   variant={activeFilter === filter.id ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setActiveFilter(filter.id)}
+                  onClick={() => handleFilterChange(filter.id)}
                   className={activeFilter === filter.id 
                     ? "bg-mint text-black hover:bg-mint/90 rounded-lg" 
                     : "border-neutral-800 text-neutral-400 hover:bg-neutral-950 hover:text-white rounded-lg"
@@ -328,7 +364,7 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
               <Input
                 placeholder={t('projects.search')}
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
                 className="pl-11 bg-neutral-950 border-neutral-800 text-white placeholder:text-neutral-500 focus:border-mint/30 rounded-lg"
               />
             </div>
@@ -364,10 +400,7 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
                     className="group cursor-pointer"
-                    onClick={() => {
-                      const slug = language === 'en' ? (project.slug_en || project.slug_fr || project.slug) : (project.slug_fr || project.slug);
-                      onProjectClick?.(slug || project.id);
-                    }}
+                    onClick={() => handleProjectClick(project)}
                   >
                     <div className="relative h-full rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-900 hover:border-mint/20 transition-all duration-300">
                       {/* Image or Icon Visual */}
@@ -557,10 +590,7 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
 
                     <Button 
                       variant="outline"
-                      onClick={() => {
-                        const slug = language === 'en' ? (project.slug_en || project.slug_fr || project.slug) : (project.slug_fr || project.slug);
-                        onProjectClick?.(slug || project.id);
-                      }}
+                      onClick={() => handleProjectClick(project)}
                       className="border-neutral-800 hover:border-mint/20 hover:bg-neutral-950 rounded-lg"
                     >
                       {t('projects.card.viewProject')}
