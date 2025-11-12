@@ -198,7 +198,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-[#1a1a1a] border border-cyan-500/20">
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto !bg-[#1a1a1a] border border-cyan-500/20">
         <DialogHeader className="border-b border-white/10 pb-4">
           <DialogTitle className="text-2xl font-bold text-white">
             {project ? "✏️ Modifier le projet" : "➕ Nouveau projet"}
