@@ -69,6 +69,8 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
         }
         
         console.log('✅ Project loaded:', data.project.name);
+        console.log('📋 All project fields:', Object.keys(data.project));
+        console.log('📦 Full project data:', data.project);
         setProject(data.project);
       } catch (error) {
         console.error('Error fetching project:', error);
@@ -352,8 +354,8 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
         </div>
       </section>
 
-      {/* Challenge Section */}
-      {project.challenge && (
+      {/* Challenge Section (text long format) */}
+      {project.challenge && typeof project.challenge === 'string' && (
         <section className="py-24 px-6 border-t border-neutral-900">
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-12">
@@ -594,6 +596,25 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
           </motion.div>
         </div>
       </section>
+
+      {/* Debug Section - Development Only */}
+      {process.env.NODE_ENV === 'development' && (
+        <section className="py-12 px-6 border-t border-yellow-500/20 bg-yellow-500/5">
+          <div className="max-w-7xl mx-auto">
+            <details className="group">
+              <summary className="cursor-pointer text-yellow-400 font-semibold mb-4 flex items-center gap-2">
+                <span>🔍 Debug: Voir tous les champs disponibles</span>
+                <span className="text-xs text-neutral-500">(Mode développement uniquement)</span>
+              </summary>
+              <div className="bg-black/50 rounded-lg p-6 border border-yellow-500/20">
+                <pre className="text-xs text-neutral-300 overflow-x-auto">
+                  {JSON.stringify(project, null, 2)}
+                </pre>
+              </div>
+            </details>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
