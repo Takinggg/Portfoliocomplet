@@ -33,7 +33,7 @@ interface BlogPostPageProps {
 }
 
 export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPageProps) {
-  const { language } = useTranslation();
+  const { language, t } = useTranslation();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -347,14 +347,14 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
               onClick={() => onNavigate("contact")}
               className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
             >
-              Me contacter
+              {t('nav.contact')}
             </Button>
             <Button
               onClick={() => onNavigate("booking")}
               variant="outline"
               className="bg-white/5 border-white/10 text-white hover:bg-white/10"
             >
-              Réserver un appel
+              {t('nav.cta')}
             </Button>
           </div>
         </motion.div>
