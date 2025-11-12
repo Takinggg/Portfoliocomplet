@@ -242,7 +242,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                     value={formData.title_fr}
                     onChange={(e) => setFormData({ ...formData, title_fr: e.target.value })}
                     placeholder="Nom du projet en français"
-                    className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                    className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                     required
                   />
                 </div>
@@ -253,7 +253,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                     value={formData.slug_fr}
                     onChange={(e) => setFormData({ ...formData, slug_fr: e.target.value })}
                     placeholder="url-du-projet-fr"
-                    className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                    className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                   />
                 </div>
               </div>
@@ -264,7 +264,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                   value={formData.description_fr}
                   onChange={(e) => setFormData({ ...formData, description_fr: e.target.value })}
                   placeholder="Description complète du projet en français"
-                  className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500 min-h-[120px]"
+                  className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500 min-h-[120px]"
                   required
                 />
               </div>
@@ -275,7 +275,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                   value={formData.clientName_fr}
                   onChange={(e) => setFormData({ ...formData, clientName_fr: e.target.value })}
                   placeholder="Nom du client"
-                  className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                  className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                 />
               </div>
 
@@ -287,7 +287,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                     onChange={(e) => setNewChallengeFr(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addChallengeFr())}
                     placeholder="Ajouter un défi..."
-                    className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                    className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                   />
                   <Button
                     type="button"
@@ -321,7 +321,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                     onChange={(e) => setNewFeatureFr(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addFeatureFr())}
                     placeholder="Ajouter une fonctionnalité..."
-                    className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                    className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                   />
                   <Button
                     type="button"
@@ -355,7 +355,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                     onChange={(e) => setNewTagFr(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTagFr())}
                     placeholder="Ajouter un tag..."
-                    className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                    className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                   />
                   <Button
                     type="button"
@@ -393,7 +393,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                     value={formData.title_en}
                     onChange={(e) => setFormData({ ...formData, title_en: e.target.value })}
                     placeholder="Project name in English"
-                    className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                    className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                   />
                 </div>
 
@@ -403,7 +403,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                     value={formData.slug_en}
                     onChange={(e) => setFormData({ ...formData, slug_en: e.target.value })}
                     placeholder="project-url-en"
-                    className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                    className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                   />
                 </div>
               </div>
@@ -414,7 +414,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                   value={formData.description_en}
                   onChange={(e) => setFormData({ ...formData, description_en: e.target.value })}
                   placeholder="Complete project description in English"
-                  className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500 min-h-[120px]"
+                  className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500 min-h-[120px]"
                 />
               </div>
 
@@ -424,7 +424,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                   value={formData.clientName_en}
                   onChange={(e) => setFormData({ ...formData, clientName_en: e.target.value })}
                   placeholder="Client name"
-                  className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                  className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                 />
               </div>
 
@@ -436,7 +436,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                     onChange={(e) => setNewChallengeEn(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addChallengeEn())}
                     placeholder="Add a challenge..."
-                    className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                    className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                   />
                   <Button
                     type="button"
@@ -470,7 +470,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                     onChange={(e) => setNewFeatureEn(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addFeatureEn())}
                     placeholder="Add a feature..."
-                    className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                    className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                   />
                   <Button
                     type="button"
@@ -504,7 +504,7 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
                     onChange={(e) => setNewTagEn(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTagEn())}
                     placeholder="Add a tag..."
-                    className="bg-black/50 border-cyan-500/20 text-white placeholder:text-white/30 focus:border-cyan-500"
+                    className="!bg-[#0a0a0a] border-cyan-500/30 !text-white placeholder:text-gray-500 focus:border-cyan-500"
                   />
                   <Button
                     type="button"
@@ -698,3 +698,4 @@ export function ProjectDialog({ open, onClose, project, onSuccess }: ProjectDial
     </Dialog>
   );
 }
+

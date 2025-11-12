@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
 import "./styles/globals.css";
 
 // ==========================================
@@ -430,6 +430,7 @@ function AppContent() {
 // Public page layout with Navigation and Footer
 function PublicLayout({ children, currentPage }: { children: React.ReactNode; currentPage: string }) {
   const navigate = useNavigate();
+  const location = useLocation();
   
   const buildNavPath = (page: string): string => {
     const lang = getLanguageFromPath();
@@ -449,12 +450,29 @@ function PublicLayout({ children, currentPage }: { children: React.ReactNode; cu
     };
     return routes[page] || `/${lang}`;
   };
+
+  // Get current page from URL
+  const getCurrentPage = (): any => {
+    const path = location.pathname;
+    if (path.includes('/projects')) return 'projects';
+    if (path.includes('/services')) return 'services';
+    if (path.includes('/about')) return 'about';
+    if (path.includes('/contact')) return 'contact';
+    if (path.includes('/booking')) return 'booking';
+    if (path.includes('/blog')) return 'blog';
+    if (path.includes('/case-studies')) return 'case-studies';
+    if (path.includes('/faq')) return 'faq';
+    if (path.includes('/resources')) return 'resources';
+    if (path.includes('/testimonials')) return 'testimonials';
+    if (path.includes('/dashboard')) return 'dashboard';
+    return 'home';
+  };
   
   return (
     <>
       <ScrollProgress />
       <Navigation 
-        currentPage={currentPage} 
+        currentPage={getCurrentPage() as any} 
         onNavigate={(page) => navigate(buildNavPath(page))}
         isAuthenticated={false}
       />

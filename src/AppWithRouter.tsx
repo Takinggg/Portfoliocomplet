@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
 import "./styles/globals.css";
 import { Home, Briefcase, User, Mail, Calendar, LayoutDashboard } from "lucide-react";
 import HomePage from "./components/pages/HomePage";
@@ -64,11 +64,29 @@ function RouteWrapper({
 }: any) {
   const navigate = useNavigate();
   const params = useParams();
+  const location = useLocation();
 
   // Get current language from URL (Hash Router)
   const getLanguageFromPath = (): string => {
     const match = window.location.pathname.match(/^\/(en|fr)(\/|$)/);
     return match ? match[1] : 'fr';
+  };
+
+  // Determine current page from path
+  const getCurrentPageFromPath = (): string => {
+    const path = location.pathname;
+    if (path.includes('/projects')) return 'projects';
+    if (path.includes('/services')) return 'services';
+    if (path.includes('/about')) return 'about';
+    if (path.includes('/contact')) return 'contact';
+    if (path.includes('/booking')) return 'booking';
+    if (path.includes('/blog')) return 'blog';
+    if (path.includes('/case-studies')) return 'case-studies';
+    if (path.includes('/faq')) return 'faq';
+    if (path.includes('/resources')) return 'resources';
+    if (path.includes('/testimonials')) return 'testimonials';
+    if (path.includes('/dashboard')) return 'dashboard';
+    return 'home';
   };
 
   const navigateTo = (page: string) => {
@@ -120,7 +138,7 @@ function RouteWrapper({
       onProjectClick={onProjectClick}
       onBlogPostClick={onBlogPostClick}
       handleNavigate={handleNavigate}
-      currentPage={currentPage}
+      currentPage={currentPage || getCurrentPageFromPath()}
       {...params}
       {...props}
     />
@@ -188,13 +206,10 @@ function AppContent() {
         console.log("\n🎯 État actuel:");
         import("./utils/blogService").then(({ getCurrentMode }) => {
           const mode = getCurrentMode();
-          console.log(`  Mode: ${mode === "local" ? "🟠 LOCAL" : mode === "server" ? "🟢 SERVEUR" : "⏳ Vérification..."}`);
-          if (mode === "local") {
-            console.log("\n⚠️  Le blog fonctionne en mode local (localStorage)");
-            console.log("💡 Pour activer Supabase:");
-            console.log("   1. Lire /LIRE_MOI_BLOG.md (2 min)");
-            console.log("   2. Suivre /ACTIVER_BLOG_SUPABASE.md (10 min)");
-            console.log("   3. Profiter ! 🎉");
+          console.log(`  Mode: ${mode === "server" ? "� SERVEUR" : mode === "unavailable" ? "� INDISPONIBLE" : "⏳ Vérification..."}`);
+          if (mode === "unavailable") {
+            console.log("\n⚠️  Le serveur Supabase est indisponible");
+            console.log("💡 Vérifiez votre connexion et les clés API");
           }
         });
       };
@@ -465,10 +480,11 @@ function AppContent() {
 // Public page layout with Navigation and Footer
 function PublicLayout({ children, currentPage }: { children: React.ReactNode; currentPage: string }) {
   const navigate = useNavigate();
+  const location = useLocation();
   
   // Get current language from URL
   const getLanguageFromPath = (): string => {
-    const match = window.location.pathname.match(/^\/(en|fr)(\/|$)/);
+    const match = location.pathname.match(/^\/(en|fr)(\/|$)/);
     return match ? match[1] : 'fr';
   };
   
@@ -486,12 +502,29 @@ function PublicLayout({ children, currentPage }: { children: React.ReactNode; cu
     // All other pages with language prefix
     return `/${lang}/${page}`;
   };
+
+  // Get current page from URL
+  const getCurrentPage = (): any => {
+    const path = location.pathname;
+    if (path.includes('/projects')) return 'projects';
+    if (path.includes('/services')) return 'services';
+    if (path.includes('/about')) return 'about';
+    if (path.includes('/contact')) return 'contact';
+    if (path.includes('/booking')) return 'booking';
+    if (path.includes('/blog')) return 'blog';
+    if (path.includes('/case-studies')) return 'case-studies';
+    if (path.includes('/faq')) return 'faq';
+    if (path.includes('/resources')) return 'resources';
+    if (path.includes('/testimonials')) return 'testimonials';
+    if (path.includes('/dashboard')) return 'dashboard';
+    return 'home';
+  };
   
   return (
     <>
       <ScrollProgress />
       <Navigation 
-        currentPage={currentPage} 
+        currentPage={getCurrentPage() as any} 
         onNavigate={(page) => navigate(buildNavPath(page))}
         isAuthenticated={false}
       />
