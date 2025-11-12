@@ -888,7 +888,8 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
       type: "lead", 
       value: l.value || 2500,
       display_name: l.name,
-      display_info: l.email || l.status || 'N/A'
+      display_info: l.email || l.status || 'N/A',
+      interests: l.interests || []
     })),
     ...bookings.map(b => ({
       ...b,
@@ -1580,6 +1581,16 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
                                 <p className="text-sm text-white/60 truncate">
                                   {item.display_info}
                                 </p>
+                                {/* Interests for leads */}
+                                {item.type === 'lead' && item.interests && item.interests.length > 0 && (
+                                  <div className="flex flex-wrap gap-1 mt-1">
+                                    {item.interests.map((interest: string, idx: number) => (
+                                      <span key={idx} className="text-xs px-2 py-0.5 rounded-md bg-[#00FFC2]/10 text-[#00FFC2] border border-[#00FFC2]/20">
+                                        {interest}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
                                 {item.items_count > 0 && (
                                   <span className="text-xs text-white/40">
                                     • {item.items_count} item{item.items_count > 1 ? 's' : ''}
