@@ -17,9 +17,26 @@
   [[headers]]
     for = "/*"
     [headers.values]
+      # Content Security Policy stricte
+      Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co https://api.stripe.com wss://*.supabase.co; frame-src 'self' https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+      
+      # Protection contre le clickjacking
       X-Frame-Options = "DENY"
+      
+      # Empêcher le MIME sniffing
       X-Content-Type-Options = "nosniff"
+      
+      # Protection XSS
+      X-XSS-Protection = "1; mode=block"
+      
+      # Referrer Policy stricte
       Referrer-Policy = "strict-origin-when-cross-origin"
+      
+      # HSTS - Force HTTPS
+      Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+      
+      # Permissions restrictives
+      Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=(), usb=()"
   
   [[headers]]
     for = "/assets/*"

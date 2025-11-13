@@ -3,8 +3,46 @@
   import react from '@vitejs/plugin-react-swc';
   import path from 'path';
 
+  // Plugin de sécurité personnalisé
+  function securityHeadersPlugin() {
+    return {
+      name: 'security-headers',
+      configureServer(server: any) {
+        server.middlewares.use((_req: any, res: any, next: any) => {
+          // Content Security Policy stricte
+          res.setHeader(
+            'Content-Security-Policy',
+            [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://cdn.jsdelivr.net",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com data:",
+              "img-src 'self' data: https: blob:",
+              "connect-src 'self' https://*.supabase.co https://api.stripe.com wss://*.supabase.co",
+              "frame-src 'self' https://js.stripe.com",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "upgrade-insecure-requests"
+            ].join('; ')
+          );
+
+          // Autres headers de sécurité
+          res.setHeader('X-Frame-Options', 'DENY');
+          res.setHeader('X-Content-Type-Options', 'nosniff');
+          res.setHeader('X-XSS-Protection', '1; mode=block');
+          res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+          res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+          
+          next();
+        });
+      }
+    };
+  }
+
   export default defineConfig({
-    plugins: [react()],
+    plugins: [react(), securityHeadersPlugin()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
@@ -55,6 +93,21 @@
     build: {
       target: 'esnext',
       outDir: 'dist',
+      sourcemap: false, // Pas de sourcemaps en production pour la sécurité
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true, // Supprimer console.log en production
+          drop_debugger: true,
+          pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace']
+        },
+        mangle: {
+          safari10: true // Fix Safari 10/11 bugs
+        },
+        format: {
+          comments: false // Supprimer tous les commentaires
+        }
+      },
       // Code splitting optimization
       rollupOptions: {
         output: {
