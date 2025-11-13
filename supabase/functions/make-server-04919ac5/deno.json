@@ -3,7 +3,6 @@
     "hono": "npm:hono@^3.11.7",
     "hono/cors": "npm:hono@^3.11.7/cors",
     "hono/logger": "npm:hono@^3.11.7/logger",
-    "@supabase/supabase-js": "jsr:@supabase/supabase-js@^2.39.0",
-    "@arcjet/node": "npm:@arcjet/node@^1.0.0-beta.15"
+    "@supabase/supabase-js": "jsr:@supabase/supabase-js@^2.39.0"
   }
 }

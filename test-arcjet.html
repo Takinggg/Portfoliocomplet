@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Arcjet Protection</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .test-section {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #00ffc2;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 5px;
+    }
+    button:hover {
+      background: #00dd9f;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+    .success { background: #1a3d1a; border: 1px solid #2d5d2d; }
+    .error { background: #3d1a1a; border: 1px solid #5d2d2d; }
+    .info { background: #1a1a3d; border: 1px solid #2d2d5d; }
+    .status { display: inline-block; margin-right: 10px; }
+    .status.active { color: #00ffc2; }
+    .status.inactive { color: #ff4444; }
+    h1 { color: #00ffc2; }
+    h2 { color: #fff; font-size: 18px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>🔒 Test Protection Arcjet</h1>
+  
+  <div class="test-section">
+    <h2>1️⃣ Test Newsletter Subscribe (Bot Detection + Email Validation)</h2>
+    <button onclick="testNewsletter('valid@gmail.com')">Test Email Valide</button>
+    <button onclick="testNewsletter('test@yopmail.com')">Test Email Jetable (BLOCK)</button>
+    <button onclick="testNewsletter('invalid@')">Test Email Invalide</button>
+    <div id="newsletter-result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>2️⃣ Test Lead Form (Bot Detection + Email Validation)</h2>
+    <button onclick="testLead('test@example.com')">Test Normal</button>
+    <button onclick="testLead('spam@tempmail.com')">Test Email Jetable</button>
+    <div id="lead-result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>3️⃣ Test Rate Limiting (60 req/min global)</h2>
+    <button onclick="testRateLimit()">Spam 20 Requêtes Rapides</button>
+    <div id="ratelimit-result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>4️⃣ Test Login Rate Limiting (5 tentatives/5min)</h2>
+    <button onclick="testLoginRateLimit()">Spam 10 Tentatives Login</button>
+    <div id="login-result"></div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://ptcxeqtjlxittxayffgu.supabase.co/functions/v1/make-server-04919ac5';
+    const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0Y3hlcXRqbHhpdHR4YXlmZmd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIzMDY1MjYsImV4cCI6MjA3Nzg4MjUyNn0.4xmzyoXUxas6587ZFWWc95p10bNSa2MdaipYI7RHmZc';
+
+    function showResult(elementId, text, type = 'info') {
+      const el = document.getElementById(elementId);
+      el.innerHTML = `<div class="result ${type}">${text}</div>`;
+    }
+
+    async function testNewsletter(email) {
+      showResult('newsletter-result', '⏳ Test en cours...', 'info');
+      
+      try {
+        const response = await fetch(`${API_BASE}/newsletter/subscribe`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ANON_KEY}`
+          },
+          body: JSON.stringify({
+            email: email,
+            source: 'arcjet_test',
+            language: 'fr'
+          })
+        });
+
+        const data = await response.json();
+        
+        let result = `📧 Email testé: ${email}\n`;
+        result += `🔢 Status HTTP: ${response.status}\n\n`;
+        
+        if (response.status === 403) {
+          result += `✅ Bot détecté ! (Arcjet actif)\n`;
+          result += `Message: ${data.error}`;
+          showResult('newsletter-result', result, 'success');
+        } else if (response.status === 400) {
+          result += `✅ Email invalide bloqué ! (Arcjet actif)\n`;
+          result += `Raison: ${data.error}`;
+          showResult('newsletter-result', result, 'success');
+        } else if (response.ok) {
+          result += `✅ Email accepté (valide)\n`;
+          result += `Réponse: ${JSON.stringify(data, null, 2)}`;
+          showResult('newsletter-result', result, 'success');
+        } else {
+          result += `⚠️ Erreur: ${JSON.stringify(data, null, 2)}`;
+          showResult('newsletter-result', result, 'error');
+        }
+      } catch (error) {
+        showResult('newsletter-result', `❌ Erreur réseau: ${error.message}`, 'error');
+      }
+    }
+
+    async function testLead(email) {
+      showResult('lead-result', '⏳ Test en cours...', 'info');
+      
+      try {
+        const response = await fetch(`${API_BASE}/leads`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ANON_KEY}`
+          },
+          body: JSON.stringify({
+            name: 'Test User',
+            email: email,
+            message: 'Test message',
+            source: 'arcjet_test'
+          })
+        });
+
+        const data = await response.json();
+        
+        let result = `👤 Lead testé: ${email}\n`;
+        result += `🔢 Status HTTP: ${response.status}\n\n`;
+        
+        if (response.status === 403) {
+          result += `✅ Bot détecté ! (Arcjet actif)`;
+          showResult('lead-result', result, 'success');
+        } else if (response.status === 400) {
+          result += `✅ Email invalide bloqué !\n`;
+          result += `Message: ${data.error}`;
+          showResult('lead-result', result, 'success');
+        } else if (response.ok) {
+          result += `✅ Lead accepté`;
+          showResult('lead-result', result, 'success');
+        } else {
+          result += `⚠️ Erreur: ${JSON.stringify(data, null, 2)}`;
+          showResult('lead-result', result, 'error');
+        }
+      } catch (error) {
+        showResult('lead-result', `❌ Erreur: ${error.message}`, 'error');
+      }
+    }
+
+    async function testRateLimit() {
+      showResult('ratelimit-result', '⏳ Envoi de 20 requêtes...', 'info');
+      
+      const results = [];
+      
+      for (let i = 0; i < 20; i++) {
+        try {
+          const response = await fetch(`${API_BASE}/newsletter/subscribe`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${ANON_KEY}`
+            },
+            body: JSON.stringify({
+              email: `test${i}@test.com`,
+              source: 'rate_limit_test'
+            })
+          });
+          
+          results.push({
+            num: i + 1,
+            status: response.status,
+            blocked: response.status === 429
+          });
+        } catch (error) {
+          results.push({
+            num: i + 1,
+            status: 'ERROR',
+            blocked: false
+          });
+        }
+      }
+      
+      const blocked = results.filter(r => r.blocked).length;
+      const successful = results.filter(r => r.status === 200 || r.status === 400).length;
+      
+      let result = `📊 Résultats du test de rate limiting:\n\n`;
+      result += `✅ Requêtes réussies: ${successful}\n`;
+      result += `🚫 Requêtes bloquées (429): ${blocked}\n\n`;
+      
+      if (blocked > 0) {
+        result += `✅ ARCJET ACTIF - Rate limiting fonctionne!\n`;
+        result += `Les requêtes ont été limitées après ${successful} tentatives.`;
+        showResult('ratelimit-result', result, 'success');
+      } else {
+        result += `⚠️ Aucune requête bloquée\n`;
+        result += `Le rate limiting n'a pas été déclenché (limite: 60/min)`;
+        showResult('ratelimit-result', result, 'info');
+      }
+    }
+
+    async function testLoginRateLimit() {
+      showResult('login-result', '⏳ Test de 10 tentatives de login...', 'info');
+      
+      const results = [];
+      
+      for (let i = 0; i < 10; i++) {
+        try {
+          const response = await fetch(`${API_BASE}/auth/login`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${ANON_KEY}`
+            },
+            body: JSON.stringify({
+              email: 'test@example.com',
+              password: 'wrongpassword'
+            })
+          });
+          
+          results.push({
+            num: i + 1,
+            status: response.status,
+            blocked: response.status === 429
+          });
+          
+          // Petit délai pour voir la progression
+          await new Promise(resolve => setTimeout(resolve, 100));
+        } catch (error) {
+          results.push({
+            num: i + 1,
+            status: 'ERROR',
+            blocked: false
+          });
+        }
+      }
+      
+      const blocked = results.filter(r => r.blocked).length;
+      const successful = results.filter(r => r.status !== 429 && r.status !== 'ERROR').length;
+      
+      let result = `🔐 Résultats du test de login rate limiting:\n\n`;
+      result += `Tentatives autorisées: ${successful}\n`;
+      result += `🚫 Tentatives bloquées: ${blocked}\n\n`;
+      
+      if (blocked > 0) {
+        result += `✅ PROTECTION LOGIN ACTIVE!\n`;
+        result += `Le compte est protégé après ${successful} tentatives.\n`;
+        result += `Limite stricte: 5 tentatives / 5 minutes`;
+        showResult('login-result', result, 'success');
+      } else {
+        result += `⚠️ Aucune tentative bloquée\n`;
+        result += `Le rate limiting strict (5/5min) n'a pas été atteint`;
+        showResult('login-result', result, 'info');
+      }
+    }
+  </script>
+</body>
+</html>

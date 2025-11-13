@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Arcjet - Debug</title>
+    <style>
+        body { 
+            font-family: monospace; 
+            background: #0a0a0a; 
+            color: #00ff88; 
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .test { 
+            background: #1a1a1a; 
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px; 
+            margin: 20px 0; 
+        }
+        button { 
+            background: #00ff88; 
+            color: #000; 
+            border: none; 
+            padding: 12px 24px; 
+            cursor: pointer; 
+            font-weight: bold;
+            border-radius: 6px;
+            margin: 10px 5px;
+        }
+        button:hover { background: #00dd77; }
+        .result { 
+            white-space: pre-wrap; 
+            background: #0f0f0f;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            border-left: 4px solid #00ff88;
+        }
+        .error { border-left-color: #ff4444; color: #ff6666; }
+        .success { border-left-color: #00ff88; color: #00ff88; }
+        h2 { color: #00ff88; }
+        .info { color: #888; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Arcjet Debug - Diagnostics Détaillés</h1>
+    
+    <div class="test">
+        <h2>Test 1: Vérification Santé API</h2>
+        <p class="info">Vérifie que l'API répond et charge la configuration Arcjet</p>
+        <button onclick="testHealth()">Test Health Check</button>
+        <div id="health-result"></div>
+    </div>
+
+    <div class="test">
+        <h2>Test 2: Login avec Détection Rate Limit</h2>
+        <p class="info">Force 6 tentatives pour dépasser la limite de 5</p>
+        <button onclick="testLoginMultiple()">6 Tentatives Rapides</button>
+        <div id="login-result"></div>
+    </div>
+
+    <div class="test">
+        <h2>Test 3: Email Jetable (Arcjet Validation)</h2>
+        <p class="info">Test avec des services d'email temporaires connus</p>
+        <button onclick="testDisposableEmails()">Test Emails Jetables</button>
+        <div id="email-result"></div>
+    </div>
+
+    <div class="test">
+        <h2>Test 4: Headers Arcjet</h2>
+        <p class="info">Inspecte les headers de réponse pour traces Arcjet</p>
+        <button onclick="testHeaders()">Analyser Headers</button>
+        <div id="headers-result"></div>
+    </div>
+
+    <script>
+        const API = 'https://ptcxeqtjlxittxayffgu.supabase.co/functions/v1/make-server-04919ac5';
+        const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0Y3hlcXRqbHhpdHR4YXlmZmd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIzMDY1MjYsImV4cCI6MjA3Nzg4MjUyNn0.4xmzyoXUxas6587ZFWWc95p10bNSa2MdaipYI7RHmZc';
+
+        function show(id, html, type = '') {
+            document.getElementById(id).innerHTML = `<div class="result ${type}">${html}</div>`;
+        }
+
+        async function testHealth() {
+            show('health-result', '⏳ Testing...', 'info');
+            
+            try {
+                const start = Date.now();
+                const response = await fetch(`${API}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${KEY}`
+                    },
+                    body: JSON.stringify({
+                        email: 'test@test.com',
+                        password: 'test'
+                    })
+                });
+                const elapsed = Date.now() - start;
+                const data = await response.json();
+                
+                let result = `✅ API Répond: ${response.status} (${elapsed}ms)\n\n`;
+                result += `📦 Response:\n${JSON.stringify(data, null, 2)}\n\n`;
+                result += `📋 Headers:\n`;
+                response.headers.forEach((v, k) => result += `${k}: ${v}\n`);
+                
+                show('health-result', result, response.ok ? 'success' : 'error');
+            } catch (error) {
+                show('health-result', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testLoginMultiple() {
+            show('login-result', '⏳ Envoi de 6 tentatives de login...\n', 'info');
+            
+            const results = [];
+            
+            for (let i = 1; i <= 6; i++) {
+                try {
+                    const response = await fetch(`${API}/auth/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${KEY}`
+                        },
+                        body: JSON.stringify({
+                            email: 'test@example.com',
+                            password: 'wrongpass123'
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    const blocked = response.status === 429;
+                    
+                    results.push({
+                        num: i,
+                        status: response.status,
+                        blocked: blocked,
+                        message: data.error || data.message || 'OK'
+                    });
+                    
+                    let current = `Tentative ${i}/6:\n`;
+                    results.forEach(r => {
+                        current += `  ${r.num}. Status ${r.status} ${r.blocked ? '🚫 BLOQUÉ' : '✅'} - ${r.message}\n`;
+                    });
+                    show('login-result', current, '');
+                    
+                    // Small delay
+                    await new Promise(r => setTimeout(r, 200));
+                } catch (error) {
+                    results.push({
+                        num: i,
+                        status: 'ERROR',
+                        blocked: false,
+                        message: error.message
+                    });
+                }
+            }
+            
+            const blocked = results.filter(r => r.blocked).length;
+            let final = '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+            results.forEach(r => {
+                final += `  ${r.num}. Status ${r.status} ${r.blocked ? '🚫 BLOQUÉ' : '✅'} - ${r.message}\n`;
+            });
+            final += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+            
+            if (blocked > 0) {
+                final += `✅ ARCJET FONCTIONNE!\n`;
+                final += `   ${blocked} requête(s) bloquée(s) sur 6\n`;
+                final += `   Rate limiting actif (limite: 5/5min)`;
+                show('login-result', final, 'success');
+            } else {
+                final += `❌ ARCJET INACTIF\n`;
+                final += `   Aucune requête bloquée\n`;
+                final += `   Possible causes:\n`;
+                final += `   - ARCJET_KEY non chargée\n`;
+                final += `   - Arcjet en mode DRY_RUN\n`;
+                final += `   - Erreur silencieuse dans arcjet-config.ts`;
+                show('login-result', final, 'error');
+            }
+        }
+
+        async function testDisposableEmails() {
+            show('email-result', '⏳ Test emails jetables...', '');
+            
+            const disposableEmails = [
+                { email: 'test@yopmail.com', service: 'YOPmail' },
+                { email: 'user@tempmail.com', service: 'TempMail' },
+                { email: 'test@guerrillamail.com', service: 'Guerrilla Mail' },
+                { email: 'valid@gmail.com', service: 'Gmail (valide)' }
+            ];
+            
+            let result = '';
+            
+            for (const test of disposableEmails) {
+                try {
+                    const response = await fetch(`${API}/newsletter/subscribe`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${KEY}`
+                        },
+                        body: JSON.stringify({
+                            email: test.email,
+                            source: 'arcjet_test'
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    const blocked = response.status === 400 && data.error?.includes('Invalid email');
+                    
+                    result += `\n📧 ${test.service}: ${test.email}\n`;
+                    result += `   Status: ${response.status}\n`;
+                    result += `   ${blocked ? '🚫 BLOQUÉ' : '✅ ACCEPTÉ'}\n`;
+                    result += `   Message: ${data.error || data.message || 'OK'}\n`;
+                } catch (error) {
+                    result += `\n❌ ${test.service}: Error - ${error.message}\n`;
+                }
+            }
+            
+            show('email-result', result, '');
+        }
+
+        async function testHeaders() {
+            show('headers-result', '⏳ Analysing response headers...', '');
+            
+            try {
+                const response = await fetch(`${API}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${KEY}`
+                    },
+                    body: JSON.stringify({ email: 'test@test.com', password: 'test' })
+                });
+                
+                let result = '📋 Response Headers:\n\n';
+                const headers = {};
+                response.headers.forEach((value, key) => {
+                    headers[key] = value;
+                    result += `${key}: ${value}\n`;
+                });
+                
+                result += '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+                
+                if (headers['x-arcjet-id'] || headers['x-arcjet-decision']) {
+                    result += '✅ Headers Arcjet détectés!\n';
+                    result += 'Arcjet est actif et injecte des headers.';
+                    show('headers-result', result, 'success');
+                } else {
+                    result += '⚠️ Aucun header Arcjet détecté\n';
+                    result += 'Arcjet pourrait ne pas être actif.';
+                    show('headers-result', result, 'error');
+                }
+            } catch (error) {
+                show('headers-result', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>
