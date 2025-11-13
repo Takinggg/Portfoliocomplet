@@ -49,6 +49,7 @@ import { cors } from "npm:hono/cors";
 import { logger } from "npm:hono/logger";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { sendQuoteEmail, sendInvoiceLink } from "./email_service.tsx";
+import aj, { arcjetMiddleware, protectAuthRoute, validateEmailWithArcjet, checkForBot } from "./arcjet-config.ts";
 
 // Type definitions for Hono (inline to avoid import issues)
 type HonoContext = any; // Simplifié pour Deno
@@ -278,7 +279,11 @@ const requireAuth = async (c: HonoContext, next: HonoNext): Promise<Response | v
   c.set("user", user);
   await next();
 };
-console.log("✅ Middleware configured");
+
+// Arcjet global middleware
+app.use(arcjetMiddleware(aj));
+
+console.log("✅ Middleware configured (CORS, Logger, Auth, Arcjet)");
 
 // =============================================================================
 // 📋 COMPLETE API ENDPOINTS DOCUMENTATION
@@ -469,9 +474,30 @@ app.post("/make-server-04919ac5/auth/init-admin", async (c: HonoContext) =>{
     }, 500);
   }
 });
+
+// Login avec protection Arcjet rate limiting
 app.post("/make-server-04919ac5/auth/login", async (c: HonoContext) =>{
   try {
+    // Protection rate limiting stricte pour auth
+    const canProceed = await protectAuthRoute(c);
+    if (!canProceed) {
+      return c.json({
+        success: false,
+        error: "Trop de tentatives de connexion. Veuillez réessayer dans 5 minutes."
+      }, 429);
+    }
+
     const { email, password } = await c.req.json();
+    
+    // Validation email avec Arcjet
+    const emailValidation = await validateEmailWithArcjet(email);
+    if (!emailValidation.valid) {
+      return c.json({
+        success: false,
+        error: `Email invalide: ${emailValidation.reason}`
+      }, 400);
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
@@ -654,6 +680,16 @@ app.get("/make-server-04919ac5/leads/:id", requireAuth, async (c: HonoContext) =
 });
 app.post("/make-server-04919ac5/leads", async (c: HonoContext) =>{
   try {
+    // Détection de bots avec Arcjet
+    const isBot = await checkForBot(c);
+    if (isBot) {
+      console.warn("Bot detected attempting lead submission");
+      return c.json({
+        success: false,
+        error: "Bot détecté"
+      }, 403);
+    }
+
     const body = await c.req.json();
     const { name, email, phone, message, budget, timeline, projectType, source, interests } = body;
     
@@ -663,6 +699,16 @@ app.post("/make-server-04919ac5/leads", async (c: HonoContext) =>{
         error: "Name and email required"
       }, 400);
     }
+
+    // Validation email avancée avec Arcjet
+    const emailValidation = await validateEmailWithArcjet(email);
+    if (!emailValidation.valid) {
+      return c.json({
+        success: false,
+        error: `Invalid email: ${emailValidation.reason}`
+      }, 400);
+    }
+    
     const leadId = `lead:${Date.now()}@${email}`;
     const leadData = {
       id: leadId,
@@ -820,8 +866,30 @@ app.get("/make-server-04919ac5/bookings", requireAuth, async (c: HonoContext) =>
 });
 app.post("/make-server-04919ac5/bookings", async (c: HonoContext) =>{
   try {
+    // Détection de bots avec Arcjet
+    const isBot = await checkForBot(c);
+    if (isBot) {
+      console.warn("Bot detected attempting booking submission");
+      return c.json({
+        success: false,
+        error: "Bot détecté"
+      }, 403);
+    }
+
     const body = await c.req.json();
     const { name, email, phone, date, time, service, message } = body;
+
+    // Validation email avancée avec Arcjet
+    if (email) {
+      const emailValidation = await validateEmailWithArcjet(email);
+      if (!emailValidation.valid) {
+        return c.json({
+          success: false,
+          error: `Invalid email: ${emailValidation.reason}`
+        }, 400);
+      }
+    }
+    
     const bookingId = `booking:${Date.now()}@${email}`;
     const bookingData = {
       id: bookingId,
@@ -2829,6 +2897,16 @@ console.log("✅ Projects CRUD routes added (GET, POST, PUT, DELETE)");
 // ===========================================================================
 app.post("/make-server-04919ac5/newsletter/subscribe", async (c: HonoContext) =>{
   try {
+    // Détection de bots avec Arcjet
+    const isBot = await checkForBot(c);
+    if (isBot) {
+      console.warn("Bot detected attempting newsletter subscription");
+      return c.json({
+        success: false,
+        error: "Activité suspecte détectée"
+      }, 403);
+    }
+
     const { email: rawEmail, source, language } = await c.req.json();
     
     // Detect language from request headers or body
@@ -2842,7 +2920,18 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c: HonoContext) =>
     // Normalize email to lowercase to prevent duplicates with case variations
     const email = rawEmail.toLowerCase().trim();
     
-    // Validate email format
+    // Validation email avancée avec Arcjet (emails jetables, typos, etc.)
+    const emailValidation = await validateEmailWithArcjet(email);
+    if (!emailValidation.valid) {
+      return c.json({
+        success: false,
+        error: lang === 'en' 
+          ? `Invalid email: ${emailValidation.reason}` 
+          : `Email invalide: ${emailValidation.reason}`
+      }, 400);
+    }
+    
+    // Validate email format (backup)
     if (!email.includes("@") || !email.includes(".")) {
       return c.json({
         success: false,
