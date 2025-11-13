@@ -255,6 +255,43 @@ app.use("*", cors({
   credentials: true,
   maxAge: 86400 // Cache preflight 24h
 }));
+
+// Security headers middleware
+app.use("*", async (c: HonoContext, next: HonoNext) => {
+  await next();
+  
+  // Content Security Policy - Empêche XSS, injection de scripts malveillants
+  c.header("Content-Security-Policy", 
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+    "font-src 'self' https://fonts.gstatic.com; " +
+    "img-src 'self' data: https:; " +
+    "connect-src 'self' https://*.supabase.co;"
+  );
+  
+  // Empêche le site d'être intégré dans une iframe (protection clickjacking)
+  c.header("X-Frame-Options", "DENY");
+  
+  // Force le navigateur à respecter le Content-Type (anti-MIME sniffing)
+  c.header("X-Content-Type-Options", "nosniff");
+  
+  // Contrôle les informations de référence envoyées
+  c.header("Referrer-Policy", "strict-origin-when-cross-origin");
+  
+  // Désactive les features browser dangereuses
+  c.header("Permissions-Policy", 
+    "geolocation=(), microphone=(), camera=(), payment=()"
+  );
+  
+  // Force HTTPS (si en production)
+  if (c.req.header("x-forwarded-proto") === "https") {
+    c.header("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  }
+});
+
+console.log("✅ Security headers configured");
+
 const requireAuth = async (c: HonoContext, next: HonoNext): Promise<Response | void> => {
   const authHeader = c.req.header("Authorization");
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -436,6 +473,62 @@ app.get("/make-server-04919ac5/health", (c: HonoContext) =>{
   });
 });
 console.log("✅ Health check added");
+
+// Test KV Store endpoint
+app.get("/make-server-04919ac5/test-kv", async (c: HonoContext) => {
+  try {
+    const ip = c.req.header('x-forwarded-for') || 'test-ip';
+    const testKey = `test:${Date.now()}`;
+    
+    // Test 1: Import KV
+    const kvModule = await import("./kv_store.tsx");
+    console.log("✅ KV module imported");
+    
+    // Test 2: Write
+    console.log("📝 Writing to KV:", testKey);
+    await kvModule.set(testKey, { count: 1, ts: Date.now() });
+    console.log("✅ KV SET success");
+    
+    // Wait 100ms for write to propagate
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Test 3: Read
+    console.log("📖 Reading from KV:", testKey);
+    const value = await kvModule.get(testKey);
+    console.log("✅ KV GET result:", value);
+    
+    // Test 4: Rate limit test
+    const rateLimitKey = `ratelimit:auth:${ip}`;
+    console.log("📝 Writing rate limit:", rateLimitKey);
+    await kvModule.set(rateLimitKey, { count: 3, firstRequest: Date.now(), windowMs: 300000 });
+    
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    console.log("📖 Reading rate limit:", rateLimitKey);
+    const rateLimitValue = await kvModule.get(rateLimitKey);
+    console.log("✅ Rate limit result:", rateLimitValue);
+    
+    return c.json({
+      success: true,
+      message: "KV Store is working",
+      test: {
+        write: testKey,
+        read: value,
+        rateLimit: rateLimitValue
+      }
+    });
+  } catch (error) {
+    console.error("❌ KV Store test failed:", error);
+    const err = error as Error;
+    return c.json({
+      success: false,
+      error: err.message || String(error),
+      stack: err.stack
+    }, 500);
+  }
+});
+console.log("✅ KV test endpoint added");
+
 // ===========================================================================
 // AUTH ROUTES
 // ===========================================================================
@@ -479,7 +572,7 @@ app.post("/make-server-04919ac5/auth/init-admin", async (c: HonoContext) =>{
 app.post("/make-server-04919ac5/auth/login", async (c: HonoContext) =>{
   try {
     // Protection rate limiting stricte pour auth
-    const canProceed = await protectAuthRoute(c);
+    const canProceed = protectAuthRoute(c);
     if (!canProceed) {
       return c.json({
         success: false,

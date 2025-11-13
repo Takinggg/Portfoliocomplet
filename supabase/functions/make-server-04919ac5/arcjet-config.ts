@@ -1,5 +1,5 @@
 // Configuration de sécurité avancée pour Deno Edge Functions
-// Solution native compatible Deno avec KV persistant
+// Solution native compatible Deno avec rate limiting en mémoire
 
 const ARCJET_KEY = Deno.env.get("ARCJET_KEY");
 
@@ -9,23 +9,33 @@ if (!ARCJET_KEY) {
   console.log(`✅ Clé configurée: ${ARCJET_KEY.substring(0, 15)}...`);
 }
 
-// Import du KV store pour persistence
-import { kv } from "./kv_store.tsx";
+// Store en mémoire pour rate limiting (simple mais efficace pour instance unique)
+const rateLimitStore = new Map<string, { count: number; firstRequest: number; windowMs: number }>();
 
-// ===== RATE LIMITING AVEC KV PERSISTANT =====
-export async function checkRateLimit(
+// Nettoyage automatique des entrées expirées toutes les minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of rateLimitStore.entries()) {
+    if (now - entry.firstRequest > entry.windowMs) {
+      rateLimitStore.delete(key);
+    }
+  }
+}, 60000);
+
+// ===== RATE LIMITING EN MÉMOIRE =====
+export function checkRateLimit(
   identifier: string,
   maxRequests: number,
   windowMs: number
-): Promise<{ allowed: boolean; remaining: number }> {
+): { allowed: boolean; remaining: number } {
   const now = Date.now();
   const key = `ratelimit:${identifier}`;
   
-  const entry = await kv.get(key);
+  const entry = rateLimitStore.get(key);
   
   if (!entry || now - entry.firstRequest > windowMs) {
     // Nouvelle fenêtre
-    await kv.set(key, {
+    rateLimitStore.set(key, {
       count: 1,
       firstRequest: now,
       windowMs: windowMs,
@@ -39,7 +49,7 @@ export async function checkRateLimit(
   }
 
   entry.count++;
-  await kv.set(key, entry);
+  rateLimitStore.set(key, entry);
   return { allowed: true, remaining: maxRequests - entry.count };
 }
 
@@ -77,10 +87,10 @@ export function detectBot(userAgent: string): boolean {
 export function arcjetMiddleware(aj: any) {
   return async (c: any, next: any) => {
     const ip = c.req.header('x-forwarded-for') || 'unknown';
-    const globalLimit = await checkRateLimit(`global:${ip}`, 60, 60 * 1000);
+    const globalLimit = checkRateLimit(`global:${ip}`, 60, 60 * 1000);
     
     if (!globalLimit.allowed) {
-      console.warn(`🚫 Rate limit: ${ip}`);
+      console.warn(`🚫 Global rate limit: ${ip}`);
       return c.json({ error: "Trop de requêtes" }, 429);
     }
 
@@ -89,9 +99,10 @@ export function arcjetMiddleware(aj: any) {
 }
 
 // ===== PROTECTION AUTH =====
-export async function protectAuthRoute(c: any): Promise<boolean> {
+export function protectAuthRoute(c: any): boolean {
   const ip = c.req.header('x-forwarded-for') || c.req.header('x-real-ip') || 'unknown';
-  const authLimit = await checkRateLimit(`auth:${ip}`, 5, 5 * 60 * 1000);
+  
+  const authLimit = checkRateLimit(`auth:${ip}`, 5, 5 * 60 * 1000);
   
   if (!authLimit.allowed) {
     console.warn(`🚫 Auth rate limit: ${ip} - BLOCKED`);
