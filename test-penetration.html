@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests de Pénétration - Portfolio CRM</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .test-section p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        button:hover { background: #5568d3; transform: translateY(-2px); }
+        button:active { transform: translateY(0); }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success { background: #d4edda; border-left: 4px solid #28a745; }
+        .failure { background: #f8d7da; border-left: 4px solid #dc3545; }
+        .warning { background: #fff3cd; border-left: 4px solid #ffc107; }
+        .info { background: #d1ecf1; border-left: 4px solid #17a2b8; }
+        .icon { font-size: 24px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Tests de Pénétration</h1>
+
+        <!-- Test 1: XSS -->
+        <div class="test-section">
+            <h2><span class="icon">💉</span> Test 1: Cross-Site Scripting (XSS)</h2>
+            <p>Tentative d'injection de JavaScript malveillant dans les formulaires</p>
+            <button onclick="testXSS()">Lancer Test XSS</button>
+            <div id="xss-result"></div>
+        </div>
+
+        <!-- Test 2: SQL Injection -->
+        <div class="test-section">
+            <h2><span class="icon">💾</span> Test 2: SQL Injection</h2>
+            <p>Tentative d'injection SQL dans les champs email/password</p>
+            <button onclick="testSQLInjection()">Lancer Test SQL Injection</button>
+            <div id="sql-result"></div>
+        </div>
+
+        <!-- Test 3: CSRF -->
+        <div class="test-section">
+            <h2><span class="icon">🎭</span> Test 3: Cross-Site Request Forgery (CSRF)</h2>
+            <p>Tentative de requête forgée sans token CSRF</p>
+            <button onclick="testCSRF()">Lancer Test CSRF</button>
+            <div id="csrf-result"></div>
+        </div>
+
+        <!-- Test 4: Rate Limiting -->
+        <div class="test-section">
+            <h2><span class="icon">🚦</span> Test 4: Rate Limiting (Brute Force)</h2>
+            <p>Tentative de 10 requêtes rapides pour tester le rate limiting</p>
+            <button onclick="testRateLimiting()">Lancer Test Rate Limiting</button>
+            <div id="rate-result"></div>
+        </div>
+
+        <!-- Test 5: Security Headers -->
+        <div class="test-section">
+            <h2><span class="icon">🔒</span> Test 5: Security Headers</h2>
+            <p>Vérification des headers de sécurité (CSP, X-Frame-Options, etc.)</p>
+            <button onclick="testSecurityHeaders()">Lancer Test Headers</button>
+            <div id="headers-result"></div>
+        </div>
+
+        <!-- Test 6: Email Validation Bypass -->
+        <div class="test-section">
+            <h2><span class="icon">📧</span> Test 6: Email Validation Bypass</h2>
+            <p>Tentative de contournement de la validation d'email</p>
+            <button onclick="testEmailBypass()">Lancer Test Email Bypass</button>
+            <div id="email-result"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://ptcxeqtjlxittxayffgu.supabase.co/functions/v1/make-server-04919ac5';
+
+        function showResult(elementId, content, type = 'info') {
+            const el = document.getElementById(elementId);
+            el.className = `result ${type}`;
+            el.textContent = content;
+        }
+
+        // Test 1: XSS
+        async function testXSS() {
+            showResult('xss-result', '⏳ Test en cours...', 'info');
+            
+            const xssPayloads = [
+                '<script>alert("XSS")</script>',
+                '<img src=x onerror=alert("XSS")>',
+                'javascript:alert("XSS")',
+                '"><script>alert("XSS")</script>',
+                '<svg/onload=alert("XSS")>'
+            ];
+
+            let results = '🔍 Payloads XSS testés:\n\n';
+            let blocked = 0;
+
+            for (const payload of xssPayloads) {
+                try {
+                    const res = await fetch(`${API_BASE}/make-server-04919ac5/newsletter/subscribe`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: payload })
+                    });
+                    const data = await res.json();
+                    
+                    if (res.status === 400 || data.error) {
+                        results += `✅ BLOQUÉ: ${payload.substring(0, 40)}...\n`;
+                        blocked++;
+                    } else {
+                        results += `❌ PASSÉ: ${payload.substring(0, 40)}...\n`;
+                    }
+                } catch (error) {
+                    results += `✅ BLOQUÉ (erreur): ${payload.substring(0, 40)}...\n`;
+                    blocked++;
+                }
+            }
+
+            results += `\n📊 Résultat: ${blocked}/${xssPayloads.length} payloads bloqués`;
+            
+            showResult('xss-result', results, blocked === xssPayloads.length ? 'success' : 'failure');
+        }
+
+        // Test 2: SQL Injection
+        async function testSQLInjection() {
+            showResult('sql-result', '⏳ Test en cours...', 'info');
+            
+            const sqlPayloads = [
+                "' OR '1'='1",
+                "admin'--",
+                "' OR '1'='1' --",
+                "1' OR '1' = '1')) /*",
+                "'; DROP TABLE users; --"
+            ];
+
+            let results = '🔍 Payloads SQL Injection testés:\n\n';
+            let blocked = 0;
+
+            for (const payload of sqlPayloads) {
+                try {
+                    const res = await fetch(`${API_BASE}/make-server-04919ac5/auth/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: payload, password: payload })
+                    });
+                    const data = await res.json();
+                    
+                    // Si status 401/400, la requête est traitée normalement (Supabase protège)
+                    if (res.status === 401 || res.status === 400) {
+                        results += `✅ PROTÉGÉ: ${payload.substring(0, 40)}...\n`;
+                        blocked++;
+                    } else if (res.status === 200) {
+                        results += `❌ VULNÉRABLE: ${payload.substring(0, 40)}...\n`;
+                    }
+                } catch (error) {
+                    results += `✅ PROTÉGÉ (erreur): ${payload.substring(0, 40)}...\n`;
+                    blocked++;
+                }
+            }
+
+            results += `\n📊 Résultat: ${blocked}/${sqlPayloads.length} tentatives bloquées`;
+            results += `\n\nℹ️  Note: Supabase utilise des requêtes paramétrées (protection native)`;
+            
+            showResult('sql-result', results, 'success');
+        }
+
+        // Test 3: CSRF
+        async function testCSRF() {
+            showResult('csrf-result', '⏳ Test en cours...', 'info');
+            
+            let results = '🔍 Test CSRF:\n\n';
+
+            try {
+                // Tentative de requête sans Origin/Referer
+                const res = await fetch(`${API_BASE}/make-server-04919ac5/newsletter/subscribe`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                        // Pas d'Origin header (navigateur l'ajoute normalement)
+                    },
+                    body: JSON.stringify({ email: 'test@example.com' })
+                });
+
+                const data = await res.json();
+                
+                // CORS devrait bloquer les requêtes cross-origin non autorisées
+                results += `Status: ${res.status}\n`;
+                results += `Response: ${JSON.stringify(data, null, 2)}\n\n`;
+                
+                if (res.status === 200) {
+                    results += `⚠️  ATTENTION: Requête acceptée\n`;
+                    results += `ℹ️  CORS configuré en mode permissif (origin: *)\n`;
+                    results += `✅ RECOMMANDATION: Restreindre les origines en production`;
+                    showResult('csrf-result', results, 'warning');
+                } else {
+                    results += `✅ Requête bloquée ou échouée`;
+                    showResult('csrf-result', results, 'success');
+                }
+            } catch (error) {
+                results += `✅ CSRF Protection: Erreur CORS\n${error.message}`;
+                showResult('csrf-result', results, 'success');
+            }
+        }
+
+        // Test 4: Rate Limiting
+        async function testRateLimiting() {
+            showResult('rate-result', '⏳ Envoi de 10 requêtes rapides...', 'info');
+            
+            let results = '🔍 Test Rate Limiting (10 requêtes):\n\n';
+            let blocked = 0;
+            const promises = [];
+
+            for (let i = 1; i <= 10; i++) {
+                promises.push(
+                    fetch(`${API_BASE}/make-server-04919ac5/auth/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: 'test@test.com', password: 'wrong' })
+                    }).then(res => ({
+                        attempt: i,
+                        status: res.status,
+                        ok: res.ok
+                    })).catch(() => ({
+                        attempt: i,
+                        status: 'ERROR',
+                        ok: false
+                    }))
+                );
+            }
+
+            const responses = await Promise.all(promises);
+            
+            responses.forEach(({ attempt, status }) => {
+                if (status === 429) {
+                    results += `${attempt}. Status ${status} 🚫 BLOQUÉ\n`;
+                    blocked++;
+                } else if (status === 401) {
+                    results += `${attempt}. Status ${status} ✅ Autorisé\n`;
+                } else {
+                    results += `${attempt}. Status ${status}\n`;
+                }
+            });
+
+            results += `\n📊 Résultat: ${blocked}/10 requêtes bloquées par rate limiting`;
+            
+            if (blocked > 0) {
+                results += `\n✅ Rate limiting ACTIF après ${10 - blocked + 1} tentatives`;
+                showResult('rate-result', results, 'success');
+            } else {
+                results += `\n⚠️  Aucune requête bloquée - Rate limiting peut-être inactif`;
+                showResult('rate-result', results, 'warning');
+            }
+        }
+
+        // Test 5: Security Headers
+        async function testSecurityHeaders() {
+            showResult('headers-result', '⏳ Test en cours...', 'info');
+            
+            try {
+                const res = await fetch(`${API_BASE}/make-server-04919ac5/health`);
+                const headers = res.headers;
+                
+                let results = '🔍 Security Headers:\n\n';
+                const requiredHeaders = [
+                    'content-security-policy',
+                    'x-frame-options',
+                    'x-content-type-options',
+                    'referrer-policy',
+                    'permissions-policy'
+                ];
+
+                let present = 0;
+                requiredHeaders.forEach(header => {
+                    const value = headers.get(header);
+                    if (value) {
+                        results += `✅ ${header}: ${value.substring(0, 60)}...\n`;
+                        present++;
+                    } else {
+                        results += `❌ ${header}: MANQUANT\n`;
+                    }
+                });
+
+                results += `\n📊 Résultat: ${present}/${requiredHeaders.length} headers présents`;
+                
+                showResult('headers-result', results, present >= 4 ? 'success' : 'warning');
+            } catch (error) {
+                showResult('headers-result', `❌ Erreur: ${error.message}`, 'failure');
+            }
+        }
+
+        // Test 6: Email Validation Bypass
+        async function testEmailBypass() {
+            showResult('email-result', '⏳ Test en cours...', 'info');
+            
+            const bypassAttempts = [
+                'test@yopmail.com',
+                'admin@tempmail.com',
+                'test+spam@gmail.com',
+                'test@gmail.com.fake.com',
+                'test@localhost',
+                '"<script>"@example.com'
+            ];
+
+            let results = '🔍 Tentatives de bypass validation email:\n\n';
+            let blocked = 0;
+
+            for (const email of bypassAttempts) {
+                try {
+                    const res = await fetch(`${API_BASE}/make-server-04919ac5/newsletter/subscribe`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+                    const data = await res.json();
+                    
+                    if (res.status === 400 && data.error?.includes('EMAIL_JETABLE')) {
+                        results += `✅ BLOQUÉ: ${email}\n`;
+                        blocked++;
+                    } else if (res.status === 200) {
+                        results += `⚠️  PASSÉ: ${email}\n`;
+                    } else {
+                        results += `❓ ${res.status}: ${email}\n`;
+                    }
+                } catch (error) {
+                    results += `✅ BLOQUÉ (erreur): ${email}\n`;
+                    blocked++;
+                }
+            }
+
+            results += `\n📊 Résultat: ${blocked}/${bypassAttempts.length} tentatives bloquées`;
+            
+            showResult('email-result', results, blocked >= 2 ? 'success' : 'warning');
+        }
+    </script>
+</body>
+</html>

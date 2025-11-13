@@ -130,6 +130,47 @@ export async function checkForBot(c: any): Promise<boolean> {
   return isBot;
 }
 
+// ===== RECAPTCHA VERIFICATION =====
+export async function verifyRecaptcha(token: string, action: string = 'submit'): Promise<{ success: boolean; score?: number; error?: string }> {
+  const secretKey = Deno.env.get("RECAPTCHA_SECRET_KEY");
+  
+  if (!secretKey) {
+    console.warn("⚠️  RECAPTCHA_SECRET_KEY non configurée - Captcha désactivé");
+    return { success: true, score: 1.0 }; // Fail-open si pas configuré
+  }
+
+  try {
+    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${secretKey}&response=${token}`
+    });
+
+    const data = await response.json();
+    
+    if (!data.success) {
+      console.warn(`🚫 reCAPTCHA failed:`, data['error-codes']);
+      return { success: false, error: 'CAPTCHA_INVALID' };
+    }
+
+    const score = data.score || 0;
+    const expectedAction = data.action;
+    
+    console.log(`✅ reCAPTCHA: score=${score}, action=${expectedAction}`);
+    
+    // Score minimum: 0.5 (0.0 = bot, 1.0 = humain)
+    if (score < 0.5) {
+      console.warn(`🚫 reCAPTCHA score trop bas: ${score}`);
+      return { success: false, score, error: 'SCORE_TOO_LOW' };
+    }
+
+    return { success: true, score };
+  } catch (error) {
+    console.error(`❌ reCAPTCHA error:`, error);
+    return { success: true, score: 1.0 }; // Fail-open en cas d'erreur réseau
+  }
+}
+
 const aj = { protect: async () => ({ conclusion: "ALLOW" }) };
 export default aj;
 
