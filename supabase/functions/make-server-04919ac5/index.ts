@@ -475,7 +475,7 @@ app.post("/make-server-04919ac5/auth/init-admin", async (c: HonoContext) =>{
   }
 });
 
-// Login avec protection Arcjet rate limiting
+// Login avec protection rate limiting
 app.post("/make-server-04919ac5/auth/login", async (c: HonoContext) =>{
   try {
     // Protection rate limiting stricte pour auth
@@ -487,9 +487,17 @@ app.post("/make-server-04919ac5/auth/login", async (c: HonoContext) =>{
       }, 429);
     }
 
-    const { email, password } = await c.req.json();
+    const body = await c.req.json();
+    const { email, password } = body;
     
-    // Validation email avec Arcjet
+    if (!email || !password) {
+      return c.json({
+        success: false,
+        error: "Email et mot de passe requis"
+      }, 400);
+    }
+    
+    // Validation email
     const emailValidation = await validateEmailWithArcjet(email);
     if (!emailValidation.valid) {
       return c.json({
@@ -502,17 +510,26 @@ app.post("/make-server-04919ac5/auth/login", async (c: HonoContext) =>{
       email,
       password
     });
-    if (error) throw error;
+    
+    if (error) {
+      console.error("Login error:", error);
+      return c.json({
+        success: false,
+        error: "Email ou mot de passe incorrect"
+      }, 401);
+    }
+    
     return c.json({
       success: true,
       session: data.session,
       user: data.user
     });
   } catch (error) {
+    console.error("Login exception:", error);
     return c.json({
       success: false,
-      error: getErrorMessage(error)
-    }, 401);
+      error: "Erreur serveur lors de la connexion"
+    }, 500);
   }
 });
 console.log("✅ Auth routes added");
