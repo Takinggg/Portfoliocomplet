@@ -31,6 +31,13 @@ export default {
   "footer": {
     "tagline": "Freelance Web Designer & Developer",
     "description": "Specialist in automation and artificial intelligence. I create systems that save time and generate results.",
+    "cta": {
+      "badge": "Need an automated system?",
+      "title": "Let's map your next growth lever",
+      "subtitle": "Book a strategic call and leave with a custom automation roadmap.",
+      "primary": "Schedule a call",
+      "secondary": "View services"
+    },
     "navigation": "Navigation",
     "legal": "Legal",
     "social": "Social",
@@ -58,7 +65,17 @@ export default {
       "email": "contact@maxence.dev",
       "location": "Paris, France",
       "availability": "Currently accepting new projects",
-      "status": "Available"
+      "status": "Available",
+      "response": "Average response time < 24h"
+    },
+    "metrics": [
+      { "label": "Automated workflows delivered", "value": "85+" },
+      { "label": "Hours saved every month", "value": "320+" },
+      { "label": "Client NPS", "value": "4.9/5" }
+    ],
+    "trust": {
+      "title": "Certified & trusted partner",
+      "subtitle": "Official integrations with Stripe, Supabase, Notion and more."
     },
     "legalLinks": {
       "legalNotice": "Legal Notice",

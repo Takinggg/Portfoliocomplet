@@ -31,6 +31,13 @@ export default {
   "footer": {
     "tagline": "Designer & Développeur Web Freelance",
     "description": "Spécialiste en automatisation et intelligence artificielle. Je crée des systèmes qui économisent du temps et génèrent des résultats.",
+    "cta": {
+      "badge": "Besoin d'un système automatisé ?",
+      "title": "Cartographions votre prochain levier",
+      "subtitle": "Réservez un appel stratégique et repartez avec une feuille de route personnalisée.",
+      "primary": "Planifier un appel",
+      "secondary": "Voir les services"
+    },
     "navigation": "Navigation",
     "legal": "Légal",
     "social": "Réseaux sociaux",
@@ -76,7 +83,17 @@ export default {
         "email": "contact@maxence.dev",
         "location": "Paris, France",
         "availability": "Disponible pour de nouveaux projets",
-        "status": "Disponible"
+        "status": "Disponible",
+        "response": "Temps de réponse moyen < 24h"
+      },
+      "metrics": [
+        { "label": "Workflows automatisés livrés", "value": "85+" },
+        { "label": "Heures économisées chaque mois", "value": "320+" },
+        { "label": "Satisfaction client", "value": "4,9/5" }
+      ],
+      "trust": {
+        "title": "Partenaire certifié & fiable",
+        "subtitle": "Intégrations officielles avec Stripe, Supabase, Notion et plus encore."
       },
       "legalLinks": {
         "legalNotice": "Mentions légales",
