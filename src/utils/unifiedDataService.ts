@@ -54,10 +54,9 @@ export async function checkServerConnection(): Promise<boolean> {
     return isConnected;
   } catch (error) {
     console.warn("⚠️ Impossible de contacter le serveur Supabase (ce n'est pas bloquant)");
-    // Ne pas bloquer - on continue quand même
-    currentMode = "connected"; // Optimiste: on suppose que ça va marcher
+    currentMode = "disconnected";
     lastCheck = now;
-    return true; // Retourne true pour ne pas bloquer
+    return false;
   }
 }
 
@@ -74,6 +73,18 @@ export function forceRecheck(): void {
  */
 export function getCurrentMode(): DataServiceMode {
   return currentMode;
+}
+
+interface CustomDataMeta {
+  updatedAt?: string;
+}
+
+interface CustomDataApiResponse<T> {
+  success: boolean;
+  key: string;
+  value: T | null;
+  metadata: CustomDataMeta | null;
+  error?: string;
 }
 
 // ==================== PROJECTS ====================
@@ -283,6 +294,48 @@ export async function deleteProject(id: string, accessToken: string): Promise<vo
     console.error("❌ Erreur suppression projet:", error);
     throw error;
   }
+}
+
+// ==================== CUSTOM DATA (KV STORE) ====================
+
+function customDataUrl(key: string): string {
+  return `${BASE_URL}/custom-data/${encodeURIComponent(key)}`;
+}
+
+async function fetchCustomData<T>(key: string, accessToken: string, init?: RequestInit): Promise<CustomDataApiResponse<T>> {
+  const response = await fetch(customDataUrl(key), {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+      ...(init?.headers || {})
+    },
+    signal: AbortSignal.timeout(10000),
+    ...init,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text().catch(() => response.statusText);
+    throw new Error(`Custom data request failed (${response.status}): ${errorText}`);
+  }
+
+  return response.json();
+}
+
+export async function getCustomData<T = unknown>(key: string, accessToken: string): Promise<T | null> {
+  const data = await fetchCustomData<T>(key, accessToken);
+  return data.value ?? null;
+}
+
+export async function saveCustomData<T = unknown>(key: string, value: T, accessToken: string): Promise<{ value: T; metadata: CustomDataMeta | null }> {
+  const data = await fetchCustomData<T>(key, accessToken, {
+    method: "PUT",
+    body: JSON.stringify({ value }),
+  });
+  return { value: (data.value ?? null) as T, metadata: data.metadata };
+}
+
+export async function deleteCustomData(key: string, accessToken: string): Promise<void> {
+  await fetchCustomData<null>(key, accessToken, { method: "DELETE" });
 }
 
 // ==================== BLOG POSTS ====================

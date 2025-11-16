@@ -57,8 +57,10 @@ type HonoNext = () => Promise<void> | void;
 
 // Utility to get error message from unknown error
 function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) return getErrorMessage(error);
-  return String(error);
+  if (error instanceof Error) {
+    return error.message || error.toString();
+  }
+  return typeof error === "string" ? error : JSON.stringify(error);
 }
 
 console.log("🚀 Portfolio CRM Server starting...");
@@ -100,6 +102,27 @@ const kv = {
       throw new Error(getErrorMessage(error));
     }
     return data?.value;
+
+    function sanitizeCustomKey(input: string | undefined | null): string | null {
+      if (!input) return null;
+      const normalized = input.trim();
+      if (!normalized) return null;
+      const safeKey = normalized.replace(/[^a-zA-Z0-9_-]/g, "").toLowerCase();
+      return safeKey || null;
+    }
+
+    function getUserScopedKey(c: HonoContext, keyParam: string): { storageKey: string; userId: string } | null {
+      const user = c.get("user");
+      const rawUserId = user?.id as string | undefined;
+      if (!rawUserId) {
+        return null;
+      }
+      const safeUserId = sanitizeCustomKey(rawUserId.replace(/[^a-zA-Z0-9_-]/g, "-"));
+      if (!safeUserId) {
+        return null;
+      }
+      return { storageKey: `custom:${safeUserId}:${keyParam}`, userId: safeUserId };
+    }
   },
   del: async (key: string): Promise<void> => {
     const supabaseKv = kvClient();
@@ -301,8 +324,8 @@ const requireAuth = async (c: HonoContext, next: HonoNext): Promise<Response | v
     }, 401);
   }
   const token = authHeader.replace("Bearer ", "");
-  const publicAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
-  if (token === publicAnonKey) {
+  const adminServiceToken = Deno.env.get("ADMIN_SERVICE_TOKEN");
+  if (adminServiceToken && token === adminServiceToken) {
     await next();
     return;
   }
@@ -528,6 +551,101 @@ app.get("/make-server-04919ac5/test-kv", async (c: HonoContext) => {
   }
 });
 console.log("✅ KV test endpoint added");
+
+// ===========================================================================
+// CUSTOM DATA (KV STORE)
+// ===========================================================================
+app.use("/make-server-04919ac5/custom-data/*", requireAuth);
+app.get("/make-server-04919ac5/custom-data/:key", async (c: HonoContext) => {
+  const keyParam = sanitizeCustomKey(c.req.param("key"));
+  if (!keyParam) {
+    return c.json({ success: false, error: "INVALID_KEY" }, 400);
+  }
+  const scoped = getUserScopedKey(c, keyParam);
+  if (!scoped) {
+    return c.json({ success: false, error: "USER_CONTEXT_MISSING" }, 401);
+  }
+
+  try {
+    const stored = await kv.get(scoped.storageKey);
+    let responseValue = null;
+    let metadata: Record<string, unknown> | undefined;
+
+    if (typeof stored !== "undefined" && stored !== null) {
+      if (typeof stored === "object" && "data" in (stored as Record<string, unknown>)) {
+        const typedStored = stored as { data: unknown; updatedAt?: string };
+        responseValue = typedStored.data;
+        metadata = typedStored.updatedAt ? { updatedAt: typedStored.updatedAt } : undefined;
+      } else {
+        responseValue = stored;
+      }
+    }
+
+    return c.json({
+      success: true,
+      key: keyParam,
+      owner: scoped.userId,
+      exists: typeof stored !== "undefined" && stored !== null,
+      value: responseValue,
+      metadata: metadata ?? null
+    });
+  } catch (error) {
+    console.error("❌ Custom data GET error:", error);
+    return c.json({ success: false, error: getErrorMessage(error) }, 500);
+  }
+});
+
+app.put("/make-server-04919ac5/custom-data/:key", async (c: HonoContext) => {
+  const keyParam = sanitizeCustomKey(c.req.param("key"));
+  if (!keyParam) {
+    return c.json({ success: false, error: "INVALID_KEY" }, 400);
+  }
+  const scoped = getUserScopedKey(c, keyParam);
+  if (!scoped) {
+    return c.json({ success: false, error: "USER_CONTEXT_MISSING" }, 401);
+  }
+
+  let payload: any = null;
+  try {
+    payload = await c.req.json();
+  } catch (_err) {
+    return c.json({ success: false, error: "INVALID_JSON" }, 400);
+  }
+
+  const value = typeof payload?.value === "undefined" ? payload : payload.value;
+  const record = {
+    data: value,
+    updatedAt: new Date().toISOString()
+  };
+
+  try {
+    await kv.set(scoped.storageKey, record);
+    return c.json({ success: true, key: keyParam, owner: scoped.userId, value, metadata: { updatedAt: record.updatedAt } });
+  } catch (error) {
+    console.error("❌ Custom data PUT error:", error);
+    return c.json({ success: false, error: getErrorMessage(error) }, 500);
+  }
+});
+
+app.delete("/make-server-04919ac5/custom-data/:key", async (c: HonoContext) => {
+  const keyParam = sanitizeCustomKey(c.req.param("key"));
+  if (!keyParam) {
+    return c.json({ success: false, error: "INVALID_KEY" }, 400);
+  }
+  const scoped = getUserScopedKey(c, keyParam);
+  if (!scoped) {
+    return c.json({ success: false, error: "USER_CONTEXT_MISSING" }, 401);
+  }
+
+  try {
+    await kv.del(scoped.storageKey);
+    return c.json({ success: true, key: keyParam, owner: scoped.userId });
+  } catch (error) {
+    console.error("❌ Custom data DELETE error:", error);
+    return c.json({ success: false, error: getErrorMessage(error) }, 500);
+  }
+});
+console.log("✅ Custom data KV endpoints added");
 
 // ===========================================================================
 // AUTH ROUTES

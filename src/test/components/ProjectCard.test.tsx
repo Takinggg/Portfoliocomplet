@@ -5,11 +5,25 @@ import { ProjectCard } from '../../components/ProjectCard';
 // Mock motion/react
 vi.mock('motion/react', () => ({
   motion: {
-    div: ({ children, onClick, className, ...props }: any) => (
-      <div onClick={onClick} className={className} {...props}>
-        {children}
-      </div>
-    ),
+    div: ({ children, onClick, className, ...props }: any) => {
+      const disallowedProps = new Set([
+        'initial',
+        'whileInView',
+        'viewport',
+        'transition',
+        'whileHover',
+        'animate',
+        'exit',
+      ]);
+      const safeProps = Object.fromEntries(
+        Object.entries(props).filter(([key]) => !disallowedProps.has(key))
+      );
+      return (
+        <div onClick={onClick} className={className} {...safeProps}>
+          {children}
+        </div>
+      );
+    },
   },
 }));
 

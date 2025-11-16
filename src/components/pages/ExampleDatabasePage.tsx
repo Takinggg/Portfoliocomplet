@@ -24,6 +24,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Alert, AlertDescription } from "../ui/alert";
 import { toast } from "sonner";
 import * as unifiedService from "../../utils/unifiedDataService";
+import { createClient } from "../../utils/supabase/client";
+import type { Session } from "@supabase/supabase-js";
 
 interface ExampleTask {
   id: string;
@@ -151,6 +153,8 @@ export default function ExampleDatabasePage() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<ExampleTask | null>(null);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -164,11 +168,31 @@ export default function ExampleDatabasePage() {
     tags: ""
   });
 
-  // Check connection and load tasks
+  const supabase = createClient();
+
   useEffect(() => {
+    const initAuth = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+      setAuthChecked(true);
+    };
+    initAuth();
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+    });
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
+  }, [supabase]);
+
+  // Check connection and load tasks when auth ready
+  useEffect(() => {
+    if (!authChecked) return;
     checkConnection();
     loadTasks();
-  }, []);
+  }, [authChecked, session?.user?.id]);
+
+  const tasksKey = session ? "example_tasks" : null;
 
   const checkConnection = async () => {
     const connected = await unifiedService.checkServerConnection();
@@ -176,10 +200,14 @@ export default function ExampleDatabasePage() {
   };
 
   const loadTasks = async () => {
+    if (!tasksKey || !session?.access_token) {
+      setTasks([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
-      // Utilise le KV store pour stocker les tâches d'exemple
-      const tasksData = await unifiedService.getCustomData("example_tasks");
+      const tasksData = await unifiedService.getCustomData(tasksKey, session.access_token);
       if (tasksData && Array.isArray(tasksData)) {
         setTasks(tasksData);
       }
@@ -192,6 +220,10 @@ export default function ExampleDatabasePage() {
   };
 
   const handleSaveTask = async () => {
+    if (!tasksKey || !session?.access_token) {
+      toast.error("Vous devez être connecté pour enregistrer des tâches.");
+      return;
+    }
     try {
       const newTask: ExampleTask = {
         id: editingTask?.id || `task-${Date.now()}`,
@@ -217,7 +249,7 @@ export default function ExampleDatabasePage() {
       }
 
       // Sauvegarde dans Supabase
-      await unifiedService.saveCustomData("example_tasks", updatedTasks);
+      await unifiedService.saveCustomData(tasksKey, updatedTasks, session.access_token);
       setTasks(updatedTasks);
       closeDialog();
     } catch (error) {
@@ -228,10 +260,14 @@ export default function ExampleDatabasePage() {
 
   const handleDeleteTask = async () => {
     if (!taskToDelete) return;
+    if (!tasksKey || !session?.access_token) {
+      toast.error("Vous devez être connecté pour supprimer des tâches.");
+      return;
+    }
 
     try {
       const updatedTasks = tasks.filter(t => t.id !== taskToDelete);
-      await unifiedService.saveCustomData("example_tasks", updatedTasks);
+      await unifiedService.saveCustomData(tasksKey, updatedTasks, session.access_token);
       setTasks(updatedTasks);
       toast.success(t.successDeleted);
       setDeleteDialogOpen(false);
@@ -307,6 +343,15 @@ export default function ExampleDatabasePage() {
   return (
     <div className="min-h-screen bg-[#0C0C0C] text-[#F4F4F4]">
       <div className="max-w-6xl mx-auto px-4 py-12">
+        {!session && authChecked && (
+          <Alert className="mb-6 border-red-500/30 bg-red-500/5">
+            <AlertDescription className="text-red-100">
+              {language === "fr"
+                ? "Connectez-vous pour créer et synchroniser vos tâches d'exemple."
+                : "Sign in to create and sync your example tasks."}
+            </AlertDescription>
+          </Alert>
+        )}
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

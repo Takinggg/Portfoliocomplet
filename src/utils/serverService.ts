@@ -12,7 +12,12 @@ export type ServerMode = "server" | "local" | "checking";
 // ============================================================================
 // MODE DEVELOPMENT: FALLBACK LOCAL SI SERVEUR INDISPONIBLE
 // ============================================================================
-const PRODUCTION_MODE = false; // true pour serveur only, false pour fallback local
+const forceServerMode = (import.meta.env.VITE_FORCE_SERVER_MODE ?? "").toString().toLowerCase();
+const PRODUCTION_MODE = forceServerMode === "true"
+  ? true
+  : forceServerMode === "false"
+    ? false
+    : import.meta.env.PROD;
 
 let currentMode: ServerMode = "checking"; // Démarrer en mode checking
 let serverAvailable: boolean = false; // Détecter automatiquement
