@@ -1,4 +1,4 @@
-import { Button } from "../ui/button";
+﻿import { Button } from "../ui/button";
 import { ArrowRight, Workflow, LayoutDashboard, Sparkles, TrendingDown, Clock, Star, Zap, Users, Award, CheckCircle2, ArrowUpRight, Code2, Palette, Brain, Github, Linkedin, Twitter, Send, Play, ChevronDown, CheckCircle, BarChart3, Target, Rocket, Hexagon, Cpu, Database, Globe, Lock, Layers, MessageSquare, Calendar, Shield, Check, Upload, Phone, MessageCircle, Briefcase } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useInView } from "motion/react";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
@@ -11,6 +11,7 @@ import confetti from "canvas-confetti";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { useLanguage } from "../../utils/i18n/LanguageContext";
+import { HeroSection } from "../home/HeroSection";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { fetchWithCache } from "../../utils/apiCache";
 import { toast } from "sonner";
@@ -597,7 +598,7 @@ function AutomationWorkflow() {
             <Zap className="h-7 w-7 text-mint" />
           </div>
           <div>
-            <div className="text-xs text-neutral-500 mb-1">Design → Live</div>
+            <div className="text-xs text-neutral-500 mb-1">Design ÔåÆ Live</div>
             <div className="text-2xl font-bold text-white">2min</div>
           </div>
         </div>
@@ -803,308 +804,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
     <div className="w-full bg-[#0C0C0C] text-white overflow-hidden">
       <SpotlightEffect />
       
-      {/* HERO - Ultra Complex 3D */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
-        {/* Animated Gradient Mesh Background */}
-        <div className="absolute inset-0">
-          {/* Base gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0C0C0C] via-[#0a0a0a] to-[#0C0C0C]"></div>
-          
-          {/* Animated grid lines */}
-          <motion.div
-            className="absolute inset-0 opacity-30"
-            animate={{
-              backgroundPosition: ["0% 0%", "100% 100%"],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            style={{
-              backgroundImage: `
-                linear-gradient(to right, rgba(0, 255, 194, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 255, 194, 0.03) 1px, transparent 1px)
-              `,
-              backgroundSize: '100px 100px',
-            }}
-          />
-          
-          {/* Diagonal lines overlay */}
-          <div className="absolute inset-0 opacity-20">
-            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern id="diagonal-lines" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                  <line x1="0" y1="0" x2="0" y2="40" stroke="rgba(0, 255, 194, 0.05)" strokeWidth="1"/>
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#diagonal-lines)" />
-            </svg>
-          </div>
-
-          {/* Radial gradients - multiple layers */}
-          <motion.div
-            className="absolute top-0 left-1/4 w-[800px] h-[800px] rounded-full"
-            style={{
-              background: "radial-gradient(circle, rgba(0, 255, 194, 0.15) 0%, transparent 70%)",
-            }}
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.5, 0.3],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          
-          <motion.div
-            className="absolute bottom-0 right-1/4 w-[700px] h-[700px] rounded-full"
-            style={{
-              background: "radial-gradient(circle, rgba(0, 255, 194, 0.12) 0%, transparent 70%)",
-            }}
-            animate={{
-              scale: [1.2, 1, 1.2],
-              opacity: [0.25, 0.45, 0.25],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2,
-            }}
-          />
-
-          <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-            style={{
-              background: "radial-gradient(circle, rgba(0, 255, 194, 0.08) 0%, transparent 70%)",
-            }}
-            animate={{
-              scale: [1, 1.3, 1],
-              opacity: [0.2, 0.4, 0.2],
-            }}
-            transition={{
-              duration: 12,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1,
-            }}
-          />
-
-          {/* Noise texture overlay */}
-          <div 
-            className="absolute inset-0 opacity-[0.015]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-            }}
-          />
-
-          {/* Concentric circles for depth */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <motion.div
-                key={i}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-mint/5"
-                style={{
-                  width: `${i * 300}px`,
-                  height: `${i * 300}px`,
-                }}
-                animate={{
-                  scale: [1, 1.1, 1],
-                  opacity: [0.1, 0.2, 0.1],
-                }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: i * 0.4,
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Vignette effect */}
-          <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-[#0C0C0C]"></div>
-        </div>
-        
-        <AuroraEffect />
-        <GridDots />
-        <LightBeams />
-        <ParticlesBackground />
-
-        <div className="max-w-[1600px] mx-auto w-full relative z-10 pt-32 pb-20">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            {/* Left - Text Content */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, type: "spring" }}
-              style={{ scale: scaleProgress, opacity: opacityProgress }}
-            >
-              {/* Floating Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                whileHover={{ scale: 1.05 }}
-                className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-mint/30 bg-mint/10 backdrop-blur-xl mb-10 cursor-pointer group"
-              >
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="relative"
-                >
-                  <div className="w-2 h-2 rounded-full bg-mint"></div>
-                  <div className="absolute inset-0 w-2 h-2 rounded-full bg-mint animate-ping"></div>
-                </motion.div>
-                <span className="text-sm text-mint font-medium group-hover:text-white transition-colors">{t('home.hero.badge')}</span>
-                <ArrowRight className="h-4 w-4 text-mint group-hover:translate-x-1 transition-transform" />
-              </motion.div>
-
-              {/* Title with morphing animation */}
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-                className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-10 leading-[0.9]"
-              >
-                <motion.span 
-                  className="block text-white"
-                  whileHover={{ scale: 1.05, x: 10 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  {t('home.hero.titleLine1')}
-                </motion.span>
-                <motion.span 
-                  className="block text-white"
-                  whileHover={{ scale: 1.05, x: 10 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  {t('home.hero.titleLine2')}
-                </motion.span>
-                <motion.span
-                  className="block text-gradient-mint-animated relative"
-                  whileHover={{ scale: 1.05, x: 10 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  {t('home.hero.titleLine3')}
-                  <motion.div
-                    className="absolute -inset-2 bg-mint/20 blur-2xl -z-10"
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  />
-                </motion.span>
-              </motion.h1>
-
-              {/* Description */}
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-                className="text-xl md:text-2xl text-neutral-400 mb-12 leading-relaxed max-w-xl"
-              >
-                {t('home.hero.subtitle')}{" "}
-                <span className="text-mint font-medium">{t('home.hero.subtitleHighlight1')}</span> et{" "}
-                <span className="text-mint font-medium">{t('home.hero.subtitleHighlight2')}</span>.
-              </motion.p>
-
-              {/* CTAs with advanced hover */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
-                className="flex flex-col sm:flex-row gap-4 mb-14"
-              >
-                <Button
-                  size="lg"
-                  onClick={() => onNavigate("contact")}
-                  className="bg-mint text-black hover:bg-mint/90 h-16 px-10 text-lg font-medium rounded-2xl group relative overflow-hidden"
-                >
-                  <span className="relative z-10 flex items-center">
-                    {t('home.hero.cta')}
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform" />
-                  </span>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: "100%" }}
-                    transition={{ duration: 0.5 }}
-                  />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="ghost"
-                  onClick={() => onNavigate("projects")}
-                  className="border-2 border-neutral-800 hover:border-mint/30 bg-neutral-950/50 hover:bg-neutral-950 h-16 px-10 text-lg rounded-2xl group backdrop-blur-xl"
-                >
-                  <Play className="mr-2 h-5 w-5 text-mint" />
-                  <span className="text-white">{t('home.hero.viewWork')}</span>
-                </Button>
-              </motion.div>
-
-              {/* Animated Stats */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.8 }}
-                className="grid grid-cols-3 gap-6 pt-10 border-t border-neutral-900"
-              >
-                {[
-                  { value: 30, suffix: "+", label: t('home.hero.stats.projects') },
-                  { value: 25, suffix: "+", label: t('home.hero.stats.clients') },
-                  { value: 15, suffix: "h", label: t('home.hero.stats.saved') }
-                ].map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    className="cursor-pointer"
-                  >
-                    <div className="text-4xl font-bold text-white mb-2">
-                      <Counter value={stat.value} suffix={stat.suffix} />
-                    </div>
-                    <div className="text-sm text-neutral-500">{stat.label}</div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
-
-            {/* Right - Automation Workflow */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, type: "spring", delay: 0.3 }}
-              className="relative hidden lg:block h-[700px]"
-            >
-              <AutomationWorkflow />
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="flex flex-col items-center gap-3 cursor-pointer group"
-          >
-            <span className="text-xs text-neutral-500 group-hover:text-mint transition-colors">{t('home.hero.scrollDown')}</span>
-            <div className="w-6 h-10 rounded-full border-2 border-neutral-800 group-hover:border-mint/50 flex items-start justify-center p-2 transition-colors">
-              <motion.div
-                animate={{ y: [0, 12, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="w-1 h-2 bg-mint rounded-full"
-              />
-            </div>
-          </motion.div>
-        </motion.div>
-      </section>
+      <HeroSection onNavigate={onNavigate} />
 
       {/* Bento Grid Section */}
       <section className="py-32 px-6 relative">
@@ -1118,7 +818,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
             viewport={{ once: true }}
             className="text-center mb-32 relative"
           >
-            {/* Halo lumineux derrière le texte */}
+            {/* Halo lumineux derri├¿re le texte */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-mint/20 rounded-full blur-[120px] -z-10"></div>
             
             {/* Titre avec animation mot par mot */}
@@ -1175,7 +875,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
             </motion.button>
           </motion.div>
 
-          {/* 2. VISUALISATION DU SYSTÈME */}
+          {/* 2. VISUALISATION DU SYST├êME */}
           <div id="system-visualization" className="mb-40">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -1218,7 +918,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 />
               ))}
 
-              {/* SVG pour les lignes - 800x800 centré */}
+              {/* SVG pour les lignes - 800x800 centr├® */}
               <svg 
                 className="absolute pointer-events-none z-10"
                 width="800"
@@ -1231,7 +931,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   marginTop: '-400px',
                 }}
               >
-                {/* Ligne 0° - HAUT - COULEUR UNIE */}
+                {/* Ligne 0┬░ - HAUT - COULEUR UNIE */}
                 <g>
                   <line x1="400" y1="330" x2="400" y2="80" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
                   <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
@@ -1240,7 +940,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   </circle>
                 </g>
                 
-                {/* Ligne 60° - HAUT-DROITE - COULEUR UNIE */}
+                {/* Ligne 60┬░ - HAUT-DROITE - COULEUR UNIE */}
                 <g>
                   <line x1="460.6" y1="365" x2="677" y2="223.9" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
                   <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
@@ -1249,7 +949,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   </circle>
                 </g>
                 
-                {/* Ligne 120° - BAS-DROITE - COULEUR UNIE */}
+                {/* Ligne 120┬░ - BAS-DROITE - COULEUR UNIE */}
                 <g>
                   <line x1="460.6" y1="435" x2="677" y2="576.1" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
                   <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
@@ -1258,7 +958,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   </circle>
                 </g>
                 
-                {/* Ligne 180° - BAS - COULEUR UNIE */}
+                {/* Ligne 180┬░ - BAS - COULEUR UNIE */}
                 <g>
                   <line x1="400" y1="470" x2="400" y2="720" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
                   <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
@@ -1267,7 +967,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   </circle>
                 </g>
                 
-                {/* Ligne 240° - BAS-GAUCHE - COULEUR UNIE */}
+                {/* Ligne 240┬░ - BAS-GAUCHE - COULEUR UNIE */}
                 <g>
                   <line x1="339.4" y1="435" x2="123" y2="576.1" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
                   <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
@@ -1276,7 +976,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   </circle>
                 </g>
                 
-                {/* Ligne 300° - HAUT-GAUCHE - COULEUR UNIE */}
+                {/* Ligne 300┬░ - HAUT-GAUCHE - COULEUR UNIE */}
                 <g>
                   <line x1="339.4" y1="365" x2="123" y2="223.9" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
                   <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
@@ -1475,7 +1175,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   problem: t('home.results.cases.ecommerce.problem') || 'Gestion manuelle des commandes et suivi client chronophage',
                   solution: t('home.results.cases.ecommerce.solution') || 'Automatisation des commandes, CRM et emails',
                   result: t('home.results.cases.ecommerce.result') || '+40%',
-                  resultLabel: t('home.results.cases.ecommerce.resultLabel') || 'de productivité',
+                  resultLabel: t('home.results.cases.ecommerce.resultLabel') || 'de productivit├®',
                   flow: t('home.results.cases.ecommerce.flow') || ["Commande", "CRM", "Email", "Facturation"],
                   gradient: "from-cyan-500/10 via-mint/10 to-cyan-500/10",
                   iconBg: "from-cyan-500/20 to-mint/10"
@@ -1484,9 +1184,9 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   type: t('home.results.cases.freelance.type') || 'Freelance / Coach',
                   icon: Users,
                   problem: t('home.results.cases.freelance.problem') || 'Perte de temps dans la gestion administrative quotidienne',
-                  solution: t('home.results.cases.freelance.solution') || 'Formulaire → CRM → Facturation automatique',
+                  solution: t('home.results.cases.freelance.solution') || 'Formulaire ÔåÆ CRM ÔåÆ Facturation automatique',
                   result: t('home.results.cases.freelance.result') || '2h/jour',
-                  resultLabel: t('home.results.cases.freelance.resultLabel') || 'économisées',
+                  resultLabel: t('home.results.cases.freelance.resultLabel') || '├®conomis├®es',
                   flow: t('home.results.cases.freelance.flow') || ["Lead", "Qualification", "Devis", "Paiement"],
                   gradient: "from-violet-500/10 via-purple-500/10 to-violet-500/10",
                   iconBg: "from-violet-500/20 to-purple-500/10"
@@ -1494,7 +1194,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 {
                   type: t('home.results.cases.saas.type') || 'Start-up SaaS',
                   icon: Target,
-                  problem: t('home.results.cases.saas.problem') || 'Données éparpillées, pas de vision globale de la croissance',
+                  problem: t('home.results.cases.saas.problem') || 'Donn├®es ├®parpill├®es, pas de vision globale de la croissance',
                   solution: t('home.results.cases.saas.solution') || 'Onboarding + tracking + dashboards automatiques',
                   result: t('home.results.cases.saas.result') || 'x2',
                   resultLabel: t('home.results.cases.saas.resultLabel') || 'croissance',
@@ -1533,7 +1233,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                         </div>
                       </div>
 
-                      {/* AVANT - Problème */}
+                      {/* AVANT - Probl├¿me */}
                       <div className="mb-6 p-6 rounded-2xl bg-neutral-900/40 border border-red-500/20 relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-500/50 to-transparent"></div>
                         <div className="flex items-start gap-3 mb-3">
@@ -1549,7 +1249,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                         </div>
                       </div>
 
-                      {/* Flèche de transformation */}
+                      {/* Fl├¿che de transformation */}
                       <div className="flex justify-center my-6">
                         <motion.div
                           animate={{ y: [0, 5, 0] }}
@@ -1560,7 +1260,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                         </motion.div>
                       </div>
 
-                      {/* APRÈS - Solution */}
+                      {/* APR├êS - Solution */}
                       <div className="mb-8 p-6 rounded-2xl bg-neutral-900/40 border border-mint/20 relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-mint/50 to-transparent"></div>
                         <div className="flex items-start gap-3 mb-3">
@@ -1569,14 +1269,14 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                           </div>
                           <div className="flex-1">
                             <div className="text-xs font-bold text-mint uppercase tracking-wider mb-2">
-                              {language === 'en' ? 'After' : 'Après'}
+                              {language === 'en' ? 'After' : 'Apr├¿s'}
                             </div>
                             <p className="text-sm text-white leading-relaxed font-medium">{cas.solution}</p>
                           </div>
                         </div>
                       </div>
 
-                      {/* Résultat massif */}
+                      {/* R├®sultat massif */}
                       <div className="relative">
                         <div className="absolute inset-0 bg-gradient-to-r from-mint/20 via-mint/30 to-mint/20 blur-xl"></div>
                         <div className="relative text-center p-8 rounded-2xl bg-gradient-to-br from-mint/10 via-mint/5 to-transparent border-2 border-mint/30 backdrop-blur-sm">
@@ -1626,7 +1326,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
             </div>
           </div>
 
-          {/* 5. SCHÉMA DE PROCESSUS */}
+          {/* 5. SCH├ëMA DE PROCESSUS */}
           <div className="mb-40">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -1840,7 +1540,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     </div>
                     <div>
                       <div className="font-bold text-white">50+</div>
-                      <div className="text-xs text-neutral-400">Projets livrés</div>
+                      <div className="text-xs text-neutral-400">Projets livr├®s</div>
                     </div>
                   </div>
                 </motion.div>
@@ -1962,9 +1662,9 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   className="flex flex-wrap items-center justify-center gap-6 mb-10"
                 >
                   {[
-                    { icon: Shield, text: "Paiement sécurisé" },
-                    { icon: Award, text: "Garantie qualité" },
-                    { icon: Clock, text: "Délais respectés" },
+                    { icon: Shield, text: "Paiement s├®curis├®" },
+                    { icon: Award, text: "Garantie qualit├®" },
+                    { icon: Clock, text: "D├®lais respect├®s" },
                   ].map((item, i) => (
                     <motion.div
                       key={i}
@@ -2022,8 +1722,8 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 >
                   {[
                     { value: "100%", label: "Clients satisfaits" },
-                    { value: "50+", label: "Projets livrés" },
-                    { value: "2-4 sem", label: "Délai moyen" },
+                    { value: "50+", label: "Projets livr├®s" },
+                    { value: "2-4 sem", label: "D├®lai moyen" },
                     { value: "24/7", label: "Support disponible" },
                   ].map((stat, i) => (
                     <motion.div
@@ -2105,7 +1805,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     <div className="flex items-center gap-2 mb-4">
                       {project.category && (
                         <span className="text-xs uppercase tracking-wider text-mint/80 bg-mint/10 border border-mint/20 rounded-full px-3 py-1">
-                          {project.category === 'web' && 'Développement Web'}
+                          {project.category === 'web' && 'D├®veloppement Web'}
                           {project.category === 'mobile' && 'Application Mobile'}
                           {project.category === 'design' && 'Design UI/UX'}
                           {project.category === 'consulting' && 'Consulting'}
@@ -2183,7 +1883,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
     
     // Validation
     if (!formData.name || !formData.email || !formData.message || selectedReasons.length === 0) {
-      toast.error(language === 'en' ? 'Please fill in all fields and select at least one interest' : 'Veuillez remplir tous les champs et sélectionner au moins un intérêt');
+      toast.error(language === 'en' ? 'Please fill in all fields and select at least one interest' : 'Veuillez remplir tous les champs et s├®lectionner au moins un int├®r├¬t');
       return;
     }
 
@@ -2221,7 +1921,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
           colors: ["#00FFC2", "#0C0C0C", "#F4F4F4"],
         });
 
-        toast.success(language === 'en' ? 'Message sent successfully!' : 'Message envoyé avec succès !');
+        toast.success(language === 'en' ? 'Message sent successfully!' : 'Message envoy├® avec succ├¿s !');
         setFormSubmitted(true);
         
         // Send confirmation email (optional, don't wait)
@@ -2257,7 +1957,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error(language === 'en' ? 'Error sending message. Please try again.' : 'Erreur lors de l\'envoi. Veuillez réessayer.');
+      toast.error(language === 'en' ? 'Error sending message. Please try again.' : 'Erreur lors de l\'envoi. Veuillez r├®essayer.');
     } finally {
       setIsSubmitting(false);
     }
@@ -2276,11 +1976,11 @@ function ContactSection({ onNavigate }: HomePageProps) {
     crm: "Explain your needs in lead, client, project, and invoice management",
     other: "Describe your need in detail",
   } : {
-    design: "Décrivez votre vision, votre identité de marque, et vos besoins en design",
+    design: "D├®crivez votre vision, votre identit├® de marque, et vos besoins en design",
     automation: "Dites-m'en plus sur les processus que vous souhaitez automatiser",
-    website: "Parlez-moi de votre projet web : objectifs, fonctionnalités, audience cible",
+    website: "Parlez-moi de votre projet web : objectifs, fonctionnalit├®s, audience cible",
     crm: "Expliquez vos besoins en gestion de leads, clients, projets et facturation",
-    other: "Décrivez votre besoin en détail",
+    other: "D├®crivez votre besoin en d├®tail",
   };
 
   return (
@@ -2380,7 +2080,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
             transition={{ delay: 0.2 }}
             className="mb-8 flex justify-center relative"
           >
-            {/* Cercles concentriques animés */}
+            {/* Cercles concentriques anim├®s */}
             {[0, 1, 2].map((i) => (
               <motion.div
                 key={i}
@@ -2449,9 +2149,9 @@ function ContactSection({ onNavigate }: HomePageProps) {
             className="text-xl md:text-2xl text-neutral-400 max-w-3xl mx-auto mb-6"
           >
             {language === 'en' ? (
-              <>Tell me about your needs, ideas, or goals — I'll respond within <span className="text-mint font-medium">24h</span></>
+              <>Tell me about your needs, ideas, or goals ÔÇö I'll respond within <span className="text-mint font-medium">24h</span></>
             ) : (
-              <>Expliquez-moi vos besoins, vos idées ou vos objectifs — je vous réponds sous <span className="text-mint font-medium">24h</span></>
+              <>Expliquez-moi vos besoins, vos id├®es ou vos objectifs ÔÇö je vous r├®ponds sous <span className="text-mint font-medium">24h</span></>
             )}
           </motion.p>
 
@@ -2464,7 +2164,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
             className="flex flex-wrap items-center justify-center gap-8 mb-6"
           >
             {[
-              { icon: Clock, value: "< 24h", label: language === 'en' ? "Response time" : "Temps de réponse" },
+              { icon: Clock, value: "< 24h", label: language === 'en' ? "Response time" : "Temps de r├®ponse" },
               { icon: Users, value: "50+", label: language === 'en' ? "Happy clients" : "Clients satisfaits" },
               { icon: Star, value: "5.0", label: language === 'en' ? "Average rating" : "Note moyenne" },
             ].map((stat, i) => (
@@ -2498,7 +2198,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
           >
             <Calendar className="h-4 w-4 group-hover:rotate-12 transition-transform" />
             <span className="underline-offset-4 group-hover:underline">
-              {language === 'en' ? "I'd rather book a call" : "Je préfère réserver un appel"}
+              {language === 'en' ? "I'd rather book a call" : "Je pr├®f├¿re r├®server un appel"}
             </span>
           </motion.button>
         </motion.div>
@@ -2545,14 +2245,14 @@ function ContactSection({ onNavigate }: HomePageProps) {
                   {/* Badge */}
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-mint/10 border border-mint/30 mb-4">
                     <Zap className="h-3 w-3 text-mint" />
-                    <span className="text-xs text-mint">{language === 'en' ? 'Fast response' : 'Réponse rapide'}</span>
+                    <span className="text-xs text-mint">{language === 'en' ? 'Fast response' : 'R├®ponse rapide'}</span>
                   </div>
                   
                   <h3 className="text-2xl font-bold mb-3">{language === 'en' ? 'Send a message' : 'Envoyer un message'}</h3>
                   <p className="text-neutral-400 mb-6">
                     {language === 'en' 
                       ? 'Describe your project in a few lines. Response guaranteed within 24h.'
-                      : 'Décrivez votre projet en quelques lignes. Réponse garantie sous 24h.'}
+                      : 'D├®crivez votre projet en quelques lignes. R├®ponse garantie sous 24h.'}
                   </p>
                   
                   {/* Features list */}
@@ -2593,7 +2293,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                     <DialogDescription>
                       {language === 'en' 
                         ? "I'll respond within 24h. All fields are required."
-                        : 'Je vous répondrai dans les 24h. Tous les champs sont requis.'}
+                        : 'Je vous r├®pondrai dans les 24h. Tous les champs sont requis.'}
                     </DialogDescription>
                   </DialogHeader>
 
@@ -2679,7 +2379,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                         required
                         value={formData.message}
                         onChange={handleInputChange('message')}
-                        placeholder={language === 'en' ? "Describe your project in detail..." : "Décrivez votre projet en détail..."}
+                        placeholder={language === 'en' ? "Describe your project in detail..." : "D├®crivez votre projet en d├®tail..."}
                         className="min-h-[150px]"
                       />
                     </div>
@@ -2706,7 +2406,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                         {isSubmitting ? (
                           language === 'en' ? 'Sending...' : 'Envoi en cours...'
                         ) : formSubmitted ? (
-                          language === 'en' ? 'Sent!' : 'Envoyé !'
+                          language === 'en' ? 'Sent!' : 'Envoy├® !'
                         ) : (
                           <>
                             {language === 'en' ? 'Send message' : 'Envoyer le message'}
@@ -2732,9 +2432,9 @@ function ContactSection({ onNavigate }: HomePageProps) {
                     <Check className="h-10 w-10 text-mint" />
                   </motion.div>
                   
-                  <h3 className="text-2xl font-bold mb-3">Message bien reçu ! 🎉</h3>
+                  <h3 className="text-2xl font-bold mb-3">Message bien re├ºu ! ­ƒÄë</h3>
                   <p className="text-neutral-400 mb-6">
-                    Merci <span className="text-mint font-medium">{formData.name}</span>, je vous répondrai sous 24h.
+                    Merci <span className="text-mint font-medium">{formData.name}</span>, je vous r├®pondrai sous 24h.
                   </p>
                   
                   <Button
@@ -2742,7 +2442,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
                     onClick={() => onNavigate("projects")}
                     className="border-mint/30 hover:bg-mint/10"
                   >
-                    Découvrir mes projets
+                    D├®couvrir mes projets
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </motion.div>
@@ -2790,14 +2490,14 @@ function ContactSection({ onNavigate }: HomePageProps) {
               <p className="text-neutral-400 mb-6">
                 {language === 'en' 
                   ? 'Book a slot in my calendar. 30 min discovery call.'
-                  : 'Réservez un créneau dans mon agenda. Appel découverte de 30 min.'}
+                  : 'R├®servez un cr├®neau dans mon agenda. Appel d├®couverte de 30 min.'}
               </p>
               
               {/* Features list */}
               <div className="space-y-2 mb-6">
                 {(language === 'en' 
                   ? ["Available slots", "Video or phone", "100% free"]
-                  : ["Créneaux disponibles", "Visio ou téléphone", "100% gratuit"]
+                  : ["Cr├®neaux disponibles", "Visio ou t├®l├®phone", "100% gratuit"]
                 ).map((feature, i) => (
                   <motion.div
                     key={i}
@@ -2848,19 +2548,19 @@ function ContactSection({ onNavigate }: HomePageProps) {
             {[
               { 
                 icon: Clock, 
-                title: language === 'en' ? "Response within 24h" : "Réponse sous 24h", 
+                title: language === 'en' ? "Response within 24h" : "R├®ponse sous 24h", 
                 desc: language === 'en' ? "Guaranteed promise" : "Promesse garantie",
                 gradient: "from-mint/20 to-mint/5"
               },
               { 
                 icon: Shield, 
-                title: language === 'en' ? "Guaranteed confidentiality" : "Confidentialité garantie", 
-                desc: language === 'en' ? "Your data is protected" : "Vos données sont protégées",
+                title: language === 'en' ? "Guaranteed confidentiality" : "Confidentialit├® garantie", 
+                desc: language === 'en' ? "Your data is protected" : "Vos donn├®es sont prot├®g├®es",
                 gradient: "from-cyan-500/20 to-cyan-500/5"
               },
               { 
                 icon: MessageCircle, 
-                title: language === 'en' ? "Human exchanges" : "Échanges humains", 
+                title: language === 'en' ? "Human exchanges" : "├ëchanges humains", 
                 desc: language === 'en' ? "No bots, only human" : "Pas de robots, que de l'humain",
                 gradient: "from-mint/20 to-mint/5"
               },
@@ -2994,3 +2694,4 @@ function ContactSection({ onNavigate }: HomePageProps) {
     </section>
   );
 }
+
