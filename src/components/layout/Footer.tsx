@@ -15,6 +15,7 @@ export default function Footer({ onNavigate }: FooterProps) {
   const currentYear = new Date().getFullYear();
   const { t } = useTranslation();
   const { language } = useLanguage();
+  const footerTexts = (t as any)?.footer ?? {};
 
   const navLinks = [
     { label: t("nav.services"), page: "services" as Page },
@@ -55,14 +56,8 @@ export default function Footer({ onNavigate }: FooterProps) {
               {/* Newsletter Form */}
               <div className="mt-6">
                 <div className="mb-3">
-                  <p className="text-sm text-white mb-1">
-                    {language === 'en' ? 'Monthly Newsletter' : 'Newsletter mensuelle'}
-                  </p>
-                  <p className="text-xs text-neutral-500">
-                    {language === 'en' 
-                      ? 'Tips, case studies, and exclusive news' 
-                      : 'Conseils, études de cas et nouvelles exclusives'}
-                  </p>
+                  <p className="text-sm text-white mb-1">{t("footer.newsletter")}</p>
+                  <p className="text-xs text-neutral-500">{t("footer.newsletterSubtitle")}</p>
                 </div>
                 <NewsletterForm variant="minimal" />
               </div>
@@ -101,9 +96,9 @@ export default function Footer({ onNavigate }: FooterProps) {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              <div className="text-sm font-medium text-white mb-6">Services</div>
+              <div className="text-sm font-medium text-white mb-6">{t("footer.sections.services")}</div>
               <ul className="space-y-4">
-                {["Automatisation", "Dashboard Design", "IA Integration", "Consulting"].map((service) => (
+                {(footerTexts.servicesList || []).map((service: string) => (
                   <li key={service}>
                     <span className="text-sm text-neutral-400 hover:text-mint transition-colors cursor-pointer">
                       {service}
@@ -120,22 +115,22 @@ export default function Footer({ onNavigate }: FooterProps) {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
             >
-              <div className="text-sm font-medium text-white mb-6">Contact</div>
+              <div className="text-sm font-medium text-white mb-6">{t("footer.sections.contact")}</div>
               <ul className="space-y-4">
                 <li>
                   <a href="mailto:contact@maxence.dev" className="text-sm text-neutral-400 hover:text-mint transition-colors">
-                    contact@maxence.dev
+                    {footerTexts.contactInfo?.email}
                   </a>
                 </li>
                 <li>
                   <span className="text-sm text-neutral-400">
-                    Paris, France
+                    {footerTexts.contactInfo?.location}
                   </span>
                 </li>
                 <li>
                   <div className="flex items-center gap-1">
                     <div className="w-2 h-2 rounded-full bg-mint animate-pulse"></div>
-                    <span className="text-sm text-neutral-400">Disponible</span>
+                    <span className="text-sm text-neutral-400">{footerTexts.contactInfo?.availability ?? t("footer.available")}</span>
                   </div>
                 </li>
               </ul>
@@ -189,10 +184,11 @@ export default function Footer({ onNavigate }: FooterProps) {
           transition={{ delay: 0.6 }}
           className="flex items-center justify-center gap-6 mt-8 pt-8 border-t border-neutral-900"
         >
-          {(language === 'en' 
-            ? ["Legal Notice", "Privacy Policy", "Terms of Service"]
-            : ["Mentions légales", "Politique de confidentialité", "CGV"]
-          ).map((link) => (
+          {[
+            footerTexts.legalLinks?.legalNotice,
+            footerTexts.legalLinks?.privacy,
+            footerTexts.legalLinks?.terms,
+          ].filter(Boolean).map((link: string) => (
             <button
               key={link}
               className="text-xs text-neutral-500 hover:text-mint transition-colors"

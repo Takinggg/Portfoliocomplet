@@ -43,7 +43,28 @@ export default {
     "terms": "Terms of Service",
     "services": "Services",
     "contact": "Contact",
-    "available": "Available"
+    "available": "Available",
+    "sections": {
+      "services": "Services",
+      "contact": "Contact"
+    },
+    "servicesList": [
+      "Automation",
+      "Dashboard Design",
+      "AI Integration",
+      "Consulting"
+    ],
+    "contactInfo": {
+      "email": "contact@maxence.dev",
+      "location": "Paris, France",
+      "availability": "Currently accepting new projects",
+      "status": "Available"
+    },
+    "legalLinks": {
+      "legalNotice": "Legal Notice",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    }
   },
   "home": {
     "hero": {
@@ -803,6 +824,99 @@ export default {
       "formatValue": "Video or phone call",
       "prep": "Preparation",
       "prepValue": "Prepare your questions and goals"
+    },
+    "flow": {
+      "badge": "Book an appointment",
+      "title": "Book a free call",
+      "description": "Schedule a 30-minute discovery call to discuss your project.",
+      "steps": {
+        "dateTime": "Date & Time",
+        "information": "Information",
+        "confirmation": "Confirmation"
+      },
+      "duration": {
+        "title": "Appointment duration",
+        "description": "Select your desired call duration",
+        "options": {
+          "15": {
+            "label": "15 minutes",
+            "description": "Quick consultation"
+          },
+          "30": {
+            "label": "30 minutes",
+            "description": "Discovery call"
+          },
+          "60": {
+            "label": "1 hour",
+            "description": "In-depth consultation"
+          }
+        }
+      },
+      "calendar": {
+        "title": "Choose a date",
+        "hintPrefix": "The number indicates available slots for",
+        "hintSuffix": "min",
+        "weekdaysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        "slotShort": "slots",
+        "noDate": {
+          "title": "Select a date first",
+          "subtitle": "Available dates are marked with a green dot"
+        },
+        "noSlots": {
+          "title": "No slots available for this date",
+          "subtitle": "Please choose another day"
+        }
+      },
+      "time": {
+        "title": "Choose a time",
+        "slotsAvailable": "available slots on",
+        "callType": "Google Meet video call",
+        "selected": "Meeting of",
+        "selectedSuffix": "minutes scheduled on",
+        "at": "at"
+      },
+      "meeting": {
+        "label": "Selected appointment",
+        "format": "Video conference"
+      },
+      "form": {
+        "title": "Your information",
+        "name": "Full name *",
+        "email": "Email *",
+        "phone": "Phone (optional)",
+        "notes": "Tell me about your project (optional)",
+        "notesPlaceholder": "Describe your project or automation needs...",
+        "placeholders": {
+          "name": "John Doe",
+          "email": "john@example.com",
+          "phone": "+1 234 567 890"
+        },
+        "back": "Back",
+        "submit": "Confirm appointment"
+      },
+      "confirmation": {
+        "title": "Appointment confirmed! 🎉",
+        "description": "Your appointment has been saved. A confirmation email with the video link is on its way.",
+        "detailsTitle": "Appointment details",
+        "date": "Date",
+        "time": "Time",
+        "duration": "Duration",
+        "format": "Format",
+        "formatValue": "Video conference",
+        "reminder": "A reminder will be sent 24h before the appointment.",
+        "emailNotice": "We'll send it to",
+        "backHome": "Back to home"
+      },
+      "buttons": {
+        "continue": "Continue"
+      },
+      "toast": {
+        "missingFields": "Please fill in all required fields",
+        "invalidEmail": "Please enter a valid email address",
+        "success": "Appointment confirmed! You will receive a confirmation email.",
+        "error": "An error occurred. Please try again.",
+        "emailWarning": "Appointment created but confirmation email could not be sent"
+      }
     }
   },
   "newsletter": {
@@ -814,7 +928,10 @@ export default {
       "subscribing": "Subscribing...",
       "success": "Successfully subscribed!",
       "error": "Error subscribing",
-      "alreadySubscribed": "You're already subscribed"
+      "alreadySubscribed": "You're already subscribed",
+      "invalidEmail": "Please enter a valid email address",
+      "successDescription": "You will receive our latest news and exclusive tips.",
+      "footnote": "By subscribing, you agree to receive our emails. Unsubscribe anytime."
     },
     "popup": {
       "title": "Get My Best Tips",
@@ -835,7 +952,152 @@ export default {
       "subtitle": "Welcome to the community",
       "message": "You'll receive a confirmation email. Thank you for your trust!",
       "cta": "Back to Home"
+    },
+    "badge": {
+      "loading": "...",
+      "single": "subscriber",
+      "plural": "subscribers"
+    },
+    "cta": {
+      "compact": {
+        "title": "Newsletter",
+        "description": "Receive my tips and updates by email"
+      },
+      "hero": {
+        "badge": "Exclusive newsletter",
+        "title": "Don't miss my latest updates",
+        "description": "Join professionals who receive my web development tips, detailed case studies and new articles. One email per month max.",
+        "trend": "+20% this month",
+        "socialProof": "Join developers, designers and founders who trust me"
+      },
+      "default": {
+        "title": "Stay informed",
+        "description": "Subscribe to receive my latest articles, case studies and advice on web development and design.",
+        "bullets": [
+          "1 email / month max",
+          "Exclusive content",
+          "No spam",
+          "Easy unsubscribe"
+        ]
+      }
+    },
+    "confirmPage": {
+      "loading": {
+        "title": "Confirmation in progress...",
+        "subtitle": "Please wait while we confirm your subscription."
+      },
+      "success": {
+        "title": "Subscription confirmed! 🎉",
+        "description": "Thank you for confirming your subscription. You will now receive our newsletter",
+        "listTitle": "You will receive:",
+        "items": [
+          "📚 Detailed case studies from my projects",
+          "💡 Technical tips and best practices",
+          "🎯 Web design & development trends",
+          "🚀 News and projects in preview"
+        ],
+        "emailNotice": "at",
+        "button": "Back to site"
+      },
+      "already": {
+        "title": "Already confirmed",
+        "description": "Your subscription has already been confirmed. You will receive our next newsletters."
+      },
+      "error": {
+        "title": "Confirmation error",
+        "description": "The confirmation link is invalid or has expired. If you just signed up, please try again shortly.",
+        "back": "Back to site",
+        "contact": "Contact us"
+      }
     }
+  },
+  "invoice": {
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "paid": "Paid",
+      "overdue": "Overdue"
+    },
+    "toast": {
+      "downloadTitle": "PDF download",
+      "downloadDescription": "Using your browser to generate the PDF...",
+      "minAmountTitle": "Invalid amount",
+      "minAmountDescription": "Minimum payment amount is €0.50",
+      "paymentErrorTitle": "Payment error",
+      "paymentErrorDescription": "An error occurred while processing the payment"
+    },
+    "loading": "Loading your invoice...",
+    "error": {
+      "title": "Invoice not found",
+      "description": "This invoice does not exist or the link has expired. Please check your email for a valid link.",
+      "support": "Questions? Contact us"
+    },
+    "actions": {
+      "downloadPdf": "Download PDF",
+      "print": "Print",
+      "payNow": "Pay now",
+      "processing": "Processing...",
+      "processingShort": "Processing...",
+      "payAmountPrefix": "Pay",
+      "payAmountSuffix": "€ now",
+      "securePayment": "✓ Secure payment • Stripe • No fees",
+      "viewInvoice": "View invoice",
+      "downloadInvoice": "Download invoice",
+      "backToSite": "Back to site"
+    },
+    "labels": {
+      "title": "INVOICE",
+      "provider": "Provider",
+      "billTo": "Bill to",
+      "issueDate": "Issue date",
+      "dueDate": "Due date",
+      "details": "Service details",
+      "description": "Description",
+      "quantity": "Quantity",
+      "unitPrice": "Unit price",
+      "amount": "Amount",
+      "empty": "No items on this invoice",
+      "subtotal": "Subtotal",
+      "tax": "VAT",
+      "total": "Total",
+      "paymentMethods": "Accepted payment methods",
+      "methodsList": "Bank transfer • PayPal • Credit card (Stripe)",
+      "iban": "IBAN",
+      "overdue": "This invoice is overdue. Please contact us if you need assistance.",
+      "legalNotice": "Upon receipt and from the due date, any payment made after the deadline will incur late fees equal to three times the legal interest rate in France.",
+      "signature": "This invoice was generated automatically and does not require a signature.",
+      "thanks": "Thank you for your trust! 🙏",
+      "helpQuestion": "Questions about this invoice?",
+      "contactUs": "Contact us"
+    },
+    "success": {
+      "title": "Payment successful!",
+      "subtitle": "Your payment has been processed successfully.",
+      "confirmation": "A confirmation email has been sent.",
+      "buttons": {
+        "view": "View invoice",
+        "download": "Download invoice"
+      },
+      "support": "If you have any questions about this invoice, contact us at",
+      "back": "Back to site"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": "Page Not Found",
+    "message": "Sorry, the page you are looking for does not exist or has been moved.",
+    "suggestions": "Suggestions:",
+    "actions": {
+      "home": "Back to Home",
+      "back": "Go Back",
+      "projects": "View Projects",
+      "services": "Services",
+      "about": "About",
+      "contact": "Contact",
+      "blog": "Blog"
+    },
+    "hint": "Hint: Check the URL or use the navigation menu above.",
+    "redirect": "Automatic redirect to home in 10 seconds..."
   },
   "common": {
     "loading": "Loading...",

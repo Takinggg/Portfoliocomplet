@@ -5,6 +5,7 @@ import { Mail, CheckCircle2, Loader2 } from "lucide-react";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { toast } from "sonner";
 import { useLanguage } from "../../utils/i18n/LanguageContext";
+import { useTranslation } from "../../utils/i18n/useTranslation";
 
 interface NewsletterFormProps {
   variant?: "default" | "minimal";
@@ -17,12 +18,13 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const { language } = useLanguage();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email || !email.includes("@")) {
-      toast.error(language === 'en' ? "Please enter a valid email address" : "Veuillez entrer une adresse email valide");
+      toast.error(t("newsletter.form.invalidEmail"));
       return;
     }
 
@@ -54,11 +56,7 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
 
       // Handle already subscribed case (backend now returns success: false for duplicates)
       if (data.alreadySubscribed) {
-        toast.error(
-          data.message || (language === 'en' 
-            ? "You are already subscribed to the newsletter!" 
-            : "Vous êtes déjà inscrit à la newsletter !")
-        );
+        toast.error(data.message || t("newsletter.form.alreadySubscribed"));
         return;
       }
 
@@ -66,17 +64,10 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
         setIsSuccess(true);
         setEmail("");
         
-        toast.success(
-          language === 'en' 
-            ? "✅ Thank you! You are now subscribed to the newsletter." 
-            : "✅ Merci ! Vous êtes maintenant inscrit à la newsletter.",
-          {
-            description: language === 'en'
-              ? "You will receive our latest news and exclusive tips."
-              : "Vous recevrez nos prochaines actualités et conseils exclusifs.",
-            duration: 5000,
-          }
-        );
+        toast.success(t("newsletter.form.success"), {
+          description: t("newsletter.form.successDescription"),
+          duration: 5000,
+        });
         
         onSuccess?.();
         
@@ -84,15 +75,11 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
         setTimeout(() => setIsSuccess(false), 5000);
       } else {
         console.error("❌ Newsletter error:", data);
-        toast.error(data.message || data.error || (language === 'en' ? "An error occurred" : "Une erreur est survenue"));
+        toast.error(data.message || data.error || t("newsletter.form.error"));
       }
     } catch (error) {
       console.error("❌ Newsletter subscription error:", error);
-      toast.error(
-        language === 'en' 
-          ? "Unable to subscribe at the moment. Please try again later." 
-          : "Impossible de s'abonner pour le moment. Réessayez plus tard."
-      );
+      toast.error(t("newsletter.form.error"));
     } finally {
       setIsSubmitting(false);
     }
@@ -102,9 +89,7 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
     return (
       <div className={`flex items-center gap-2 p-3 rounded-lg bg-[#00FFC2]/10 border border-[#00FFC2]/30 ${className}`}>
         <CheckCircle2 className="h-4 w-4 text-[#00FFC2] flex-shrink-0" />
-        <p className="text-sm text-[#00FFC2]">
-          {language === 'en' ? '✅ Subscription confirmed!' : '✅ Inscription confirmée !'}
-        </p>
+        <p className="text-sm text-[#00FFC2]">{t("newsletter.form.success")}</p>
       </div>
     );
   }
@@ -114,14 +99,8 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
       <div className={`flex items-center gap-3 p-4 rounded-lg bg-[#00FFC2]/10 border border-[#00FFC2]/30 ${className}`}>
         <CheckCircle2 className="h-5 w-5 text-[#00FFC2] flex-shrink-0" />
         <div>
-          <p className="text-sm text-[#00FFC2] mb-1">
-            {language === 'en' ? '✅ Successfully subscribed!' : '✅ Inscription réussie !'}
-          </p>
-          <p className="text-xs text-white/70">
-            {language === 'en' 
-              ? 'Thank you for your trust. You will receive our latest news.'
-              : 'Merci de votre confiance. Vous recevrez nos prochaines actualités.'}
-          </p>
+          <p className="text-sm text-[#00FFC2] mb-1">{t("newsletter.form.success")}</p>
+          <p className="text-xs text-white/70">{t("newsletter.form.successDescription")}</p>
         </div>
       </div>
     );
@@ -132,7 +111,7 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
       <form onSubmit={handleSubmit} className={`flex gap-2 ${className}`}>
         <Input
           type="email"
-          placeholder={language === 'en' ? 'Your email' : 'Votre email'}
+          placeholder={t("newsletter.form.placeholder")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={isSubmitting}
@@ -158,7 +137,7 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
       <div className="flex gap-2">
         <Input
           type="email"
-          placeholder={language === 'en' ? 'your@email.com' : 'votre@email.com'}
+          placeholder={t("newsletter.form.placeholder")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={isSubmitting}
@@ -172,13 +151,11 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
           {isSubmitting ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
-            "S'abonner"
+            t("newsletter.form.button")
           )}
         </Button>
       </div>
-      <p className="text-xs text-white/40 mt-2">
-        En vous abonnant, vous acceptez de recevoir nos emails. Désinscription possible à tout moment.
-      </p>
+      <p className="text-xs text-white/40 mt-2">{t("newsletter.form.footnote")}</p>
     </form>
   );
 }

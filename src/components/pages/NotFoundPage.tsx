@@ -4,51 +4,24 @@
  * Affichée quand l'utilisateur essaie d'accéder à une route qui n'existe pas.
  */
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Home, ArrowLeft, Search } from 'lucide-react';
+import { useTranslation } from '../../utils/i18n/useTranslation';
 
 export default function NotFoundPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t, language } = useTranslation();
+  const notFoundTexts = (t as any)?.notFound ?? {};
 
-  // Détecter la langue depuis l'URL
-  const getLanguage = (): 'fr' | 'en' => {
+  const lang = useMemo(() => {
     const pathname = location.pathname;
     if (pathname.startsWith('/en')) return 'en';
-    return 'fr';
-  };
-
-  const lang = getLanguage();
-
-  // Textes bilingues
-  const t = {
-    fr: {
-      title: '404',
-      subtitle: 'Page non trouvée',
-      message: 'Désolé, la page que vous recherchez n\'existe pas ou a été déplacée.',
-      suggestions: 'Suggestions :',
-      goHome: 'Retour à l\'accueil',
-      goBack: 'Retour en arrière',
-      viewProjects: 'Voir les projets',
-      contact: 'Nous contacter',
-      hint: 'Astuce : Vérifiez l\'URL ou utilisez le menu de navigation ci-dessus.'
-    },
-    en: {
-      title: '404',
-      subtitle: 'Page Not Found',
-      message: 'Sorry, the page you are looking for does not exist or has been moved.',
-      suggestions: 'Suggestions:',
-      goHome: 'Back to Home',
-      goBack: 'Go Back',
-      viewProjects: 'View Projects',
-      contact: 'Contact Us',
-      hint: 'Hint: Check the URL or use the navigation menu above.'
-    }
-  };
-
-  const text = t[lang];
+    if (pathname.startsWith('/fr')) return 'fr';
+    return language ?? 'fr';
+  }, [location.pathname, language]);
 
   // Redirection automatique après 10 secondes
   useEffect(() => {
@@ -75,12 +48,12 @@ export default function NotFoundPage() {
               backgroundClip: 'text'
             }}
           >
-            {text.title}
+            {notFoundTexts.title}
           </h1>
           
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-6xl md:text-8xl" style={{ fontWeight: 800, color: '#00FFC2' }}>
-              {text.title}
+              {notFoundTexts.title}
             </div>
           </div>
         </div>
@@ -88,11 +61,11 @@ export default function NotFoundPage() {
         {/* Texte principal */}
         <div className="space-y-6 mb-12">
           <h2 className="text-3xl md:text-4xl" style={{ fontWeight: 700, color: '#F4F4F4' }}>
-            {text.subtitle}
+            {notFoundTexts.subtitle}
           </h2>
           
           <p className="text-lg md:text-xl" style={{ color: 'rgba(244, 244, 244, 0.7)' }}>
-            {text.message}
+            {notFoundTexts.message}
           </p>
         </div>
 
@@ -108,7 +81,7 @@ export default function NotFoundPage() {
             }}
           >
             <Home className="mr-2 h-5 w-5" />
-            {text.goHome}
+            {notFoundTexts.actions?.home}
           </Button>
 
           <Button
@@ -122,7 +95,7 @@ export default function NotFoundPage() {
             }}
           >
             <ArrowLeft className="mr-2 h-5 w-5" />
-            {text.goBack}
+            {notFoundTexts.actions?.back}
           </Button>
 
           <Button
@@ -136,14 +109,14 @@ export default function NotFoundPage() {
             }}
           >
             <Search className="mr-2 h-5 w-5" />
-            {text.viewProjects}
+            {notFoundTexts.actions?.projects}
           </Button>
         </div>
 
         {/* Suggestions */}
         <div className="space-y-4">
           <p style={{ color: 'rgba(244, 244, 244, 0.5)' }}>
-            {text.suggestions}
+            {notFoundTexts.suggestions}
           </p>
           
           <div className="flex flex-wrap gap-3 justify-center">
@@ -156,7 +129,7 @@ export default function NotFoundPage() {
                 border: '1px solid rgba(0, 255, 194, 0.2)',
               }}
             >
-              Services
+              {notFoundTexts.actions?.services}
             </button>
             
             <button
@@ -168,7 +141,7 @@ export default function NotFoundPage() {
                 border: '1px solid rgba(0, 255, 194, 0.2)',
               }}
             >
-              About
+              {notFoundTexts.actions?.about}
             </button>
             
             <button
@@ -180,7 +153,7 @@ export default function NotFoundPage() {
                 border: '1px solid rgba(0, 255, 194, 0.2)',
               }}
             >
-              Contact
+              {notFoundTexts.actions?.contact}
             </button>
             
             <button
@@ -192,7 +165,7 @@ export default function NotFoundPage() {
                 border: '1px solid rgba(0, 255, 194, 0.2)',
               }}
             >
-              Blog
+              {notFoundTexts.actions?.blog}
             </button>
           </div>
         </div>
@@ -200,14 +173,11 @@ export default function NotFoundPage() {
         {/* Hint */}
         <div className="mt-12 pt-8 border-t" style={{ borderColor: 'rgba(244, 244, 244, 0.1)' }}>
           <p className="text-sm" style={{ color: 'rgba(244, 244, 244, 0.4)' }}>
-            💡 {text.hint}
+            💡 {notFoundTexts.hint}
           </p>
           
           <p className="text-xs mt-4" style={{ color: 'rgba(244, 244, 244, 0.3)' }}>
-            {lang === 'fr' 
-              ? 'Redirection automatique vers l\'accueil dans 10 secondes...'
-              : 'Automatic redirect to home in 10 seconds...'
-            }
+            {notFoundTexts.redirect}
           </p>
         </div>
       </div>

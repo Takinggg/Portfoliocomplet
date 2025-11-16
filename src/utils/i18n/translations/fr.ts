@@ -60,8 +60,29 @@ export default {
       "scrollDown": "Scroll",
       "stats": {
         "projects": "Projets",
-        "clients": "Clients",
-        "saved": "Économisées"
+      "contact": "Contact",
+      "available": "Disponible",
+      "sections": {
+        "services": "Services",
+        "contact": "Contact"
+      },
+      "servicesList": [
+        "Automatisation",
+        "Design de dashboard",
+        "Intégration IA",
+        "Consulting"
+      ],
+      "contactInfo": {
+        "email": "contact@maxence.dev",
+        "location": "Paris, France",
+        "availability": "Disponible pour de nouveaux projets",
+        "status": "Disponible"
+      },
+      "legalLinks": {
+        "legalNotice": "Mentions légales",
+        "privacy": "Politique de confidentialité",
+        "terms": "Conditions générales"
+      }
       },
       "metrics": {
         "timeSaved": "Temps économisé",
@@ -803,6 +824,99 @@ export default {
       "formatValue": "Visio ou téléphone",
       "prep": "Préparation",
       "prepValue": "Préparez vos questions et objectifs"
+    },
+    "flow": {
+      "badge": "Prise de rendez-vous",
+      "title": "Réserver un appel gratuit",
+      "description": "Planifiez un appel découverte de 30 minutes pour discuter de votre projet.",
+      "steps": {
+        "dateTime": "Date & Heure",
+        "information": "Informations",
+        "confirmation": "Confirmation"
+      },
+      "duration": {
+        "title": "Durée du rendez-vous",
+        "description": "Sélectionnez la durée souhaitée pour votre appel",
+        "options": {
+          "15": {
+            "label": "15 minutes",
+            "description": "Consultation rapide"
+          },
+          "30": {
+            "label": "30 minutes",
+            "description": "Appel découverte"
+          },
+          "60": {
+            "label": "1 heure",
+            "description": "Consultation approfondie"
+          }
+        }
+      },
+      "calendar": {
+        "title": "Choisissez une date",
+        "hintPrefix": "Le nombre indique les créneaux disponibles pour",
+        "hintSuffix": "min",
+        "weekdaysShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+        "slotShort": "dispo",
+        "noDate": {
+          "title": "Sélectionnez d'abord une date",
+          "subtitle": "Les dates disponibles sont marquées d'un point vert"
+        },
+        "noSlots": {
+          "title": "Aucun créneau disponible pour cette date",
+          "subtitle": "Veuillez choisir un autre jour"
+        }
+      },
+      "time": {
+        "title": "Choisissez un horaire",
+        "slotsAvailable": "créneaux disponibles le",
+        "callType": "Appel visio Google Meet",
+        "selected": "Rendez-vous de",
+        "selectedSuffix": "minutes prévu le",
+        "at": "à"
+      },
+      "meeting": {
+        "label": "Rendez-vous sélectionné",
+        "format": "Visioconférence"
+      },
+      "form": {
+        "title": "Vos informations",
+        "name": "Nom complet *",
+        "email": "Email *",
+        "phone": "Téléphone (optionnel)",
+        "notes": "Parlez-moi de votre projet (optionnel)",
+        "notesPlaceholder": "Décrivez votre projet ou votre besoin d'automatisation...",
+        "placeholders": {
+          "name": "Jean Dupont",
+          "email": "jean@exemple.fr",
+          "phone": "+33 6 12 34 56 78"
+        },
+        "back": "Retour",
+        "submit": "Confirmer le rendez-vous"
+      },
+      "confirmation": {
+        "title": "Rendez-vous confirmé ! 🎉",
+        "description": "Votre rendez-vous a été enregistré. Vous allez recevoir un email de confirmation avec le lien de visioconférence.",
+        "detailsTitle": "Détails du rendez-vous",
+        "date": "Date",
+        "time": "Heure",
+        "duration": "Durée",
+        "format": "Format",
+        "formatValue": "Visioconférence",
+        "reminder": "Un rappel vous sera envoyé 24h avant le rendez-vous.",
+        "emailNotice": "Il sera envoyé à",
+        "backHome": "Retour à l'accueil"
+      },
+      "buttons": {
+        "continue": "Continuer"
+      },
+      "toast": {
+        "missingFields": "Veuillez remplir tous les champs requis",
+        "invalidEmail": "Veuillez entrer une adresse email valide",
+        "success": "Rendez-vous confirmé ! Vous allez recevoir un email de confirmation.",
+        "error": "Une erreur est survenue. Veuillez réessayer.",
+        "emailWarning": "Le rendez-vous est créé mais l'email de confirmation n'a pas pu être envoyé"
+      }
     }
   },
   "newsletter": {
@@ -814,7 +928,10 @@ export default {
       "subscribing": "Inscription...",
       "success": "Inscription réussie !",
       "error": "Erreur lors de l'inscription",
-      "alreadySubscribed": "Vous êtes déjà inscrit"
+      "alreadySubscribed": "Vous êtes déjà inscrit",
+      "invalidEmail": "Veuillez entrer une adresse email valide",
+      "successDescription": "Vous recevrez nos prochaines actualités et conseils exclusifs.",
+      "footnote": "En vous abonnant, vous acceptez de recevoir nos emails. Désinscription possible à tout moment."
     },
     "popup": {
       "title": "Recevez mes meilleurs conseils",
@@ -835,7 +952,152 @@ export default {
       "subtitle": "Bienvenue dans la communauté",
       "message": "Vous allez recevoir un email de confirmation. Merci de votre confiance !",
       "cta": "Retour à l'accueil"
+    },
+    "badge": {
+      "loading": "...",
+      "single": "abonné",
+      "plural": "abonnés"
+    },
+    "cta": {
+      "compact": {
+        "title": "Newsletter",
+        "description": "Recevez mes conseils et nouveautés par email"
+      },
+      "hero": {
+        "badge": "Newsletter exclusive",
+        "title": "Ne manquez rien de mes nouveautés",
+        "description": "Rejoignez les professionnels qui reçoivent mes conseils en développement web, études de cas détaillées et nouveaux articles. Un email par mois maximum.",
+        "trend": "+20% ce mois",
+        "socialProof": "Rejoignez des développeurs, designers et entrepreneurs qui me font confiance"
+      },
+      "default": {
+        "title": "Restez informé",
+        "description": "Abonnez-vous pour recevoir mes derniers articles, études de cas et conseils en développement web et design.",
+        "bullets": [
+          "1 email / mois max",
+          "Contenu exclusif",
+          "Pas de spam",
+          "Désinscription facile"
+        ]
+      }
+    },
+    "confirmPage": {
+      "loading": {
+        "title": "Confirmation en cours...",
+        "subtitle": "Veuillez patienter pendant que nous confirmons votre abonnement."
+      },
+      "success": {
+        "title": "Abonnement confirmé ! 🎉",
+        "description": "Merci d'avoir confirmé votre abonnement. Vous recevrez désormais nos newsletters",
+        "listTitle": "Vous recevrez :",
+        "items": [
+          "📚 Études de cas détaillées de mes projets",
+          "💡 Conseils techniques et bonnes pratiques",
+          "🎯 Tendances web design & développement",
+          "🚀 Nouveautés et projets en avant-première"
+        ],
+        "emailNotice": "à l'adresse",
+        "button": "Retour au site"
+      },
+      "already": {
+        "title": "Déjà confirmé",
+        "description": "Votre abonnement a déjà été confirmé. Vous recevrez nos prochaines newsletters."
+      },
+      "error": {
+        "title": "Erreur de confirmation",
+        "description": "Le lien de confirmation est invalide ou a expiré. Si vous venez de vous inscrire, veuillez réessayer dans quelques instants.",
+        "back": "Retour au site",
+        "contact": "Nous contacter"
+      }
     }
+  },
+  "invoice": {
+    "status": {
+      "draft": "Brouillon",
+      "sent": "Envoyée",
+      "paid": "Payée",
+      "overdue": "En retard"
+    },
+    "toast": {
+      "downloadTitle": "Téléchargement PDF",
+      "downloadDescription": "Utilisation du navigateur pour générer le PDF...",
+      "minAmountTitle": "Montant invalide",
+      "minAmountDescription": "Le montant minimum pour un paiement est de 0,50€",
+      "paymentErrorTitle": "Erreur de paiement",
+      "paymentErrorDescription": "Une erreur est survenue lors du paiement"
+    },
+    "loading": "Chargement de votre facture...",
+    "error": {
+      "title": "Facture introuvable",
+      "description": "Cette facture n'existe pas ou le lien a expiré. Veuillez vérifier votre email pour un lien valide.",
+      "support": "Des questions ? Contactez-nous"
+    },
+    "actions": {
+      "downloadPdf": "Télécharger PDF",
+      "print": "Imprimer",
+      "payNow": "Payer maintenant",
+      "processing": "Traitement...",
+      "processingShort": "Traitement...",
+      "payAmountPrefix": "Payer",
+      "payAmountSuffix": "€ maintenant",
+      "securePayment": "✓ Paiement sécurisé • Stripe • Aucune commission",
+      "viewInvoice": "Voir la facture",
+      "downloadInvoice": "Télécharger la facture",
+      "backToSite": "Retour au site"
+    },
+    "labels": {
+      "title": "FACTURE",
+      "provider": "Prestataire",
+      "billTo": "Facturation à",
+      "issueDate": "Date d'émission",
+      "dueDate": "Date d'échéance",
+      "details": "Détails de la prestation",
+      "description": "Description",
+      "quantity": "Quantité",
+      "unitPrice": "Prix unitaire",
+      "amount": "Montant",
+      "empty": "Aucun élément dans cette facture",
+      "subtotal": "Sous-total",
+      "tax": "TVA",
+      "total": "Total",
+      "paymentMethods": "Moyens de paiement acceptés",
+      "methodsList": "Virement bancaire • PayPal • Carte bancaire (Stripe)",
+      "iban": "IBAN",
+      "overdue": "Cette facture est en retard. Veuillez prendre contact si vous avez besoin de précisions.",
+      "legalNotice": "À la réception et dès la date d'échéance, tout paiement effectué après application des délais donnera lieu, à titre de pénalité de retard, à la facturation d'un intérêt au montant total à acquitter, déterminé à un taux égal à trois fois le taux de l'intérêt légal en vigueur en France.",
+      "signature": "Cette facture a été générée automatiquement et ne nécessite pas de signature.",
+      "thanks": "Merci pour votre confiance ! 🙏",
+      "helpQuestion": "Des questions sur cette facture ?",
+      "contactUs": "Contactez-nous"
+    },
+    "success": {
+      "title": "Paiement réussi !",
+      "subtitle": "Votre paiement a été traité avec succès.",
+      "confirmation": "Un email de confirmation vous a été envoyé.",
+      "buttons": {
+        "view": "Voir la facture",
+        "download": "Télécharger la facture"
+      },
+      "support": "Si vous avez des questions concernant cette facture, contactez-nous à",
+      "back": "Retour au site"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": "Page non trouvée",
+    "message": "Désolé, la page que vous recherchez n'existe pas ou a été déplacée.",
+    "suggestions": "Suggestions :",
+    "actions": {
+      "home": "Retour à l'accueil",
+      "back": "Retour en arrière",
+      "projects": "Voir les projets",
+      "services": "Services",
+      "about": "À propos",
+      "contact": "Contact",
+      "blog": "Blog"
+    },
+    "hint": "Astuce : Vérifiez l'URL ou utilisez le menu de navigation ci-dessus.",
+    "redirect": "Redirection automatique vers l'accueil dans 10 secondes..."
   },
   "common": {
     "loading": "Chargement...",

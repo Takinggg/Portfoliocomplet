@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { CheckCircle2, XCircle, Mail, Loader2 } from "lucide-react";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { Button } from "../ui/button";
+import { useTranslation } from "../../utils/i18n/useTranslation";
 
 interface NewsletterConfirmPageProps {
   token: string;
@@ -12,6 +13,8 @@ interface NewsletterConfirmPageProps {
 export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPageProps) {
   const [status, setStatus] = useState<"loading" | "success" | "error" | "already_confirmed">("loading");
   const [email, setEmail] = useState<string>("");
+  const { t } = useTranslation();
+  const confirmTexts = (t as any)?.newsletter?.confirmPage ?? {};
 
   useEffect(() => {
     confirmSubscription();
@@ -67,10 +70,8 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
               <Loader2 className="h-8 w-8 text-[#00FFC2] animate-spin" />
             </div>
             <div>
-              <h1 className="text-white mb-3">Confirmation en cours...</h1>
-              <p className="text-white/60">
-                Veuillez patienter pendant que nous confirmons votre abonnement.
-              </p>
+              <h1 className="text-white mb-3">{confirmTexts.loading?.title}</h1>
+              <p className="text-white/60">{confirmTexts.loading?.subtitle}</p>
             </div>
           </div>
         )}
@@ -86,30 +87,22 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
               <CheckCircle2 className="h-8 w-8 text-[#00FFC2]" />
             </motion.div>
             <div>
-              <h1 className="text-white mb-3">Abonnement confirmé ! 🎉</h1>
+              <h1 className="text-white mb-3">{confirmTexts.success?.title}</h1>
               <p className="text-white/60 mb-6">
-                Merci d'avoir confirmé votre abonnement. Vous recevrez désormais nos newsletters
-                {email && ` à l'adresse ${email}`}.
+                {confirmTexts.success?.description}
+                {email && confirmTexts.success?.emailNotice && (
+                  <span>{` ${confirmTexts.success.emailNotice} ${email}`}</span>
+                )}
               </p>
               <div className="space-y-3">
-                <p className="text-white/40 text-sm">Vous recevrez :</p>
+                <p className="text-white/40 text-sm">{confirmTexts.success?.listTitle}</p>
                 <ul className="text-white/60 text-sm space-y-2 text-left max-w-xs mx-auto">
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#00FFC2] mt-1">•</span>
-                    <span>📚 Études de cas détaillées de mes projets</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#00FFC2] mt-1">•</span>
-                    <span>💡 Conseils techniques et best practices</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#00FFC2] mt-1">•</span>
-                    <span>🎯 Tendances web design & développement</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#00FFC2] mt-1">•</span>
-                    <span>🚀 Nouveautés et projets en avant-première</span>
-                  </li>
+                  {(confirmTexts.success?.items || []).map((item: string, index: number) => (
+                    <li className="flex items-start gap-2" key={`${item}-${index}`}>
+                      <span className="text-[#00FFC2] mt-1">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -117,7 +110,7 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
               onClick={() => onNavigate("home")}
               className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
             >
-              Retour au site
+              {confirmTexts.success?.button}
             </Button>
           </div>
         )}
@@ -128,16 +121,14 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
               <Mail className="h-8 w-8 text-white/40" />
             </div>
             <div>
-              <h1 className="text-white mb-3">Déjà confirmé</h1>
-              <p className="text-white/60 mb-6">
-                Votre abonnement a déjà été confirmé. Vous recevrez nos prochaines newsletters.
-              </p>
+              <h1 className="text-white mb-3">{confirmTexts.already?.title}</h1>
+              <p className="text-white/60 mb-6">{confirmTexts.already?.description}</p>
             </div>
             <Button 
               onClick={() => onNavigate("home")}
               className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
             >
-              Retour au site
+              {confirmTexts.success?.button}
             </Button>
           </div>
         )}
@@ -148,11 +139,8 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
               <XCircle className="h-8 w-8 text-red-500" />
             </div>
             <div>
-              <h1 className="text-white mb-3">Erreur de confirmation</h1>
-              <p className="text-white/60 mb-6">
-                Le lien de confirmation est invalide ou a expiré. Si vous venez de vous inscrire,
-                veuillez réessayer dans quelques instants.
-              </p>
+              <h1 className="text-white mb-3">{confirmTexts.error?.title}</h1>
+              <p className="text-white/60 mb-6">{confirmTexts.error?.description}</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button 
@@ -160,13 +148,13 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
                 variant="outline" 
                 className="border-white/10 text-white hover:bg-white/5"
               >
-                Retour au site
+                {confirmTexts.error?.back}
               </Button>
               <Button 
                 onClick={() => onNavigate("contact")}
                 className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
               >
-                Nous contacter
+                {confirmTexts.error?.contact}
               </Button>
             </div>
           </div>

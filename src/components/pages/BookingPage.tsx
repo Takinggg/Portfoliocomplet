@@ -61,6 +61,31 @@ export default function BookingPage() {
     notes: ""
   });
 
+  const bookingFlow = (t as any)?.booking?.flow ?? {};
+  const calendarTexts = bookingFlow.calendar ?? {};
+  const weekdaysShort = calendarTexts.weekdaysShort ?? (
+    language === 'en'
+      ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      : ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
+  );
+  const durationOptions = [15, 30, 60].map((value) => {
+    const option = bookingFlow.duration?.options?.[value as 15 | 30 | 60];
+    return {
+      value,
+      label: option?.label ?? `${value} minutes`,
+      description: option?.description ?? ""
+    };
+  });
+  const fallbackPlaceholders = language === 'en'
+    ? { name: 'John Doe', email: 'john@example.com', phone: '+1 234 567 890' }
+    : { name: 'Jean Dupont', email: 'jean@exemple.fr', phone: '+33 6 12 34 56 78' };
+  const formPlaceholders = {
+    name: bookingFlow.form?.placeholders?.name ?? fallbackPlaceholders.name,
+    email: bookingFlow.form?.placeholders?.email ?? fallbackPlaceholders.email,
+    phone: bookingFlow.form?.placeholders?.phone ?? fallbackPlaceholders.phone,
+  };
+  const locale = language === 'en' ? 'en-US' : 'fr-FR';
+
   // Get available slots for the selected date, filtered by duration
   const availableSlots = useMemo(() => {
     if (!selectedDate) return [];
@@ -134,14 +159,14 @@ export default function BookingPage() {
 
   const handleSubmit = async () => {
     if (!selectedDate || !selectedTime || !bookingData.name || !bookingData.email) {
-      toast.error("Veuillez remplir tous les champs requis");
+      toast.error(t("booking.flow.toast.missingFields"));
       return;
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(bookingData.email.trim())) {
-      toast.error("Veuillez entrer une adresse email valide");
+      toast.error(t("booking.flow.toast.invalidEmail"));
       return;
     }
 
@@ -201,7 +226,7 @@ export default function BookingPage() {
         if (!emailResponse.ok) {
           const errorData = await emailResponse.json();
           console.error("❌ Failed to send booking confirmation:", errorData);
-          toast.error("Le rendez-vous est créé mais l'email de confirmation n'a pas pu être envoyé");
+          toast.error(t("booking.flow.toast.emailWarning"));
         } else {
           const emailData = await emailResponse.json();
           console.log("✅ Booking confirmation email sent:", emailData);
@@ -211,11 +236,11 @@ export default function BookingPage() {
         // Don't block the flow if email fails
       }
 
-      toast.success("Rendez-vous confirmé ! Vous allez recevoir un email de confirmation.");
+      toast.success(t("booking.flow.toast.success"));
       setStep(3);
     } catch (error) {
       console.error("Error creating booking:", error);
-      toast.error("Une erreur est survenue. Veuillez réessayer.");
+      toast.error(t("booking.flow.toast.error"));
     }
   };
 
@@ -238,14 +263,10 @@ export default function BookingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <Badge variant="secondary" className="mb-4 bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/30">
             <CalendarIcon className="h-4 w-4 mr-2" />
-            {language === 'en' ? 'Book an appointment' : 'Prise de rendez-vous'}
+            {t("booking.flow.badge")}
           </Badge>
-          <h1 className="mb-6">{language === 'en' ? 'Book a free call' : 'Réserver un appel gratuit'}</h1>
-          <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
-            {language === 'en' 
-              ? 'Schedule a 30-minute discovery call to discuss your project.'
-              : 'Planifiez un appel découverte de 30 minutes pour discuter de votre projet.'}
-          </p>
+          <h1 className="mb-6">{t("booking.flow.title")}</h1>
+          <p className="text-xl text-neutral-400 max-w-2xl mx-auto">{t("booking.flow.description")}</p>
         </div>
       </section>
 
@@ -256,9 +277,9 @@ export default function BookingPage() {
           <div className="mb-12">
             <div className="flex items-center justify-center space-x-4">
               {[
-                { num: 1, label: language === 'en' ? "Date & Time" : "Date & Heure" },
-                { num: 2, label: language === 'en' ? "Information" : "Informations" },
-                { num: 3, label: language === 'en' ? "Confirmation" : "Confirmation" }
+                { num: 1, label: t("booking.flow.steps.dateTime") },
+                { num: 2, label: t("booking.flow.steps.information") },
+                { num: 3, label: t("booking.flow.steps.confirmation") }
               ].map((s) => (
                 <div key={s.num} className="flex items-center">
                   <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
@@ -287,18 +308,12 @@ export default function BookingPage() {
               {/* Duration Selection */}
               <Card className="bg-neutral-950/50 border-neutral-800 backdrop-blur-xl">
                 <CardHeader>
-                  <CardTitle className="text-white">{language === 'en' ? 'Appointment duration' : 'Durée du rendez-vous'}</CardTitle>
-                  <p className="text-sm text-neutral-400 mt-2">
-                    {language === 'en' ? 'Select your desired call duration' : 'Sélectionnez la durée souhaitée pour votre appel'}
-                  </p>
+                  <CardTitle className="text-white">{t("booking.flow.duration.title")}</CardTitle>
+                  <p className="text-sm text-neutral-400 mt-2">{t("booking.flow.duration.description")}</p>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-3 gap-4">
-                    {[
-                      { value: 15, label: "15 minutes", description: language === 'en' ? "Quick consultation" : "Consultation rapide" },
-                      { value: 30, label: "30 minutes", description: language === 'en' ? "Discovery call" : "Appel découverte" },
-                      { value: 60, label: language === 'en' ? "1 hour" : "1 heure", description: language === 'en' ? "In-depth consultation" : "Consultation approfondie" }
-                    ].map((opt) => (
+                    {durationOptions.map((opt) => (
                       <button
                         key={opt.value}
                         onClick={() => {
@@ -343,12 +358,10 @@ export default function BookingPage() {
               <div className="grid lg:grid-cols-2 gap-8">
                 <Card className="bg-neutral-950/50 border-neutral-800 backdrop-blur-xl">
                   <CardHeader>
-                    <CardTitle className="text-white">{language === 'en' ? 'Choose a date' : 'Choisissez une date'}</CardTitle>
+                    <CardTitle className="text-white">{t("booking.flow.calendar.title")}</CardTitle>
                     <p className="text-sm text-neutral-400 mt-2 flex items-center gap-2">
                       <span className="inline-block w-2 h-2 rounded-full bg-[#00FFC2]"></span>
-                      {language === 'en' 
-                        ? `The number indicates available slots for ${duration}min`
-                        : `Le nombre indique les créneaux disponibles pour ${duration}min`}
+                      {`${t("booking.flow.calendar.hintPrefix")} ${duration}${t("booking.flow.calendar.hintSuffix")}`}
                     </p>
                   </CardHeader>
                 <CardContent>
@@ -369,7 +382,7 @@ export default function BookingPage() {
                         <ChevronLeft className="h-4 w-4" />
                       </Button>
                       <h3 className="text-white">
-                        {(selectedDate || new Date()).toLocaleDateString('fr-FR', { 
+                        {(selectedDate || new Date()).toLocaleDateString(locale, { 
                           month: 'long', 
                           year: 'numeric' 
                         })}
@@ -390,7 +403,7 @@ export default function BookingPage() {
 
                     {/* Days of Week */}
                     <div className="grid grid-cols-7 gap-1 mb-2">
-                      {['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'].map((day) => (
+                      {weekdaysShort.map((day: string) => (
                         <div key={day} className="text-center text-xs text-neutral-500 py-2">
                           {day}
                         </div>
@@ -460,7 +473,7 @@ export default function BookingPage() {
                               </span>
                               {slotsCount > 0 && (
                                 <span className={`text-[10px] ${isSelected ? 'text-black' : 'text-[#00FFC2]'} font-semibold mt-0.5`}>
-                                  {slotsCount} dispo
+                                  {slotsCount} {calendarTexts.slotShort ?? (language === 'en' ? 'slots' : 'dispo')}
                                 </span>
                               )}
                             </button>
@@ -476,25 +489,17 @@ export default function BookingPage() {
 
               <Card className="bg-neutral-950/50 border-neutral-800 backdrop-blur-xl">
                 <CardHeader>
-                  <CardTitle className="text-white">{language === 'en' ? 'Choose a time' : 'Choisissez un horaire'}</CardTitle>
+                  <CardTitle className="text-white">{t("booking.flow.time.title")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {selectedDate ? (
                     <div className="space-y-2">
                       <p className="text-sm text-neutral-400 mb-4">
-                        {language === 'en' ? (
-                          `${availableSlots.length} available slots on ${selectedDate.toLocaleDateString('en-US', { 
-                            weekday: 'long', 
-                            day: 'numeric', 
-                            month: 'long' 
-                          })}`
-                        ) : (
-                          `${availableSlots.length} créneaux disponibles le ${selectedDate.toLocaleDateString('fr-FR', { 
-                            weekday: 'long', 
-                            day: 'numeric', 
-                            month: 'long' 
-                          })}`
-                        )}
+                        {`${availableSlots.length} ${t("booking.flow.time.slotsAvailable")} ${selectedDate.toLocaleDateString(locale, {
+                          weekday: 'long',
+                          day: 'numeric',
+                          month: 'long'
+                        })}`}
                       </p>
                       {availableSlots.length > 0 ? (
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
@@ -515,8 +520,8 @@ export default function BookingPage() {
                         </div>
                       ) : (
                         <div className="text-center py-8">
-                          <p className="text-neutral-500 mb-2">Aucun créneau disponible pour cette date</p>
-                          <p className="text-sm text-neutral-600">Veuillez sélectionner une autre date</p>
+                          <p className="text-neutral-500 mb-2">{t("booking.flow.calendar.noSlots.title")}</p>
+                          <p className="text-sm text-neutral-600">{t("booking.flow.calendar.noSlots.subtitle")}</p>
                         </div>
                       )}
 
@@ -524,10 +529,10 @@ export default function BookingPage() {
                         <div className="mt-6 p-4 bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-lg">
                           <div className="flex items-center text-[#00FFC2] mb-2">
                             <Video className="h-5 w-5 mr-2" />
-                            <span>Appel visio Google Meet</span>
+                            <span>{t("booking.flow.time.callType")}</span>
                           </div>
                           <p className="text-sm text-neutral-400">
-                            Rendez-vous de {duration} minutes prévu le {selectedDate.toLocaleDateString('fr-FR')} à {selectedTime}
+                            {`${t("booking.flow.time.selected")} ${duration} ${t("booking.flow.time.selectedSuffix")} ${selectedDate.toLocaleDateString(locale)} ${t("booking.flow.time.at")} ${selectedTime}`}
                           </p>
                         </div>
                       )}
@@ -538,14 +543,14 @@ export default function BookingPage() {
                         onClick={() => setStep(2)}
                         disabled={!selectedTime}
                       >
-                        Continuer
+                        {t("booking.flow.buttons.continue")}
                       </Button>
                     </div>
                   ) : (
                     <div className="text-center py-12">
                       <CalendarIcon className="h-12 w-12 text-neutral-700 mx-auto mb-4" />
-                      <p className="text-neutral-500 mb-2">Sélectionnez d'abord une date</p>
-                      <p className="text-sm text-neutral-600">Les dates disponibles sont marquées d'un point vert</p>
+                      <p className="text-neutral-500 mb-2">{t("booking.flow.calendar.noDate.title")}</p>
+                      <p className="text-sm text-neutral-600">{t("booking.flow.calendar.noDate.subtitle")}</p>
                     </div>
                   )}
                 </CardContent>
@@ -558,54 +563,54 @@ export default function BookingPage() {
           {step === 2 && (
             <Card className="max-w-2xl mx-auto bg-neutral-950/50 border-neutral-800 backdrop-blur-xl">
               <CardHeader>
-                <CardTitle className="text-white">Vos informations</CardTitle>
+                <CardTitle className="text-white">{t("booking.flow.form.title")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="p-4 bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-lg">
                   <p className="text-sm text-neutral-400">
-                    Rendez-vous sélectionné : <span className="text-[#00FFC2]">
-                      {selectedDate?.toLocaleDateString('fr-FR')} à {selectedTime}
+                    {t("booking.flow.meeting.label")}: <span className="text-[#00FFC2]">
+                      {selectedDate?.toLocaleDateString(locale)} {t("booking.flow.time.at")} {selectedTime}
                     </span>
                   </p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-white">Nom complet *</Label>
+                  <Label htmlFor="name" className="text-white">{t("booking.flow.form.name")}</Label>
                   <Input
                     id="name"
-                    placeholder="John Doe"
+                    placeholder={formPlaceholders.name}
                     value={bookingData.name}
                     onChange={(e) => setBookingData({ ...bookingData, name: e.target.value })}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-white">Email *</Label>
+                  <Label htmlFor="email" className="text-white">{t("booking.flow.form.email")}</Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="john@example.com"
+                    placeholder={formPlaceholders.email}
                     value={bookingData.email}
                     onChange={(e) => setBookingData({ ...bookingData, email: e.target.value })}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-white">Téléphone (optionnel)</Label>
+                  <Label htmlFor="phone" className="text-white">{t("booking.flow.form.phone")}</Label>
                   <Input
                     id="phone"
                     type="tel"
-                    placeholder="+33 6 12 34 56 78"
+                    placeholder={formPlaceholders.phone}
                     value={bookingData.phone}
                     onChange={(e) => setBookingData({ ...bookingData, phone: e.target.value })}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="notes" className="text-white">Parlez-moi de votre projet (optionnel)</Label>
+                  <Label htmlFor="notes" className="text-white">{t("booking.flow.form.notes")}</Label>
                   <Textarea
                     id="notes"
-                    placeholder="Décrivez votre projet ou votre besoin d'automatisation..."
+                    placeholder={t("booking.flow.form.notesPlaceholder")}
                     rows={4}
                     value={bookingData.notes}
                     onChange={(e) => setBookingData({ ...bookingData, notes: e.target.value })}
@@ -618,13 +623,13 @@ export default function BookingPage() {
                     onClick={() => setStep(1)} 
                     className="flex-1 border-neutral-700 hover:bg-neutral-900"
                   >
-                    Retour
+                    {t("booking.flow.form.back")}
                   </Button>
                   <Button 
                     onClick={handleSubmit} 
                     className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
                   >
-                    Confirmer le rendez-vous
+                    {t("booking.flow.form.submit")}
                   </Button>
                 </div>
               </CardContent>
@@ -638,47 +643,48 @@ export default function BookingPage() {
                 <div className="w-20 h-20 bg-[#00FFC2]/20 border-2 border-[#00FFC2] rounded-full flex items-center justify-center mx-auto mb-6">
                   <CheckCircle2 className="h-10 w-10 text-[#00FFC2]" />
                 </div>
-                <h2 className="mb-4 text-white">Rendez-vous confirmé ! 🎉</h2>
+                <h2 className="mb-4 text-white">{t("booking.flow.confirmation.title")}</h2>
                 <p className="text-neutral-400 mb-8">
-                  Votre rendez-vous a été enregistré. Vous allez recevoir un email de confirmation 
-                  avec le lien de visioconférence à l'adresse <span className="text-[#00FFC2]">{bookingData.email}</span>.
+                  {t("booking.flow.confirmation.description")} {bookingData.email && (
+                    <span className="text-[#00FFC2]">
+                      {` ${t("booking.flow.confirmation.emailNotice")} ${bookingData.email}`}
+                    </span>
+                  )}
                 </p>
                 
                 <div className="bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-lg p-6 mb-8">
                   <div className="flex items-center justify-center mb-4">
                     <CalendarIcon className="h-6 w-6 text-[#00FFC2] mr-2" />
-                    <h3 className="text-white">Détails du rendez-vous</h3>
+                    <h3 className="text-white">{t("booking.flow.confirmation.detailsTitle")}</h3>
                   </div>
                   <div className="space-y-2 text-left max-w-sm mx-auto">
                     <div className="flex justify-between">
-                      <span className="text-neutral-400">Date :</span>
-                      <span className="text-white">{selectedDate?.toLocaleDateString('fr-FR')}</span>
+                      <span className="text-neutral-400">{t("booking.flow.confirmation.date")} :</span>
+                      <span className="text-white">{selectedDate?.toLocaleDateString(locale)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-neutral-400">Heure :</span>
+                      <span className="text-neutral-400">{t("booking.flow.confirmation.time")} :</span>
                       <span className="text-white">{selectedTime}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-neutral-400">Durée :</span>
-                      <span className="text-white">{duration} minutes</span>
+                      <span className="text-neutral-400">{t("booking.flow.confirmation.duration")} :</span>
+                      <span className="text-white">{duration} min</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-neutral-400">Format :</span>
-                      <span className="text-white">Visioconférence</span>
+                      <span className="text-neutral-400">{t("booking.flow.confirmation.format")} :</span>
+                      <span className="text-white">{t("booking.flow.confirmation.formatValue")}</span>
                     </div>
                   </div>
                 </div>
 
-                <p className="text-sm text-neutral-500 mb-6">
-                  Un rappel vous sera envoyé 24h avant le rendez-vous.
-                </p>
+                <p className="text-sm text-neutral-500 mb-6">{t("booking.flow.confirmation.reminder")}</p>
 
                 <Button 
                   size="lg" 
                   onClick={() => window.location.href = '/'}
                   className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
                 >
-                  Retour à l'accueil
+                  {t("booking.flow.confirmation.backHome")}
                 </Button>
               </CardContent>
             </Card>

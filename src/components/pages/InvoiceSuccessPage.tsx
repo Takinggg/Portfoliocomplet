@@ -3,10 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Download, ArrowLeft } from 'lucide-react';
 import { Button } from '../ui/button';
+import { useTranslation } from '../../utils/i18n/useTranslation';
 
 export default function InvoiceSuccessPage() {
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const successTexts = (t as any)?.invoice?.success ?? {};
 
   useEffect(() => {
     // You could optionally verify the payment session here
@@ -54,13 +57,13 @@ export default function InvoiceSuccessPage() {
             className="text-center mb-8"
           >
             <h1 className="text-3xl font-bold text-white mb-3">
-              Paiement réussi !
+              {successTexts.title}
             </h1>
             <p className="text-gray-400 text-lg">
-              Votre paiement a été traité avec succès.
+              {successTexts.subtitle}
             </p>
             <p className="text-gray-500 text-sm mt-2">
-              Un email de confirmation vous a été envoyé.
+              {successTexts.confirmation}
             </p>
           </motion.div>
 
@@ -76,7 +79,7 @@ export default function InvoiceSuccessPage() {
               className="w-full bg-[#00FFC2] hover:bg-[#00FFC2]/90 text-black font-semibold h-12 text-base rounded-xl"
             >
               <CheckCircle2 className="w-5 h-5 mr-2" />
-              Voir la facture
+              {successTexts.buttons?.view}
             </Button>
 
             <Button
@@ -85,7 +88,7 @@ export default function InvoiceSuccessPage() {
               className="w-full border-[#00FFC2]/30 hover:border-[#00FFC2] hover:bg-[#00FFC2]/10 text-white h-12 text-base rounded-xl"
             >
               <Download className="w-5 h-5 mr-2" />
-              Télécharger la facture
+              {successTexts.buttons?.download}
             </Button>
           </motion.div>
 
@@ -98,7 +101,7 @@ export default function InvoiceSuccessPage() {
           >
             <div className="bg-[#00FFC2]/5 rounded-lg p-4">
               <p className="text-gray-400 text-sm text-center">
-                Si vous avez des questions concernant cette facture, contactez-nous à{' '}
+                {successTexts.support}{' '}
                 <a 
                   href="mailto:contact@maxence.design" 
                   className="text-[#00FFC2] hover:underline"
@@ -122,7 +125,7 @@ export default function InvoiceSuccessPage() {
             className="inline-flex items-center text-gray-400 hover:text-[#00FFC2] transition-colors text-sm"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour au site
+            {successTexts.back}
           </a>
         </motion.div>
       </motion.div>

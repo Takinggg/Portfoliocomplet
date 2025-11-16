@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { Mail, Sparkles, TrendingUp } from "lucide-react";
 import { NewsletterForm } from "./NewsletterForm";
 import { NewsletterBadge } from "./NewsletterBadge";
+import { useTranslation } from "../../utils/i18n/useTranslation";
 
 interface NewsletterCTAProps {
   variant?: "default" | "compact" | "hero";
@@ -9,6 +10,9 @@ interface NewsletterCTAProps {
 }
 
 export function NewsletterCTA({ variant = "default", className = "" }: NewsletterCTAProps) {
+  const { t } = useTranslation();
+  const ctaTexts = (t as any)?.newsletter?.cta ?? {};
+
   if (variant === "compact") {
     return (
       <motion.div
@@ -23,11 +27,11 @@ export function NewsletterCTA({ variant = "default", className = "" }: Newslette
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <h3 className="text-white">Newsletter</h3>
+              <h3 className="text-white">{ctaTexts.compact?.title ?? "Newsletter"}</h3>
               <NewsletterBadge />
             </div>
             <p className="text-white/60 text-sm mb-4">
-              Recevez mes conseils et nouveautés par email
+              {ctaTexts.compact?.description}
             </p>
             <NewsletterForm variant="minimal" />
           </div>
@@ -53,18 +57,15 @@ export function NewsletterCTA({ variant = "default", className = "" }: Newslette
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00FFC2]/10 border border-[#00FFC2]/20 mb-6">
             <Sparkles className="h-4 w-4 text-[#00FFC2]" />
-            <span className="text-sm text-[#00FFC2]">Newsletter exclusive</span>
+            <span className="text-sm text-[#00FFC2]">{ctaTexts.hero?.badge}</span>
           </div>
 
           {/* Title */}
-          <h2 className="mb-4 text-white">
-            Ne manquez rien de mes nouveautés
-          </h2>
+          <h2 className="mb-4 text-white">{ctaTexts.hero?.title}</h2>
 
           {/* Description */}
           <p className="text-white/60 mb-6 max-w-2xl mx-auto">
-            Rejoignez les professionnels qui reçoivent mes conseils en développement web,
-            études de cas détaillées et nouveaux articles. Un email par mois maximum.
+            {ctaTexts.hero?.description}
           </p>
 
           {/* Stats */}
@@ -77,7 +78,7 @@ export function NewsletterCTA({ variant = "default", className = "" }: Newslette
             <div className="text-center">
               <div className="flex items-center gap-2 text-[#00FFC2]">
                 <TrendingUp className="h-4 w-4" />
-                <span className="text-sm">+20% ce mois</span>
+                <span className="text-sm">{ctaTexts.hero?.trend}</span>
               </div>
             </div>
           </div>
@@ -89,7 +90,7 @@ export function NewsletterCTA({ variant = "default", className = "" }: Newslette
 
           {/* Social proof */}
           <p className="text-xs text-white/40 mt-6">
-            Rejoignez des développeurs, designers et entrepreneurs qui me font confiance
+            {ctaTexts.hero?.socialProof}
           </p>
         </div>
       </motion.div>
@@ -109,13 +110,8 @@ export function NewsletterCTA({ variant = "default", className = "" }: Newslette
           <Mail className="h-6 w-6 text-[#00FFC2]" />
         </div>
         <div className="flex-1">
-          <h3 className="text-white mb-2">
-            Restez informé
-          </h3>
-          <p className="text-white/60 text-sm">
-            Abonnez-vous pour recevoir mes derniers articles, études de cas et conseils
-            en développement web et design.
-          </p>
+          <h3 className="text-white mb-2">{ctaTexts.default?.title}</h3>
+          <p className="text-white/60 text-sm">{ctaTexts.default?.description}</p>
         </div>
       </div>
 
@@ -127,22 +123,12 @@ export function NewsletterCTA({ variant = "default", className = "" }: Newslette
 
       <div className="mt-6 pt-6 border-t border-white/10">
         <div className="grid grid-cols-2 gap-4 text-sm">
-          <div className="flex items-start gap-2">
-            <div className="w-1 h-1 rounded-full bg-[#00FFC2] mt-2" />
-            <span className="text-white/60">1 email / mois max</span>
-          </div>
-          <div className="flex items-start gap-2">
-            <div className="w-1 h-1 rounded-full bg-[#00FFC2] mt-2" />
-            <span className="text-white/60">Contenu exclusif</span>
-          </div>
-          <div className="flex items-start gap-2">
-            <div className="w-1 h-1 rounded-full bg-[#00FFC2] mt-2" />
-            <span className="text-white/60">Pas de spam</span>
-          </div>
-          <div className="flex items-start gap-2">
-            <div className="w-1 h-1 rounded-full bg-[#00FFC2] mt-2" />
-            <span className="text-white/60">Désinscription facile</span>
-          </div>
+          {(ctaTexts.default?.bullets || []).map((bullet: string, index: number) => (
+            <div className="flex items-start gap-2" key={`${bullet}-${index}`}>
+              <div className="w-1 h-1 rounded-full bg-[#00FFC2] mt-2" />
+              <span className="text-white/60">{bullet}</span>
+            </div>
+          ))}
         </div>
       </div>
     </motion.div>

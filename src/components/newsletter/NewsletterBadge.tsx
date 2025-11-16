@@ -3,6 +3,7 @@ import { Users, TrendingUp } from "lucide-react";
 import { motion } from "motion/react";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { useLanguage } from "../../utils/i18n/LanguageContext";
+import { useTranslation } from "../../utils/i18n/useTranslation";
 
 interface NewsletterBadgeProps {
   className?: string;
@@ -13,6 +14,8 @@ export function NewsletterBadge({ className = "", showTrend = false }: Newslette
   const [count, setCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
   const { language } = useLanguage();
+  const { t } = useTranslation();
+  const badgeTexts = (t as any)?.newsletter?.badge ?? {};
 
   useEffect(() => {
     loadSubscriberCount();
@@ -54,7 +57,7 @@ export function NewsletterBadge({ className = "", showTrend = false }: Newslette
     return (
       <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 ${className}`}>
         <div className="h-4 w-4 rounded-full bg-white/10 animate-pulse" />
-        <span className="text-sm text-white/40">...</span>
+        <span className="text-sm text-white/40">{badgeTexts.loading ?? "..."}</span>
       </div>
     );
   }
@@ -67,11 +70,7 @@ export function NewsletterBadge({ className = "", showTrend = false }: Newslette
     >
       <Users className="h-4 w-4 text-[#00FFC2]" />
       <span className="text-sm text-[#00FFC2]">
-        {count.toLocaleString(language === 'en' ? 'en-US' : 'fr-FR')} {
-          language === 'en' 
-            ? (count === 1 ? "subscriber" : "subscribers")
-            : (count === 1 ? "abonné" : "abonnés")
-        }
+        {count.toLocaleString(language === 'en' ? 'en-US' : 'fr-FR')} {count === 1 ? badgeTexts.single : badgeTexts.plural}
       </span>
       {showTrend && count > 0 && (
         <TrendingUp className="h-3 w-3 text-[#00FFC2] opacity-60" />
