@@ -5,6 +5,12 @@ const CACHE_VERSION = 'v1.0.0';
 const CACHE_NAME = `portfolio-pro-${CACHE_VERSION}`;
 const OFFLINE_CACHE = `portfolio-pro-offline-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `portfolio-pro-runtime-${CACHE_VERSION}`;
+const EXTERNAL_BYPASS_DOMAINS = [
+  'istockphoto.com',
+  'unsplash.com',
+  'pexels.com',
+  'pixabay.com',
+];
 
 // Ressources critiques à mettre en cache lors de l'installation
 // Note: La liste est vide pour éviter les erreurs 404 dans l'environnement Figma preview
@@ -106,6 +112,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Laisser le navigateur gérer certaines ressources externes pour éviter des blocages CSP
+  if (shouldBypassRequest(url)) {
+    return;
+  }
+
   // Déterminer la stratégie de cache
   const strategy = determineStrategy(request);
   
@@ -196,6 +207,17 @@ function determineStrategy(request) {
   
   // Stale While Revalidate pour le reste
   return staleWhileRevalidate;
+}
+
+function shouldBypassRequest(url) {
+  const isSameOrigin = url.origin === self.location.origin;
+  if (isSameOrigin) {
+    return false;
+  }
+
+  return EXTERNAL_BYPASS_DOMAINS.some((domain) => {
+    return url.hostname === domain || url.hostname.endsWith(`.${domain}`);
+  });
 }
 
 // Stratégie Cache First
