@@ -41,12 +41,14 @@ import { ClientEditDialog } from "./ClientEditDialog";
 import { QuoteCreationDialog } from "./QuoteCreationDialog";
 import { InvoiceCreationDialog } from "./InvoiceCreationDialog";
 import { BookingEditDialog } from "./BookingEditDialog";
-import { BookingCalendar } from "./BookingCalendar";
 import { ItemDetailsModal } from "./ItemDetailsModal";
 import { AnalyticsDashboard } from "./AnalyticsDashboard";
 import { CalendarView } from "./CalendarView";
 import { ContentTab } from "./ContentTab";
-import { NotesTimeline } from "./NotesTimeline";
+import { DashboardHeader } from "./ui/DashboardHeader";
+import { MetricCard } from "./ui/MetricCard";
+import { ViewTabs } from "./ui/ViewTabs";
+import { PipelineItem, type PipelineItemAction, type PipelineStatus } from "./ui/PipelineItem";
 import { exportQuoteToPDF, exportInvoiceToPDF } from "../../utils/pdfGenerator";
 
 interface MinimalistDashboardProps {
@@ -81,9 +83,6 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
   const [editingQuote, setEditingQuote] = useState<any>(null);
   const [editingInvoice, setEditingInvoice] = useState<any>(null);
   const [editingBooking, setEditingBooking] = useState<any>(null);
-  
-  // Expanded clients state
-  const [expandedClients, setExpandedClients] = useState<Set<string>>(new Set());
   
   // Notes state (stored in localStorage for now, could be in DB)
   const [clientNotes, setClientNotes] = useState<Record<string, any[]>>({});
@@ -987,68 +986,6 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
            item.client_name?.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
-  // Grouper les items par client
-  const groupedItems = () => {
-    const groups: any[] = [];
-    const processedClientIds = new Set<string>();
-
-    allItems.forEach(item => {
-      if (item.type === 'client') {
-        // C'est un client - vérifier s'il a des items liés
-        const clientId = item.id;
-        const relatedItems = allItems.filter(i => 
-          i.type !== 'client' && (
-            i.clientId === clientId || 
-            i.client_id === clientId ||
-            i.email === item.email ||
-            i.name === item.name
-          )
-        );
-
-        processedClientIds.add(clientId);
-        
-        groups.push({
-          client: item,
-          relatedItems,
-          hasRelated: relatedItems.length > 0
-        });
-      }
-    });
-
-    // Ajouter les items sans client à la fin
-    allItems.forEach(item => {
-      if (item.type !== 'client') {
-        const belongsToClient = Array.from(processedClientIds).some(clientId => {
-          const client = clients.find(c => c.id === clientId);
-          return item.clientId === clientId || 
-                 item.client_id === clientId ||
-                 item.email === client?.email ||
-                 item.name === client?.name;
-        });
-
-        if (!belongsToClient) {
-          groups.push({
-            client: null,
-            relatedItems: [item],
-            hasRelated: false
-          });
-        }
-      }
-    });
-
-    return groups;
-  };
-
-  const toggleClientExpand = (clientId: string) => {
-    const newExpanded = new Set(expandedClients);
-    if (newExpanded.has(clientId)) {
-      newExpanded.delete(clientId);
-    } else {
-      newExpanded.add(clientId);
-    }
-    setExpandedClients(newExpanded);
-  };
-
   // Stats calculées de manière dynamique
   const stats = useMemo(() => {
     // 1. CA Total (factures payées uniquement)
@@ -1101,263 +1038,244 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
 
   return (
     <div className="min-h-screen" style={{ background: colors.background }}>
-      {/* Topbar ultra-fine */}
-      <div className="border-b border-white/10 bg-black/40 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00FFC2] to-[#00FFC2]/60 flex items-center justify-center">
-              <Zap className="w-4 h-4 text-black" />
-            </div>
-            <span className="text-lg font-bold text-white">CRM</span>
-          </div>
+      <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+        <DashboardHeader
+          searchValue={searchQuery}
+          onSearchChange={setSearchQuery}
+          onOpenCommandPalette={() => setShowCommandPalette(true)}
+          onLogout={onLogout}
+        />
 
-          {/* Search & Actions */}
-          <div className="flex items-center gap-3">
-            {/* Quick search */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowCommandPalette(true)}
-              className="gap-2 bg-white/5 border-white/10 hover:bg-white/10 text-white/70"
-            >
-              <Search className="w-4 h-4" />
-              <span className="hidden sm:inline">Rechercher</span>
-              <kbd className="hidden sm:inline px-2 py-0.5 text-xs bg-white/10 rounded">⌘K</kbd>
-            </Button>
-
-            {/* Notifications */}
-            <Button variant="ghost" size="sm" className="relative">
-              <Bell className="w-4 h-4" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-[#00FFC2] rounded-full" />
-            </Button>
-
-            {/* Settings */}
-            <Button variant="ghost" size="sm">
-              <Settings className="w-4 h-4" />
-            </Button>
-
-            {/* ADMIN: Delete All Bookings */}
-            {bookings.length > 0 && (
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleDeleteAllBookings}
-                className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
-                title="Supprimer tous les rendez-vous"
-              >
-                <Trash2 className="w-4 h-4" />
-                <span className="hidden sm:inline ml-1 text-xs">Clean RDV ({bookings.length})</span>
-              </Button>
-            )}
-
-            {/* Logout */}
-            <Button variant="ghost" size="sm" onClick={onLogout}>
-              <LogOut className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Stats Row - Minimaliste */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <StatCard
-            icon={DollarSign}
-            label="CA Réalisé"
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <MetricCard
+            icon={<DollarSign className="h-5 w-5" />}
+            label="CA réalisé"
             value={`${stats.totalRevenue.toLocaleString('fr-FR')}€`}
-            trend={stats.unpaidAmount > 0 ? `${stats.unpaidAmount.toLocaleString('fr-FR')}€ en attente` : "Tout est payé"}
-            color="cyan"
+            sublabel={stats.unpaidAmount > 0 ? `${stats.unpaidAmount.toLocaleString('fr-FR')}€ en attente` : "Tout est payé"}
+            status="Revenus"
+            trend={{
+              label: `${stats.potentialRevenue.toLocaleString('fr-FR')}€ potentiel`,
+              direction: stats.potentialRevenue >= stats.totalRevenue ? "up" : "flat",
+            }}
           />
-          <StatCard
-            icon={FileText}
+          <MetricCard
+            icon={<FileText className="h-5 w-5" />}
             label="Devis en attente"
             value={stats.pendingQuotes.toString()}
-            trend={stats.potentialRevenue > 0 ? `${stats.potentialRevenue.toLocaleString('fr-FR')}€ potentiel` : "Aucun devis"}
-            color="blue"
+            sublabel={`${quotes.length} devis au total`}
+            status="Devis"
+            trend={{
+              label: `${stats.unpaidInvoices} factures impayées`,
+              direction: stats.unpaidInvoices > 0 ? "down" : "flat",
+            }}
           />
-          <StatCard
-            icon={Users}
+          <MetricCard
+            icon={<Users className="h-5 w-5" />}
             label="Leads actifs"
             value={stats.activeLeads.toString()}
-            trend={`${stats.clients} clients`}
-            color="green"
+            sublabel={`${stats.clients} clients`}
+            status="Pipeline"
+            trend={{
+              label: `${leads.length} leads suivis`,
+              direction: stats.activeLeads >= leads.length / 2 ? "up" : "flat",
+            }}
           />
-          <StatCard
-            icon={Target}
+          <MetricCard
+            icon={<Target className="h-5 w-5" />}
             label="Conversion"
             value={`${stats.conversionRate}%`}
-            trend={`${quotes.filter(q => q.status === 'accepted' || q.status === '✅ Accepté').length}/${quotes.length} acceptés`}
-            color="purple"
+            sublabel={`${quotes.filter(q => q.status === 'accepted' || q.status === '✅ Accepté').length}/${quotes.length || 1} acceptés`}
+            status="Performance"
+            trend={{
+              label: stats.conversionRate > 30 ? "Progression" : "À travailler",
+              direction: stats.conversionRate > 30 ? "up" : "flat",
+            }}
           />
         </div>
 
-        {/* Quick Actions */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            {/* View Toggle: Pipeline / Calendar / Analytics / Content */}
-            <div className="flex items-center gap-2 bg-white/5 rounded-lg p-1 border border-white/10">
-              <Button
-                variant={activeView === "pipeline" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setActiveView("pipeline")}
-                className={activeView === "pipeline" 
-                  ? "bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 font-semibold h-9 px-4" 
-                  : "text-white/70 hover:text-white hover:bg-white/5 h-9 px-4"}
-              >
-                <Target className="w-4 h-4 mr-2" />
-                Pipeline
-              </Button>
-              <Button
-                variant={activeView === "calendar" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setActiveView("calendar")}
-                className={activeView === "calendar" 
-                  ? "bg-purple-500 text-white hover:bg-purple-600 font-semibold h-9 px-4" 
-                  : "text-white/70 hover:text-white hover:bg-white/5 h-9 px-4"}
-              >
-                <Calendar className="w-4 h-4 mr-2" />
-                Calendrier
-                {bookings.length > 0 && (
-                  <Badge className="ml-2 bg-purple-600 text-white px-2 py-0.5 text-xs">
-                    {bookings.length}
-                  </Badge>
-                )}
-              </Button>
-              <Button
-                variant={activeView === "analytics" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setActiveView("analytics")}
-                className={activeView === "analytics" 
-                  ? "bg-cyan-500 text-black hover:bg-cyan-600 font-semibold h-9 px-4" 
-                  : "text-white/70 hover:text-white hover:bg-white/5 h-9 px-4"}
-              >
-                <TrendingUp className="w-4 h-4 mr-2" />
-                Analytics
-              </Button>
-              <Button
-                variant={activeView === "content" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setActiveView("content")}
-                className={activeView === "content" 
-                  ? "bg-orange-500 text-white hover:bg-orange-600 font-semibold h-9 px-4" 
-                  : "text-white/70 hover:text-white hover:bg-white/5 h-9 px-4"}
-              >
-                <Layers className="w-4 h-4 mr-2" />
-                Contenu
-              </Button>
+        <ViewTabs
+          views={[
+            { id: "pipeline", label: "Pipeline", icon: <Target className="h-4 w-4" />, count: allItems.length },
+            { id: "calendar", label: "Calendrier", icon: <Calendar className="h-4 w-4" />, count: bookings.length },
+            { id: "analytics", label: "Analytics", icon: <TrendingUp className="h-4 w-4" /> },
+            { id: "content", label: "Contenu", icon: <Layers className="h-4 w-4" /> },
+          ]}
+          activeId={activeView}
+          onChange={(viewId) => setActiveView(viewId as "pipeline" | "calendar" | "analytics" | "content")}
+        />
+
+        {activeView === "pipeline" && (
+          <section className="space-y-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex flex-wrap gap-3">
+                {(["all", "leads", "clients", "deals", "invoices"] as const).map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setActiveFilter(filter)}
+                    className={`rounded-full border px-4 py-2 text-sm font-medium transition-all ${
+                      activeFilter === filter
+                        ? "border-mint bg-mint text-black shadow-[0_10px_30px_rgba(0,255,194,.3)]"
+                        : "border-white/10 text-neutral-400 hover:border-white/20 hover:text-white"
+                    }`}
+                  >
+                    {filter === "all" ? "Tout" : filter.charAt(0).toUpperCase() + filter.slice(1)}
+                  </button>
+                ))}
+              </div>
+              <div className="flex items-center gap-3">
+                <Badge className="rounded-full border border-mint/30 bg-mint/10 text-mint">
+                  {allItems.length} éléments
+                </Badge>
+                <Button
+                  className="gap-2 rounded-2xl bg-mint px-4 py-2 text-sm font-semibold text-black hover:bg-mint/90"
+                  onClick={handleNewClick}
+                >
+                  <Plus className="h-4 w-4" />
+                  Nouveau
+                </Button>
+              </div>
             </div>
 
-            <h2 className="text-2xl font-bold text-white">
-              {activeView === "pipeline" ? "Pipeline" : activeView === "calendar" ? "Calendrier des RDV" : activeView === "analytics" ? "Analytics & Reporting" : "Gestion de Contenu"}
-            </h2>
-            {activeView === "pipeline" && (
-              <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border border-[#00FFC2]/20 text-sm font-semibold px-3 py-1">
-                {allItems.length} items
-              </Badge>
+            {loading ? (
+              <div className="flex h-64 items-center justify-center">
+                <div className="h-12 w-12 animate-spin rounded-full border-2 border-mint/30 border-t-mint" />
+              </div>
+            ) : allItems.length === 0 ? (
+              <div className="flex h-64 flex-col items-center justify-center text-center">
+                <Target className="mb-4 h-12 w-12 text-white/20" />
+                <p className="text-lg text-white/60">Aucun élément</p>
+                <p className="text-sm text-white/40">Créez votre premier lead pour commencer</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {allItems.map((item) => {
+                  const itemStatus: PipelineStatus =
+                    item.type === "lead"
+                      ? "lead"
+                      : item.type === "client"
+                        ? "client"
+                        : item.type === "quote"
+                          ? "quote"
+                          : item.type === "invoice"
+                            ? "invoice"
+                            : "booking";
+
+                  const actions: PipelineItemAction[] = [];
+
+                  if (item.type === "lead") {
+                    actions.push({
+                      key: "convert-lead",
+                      icon: <UserCheck className="h-4 w-4" />,
+                      label: "Convertir en client",
+                      tone: "success",
+                      onClick: () => {
+                        setEditingLead(item);
+                        setLeadDialogOpen(true);
+                      },
+                    });
+                  }
+
+                  if (item.type === "quote") {
+                    actions.push(
+                      {
+                        key: "send-quote",
+                        icon: <Mail className="h-4 w-4" />,
+                        label: item.lastEmailSent
+                          ? `Relancer (${formatLastEmailSent(item.lastEmailSent)})`
+                          : "Envoyer le devis",
+                        tone: "info",
+                        onClick: (event) => handleSendQuoteEmail(item, event),
+                      },
+                      {
+                        key: "create-invoice",
+                        icon: <Receipt className="h-4 w-4" />,
+                        label: "Créer une facture",
+                        onClick: (event) => handleCreateInvoiceFromQuote(item, event),
+                      },
+                      {
+                        key: "convert-invoice",
+                        icon: <ArrowRightLeft className="h-4 w-4" />,
+                        label: "Transformer en facture",
+                        tone: "warning",
+                        onClick: (event) => handleConvertQuoteToInvoice(item, event),
+                      }
+                    );
+                  }
+
+                  if (item.type === "invoice") {
+                    actions.push({
+                      key: "send-invoice",
+                      icon: <Mail className="h-4 w-4" />,
+                      label: item.lastEmailSent
+                        ? `Relancer (${formatLastEmailSent(item.lastEmailSent)})`
+                        : "Envoyer la facture",
+                      tone: "info",
+                      onClick: (event) => handleSendInvoiceEmail(item, event),
+                    });
+                  }
+
+                  if (item.type === "booking") {
+                    actions.push(
+                      {
+                        key: "edit-booking",
+                        icon: <Edit className="h-4 w-4" />,
+                        label: "Modifier le rendez-vous",
+                        onClick: () => {
+                          setEditingBooking(item);
+                          setBookingDialogOpen(true);
+                        },
+                      },
+                      {
+                        key: "booking-email",
+                        icon: <Mail className="h-4 w-4" />,
+                        label: "Envoyer un email",
+                        onClick: () => {
+                          if (item.email) window.open(`mailto:${item.email}`);
+                        },
+                      },
+                      {
+                        key: "booking-convert",
+                        icon: <UserCheck className="h-4 w-4" />,
+                        label: "Convertir en client",
+                        tone: "success",
+                        onClick: () => handleConvertBookingToClient(item),
+                      }
+                    );
+                  }
+
+                  return (
+                    <PipelineItem
+                      key={`${item.type}-${item.id}`}
+                      title={item.display_name || item.name || "Sans nom"}
+                      email={item.email}
+                      subtitle={item.display_info}
+                      amount={item.value}
+                      status={itemStatus}
+                      tags={item.interests || item.tags || item.services || []}
+                      itemsCount={item.items_count}
+                      actions={actions}
+                      onEmail={item.email ? () => window.open(`mailto:${item.email}`) : undefined}
+                      onDelete={(event) => handleDeleteItem(item, event)}
+                      onOpen={() => handleItemClick(item)}
+                    />
+                  );
+                })}
+              </div>
             )}
-          </div>
+          </section>
+        )}
 
-          <div className="flex items-center gap-2">
-            {/* Filtres - Only show in pipeline view */}
-            {activeView === "pipeline" && (
-              <>
-                <Button
-                  variant={activeFilter === "all" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setActiveFilter("all")}
-                  className={activeFilter === "all" 
-                    ? "bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 font-semibold h-9 px-4" 
-                    : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 h-9 px-4"}
-                >
-                  Tout
-                </Button>
-                <Button
-                  variant={activeFilter === "leads" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setActiveFilter("leads")}
-                  className={activeFilter === "leads" 
-                    ? "bg-blue-500 text-white hover:bg-blue-600 font-semibold h-9 px-4" 
-                    : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 h-9 px-4"}
-                >
-                  Leads
-                </Button>
-                <Button
-                  variant={activeFilter === "clients" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setActiveFilter("clients")}
-                  className={activeFilter === "clients" 
-                    ? "bg-green-500 text-white hover:bg-green-600 font-semibold h-9 px-4" 
-                    : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 h-9 px-4"}
-                >
-                  Clients
-                </Button>
-                <Button
-                  variant={activeFilter === "deals" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setActiveFilter("deals")}
-                  className={activeFilter === "deals" 
-                    ? "bg-purple-500 text-white hover:bg-purple-600 font-semibold h-9 px-4" 
-                    : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 h-9 px-4"}
-                >
-                  Deals
-                </Button>
-                <Button
-                  variant={activeFilter === "invoices" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setActiveFilter("invoices")}
-                  className={activeFilter === "invoices" 
-                    ? "bg-orange-500 text-white hover:bg-orange-600 font-semibold h-9 px-4" 
-                    : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 h-9 px-4"}
-                >
-                  Factures
-                </Button>
-
-                <div className="w-px h-6 bg-white/10 mx-2" />
-              </>
-            )}
-
-            {/* Nouveau */}
-            {activeView !== "analytics" && (
-              <Button 
-                size="sm" 
-                className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 gap-2"
-                onClick={handleNewClick}
-              >
-                <Plus className="w-4 h-4" />
-                Nouveau
-              </Button>
-            )}
-          </div>
-        </div>
-
-        {/* Content - Either Pipeline, Calendar, Analytics, or Content */}
-        {activeView === "analytics" ? (
-          <AnalyticsDashboard
-            leads={leads}
-            clients={clients}
-            quotes={quotes}
-            invoices={invoices}
-            bookings={bookings}
-          />
-        ) : activeView === "content" ? (
-          <ContentTab />
-        ) : activeView === "calendar" ? (
+        {activeView === "calendar" && (
           <CalendarView
             bookings={bookings}
             onUpdateBooking={async (id, updates) => {
-              // Trouver le booking à modifier
-              const bookingToUpdate = bookings.find(b => b.id === id);
+              const bookingToUpdate = bookings.find((b) => b.id === id);
               if (!bookingToUpdate) {
-                console.error('Booking not found:', id);
+                console.error("Booking not found:", id);
                 return;
               }
-              
-              // Merger les updates avec le booking existant
+
               const updatedBooking = { ...bookingToUpdate, ...updates };
-              
-              // Appeler handleSaveBooking avec le booking complet
               const { data: { session } } = await supabase.auth.getSession();
               if (!session) return;
 
@@ -1367,19 +1285,19 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
                   method: "PUT",
                   headers: {
                     Authorization: `Bearer ${session.access_token}`,
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                   },
-                  body: JSON.stringify(updatedBooking)
+                  body: JSON.stringify(updatedBooking),
                 }
               );
 
               if (response.ok) {
                 await fetchData();
               } else {
-                throw new Error('Failed to update booking');
+                throw new Error("Failed to update booking");
               }
             }}
-            onCreateBooking={async (booking) => {
+            onCreateBooking={async () => {
               setBookingDialogOpen(true);
             }}
             onEditBooking={(booking) => {
@@ -1394,566 +1312,41 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
                 `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/bookings/${id}`,
                 {
                   method: "DELETE",
-                  headers: {
-                    Authorization: `Bearer ${session.access_token}`,
-                  }
+                  headers: { Authorization: `Bearer ${session.access_token}` },
                 }
               );
 
               if (response.ok) {
                 await fetchData();
               } else {
-                throw new Error('Failed to delete booking');
+                throw new Error("Failed to delete booking");
               }
             }}
           />
-        ) : (
-          /* Items List - Grouped by Client */
-          <div className="bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
-          {loading ? (
-            <div className="flex items-center justify-center h-64">
-              <div className="w-8 h-8 border-2 border-[#00FFC2]/20 border-t-[#00FFC2] rounded-full animate-spin" />
-            </div>
-          ) : allItems.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-64 text-center">
-              <Target className="w-12 h-12 text-white/20 mb-4" />
-              <p className="text-white/60 mb-2">Aucun élément</p>
-              <p className="text-sm text-white/40">Créez votre premier lead pour commencer</p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {groupedItems().map((group, groupIndex) => {
-                const client = group.client;
-                const isExpanded = client ? expandedClients.has(client.id) : false;
-                const hasRelated = group.hasRelated;
+        )}
 
-                return (
-                  <div key={client?.id || `orphan-${groupIndex}`} className="bg-white/[0.02] rounded-xl border border-white/5 overflow-hidden hover:border-white/10 transition-all">
-                    {/* Client row */}
-                    {client && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: groupIndex * 0.05 }}
-                        className={`px-6 py-5 transition-all cursor-pointer group ${hasRelated ? 'hover:bg-white/[0.03]' : 'hover:bg-white/[0.03]'}`}
-                        onClick={() => {
-                          if (hasRelated) {
-                            toggleClientExpand(client.id);
-                          } else {
-                            handleItemClick(client);
-                          }
-                        }}
-                      >
-                        <div className="flex items-center justify-between gap-8">
-                          <div className="flex items-center gap-6 flex-1 min-w-0">
-                            {/* Expand icon + Client icon */}
-                            <div className="flex items-center gap-3 ml-2">
-                              {hasRelated && (
-                                <div className="flex-shrink-0" onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleClientExpand(client.id);
-                                }}>
-                                  {isExpanded ? (
-                                    <ChevronDown className="w-5 h-5 text-white/60" />
-                                  ) : (
-                                    <ChevronRight className="w-5 h-5 text-white/60" />
-                                  )}
-                                </div>
-                              )}
-                              <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-green-500/10 border border-green-500/20">
-                                <CheckCircle className="w-6 h-6 text-green-400" />
-                              </div>
-                            </div>
+        {activeView === "analytics" && (
+          <AnalyticsDashboard
+            leads={leads}
+            clients={clients}
+            quotes={quotes}
+            invoices={invoices}
+            bookings={bookings}
+          />
+        )}
 
-                            {/* Client Info */}
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-3 mb-1.5">
-                                <p className="font-semibold text-white truncate text-base">
-                                  {client.display_name || client.name || 'Sans nom'}
-                                </p>
-                                <Badge className="text-xs border-0 flex-shrink-0 bg-green-500/10 text-green-400">
-                                  ✅ Client
-                                </Badge>
-                                {hasRelated && (
-                                  <Badge className="text-xs border-0 flex-shrink-0 bg-white/10 text-white/60">
-                                    {group.relatedItems.length} élément{group.relatedItems.length > 1 ? 's' : ''}
-                                  </Badge>
-                                )}
-                              </div>
-                              <p className="text-sm text-white/60 truncate">
-                                {client.display_info}
-                              </p>
-                            </div>
-                          </div>
+        {activeView === "content" && <ContentTab />}
 
-                          {/* Value & Actions */}
-                          <div className="flex items-center gap-4">
-                            <div className="text-right min-w-[100px]">
-                              <p className="text-xl font-bold text-[#00FFC2]">
-                                {client.value?.toLocaleString() || 0}€
-                              </p>
-                              {client.created_at && (
-                                <p className="text-xs text-white/40 mt-1">
-                                  {new Date(client.created_at).toLocaleDateString('fr-FR')}
-                                </p>
-                              )}
-                            </div>
-
-                            {/* Actions toujours visibles */}
-                            <div className="flex items-center gap-2 min-w-[180px] justify-end">
-                              <button
-                                className="h-9 w-9 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 transition-all flex items-center justify-center border border-blue-500/20 hover:border-blue-500/40 hover:scale-105"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  window.location.href = `mailto:${client.email}`;
-                                }}
-                                title="Envoyer un email"
-                              >
-                                <Mail className="w-4 h-4" />
-                              </button>
-                              <button
-                                className="h-9 w-9 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 transition-all flex items-center justify-center border border-red-500/20 hover:border-red-500/40 hover:scale-105"
-                                onClick={(e) => handleDeleteItem(client, e)}
-                                title="Supprimer"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                              <button
-                                className="h-9 w-9 rounded-lg bg-white/5 hover:bg-[#00FFC2]/10 text-white/60 hover:text-[#00FFC2] transition-all flex items-center justify-center border border-white/10 hover:border-[#00FFC2]/40 hover:scale-105"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleOpenDetails(client, 'client');
-                                }}
-                                title="Voir les détails"
-                              >
-                                <ArrowRight className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* Related items (expanded) */}
-                    <AnimatePresence>
-                      {client && isExpanded && group.relatedItems.map((item: any) => (
-                        <motion.div
-                          key={item.id}
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="pl-16 pr-8 py-4 bg-white/[0.02] border-l-2 border-[#00FFC2]/20 hover:bg-white/5 transition-colors cursor-pointer group"
-                          onClick={() => handleItemClick(item)}
-                        >
-                          <div className="flex items-center justify-between gap-8">
-                            <div className="flex items-center gap-4 flex-1 min-w-0 ml-2">
-                              {/* Icon */}
-                              <div className={`
-                                w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 border
-                                ${item.type === 'lead' ? 'bg-blue-500/10 border-blue-500/20' : ''}
-                                ${item.type === 'booking' ? 'bg-purple-500/10 border-purple-500/20' : ''}
-                                ${item.type === 'quote' ? 'bg-yellow-500/10 border-yellow-500/20' : ''}
-                                ${item.type === 'invoice' ? 'bg-orange-500/10 border-orange-500/20' : ''}
-                              `}>
-                                {item.type === 'lead' && <Users className="w-5 h-5 text-blue-400" />}
-                                {item.type === 'booking' && <Calendar className="w-5 h-5 text-purple-400" />}
-                                {item.type === 'quote' && <DollarSign className="w-5 h-5 text-yellow-400" />}
-                                {item.type === 'invoice' && <FileText className="w-5 h-5 text-orange-400" />}
-                              </div>
-
-                              {/* Info */}
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <Badge className={`
-                                    text-xs flex-shrink-0 font-medium
-                                    ${item.type === 'lead' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : ''}
-                                    ${item.type === 'booking' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' : ''}
-                                    ${item.type === 'quote' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' : ''}
-                                    ${item.type === 'invoice' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' : ''}
-                                  `}>
-                                    {item.type === 'lead' ? '🔵 Lead' : ''}
-                                    {item.type === 'booking' ? '📅 RDV' : ''}
-                                    {item.type === 'quote' ? '💰 Deal' : ''}
-                                    {item.type === 'invoice' ? '📄 Facture' : ''}
-                                  </Badge>
-                                </div>
-                                <p className="text-sm text-white/60 truncate">
-                                  {item.display_info}
-                                </p>
-                                {/* Interests for leads */}
-                                {item.type === 'lead' && item.interests && item.interests.length > 0 && (
-                                  <div className="flex flex-wrap gap-1 mt-1">
-                                    {item.interests.map((interest: string, idx: number) => (
-                                      <span key={idx} className="text-xs px-2 py-0.5 rounded-md bg-[#00FFC2]/10 text-[#00FFC2] border border-[#00FFC2]/20">
-                                        {interest}
-                                      </span>
-                                    ))}
-                                  </div>
-                                )}
-                                {item.items_count > 0 && (
-                                  <span className="text-xs text-white/40">
-                                    • {item.items_count} item{item.items_count > 1 ? 's' : ''}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Value */}
-                            <div className="text-right min-w-[100px]">
-                              <p className="text-lg font-bold text-[#00FFC2]">
-                                {item.value?.toLocaleString() || 0}€
-                              </p>
-                            </div>
-
-                            {/* Actions selon le type - toujours visibles */}
-                            <div className="flex items-center gap-2 min-w-[280px] justify-end">
-                              {/* Actions pour LEADS */}
-                              {item.type === 'lead' && (
-                                <>
-                                  <button
-                                    className="h-9 w-9 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 transition-all flex items-center justify-center border border-blue-500/20 hover:border-blue-500/40 hover:scale-105"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      if (item.email) window.location.href = `mailto:${item.email}`;
-                                    }}
-                                    title="Envoyer un email"
-                                  >
-                                    <Mail className="w-4 h-4" />
-                                  </button>
-                                  <button
-                                    className="h-9 px-3 rounded-lg bg-green-500/10 hover:bg-green-500/20 text-green-400 hover:text-green-300 transition-all flex items-center gap-2 text-xs font-medium border border-green-500/20 hover:border-green-500/40 hover:scale-105"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      // Fonction de conversion lead → client à implémenter
-                                    }}
-                                    title="Convertir en client"
-                                  >
-                                    <UserCheck className="w-4 h-4" />
-                                    <span>Client</span>
-                                  </button>
-                                </>
-                              )}
-                              
-                              {/* Actions pour QUOTES */}
-                              {item.type === 'quote' && (
-                                <>
-                                  <button
-                                    className="relative h-9 w-9 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 transition-all flex items-center justify-center border border-blue-500/20 hover:border-blue-500/40 hover:scale-105"
-                                    onClick={(e) => handleSendQuoteEmail(item, e)}
-                                    title={item.lastEmailSent ? `Envoyer par email\nDernier envoi: ${formatLastEmailSent(item.lastEmailSent)} (${new Date(item.lastEmailSent).toLocaleString('fr-FR')})` : "Envoyer par email"}
-                                  >
-                                    <Mail className="w-4 h-4" />
-                                    {item.lastEmailSent && (
-                                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full border border-[#0C0C0C]" title={`Envoyé ${formatLastEmailSent(item.lastEmailSent)}`}></span>
-                                    )}
-                                  </button>
-                                  <button
-                                    className="h-9 px-3 rounded-lg bg-[#00FFC2]/10 hover:bg-[#00FFC2]/20 text-[#00FFC2] hover:text-[#00FFC2] transition-all flex items-center gap-2 text-xs font-medium border border-[#00FFC2]/20 hover:border-[#00FFC2]/40 hover:scale-105"
-                                    onClick={(e) => handleCreateInvoiceFromQuote(item, e)}
-                                    title="Créer une facture"
-                                  >
-                                    <Receipt className="w-4 h-4" />
-                                    <span>Facture</span>
-                                  </button>
-                                  <button
-                                    className="h-9 w-9 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 transition-all flex items-center justify-center border border-purple-500/20 hover:border-purple-500/40 hover:scale-105"
-                                    onClick={(e) => handleConvertQuoteToInvoice(item, e)}
-                                    title="Transformer en facture"
-                                  >
-                                    <ArrowRightLeft className="w-4 h-4" />
-                                  </button>
-                                </>
-                              )}
-                              
-                              {/* Actions pour INVOICES */}
-                              {item.type === 'invoice' && (
-                                <button
-                                  className="relative h-9 w-9 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 transition-all flex items-center justify-center border border-blue-500/20 hover:border-blue-500/40 hover:scale-105"
-                                  onClick={(e) => handleSendInvoiceEmail(item, e)}
-                                  title={item.lastEmailSent ? `Envoyer par email\nDernier envoi: ${formatLastEmailSent(item.lastEmailSent)} (${new Date(item.lastEmailSent).toLocaleString('fr-FR')})` : "Envoyer par email"}
-                                >
-                                  <Mail className="w-4 h-4" />
-                                  {item.lastEmailSent && (
-                                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full border border-[#0C0C0C]" title={`Envoyé ${formatLastEmailSent(item.lastEmailSent)}`}></span>
-                                  )}
-                                </button>
-                              )}
-
-                              {/* Actions pour BOOKINGS */}
-                              {item.type === 'booking' && (
-                                <>
-                                  <button
-                                    className="h-9 w-9 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 transition-all flex items-center justify-center border border-purple-500/20 hover:border-purple-500/40 hover:scale-105"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setEditingBooking(item);
-                                      setBookingDialogOpen(true);
-                                    }}
-                                    title="Modifier le rendez-vous"
-                                  >
-                                    <Edit className="w-4 h-4" />
-                                  </button>
-                                  <button
-                                    className="h-9 w-9 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 transition-all flex items-center justify-center border border-blue-500/20 hover:border-blue-500/40 hover:scale-105"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      if (item.email) window.location.href = `mailto:${item.email}`;
-                                    }}
-                                    title="Envoyer un email"
-                                  >
-                                    <Mail className="w-4 h-4" />
-                                  </button>
-                                  <div className={`h-9 px-3 rounded-lg flex items-center gap-2 text-xs font-medium border ${
-                                    item.status === 'confirmed' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
-                                    item.status === 'cancelled' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
-                                    'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
-                                  }`}>
-                                    {item.status === 'confirmed' ? '✅ Confirmé' :
-                                     item.status === 'cancelled' ? '❌ Annulé' :
-                                     '⏳ En attente'}
-                                  </div>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
-
-                    {/* Orphan items (no client) */}
-                    {!client && group.relatedItems.map((item: any, index: number) => (
-                      <motion.div
-                        key={item.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: groupIndex * 0.05 }}
-                        className="px-6 py-5 hover:bg-white/[0.03] transition-all cursor-pointer group"
-                        onClick={() => handleItemClick(item)}
-                      >
-                        <div className="flex items-center justify-between gap-8">
-                          <div className="flex items-center gap-6 flex-1 min-w-0 ml-2">
-                            {/* Icon */}
-                            <div className={`
-                              w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border
-                              ${item.type === 'lead' ? 'bg-blue-500/10 border-blue-500/20' : ''}
-                              ${item.type === 'booking' ? 'bg-purple-500/10 border-purple-500/20' : ''}
-                              ${item.type === 'quote' ? 'bg-yellow-500/10 border-yellow-500/20' : ''}
-                              ${item.type === 'invoice' ? 'bg-orange-500/10 border-orange-500/20' : ''}
-                            `}>
-                              {item.type === 'lead' && <Users className="w-6 h-6 text-blue-400" />}
-                              {item.type === 'booking' && <Calendar className="w-6 h-6 text-purple-400" />}
-                              {item.type === 'quote' && <DollarSign className="w-6 h-6 text-yellow-400" />}
-                              {item.type === 'invoice' && <FileText className="w-6 h-6 text-orange-400" />}
-                            </div>
-
-                            {/* Info */}
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-3 mb-1.5">
-                                <p className="font-semibold text-white truncate text-base">
-                                  {item.display_name || item.name || 'Sans nom'}
-                                </p>
-                                <Badge className={`
-                                  text-xs flex-shrink-0 font-medium
-                                  ${item.type === 'lead' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : ''}
-                                  ${item.type === 'booking' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' : ''}
-                                  ${item.type === 'quote' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' : ''}
-                                  ${item.type === 'invoice' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' : ''}
-                                `}>
-                                  {item.type === 'lead' ? '🔵 Lead' : ''}
-                                  {item.type === 'booking' ? '📅 RDV' : ''}
-                                  {item.type === 'quote' ? '💰 Deal' : ''}
-                                  {item.type === 'invoice' ? '📄 Facture' : ''}
-                                </Badge>
-                              </div>
-                              <div className="flex items-center gap-3">
-                                <p className="text-sm text-white/60 truncate">
-                                  {item.display_info}
-                                </p>
-                                {item.items_count > 0 && (
-                                  <span className="text-xs text-white/40 flex-shrink-0">
-                                    • {item.items_count} item{item.items_count > 1 ? 's' : ''}
-                                  </span>
-                                )}
-                              </div>
-                              {/* Interests for leads */}
-                              {item.type === 'lead' && item.interests && item.interests.length > 0 && (
-                                <div className="flex flex-wrap gap-1 mt-2">
-                                  {item.interests.map((interest: string, idx: number) => (
-                                    <span key={idx} className="text-xs px-2 py-0.5 rounded-md bg-[#00FFC2]/10 text-[#00FFC2] border border-[#00FFC2]/20">
-                                      {interest}
-                                    </span>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Value & Actions */}
-                          <div className="flex items-center gap-4">
-                            <div className="text-right min-w-[100px]">
-                              <p className="text-xl font-bold text-[#00FFC2]">
-                                {item.value?.toLocaleString() || 0}€
-                              </p>
-                              {item.created_at && (
-                                <p className="text-xs text-white/40 mt-1">
-                                  {new Date(item.created_at).toLocaleDateString('fr-FR')}
-                                </p>
-                              )}
-                            </div>
-
-                            <div className="flex items-center gap-2 min-w-[380px] justify-end">
-                              {/* Actions pour LEADS - toujours visibles */}
-                              {item.type === 'lead' && (
-                                <>
-                                  <button
-                                    className="h-9 w-9 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 transition-all flex items-center justify-center border border-blue-500/20 hover:border-blue-500/40 hover:scale-105"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      if (item.email) window.location.href = `mailto:${item.email}`;
-                                    }}
-                                    title="Envoyer un email"
-                                  >
-                                    <Mail className="w-4 h-4" />
-                                  </button>
-                                  <button
-                                    className="h-9 px-3 rounded-lg bg-green-500/10 hover:bg-green-500/20 text-green-400 hover:text-green-300 transition-all flex items-center gap-2 text-xs font-medium border border-green-500/20 hover:border-green-500/40 hover:scale-105"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      // Fonction de conversion lead → client à implémenter
-                                    }}
-                                    title="Convertir en client"
-                                  >
-                                    <UserCheck className="w-4 h-4" />
-                                    <span>Client</span>
-                                  </button>
-                                </>
-                              )}
-                              
-                              {/* Actions pour QUOTES - toujours visibles */}
-                              {item.type === 'quote' && (
-                                <>
-                                  <button
-                                    className="relative h-9 w-9 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 transition-all flex items-center justify-center border border-blue-500/20 hover:border-blue-500/40 hover:scale-105"
-                                    onClick={(e) => handleSendQuoteEmail(item, e)}
-                                    title={item.lastEmailSent ? `Envoyer le devis par email\nDernier envoi: ${formatLastEmailSent(item.lastEmailSent)} (${new Date(item.lastEmailSent).toLocaleString('fr-FR')})` : "Envoyer le devis par email"}
-                                  >
-                                    <Mail className="w-4 h-4" />
-                                    {item.lastEmailSent && (
-                                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full border border-[#0C0C0C]" title={`Envoyé ${formatLastEmailSent(item.lastEmailSent)}`}></span>
-                                    )}
-                                  </button>
-                                  <button
-                                    className="h-9 px-3 rounded-lg bg-[#00FFC2]/10 hover:bg-[#00FFC2]/20 text-[#00FFC2] hover:text-[#00FFC2] transition-all flex items-center gap-2 text-xs font-medium border border-[#00FFC2]/20 hover:border-[#00FFC2]/40 hover:scale-105"
-                                    onClick={(e) => handleCreateInvoiceFromQuote(item, e)}
-                                    title="Créer une facture (le devis reste)"
-                                  >
-                                    <Receipt className="w-4 h-4" />
-                                    <span>Facture</span>
-                                  </button>
-                                  <button
-                                    className="h-9 px-3 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 transition-all flex items-center gap-2 text-xs font-medium border border-purple-500/20 hover:border-purple-500/40 hover:scale-105"
-                                    onClick={(e) => handleConvertQuoteToInvoice(item, e)}
-                                    title="Transformer en facture (le devis sera supprimé)"
-                                  >
-                                    <ArrowRightLeft className="w-4 h-4" />
-                                    <span>Convertir</span>
-                                  </button>
-                                </>
-                              )}
-                              
-                              {/* Actions pour INVOICES - toujours visibles */}
-                              {item.type === 'invoice' && (
-                                <>
-                                  <button
-                                    className="relative h-9 w-9 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 transition-all flex items-center justify-center border border-blue-500/20 hover:border-blue-500/40 hover:scale-105"
-                                    onClick={(e) => handleSendInvoiceEmail(item, e)}
-                                    title={item.lastEmailSent ? `Envoyer la facture par email\nDernier envoi: ${formatLastEmailSent(item.lastEmailSent)} (${new Date(item.lastEmailSent).toLocaleString('fr-FR')})` : "Envoyer la facture par email"}
-                                  >
-                                    <Mail className="w-4 h-4" />
-                                    {item.lastEmailSent && (
-                                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full border border-[#0C0C0C]" title={`Envoyé ${formatLastEmailSent(item.lastEmailSent)}`}></span>
-                                    )}
-                                  </button>
-                                </>
-                              )}
-                              
-                              {/* Actions pour BOOKINGS - toujours visibles */}
-                              {item.type === 'booking' && (
-                                <>
-                                  <button
-                                    className="h-9 w-9 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 transition-all flex items-center justify-center border border-purple-500/20 hover:border-purple-500/40 hover:scale-105"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setEditingBooking(item);
-                                      setBookingDialogOpen(true);
-                                    }}
-                                    title="Modifier le rendez-vous"
-                                  >
-                                    <Edit className="w-4 h-4" />
-                                  </button>
-                                  <button
-                                    className="h-9 w-9 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 transition-all flex items-center justify-center border border-blue-500/20 hover:border-blue-500/40 hover:scale-105"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      if (item.email) window.location.href = `mailto:${item.email}`;
-                                    }}
-                                    title="Envoyer un email"
-                                  >
-                                    <Mail className="w-4 h-4" />
-                                  </button>
-                                  <button
-                                    className="h-9 px-3 rounded-lg bg-green-500/10 hover:bg-green-500/20 text-green-400 hover:text-green-300 transition-all flex items-center gap-2 text-xs font-medium border border-green-500/20 hover:border-green-500/40 hover:scale-105"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleConvertBookingToClient(item);
-                                    }}
-                                    title="Convertir en client"
-                                  >
-                                    <UserCheck className="w-4 h-4" />
-                                    <span>Client</span>
-                                  </button>
-                                  <div className={`h-9 px-3 rounded-lg flex items-center gap-2 text-xs font-medium border ${
-                                    item.status === 'confirmed' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
-                                    item.status === 'cancelled' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
-                                    'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
-                                  }`}>
-                                    {item.status === 'confirmed' ? '✅ Confirmé' :
-                                     item.status === 'cancelled' ? '❌ Annulé' :
-                                     '⏳ En attente'}
-                                  </div>
-                                </>
-                              )}
-                              
-                              {/* Actions communes - toujours visibles */}
-                              <button
-                                className="h-9 w-9 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 transition-all flex items-center justify-center border border-red-500/20 hover:border-red-500/40 hover:scale-105"
-                                onClick={(e) => handleDeleteItem(item, e)}
-                                title="Supprimer"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                              <button
-                                className="h-9 w-9 rounded-lg bg-white/5 hover:bg-[#00FFC2]/10 text-white/60 hover:text-[#00FFC2] transition-all flex items-center justify-center border border-white/10 hover:border-[#00FFC2]/40 hover:scale-105"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleOpenDetails(item, item.type);
-                                }}
-                                title="Voir les détails"
-                              >
-                                <ArrowRight className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+        {activeView !== "pipeline" && activeView !== "analytics" && (
+          <div className="flex justify-end lg:hidden">
+            <Button
+              className="gap-2 rounded-2xl bg-mint px-4 py-2 text-sm font-semibold text-black hover:bg-mint/90"
+              onClick={handleNewClick}
+            >
+              <Plus className="h-4 w-4" />
+              Nouveau
+            </Button>
+          </div>
         )}
       </div>
 
@@ -2247,29 +1640,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
   );
 }
 
-// Composants helpers
-function StatCard({ icon: Icon, label, value, trend, color }: any) {
-  const colors: any = {
-    cyan: "text-[#00FFC2] bg-[#00FFC2]/10",
-    blue: "text-blue-400 bg-blue-500/10",
-    green: "text-green-400 bg-green-500/10",
-    purple: "text-purple-400 bg-purple-500/10"
-  };
-
-  return (
-    <div className="bg-white/5 rounded-xl border border-white/10 p-4 hover:border-white/20 transition-colors">
-      <div className="flex items-center justify-between mb-3">
-        <div className={`w-10 h-10 rounded-lg ${colors[color]} flex items-center justify-center`}>
-          <Icon className="w-5 h-5" />
-        </div>
-        <span className="text-xs text-[#00FFC2]">{trend}</span>
-      </div>
-      <p className="text-sm text-white/60 mb-1">{label}</p>
-      <p className="text-2xl font-bold text-white">{value}</p>
-    </div>
-  );
-}
-
+// Composant helper
 function CommandItem({ icon: Icon, label, shortcut, onClick }: any) {
   return (
     <button 
