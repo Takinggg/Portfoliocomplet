@@ -51,6 +51,8 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
       if (response.ok) {
         const data = await response.json();
         setTestimonials(data.testimonials || []);
+      } else {
+        console.error("Testimonials API responded with", response.status);
       }
     } catch (error) {
       console.error("Error fetching testimonials:", error);
@@ -66,7 +68,27 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
     ? regularTestimonials 
     : regularTestimonials.filter(t => t.projectType === filter);
 
-  const projectTypes = Array.from(new Set(testimonials.map(t => t.projectType)));
+  const projectTypes = Array.from(new Set(testimonials
+    .map(t => t.projectType)
+    .filter(Boolean))
+  );
+
+  const formatTestimonialDate = (dateString?: string) => {
+    if (!dateString) {
+      return language === 'fr' ? 'Date non disponible' : 'Date unavailable';
+    }
+
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) {
+      return language === 'fr' ? 'Date non disponible' : 'Date unavailable';
+    }
+
+    const locale = language === 'en' ? 'en-US' : 'fr-FR';
+    return date.toLocaleDateString(locale, {
+      month: 'long',
+      year: 'numeric'
+    });
+  };
 
   useEffect(() => {
     if (featuredTestimonials.length === 0 && currentFeatured !== 0) {
@@ -80,10 +102,12 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
   }, [featuredTestimonials.length, currentFeatured]);
 
   const nextFeatured = () => {
+    if (featuredTestimonials.length === 0) return;
     setCurrentFeatured((prev) => (prev + 1) % featuredTestimonials.length);
   };
 
   const prevFeatured = () => {
+    if (featuredTestimonials.length === 0) return;
     setCurrentFeatured((prev) => (prev - 1 + featuredTestimonials.length) % featuredTestimonials.length);
   };
 
@@ -492,10 +516,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                       </Badge>
                       <div className="flex items-center gap-1 text-xs text-white/40">
                         <Calendar className="h-3 w-3" />
-                        {new Date(testimonial.date).toLocaleDateString('fr-FR', { 
-                          month: 'long', 
-                          year: 'numeric' 
-                        })}
+                        {formatTestimonialDate(testimonial.date)}
                       </div>
                     </div>
                   </Card>
