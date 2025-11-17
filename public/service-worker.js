@@ -91,6 +91,11 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
   
+  // Ne rien intercepter pour les méthodes non-GET (POST/PUT/etc.)
+  if (request.method !== 'GET') {
+    return;
+  }
+  
   // Ignorer les requêtes non-HTTP
   if (!url.protocol.startsWith('http')) {
     return;
