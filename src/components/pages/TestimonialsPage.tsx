@@ -68,6 +68,17 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
 
   const projectTypes = Array.from(new Set(testimonials.map(t => t.projectType)));
 
+  useEffect(() => {
+    if (featuredTestimonials.length === 0 && currentFeatured !== 0) {
+      setCurrentFeatured(0);
+      return;
+    }
+
+    if (featuredTestimonials.length > 0 && currentFeatured >= featuredTestimonials.length) {
+      setCurrentFeatured(0);
+    }
+  }, [featuredTestimonials.length, currentFeatured]);
+
   const nextFeatured = () => {
     setCurrentFeatured((prev) => (prev + 1) % featuredTestimonials.length);
   };
