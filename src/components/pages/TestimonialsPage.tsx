@@ -90,6 +90,32 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
     });
   };
 
+  const fallbackClientName = language === 'fr' ? 'Client anonyme' : 'Anonymous client';
+  const fallbackClientRole = language === 'fr' ? 'Rôle non précisé' : 'Role unavailable';
+  const fallbackClientCompany = language === 'fr' ? 'Entreprise non précisée' : 'Company unavailable';
+
+  const getClientDisplayName = (name?: string) => {
+    const trimmed = name?.trim();
+    return trimmed && trimmed.length > 0 ? trimmed : fallbackClientName;
+  };
+
+  const getClientInitial = (name?: string) => {
+    const trimmed = name?.trim();
+    return trimmed && trimmed.length > 0
+      ? trimmed.charAt(0).toUpperCase()
+      : fallbackClientName.charAt(0).toUpperCase();
+  };
+
+  const getClientRole = (role?: string) => {
+    const trimmed = role?.trim();
+    return trimmed && trimmed.length > 0 ? trimmed : fallbackClientRole;
+  };
+
+  const getClientCompany = (company?: string) => {
+    const trimmed = company?.trim();
+    return trimmed && trimmed.length > 0 ? trimmed : fallbackClientCompany;
+  };
+
   useEffect(() => {
     if (featuredTestimonials.length === 0 && currentFeatured !== 0) {
       setCurrentFeatured(0);
@@ -222,16 +248,16 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                         />
                       ) : (
                         <div className="w-full h-full bg-[#00FFC2]/10 flex items-center justify-center text-2xl text-[#00FFC2]">
-                          {featuredTestimonials[currentFeatured].clientName.charAt(0)}
+                          {getClientInitial(featuredTestimonials[currentFeatured].clientName)}
                         </div>
                       )}
                     </Avatar>
                     <div>
                       <div className="font-medium text-lg text-white">
-                        {featuredTestimonials[currentFeatured].clientName}
+                        {getClientDisplayName(featuredTestimonials[currentFeatured].clientName)}
                       </div>
                       <div className="text-white/60">
-                        {featuredTestimonials[currentFeatured].clientRole} • {featuredTestimonials[currentFeatured].clientCompany}
+                        {getClientRole(featuredTestimonials[currentFeatured].clientRole)} • {getClientCompany(featuredTestimonials[currentFeatured].clientCompany)}
                       </div>
                       {featuredTestimonials[currentFeatured].linkedinUrl && (
                         <a
@@ -467,14 +493,14 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                           />
                         ) : (
                           <div className="w-full h-full bg-[#00FFC2]/10 flex items-center justify-center text-lg text-[#00FFC2]">
-                            {testimonial.clientName.charAt(0)}
+                            {getClientInitial(testimonial.clientName)}
                           </div>
                         )}
                       </Avatar>
                       <div className="flex-1">
-                        <div className="font-medium text-white">{testimonial.clientName}</div>
-                        <div className="text-sm text-white/60">{testimonial.clientRole}</div>
-                        <div className="text-xs text-white/40">{testimonial.clientCompany}</div>
+                        <div className="font-medium text-white">{getClientDisplayName(testimonial.clientName)}</div>
+                        <div className="text-sm text-white/60">{getClientRole(testimonial.clientRole)}</div>
+                        <div className="text-xs text-white/40">{getClientCompany(testimonial.clientCompany)}</div>
                       </div>
                       {testimonial.linkedinUrl && (
                         <a
