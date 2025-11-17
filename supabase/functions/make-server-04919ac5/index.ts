@@ -81,6 +81,7 @@ if (!SUPABASE_SERVICE_ROLE_KEY) {
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+const FRONTEND_BASE_URL = Deno.env.get("FRONTEND_URL") || "https://maxence.design";
 
 // Client KV pour le stockage de données
 const kvClient = () => createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
@@ -3525,13 +3526,172 @@ app.post("/make-server-04919ac5/newsletter/send-campaign", requireAuth, async (c
 });
 
 console.log("✅ Newsletter routes added");
+
+const TESTIMONIAL_PREFIX = "testimonial:";
+const TESTIMONIAL_REQUEST_PREFIX = "testimonial_request:";
+
+type SupportedLanguage = 'fr' | 'en';
+
+const sanitizeInputString = (value: unknown): string | undefined => {
+  if (typeof value === "string") {
+    return value.trim();
+  }
+  if (value === null) {
+    return "";
+  }
+  return undefined;
+};
+
+const pickStringField = (payload: any, base: any, field: string, fallback = ""): string => {
+  const sanitized = sanitizeInputString(payload?.[field]);
+  if (sanitized !== undefined) {
+    return sanitized;
+  }
+  const baseValue = base?.[field];
+  return typeof baseValue === "string" ? baseValue : fallback;
+};
+
+const pickBooleanField = (payload: any, base: any, field: string, fallback = false): boolean => {
+  if (typeof payload?.[field] === "boolean") {
+    return payload[field];
+  }
+  if (typeof base?.[field] === "boolean") {
+    return base[field];
+  }
+  return fallback;
+};
+
+const pickDateField = (payload: any, base: any, field: string): string => {
+  const candidate = sanitizeInputString(payload?.[field]);
+  if (candidate && candidate.length > 0) {
+    return candidate;
+  }
+  const baseValue = base?.[field];
+  if (typeof baseValue === "string" && baseValue.length > 0) {
+    return baseValue;
+  }
+  return new Date().toISOString().split("T")[0];
+};
+
+const pickRating = (payload: any, base: any): number => {
+  const candidate = Number(payload?.rating);
+  if (Number.isFinite(candidate)) {
+    return Math.max(1, Math.min(5, candidate));
+  }
+  const baseValue = Number(base?.rating);
+  if (Number.isFinite(baseValue)) {
+    return Math.max(1, Math.min(5, baseValue));
+  }
+  return 5;
+};
+
+const generateTestimonialId = (): string => {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `${TESTIMONIAL_PREFIX}${crypto.randomUUID()}`;
+  }
+  return `${TESTIMONIAL_PREFIX}${Date.now().toString(36)}`;
+};
+
+const mapTestimonialForLang = (testimonial: any, lang: SupportedLanguage) => {
+  const useEnglish = lang === "en";
+  return {
+    id: testimonial.id,
+    clientName: testimonial.clientName,
+    clientRole: useEnglish && testimonial.clientRole_en ? testimonial.clientRole_en : testimonial.clientRole,
+    clientCompany: testimonial.clientCompany,
+    clientPhoto: testimonial.clientPhoto,
+    rating: testimonial.rating,
+    testimonial: useEnglish && testimonial.testimonial_en ? testimonial.testimonial_en : testimonial.testimonial,
+    projectType: useEnglish && testimonial.projectType_en ? testimonial.projectType_en : testimonial.projectType,
+    date: testimonial.date,
+    linkedinUrl: testimonial.linkedinUrl,
+    featured: Boolean(testimonial.featured),
+    approved: Boolean(testimonial.approved ?? true),
+    createdAt: testimonial.createdAt,
+    updatedAt: testimonial.updatedAt
+  };
+};
+
+const buildTestimonialRecord = (payload: any, existing: any = {}) => {
+  const now = new Date().toISOString();
+  return {
+    id: existing.id ?? generateTestimonialId(),
+    clientName: pickStringField(payload, existing, "clientName", "Client"),
+    clientRole: pickStringField(payload, existing, "clientRole", "Fondateur"),
+    clientRole_en: pickStringField(payload, existing, "clientRole_en", ""),
+    clientCompany: pickStringField(payload, existing, "clientCompany", "Entreprise"),
+    clientPhoto: pickStringField(payload, existing, "clientPhoto", ""),
+    rating: pickRating(payload, existing),
+    testimonial: pickStringField(payload, existing, "testimonial", "Collaboration exceptionnelle !"),
+    testimonial_en: pickStringField(payload, existing, "testimonial_en", ""),
+    projectType: pickStringField(payload, existing, "projectType", "Projet web"),
+    projectType_en: pickStringField(payload, existing, "projectType_en", ""),
+    date: pickDateField(payload, existing, "date"),
+    linkedinUrl: pickStringField(payload, existing, "linkedinUrl", ""),
+    featured: pickBooleanField(payload, existing, "featured", false),
+    approved: pickBooleanField(payload, existing, "approved", true),
+    createdAt: existing.createdAt ?? now,
+    updatedAt: now
+  };
+};
+
+const resolveTestimonialId = (idParam: string): string => {
+  return idParam.startsWith(TESTIMONIAL_PREFIX) ? idParam : `${TESTIMONIAL_PREFIX}${idParam}`;
+};
+
+const generateRequestToken = (): string => {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID().replace(/-/g, "");
+  }
+  return Date.now().toString(36);
+};
+
+const buildTestimonialRequestRecord = (payload: any) => {
+  const now = new Date().toISOString();
+  const token = generateRequestToken();
+  return {
+    id: `${TESTIMONIAL_REQUEST_PREFIX}${token}`,
+    token,
+    clientName: pickStringField(payload, {}, "clientName", "Client"),
+    clientEmail: pickStringField(payload, {}, "clientEmail", ""),
+    projectName: pickStringField(payload, {}, "projectName", "Projet"),
+    projectType: pickStringField(payload, {}, "projectType", ""),
+    message: pickStringField(payload, {}, "message", ""),
+    status: "pending",
+    createdAt: now,
+    updatedAt: now,
+    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString()
+  };
+};
+
+const mapRequestPublic = (request: any) => ({
+  clientName: request.clientName,
+  projectName: request.projectName,
+  projectType: request.projectType,
+  message: request.message,
+  status: request.status,
+  completedAt: request.completedAt ?? null,
+  expiresAt: request.expiresAt
+});
+
+const isRequestExpired = (request: any): boolean => {
+  if (!request?.expiresAt) {
+    return false;
+  }
+  return new Date(request.expiresAt).getTime() < Date.now();
+};
+
 // ===========================================================================
 // TESTIMONIALS ROUTES
-// ===========================================================================
+// ==========================================================================
 app.get("/make-server-04919ac5/testimonials", async (c: HonoContext) =>{
   try {
-    const testimonials = await kv.getByPrefix("testimonial:");
-    const approved = testimonials.filter((t)=>t.approved);
+    const requestedLang = c.req.query("lang");
+    const lang: SupportedLanguage = requestedLang === "en" ? "en" : "fr";
+    const testimonials = await kv.getByPrefix(TESTIMONIAL_PREFIX);
+    const approved = testimonials
+      .filter((t)=>t.approved ?? true)
+      .map((testimonial)=>mapTestimonialForLang(testimonial, lang));
     return c.json({
       success: true,
       testimonials: approved
@@ -3547,12 +3707,267 @@ app.get("/make-server-04919ac5/testimonials", async (c: HonoContext) =>{
 // Get all testimonials for admin (including non-approved)
 app.get("/make-server-04919ac5/testimonials/admin", requireAuth, async (c: HonoContext) =>{
   try {
-    const testimonials = await kv.getByPrefix("testimonial:");
+    const testimonials = await kv.getByPrefix(TESTIMONIAL_PREFIX);
     return c.json({
       success: true,
       testimonials
     });
   } catch (error) {
+    return c.json({
+      success: false,
+      error: getErrorMessage(error)
+    }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/testimonials", requireAuth, async (c: HonoContext) =>{
+  try {
+    const payload = await c.req.json();
+    const testimonial = buildTestimonialRecord(payload);
+    await kv.set(testimonial.id, testimonial);
+    return c.json({
+      success: true,
+      testimonial
+    });
+  } catch (error) {
+    console.error("❌ Error creating testimonial:", error);
+    return c.json({
+      success: false,
+      error: getErrorMessage(error)
+    }, 500);
+  }
+});
+
+app.put("/make-server-04919ac5/testimonials/:id", requireAuth, async (c: HonoContext) =>{
+  try {
+    const idParam = decodeURIComponent(c.req.param("id"));
+    const storageId = resolveTestimonialId(idParam);
+    const existing = await kv.get(storageId);
+    if (!existing) {
+      return c.json({
+        success: false,
+        error: "Testimonial not found"
+      }, 404);
+    }
+    const payload = await c.req.json();
+    const testimonial = buildTestimonialRecord(payload, existing);
+    await kv.set(storageId, testimonial);
+    return c.json({
+      success: true,
+      testimonial
+    });
+  } catch (error) {
+    console.error("❌ Error updating testimonial:", error);
+    return c.json({
+      success: false,
+      error: getErrorMessage(error)
+    }, 500);
+  }
+});
+
+app.delete("/make-server-04919ac5/testimonials/:id", requireAuth, async (c: HonoContext) =>{
+  try {
+    const idParam = decodeURIComponent(c.req.param("id"));
+    const storageId = resolveTestimonialId(idParam);
+    const existing = await kv.get(storageId);
+    if (!existing) {
+      return c.json({
+        success: false,
+        error: "Testimonial not found"
+      }, 404);
+    }
+    await kv.del(storageId);
+    return c.json({
+      success: true,
+      deletedId: storageId
+    });
+  } catch (error) {
+    console.error("❌ Error deleting testimonial:", error);
+    return c.json({
+      success: false,
+      error: getErrorMessage(error)
+    }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/testimonials/request", requireAuth, async (c: HonoContext) =>{
+  try {
+    const payload = await c.req.json();
+    const requestRecord = buildTestimonialRequestRecord(payload);
+    if (!requestRecord.clientEmail) {
+      return c.json({
+        success: false,
+        error: "Client email is required"
+      }, 400);
+    }
+
+    await kv.set(requestRecord.id, requestRecord);
+
+    const normalizedFrontendUrl = FRONTEND_BASE_URL.replace(/\/+$/, "");
+    const formUrl = `${normalizedFrontendUrl}/testimonial-request/${requestRecord.token}`;
+    const emailSubject = `Votre avis sur ${requestRecord.projectName}`;
+    const emailHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
+            .container { max-width: 640px; margin: 0 auto; padding: 32px; background: #0C0C0C; color: white; border-radius: 18px; }
+            .card { background: rgba(255,255,255,0.05); padding: 24px; border-radius: 16px; margin-top: 24px; }
+            .button { display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 14px 32px; text-decoration: none; border-radius: 999px; font-weight: 600; margin-top: 24px; }
+            .footer { margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.6); }
+          </style>
+        </head>
+        <body style="background:#050505; padding: 32px;">
+          <div class="container">
+            <p>Bonjour <strong>${requestRecord.clientName}</strong>,</p>
+            <p>Merci encore pour votre confiance ! Pourriez-vous prendre 2 minutes afin de partager un retour sur notre collaboration <strong>${requestRecord.projectName}</strong> ?</p>
+            <div class="card">
+              <p style="margin:0 0 4px 0; opacity:0.7; text-transform:uppercase; font-size:12px; letter-spacing:1px;">Projet</p>
+              <p style="margin:0; font-size:18px; font-weight:600;">${requestRecord.projectType || requestRecord.projectName}</p>
+              ${requestRecord.message ? `<p style="margin-top:12px; opacity:0.8;">${requestRecord.message}</p>` : ""}
+            </div>
+            <p>Votre témoignage sera affiché sur ma page références pour aider d'autres dirigeants à se projeter.</p>
+            <a href="${formUrl}" class="button">✍️ Laisser mon témoignage</a>
+            <p style="font-size:14px; color:rgba(255,255,255,0.7); margin-top:24px;">Merci infiniment,<br/>Maxence</p>
+            <div class="footer">
+              Ce lien est personnel et valable pendant 30 jours.
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+    const emailText = `Bonjour ${requestRecord.clientName},\n\nMerci encore pour votre confiance. Pouvez-vous partager un court témoignage sur notre projet ${requestRecord.projectName} ?\n\nFormulaire sécurisé : ${formUrl}\n\nMerci !`;
+
+    const emailResult = await sendEmail({
+      to: requestRecord.clientEmail,
+      subject: emailSubject,
+      html: emailHtml,
+      text: emailText
+    });
+
+    if (!emailResult.success) {
+      await kv.del(requestRecord.id);
+      return c.json({
+        success: false,
+        error: emailResult.error || "Unable to send testimonial request"
+      }, 500);
+    }
+
+    return c.json({
+      success: true,
+      request: {
+        id: requestRecord.id,
+        token: requestRecord.token,
+        formUrl
+      }
+    });
+  } catch (error) {
+    console.error("❌ Error sending testimonial request:", error);
+    return c.json({
+      success: false,
+      error: getErrorMessage(error)
+    }, 500);
+  }
+});
+
+app.get("/make-server-04919ac5/testimonials/request/:token", async (c: HonoContext) =>{
+  try {
+    const token = c.req.param("token");
+    const storageId = `${TESTIMONIAL_REQUEST_PREFIX}${token}`;
+    const request = await kv.get(storageId);
+    if (!request) {
+      return c.json({
+        success: false,
+        error: "Request not found"
+      }, 404);
+    }
+
+    if (request.status === "completed") {
+      return c.json({
+        success: false,
+        error: "Request already completed",
+        status: "completed"
+      }, 410);
+    }
+
+    if (isRequestExpired(request)) {
+      return c.json({
+        success: false,
+        error: "Request expired",
+        status: "expired"
+      }, 410);
+    }
+
+    return c.json({
+      success: true,
+      request: mapRequestPublic(request)
+    });
+  } catch (error) {
+    console.error("❌ Error fetching testimonial request:", error);
+    return c.json({
+      success: false,
+      error: getErrorMessage(error)
+    }, 500);
+  }
+});
+
+app.post("/make-server-04919ac5/testimonials/request/:token/submit", async (c: HonoContext) =>{
+  try {
+    const token = c.req.param("token");
+    const storageId = `${TESTIMONIAL_REQUEST_PREFIX}${token}`;
+    const request = await kv.get(storageId);
+    if (!request) {
+      return c.json({
+        success: false,
+        error: "Request not found"
+      }, 404);
+    }
+
+    if (request.status === "completed") {
+      return c.json({
+        success: false,
+        error: "Request already completed"
+      }, 400);
+    }
+
+    if (isRequestExpired(request)) {
+      return c.json({
+        success: false,
+        error: "Request expired"
+      }, 400);
+    }
+
+    const payload = await c.req.json();
+    const testimonialPayload = {
+      ...payload,
+      clientName: request.clientName,
+      projectType: payload?.projectType || request.projectType || request.projectName,
+      clientCompany: payload?.clientCompany || request.projectName,
+      date: new Date().toISOString().split("T")[0],
+      approved: false,
+      featured: false
+    };
+
+    const testimonial = buildTestimonialRecord(testimonialPayload);
+    await kv.set(testimonial.id, testimonial);
+
+    const updatedRequest = {
+      ...request,
+      status: "completed",
+      completedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      testimonialId: testimonial.id
+    };
+    await kv.set(storageId, updatedRequest);
+
+    return c.json({
+      success: true,
+      testimonial: mapTestimonialForLang(testimonial, "fr")
+    });
+  } catch (error) {
+    console.error("❌ Error submitting testimonial form:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -4406,7 +4821,7 @@ console.log("   QUOTES: /quotes (GET/POST), /quotes/:id (PUT/DELETE/convert/send
 console.log("   INVOICES: /invoices (GET), /invoices/:id (GET/PUT/DELETE/send-reminder) ✨ NEW!");
 console.log("   PROJECTS: /projects (GET), /projects/:id (GET)");
 console.log("   NEWSLETTER: /newsletter/subscribe (POST), /newsletter/stats (GET)");
-console.log("   TESTIMONIALS: /testimonials (GET)");
+console.log("   TESTIMONIALS: /testimonials (GET/POST/PUT/DELETE)");
 console.log("   BLOG: /blog/posts (GET/POST), /blog/posts/:id (GET/PUT/DELETE) ✨ UPDATED!");
 console.log("   CASE STUDIES: /case-studies (GET)");
 console.log("   RESOURCES: /resources (GET)");

@@ -20,7 +20,9 @@ import {
   Users,
   Award,
   Send,
-  Mail
+  Mail,
+  Eye,
+  EyeOff
 } from "lucide-react";
 import { toast } from "sonner";
 import { projectId } from "../../utils/supabase/info";
@@ -43,6 +45,8 @@ interface Testimonial {
   linkedinUrl?: string;
   featured: boolean;
   createdAt: string;
+  approved?: boolean;
+  updatedAt?: string;
 }
 
 export function TestimonialsTab() {
@@ -115,7 +119,12 @@ export function TestimonialsTab() {
       const data = await response.json();
       
       if (data.success) {
-        setTestimonials(data.testimonials || []);
+        const sorted = (data.testimonials || []).sort((a: Testimonial, b: Testimonial) => {
+          const dateA = new Date(a.createdAt || a.date).getTime();
+          const dateB = new Date(b.createdAt || b.date).getTime();
+          return dateB - dateA;
+        });
+        setTestimonials(sorted);
       } else {
         toast.error(data.error || "Erreur lors du chargement");
         setTestimonials([]);
@@ -207,7 +216,17 @@ export function TestimonialsTab() {
       const data = await response.json();
 
       if (data.success) {
-        toast.success(`Demande envoyée à ${requestData.clientName} !`);
+        if (data.request?.formUrl) {
+          try {
+            await navigator.clipboard.writeText(data.request.formUrl);
+            toast.success(`Demande envoyée à ${requestData.clientName} (lien copié) !`);
+          } catch {
+            toast.success(`Demande envoyée à ${requestData.clientName} !`);
+            console.info("Lien du formulaire:", data.request.formUrl);
+          }
+        } else {
+          toast.success(`Demande envoyée à ${requestData.clientName} !`);
+        }
         setRequestDialogOpen(false);
         setRequestData({
           clientName: "",
@@ -259,6 +278,40 @@ export function TestimonialsTab() {
     } catch (error) {
       console.error("Error deleting testimonial:", error);
       toast.error("Erreur lors de la suppression");
+    }
+  };
+
+  const handleApprovalToggle = async (testimonial: Testimonial) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error("Session expirée");
+        return;
+      }
+
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/testimonials/${encodeURIComponent(testimonial.id)}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`
+          },
+          body: JSON.stringify({ approved: !testimonial.approved })
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success(!testimonial.approved ? "Témoignage publié" : "Témoignage masqué");
+        fetchTestimonials();
+      } else {
+        toast.error(data.error || "Impossible de mettre à jour le statut");
+      }
+    } catch (error) {
+      console.error("Error toggling testimonial approval:", error);
+      toast.error("Erreur lors de la mise à jour");
     }
   };
 
@@ -399,20 +452,21 @@ export function TestimonialsTab() {
               <TableHead className="text-white/60 w-[100px]">Note</TableHead>
               <TableHead className="text-white/60 w-[120px]">Projet</TableHead>
               <TableHead className="text-white/60 w-[100px] hidden md:table-cell">Date</TableHead>
-              <TableHead className="text-white/60 w-[80px]">Statut</TableHead>
-              <TableHead className="text-white/60 w-[100px] text-right">Actions</TableHead>
+              <TableHead className="text-white/60 w-[120px]">Publication</TableHead>
+              <TableHead className="text-white/60 w-[90px]">À la une</TableHead>
+                <TableHead className="text-white/60 w-[130px] text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-white/40 py-8">
+                <TableCell colSpan={7} className="text-center text-white/40 py-8">
                   Chargement...
                 </TableCell>
               </TableRow>
             ) : testimonials.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-16">
+                <TableCell colSpan={7} className="text-center py-16">
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -493,6 +547,17 @@ export function TestimonialsTab() {
                     })}
                   </TableCell>
                   <TableCell>
+                    {testimonial.approved ?? true ? (
+                      <Badge className="bg-emerald-500/10 text-emerald-300 border-emerald-500/20 text-xs">
+                        Publié
+                      </Badge>
+                    ) : (
+                      <Badge className="bg-white/5 text-white/40 border-white/10 text-xs">
+                        Brouillon
+                      </Badge>
+                    )}
+                  </TableCell>
+                  <TableCell>
                     {testimonial.featured ? (
                       <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/20 text-xs">
                         <Award className="h-3 w-3 mr-1" />
@@ -506,6 +571,19 @@ export function TestimonialsTab() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-0.5">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleApprovalToggle(testimonial)}
+                        className={`h-7 w-7 p-0 ${testimonial.approved ?? true ? "text-white/70 hover:text-white hover:bg-white/5" : "text-[#00FFC2] hover:bg-[#00FFC2]/10"}`}
+                        title={testimonial.approved ?? true ? "Masquer du site" : "Publier"}
+                      >
+                        {testimonial.approved ?? true ? (
+                          <EyeOff className="h-3.5 w-3.5" />
+                        ) : (
+                          <Eye className="h-3.5 w-3.5" />
+                        )}
+                      </Button>
                       {testimonial.linkedinUrl && (
                         <Button
                           variant="ghost"
