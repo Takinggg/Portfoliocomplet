@@ -1,7 +1,3 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
 :root {
   --font-size: 16px;
   --background: #0C0C0C;
@@ -759,4 +755,104 @@ nav a:focus-visible,
 
 .max-w-none {
   max-width: none;
+}
+
+/* ========================================
+   TOKEN-DRIVEN UTILITY OVERRIDES
+   ======================================== */
+
+.bg-background {
+  background-color: var(--background) !important;
+}
+
+.text-foreground {
+  color: var(--foreground) !important;
+}
+
+.bg-card {
+  background-color: var(--card) !important;
+}
+
+.text-card-foreground {
+  color: var(--card-foreground) !important;
+}
+
+.bg-popover {
+  background-color: var(--popover) !important;
+}
+
+.text-popover-foreground {
+  color: var(--popover-foreground) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+
+.text-primary-foreground {
+  color: var(--primary-foreground) !important;
+}
+
+.bg-secondary {
+  background-color: var(--secondary) !important;
+}
+
+.text-secondary-foreground {
+  color: var(--secondary-foreground) !important;
+}
+
+.bg-muted {
+  background-color: var(--muted) !important;
+}
+
+.text-muted-foreground {
+  color: var(--muted-foreground) !important;
+}
+
+.bg-accent {
+  background-color: var(--accent) !important;
+}
+
+.text-accent-foreground {
+  color: var(--accent-foreground) !important;
+}
+
+.bg-destructive {
+  background-color: var(--destructive) !important;
+}
+
+.text-destructive-foreground {
+  color: var(--destructive-foreground) !important;
+}
+
+.border-border {
+  border-color: var(--border) !important;
+}
+
+.bg-sidebar {
+  background-color: var(--sidebar) !important;
+}
+
+.text-sidebar-foreground {
+  color: var(--sidebar-foreground) !important;
+}
+
+.bg-sidebar-primary {
+  background-color: var(--sidebar-primary) !important;
+}
+
+.text-sidebar-primary-foreground {
+  color: var(--sidebar-primary-foreground) !important;
+}
+
+.bg-sidebar-accent {
+  background-color: var(--sidebar-accent) !important;
+}
+
+.text-sidebar-accent-foreground {
+  color: var(--sidebar-accent-foreground) !important;
+}
+
+.border-sidebar-border {
+  border-color: var(--sidebar-border) !important;
 }

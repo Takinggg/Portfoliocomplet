@@ -1,0 +1,29 @@
+{
+  "name": "Portfolio Freelance Pro - CRM & Gestion Projets",
+  "short_name": "Portfolio Pro",
+  "description": "Portfolio professionnel avec dashboard CRM intégré pour gérer votre activité freelance",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0C0C0C",
+  "theme_color": "#0C0C0C",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "categories": ["business", "productivity", "utilities"],
+  "lang": "fr",
+  "dir": "ltr",
+  "icons": [],
+  "screenshots": [],
+  "shortcuts": [],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "share_target": {
+    "action": "/contact",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "subject",
+      "text": "message",
+      "url": "url"
+    }
+  }
+}
