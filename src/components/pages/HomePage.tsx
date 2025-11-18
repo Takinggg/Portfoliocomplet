@@ -1587,7 +1587,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, type: "spring", delay: 0.3 }}
-              className="relative hidden lg:block h-[700px]"
+              className="relative h-[700px] w-full"
             >
               <LiveCodingTerminal />
             </motion.div>
