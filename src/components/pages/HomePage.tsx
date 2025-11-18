@@ -750,6 +750,7 @@ function LiveCodingTerminal() {
   const [currentLine, setCurrentLine] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
   const [displayedCode, setDisplayedCode] = useState<string[]>([]);
+  const [showFinal, setShowFinal] = useState(false);
 
   const codeSequences = [
     {
@@ -808,16 +809,24 @@ function LiveCodingTerminal() {
         setDisplayedCode(prev => [...prev, currentSequence.lines[currentLine]]);
         setCurrentLine(prev => prev + 1);
         
-        setTimeout(() => setIsTyping(false), 600);
+        setTimeout(() => setIsTyping(false), 250);
       } else {
-        // Sequence complete, wait then switch
-        setTimeout(() => {
-          setDisplayedCode([]);
-          setCurrentLine(0);
-          setActiveSequence((prev) => (prev + 1) % codeSequences.length);
-        }, 3000);
+        // Sequence complete
+        if (activeSequence === codeSequences.length - 1) {
+          // Last sequence - show final screen
+          setTimeout(() => {
+            setShowFinal(true);
+          }, 1500);
+        } else {
+          // Switch to next sequence
+          setTimeout(() => {
+            setDisplayedCode([]);
+            setCurrentLine(0);
+            setActiveSequence((prev) => prev + 1);
+          }, 1500);
+        }
       }
-    }, 800);
+    }, 400);
 
     return () => clearTimeout(timer);
   }, [currentLine, isTyping, currentSequence, activeSequence]);
@@ -844,148 +853,268 @@ function LiveCodingTerminal() {
           </div>
           
           {/* Mode Indicator */}
-          <motion.div
-            key={activeSequence}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2 px-3 py-1 rounded-md bg-mint/10 border border-mint/30"
-          >
-            <currentSequence.icon className="w-4 h-4 text-mint" />
-            <span className={`text-xs font-semibold ${currentSequence.color}`}>
-              {currentSequence.title}
-            </span>
-          </motion.div>
+          {!showFinal && (
+            <motion.div
+              key={activeSequence}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-2 px-3 py-1 rounded-md bg-mint/10 border border-mint/30"
+            >
+              <currentSequence.icon className="w-4 h-4 text-mint" />
+              <span className={`text-xs font-semibold ${currentSequence.color}`}>
+                {currentSequence.title}
+              </span>
+            </motion.div>
+          )}
         </div>
 
         {/* Terminal Content */}
         <div className="relative h-[calc(100%-52px)] p-6 font-mono text-sm overflow-hidden">
           
-          {/* Glowing gradient background */}
-          <motion.div
-            key={`glow-${activeSequence}`}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.15, scale: 1 }}
-            className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-mint via-cyan-500 to-purple-500 blur-[120px] rounded-full"
-          />
-
-          {/* Code Lines */}
-          <div className="relative z-10 space-y-2">
-            <AnimatePresence mode="popLayout">
-              {displayedCode.map((line, index) => (
-                <motion.div
-                  key={`${activeSequence}-${index}`}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex items-start gap-3"
-                >
-                  <span className="text-neutral-600 select-none min-w-[24px]">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span className={`${
-                    line.startsWith('//') ? 'text-neutral-500 italic' :
-                    line.startsWith('✓') ? `${currentSequence.color} font-semibold` :
-                    line.includes(':') ? 'text-neutral-300' : 'text-neutral-400'
-                  }`}>
-                    {line.split(':').map((part, i, arr) => (
-                      i === 0 && arr.length > 1 ? (
-                        <span key={i}>
-                          <span className="text-mint">{part}</span>
-                          <span className="text-neutral-500">:</span>
-                        </span>
-                      ) : (
-                        <span key={i}>{i > 0 ? part : part}</span>
-                      )
-                    ))}
-                  </span>
-                  
-                  {/* Blinking cursor on last line */}
-                  {index === displayedCode.length - 1 && !line.startsWith('✓') && (
-                    <motion.span
-                      animate={{ opacity: [1, 0, 1] }}
-                      transition={{ duration: 1, repeat: Infinity }}
-                      className="inline-block w-2 h-4 bg-mint ml-1"
-                    />
-                  )}
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-
-          {/* Progress Dots */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-            {codeSequences.map((_, index) => (
+          {/* Final Success Screen */}
+          <AnimatePresence>
+            {showFinal && (
               <motion.div
-                key={index}
-                className={`w-2 h-2 rounded-full transition-all duration-500 ${
-                  index === activeSequence ? 'bg-mint w-6' : 'bg-neutral-600'
-                }`}
-                whileHover={{ scale: 1.2 }}
-              />
-            ))}
-          </div>
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black/95 backdrop-blur-sm"
+              >
+                {/* Success Icon */}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                  className="relative mb-8"
+                >
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.2, 1],
+                      opacity: [0.5, 0.8, 0.5]
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="absolute inset-0 rounded-full bg-mint/30 blur-2xl"
+                  />
+                  <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-mint to-green-500 flex items-center justify-center">
+                    <CheckCircle className="w-12 h-12 text-black" strokeWidth={3} />
+                  </div>
+                </motion.div>
 
-          {/* Floating Code Particles */}
-          {[...Array(15)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 rounded-full bg-mint/30"
-              style={{
-                left: `${10 + i * 6}%`,
-                top: `${20 + (i % 5) * 15}%`,
-              }}
-              animate={{
-                y: [0, -10, 0],
-                opacity: [0.2, 0.5, 0.2],
-                scale: [1, 1.5, 1],
-              }}
-              transition={{
-                duration: 3 + i * 0.2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
+                {/* Success Message */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="text-center space-y-4"
+                >
+                  <h3 className="text-3xl font-bold text-white">
+                    Projet complet déployé!
+                  </h3>
+                  <p className="text-lg text-neutral-400">
+                    UI/UX + IA + Automatisation intégrés
+                  </p>
+                  
+                  {/* Stats */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6 }}
+                    className="flex gap-6 justify-center mt-8"
+                  >
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/10 border border-purple-500/30">
+                      <Palette className="w-4 h-4 text-purple-400" />
+                      <span className="text-purple-400 font-semibold">Design</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                      <Brain className="w-4 h-4 text-cyan-400" />
+                      <span className="text-cyan-400 font-semibold">IA</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-mint/10 border border-mint/30">
+                      <Zap className="w-4 h-4 text-mint" />
+                      <span className="text-mint font-semibold">Auto</span>
+                    </div>
+                  </motion.div>
+
+                  {/* Restart button */}
+                  <motion.button
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.8 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      setShowFinal(false);
+                      setDisplayedCode([]);
+                      setCurrentLine(0);
+                      setActiveSequence(0);
+                    }}
+                    className="mt-6 px-6 py-3 rounded-lg bg-mint text-black font-semibold hover:bg-mint/90 transition-colors"
+                  >
+                    Recommencer
+                  </motion.button>
+                </motion.div>
+
+                {/* Particles */}
+                {[...Array(20)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-1 h-1 rounded-full bg-mint"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                    }}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{
+                      opacity: [0, 1, 0],
+                      scale: [0, 2, 0],
+                      y: [0, -50, -100],
+                    }}
+                    transition={{
+                      duration: 2,
+                      delay: 0.5 + i * 0.1,
+                      ease: "easeOut",
+                    }}
+                  />
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Regular Code Display */}
+          {!showFinal && (
+            <>
+              {/* Glowing gradient background */}
+              <motion.div
+                key={`glow-${activeSequence}`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 0.15, scale: 1 }}
+                className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-mint via-cyan-500 to-purple-500 blur-[120px] rounded-full"
+              />
+
+              {/* Code Lines */}
+              <div className="relative z-10 space-y-2">
+                <AnimatePresence mode="popLayout">
+                  {displayedCode.map((line, index) => (
+                    <motion.div
+                      key={`${activeSequence}-${index}`}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 20 }}
+                      transition={{ duration: 0.2 }}
+                      className="flex items-start gap-3"
+                    >
+                      <span className="text-neutral-600 select-none min-w-[24px]">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span className={`${
+                        line.startsWith('//') ? 'text-neutral-500 italic' :
+                        line.startsWith('✓') ? `${currentSequence.color} font-semibold` :
+                        line.includes(':') ? 'text-neutral-300' : 'text-neutral-400'
+                      }`}>
+                        {line.split(':').map((part, i, arr) => (
+                          i === 0 && arr.length > 1 ? (
+                            <span key={i}>
+                              <span className="text-mint">{part}</span>
+                              <span className="text-neutral-500">:</span>
+                            </span>
+                          ) : (
+                            <span key={i}>{i > 0 ? part : part}</span>
+                          )
+                        ))}
+                      </span>
+                      
+                      {/* Blinking cursor on last line */}
+                      {index === displayedCode.length - 1 && !line.startsWith('✓') && (
+                        <motion.span
+                          animate={{ opacity: [1, 0, 1] }}
+                          transition={{ duration: 0.8, repeat: Infinity }}
+                          className="inline-block w-2 h-4 bg-mint ml-1"
+                        />
+                      )}
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+
+              {/* Progress Dots */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                {codeSequences.map((_, index) => (
+                  <motion.div
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                      index === activeSequence ? 'bg-mint w-6' : 
+                      index < activeSequence ? 'bg-mint/50' : 'bg-neutral-600'
+                    }`}
+                    whileHover={{ scale: 1.2 }}
+                  />
+                ))}
+              </div>
+
+              {/* Floating Code Particles */}
+              {[...Array(15)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-1 h-1 rounded-full bg-mint/30"
+                  style={{
+                    left: `${10 + i * 6}%`,
+                    top: `${20 + (i % 5) * 15}%`,
+                  }}
+                  animate={{
+                    y: [0, -10, 0],
+                    opacity: [0.2, 0.5, 0.2],
+                    scale: [1, 1.5, 1],
+                  }}
+                  transition={{
+                    duration: 3 + i * 0.2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+              ))}
+            </>
+          )}
         </div>
 
         {/* Bottom Stats Bar */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-6 bg-mint/10 backdrop-blur-sm border-t border-mint/20 flex items-center justify-between px-4 text-[10px] font-mono"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-        >
-          <div className="flex items-center gap-4 text-neutral-400">
-            <span className="flex items-center gap-1">
-              <CheckCircle className="w-3 h-3 text-mint" />
-              Ready
-            </span>
-            <span>TypeScript</span>
-            <span>UTF-8</span>
-          </div>
-          <div className="flex items-center gap-3 text-neutral-400">
-            <motion.span
-              animate={{ opacity: [0.4, 1, 0.4] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="flex items-center gap-1"
-            >
-              <div className="w-1 h-1 rounded-full bg-mint" />
-              Live
-            </motion.span>
-          </div>
-        </motion.div>
+        {!showFinal && (
+          <motion.div
+            className="absolute bottom-0 left-0 right-0 h-6 bg-mint/10 backdrop-blur-sm border-t border-mint/20 flex items-center justify-between px-4 text-[10px] font-mono"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <div className="flex items-center gap-4 text-neutral-400">
+              <span className="flex items-center gap-1">
+                <CheckCircle className="w-3 h-3 text-mint" />
+                Ready
+              </span>
+              <span>TypeScript</span>
+              <span>UTF-8</span>
+            </div>
+            <div className="flex items-center gap-3 text-neutral-400">
+              <motion.span
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="flex items-center gap-1"
+              >
+                <div className="w-1 h-1 rounded-full bg-mint" />
+                Live
+              </motion.span>
+            </div>
+          </motion.div>
+        )}
       </div>
 
       {/* Bottom Hint */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2 }}
-        className="absolute -bottom-8 left-0 right-0 text-center text-xs text-neutral-500"
-      >
-        Code en temps réel • Cycles automatiques entre compétences
-      </motion.div>
+      {!showFinal && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="absolute -bottom-8 left-0 right-0 text-center text-xs text-neutral-500"
+        >
+          Code en temps réel • Cycles automatiques entre compétences
+        </motion.div>
+      )}
     </motion.div>
   );
 }
