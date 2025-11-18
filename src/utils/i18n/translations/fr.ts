@@ -160,15 +160,30 @@ export default {
           "title": "Découverte & Stratégie",
           "description": "Comprendre votre vision, vos utilisateurs et vos objectifs."
         },
+        "audit": {
+          "number": "01",
+          "title": "Audit & Analyse",
+          "description": "Analyser vos besoins et identifier les opportunités d'optimisation."
+        },
         "design": {
           "number": "02",
           "title": "Design & Prototypage",
           "description": "Créer des maquettes interactives et valider l'UX."
         },
+        "implementation": {
+          "number": "03",
+          "title": "Implémentation",
+          "description": "Développer et intégrer la solution dans votre environnement."
+        },
         "development": {
           "number": "03",
           "title": "Développement",
           "description": "Transformer le design en produit fonctionnel et performant."
+        },
+        "monitoring": {
+          "number": "04",
+          "title": "Monitoring & Optimisation",
+          "description": "Surveiller les performances et optimiser en continu."
         },
         "launch": {
           "number": "04",
