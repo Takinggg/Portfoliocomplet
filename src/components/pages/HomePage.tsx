@@ -877,7 +877,7 @@ function LiveCodingTerminal() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black/98 backdrop-blur-md m-6"
+                className="absolute inset-6 flex flex-col items-center justify-center z-50 bg-black/98 backdrop-blur-md rounded-xl"
               >
                 {/* Success Icon */}
                 <motion.div
