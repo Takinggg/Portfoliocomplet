@@ -125,71 +125,75 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
             </motion.div>
           </div>
 
-          {/* Right Content - Bento Grid */}
+          {/* Right Content - Professional Stats Cards */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative hidden lg:block"
           >
-            <div className="grid grid-cols-2 gap-4">
-              {/* Large Card - UI/UX Design Priority */}
-              <div className="col-span-2 glass-card-strong border-white/10 p-6 rounded-3xl relative overflow-hidden group hover:border-purple-500/30 transition-all">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative z-10">
-                  <div className="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center mb-4">
-                    <Palette className="h-6 w-6 text-purple-400" />
+            <div className="space-y-4">
+              {/* Main expertise card */}
+              <div className="glass-card-strong border-white/10 p-8 rounded-3xl relative overflow-hidden group hover:border-white/20 transition-all">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 flex items-center justify-center shrink-0">
+                    <Palette className="h-7 w-7 text-purple-400" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{t('home.hero.cards.design.title')}</h3>
-                  <p className="text-neutral-400 text-sm">
-                    {t('home.hero.cards.design.description')}
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold mb-2">{t('home.hero.cards.design.title')}</h3>
+                    <p className="text-neutral-400 text-sm leading-relaxed mb-4">
+                      {t('home.hero.cards.design.description')}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {['Figma', 'Design Systems', 'Prototyping'].map((tech) => (
+                        <span key={tech} className="px-3 py-1.5 text-xs font-medium bg-white/5 border border-white/10 rounded-lg hover:border-purple-500/30 transition-colors">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Secondary cards grid */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="glass-card border-white/10 p-6 rounded-2xl hover:border-mint/30 transition-all group">
+                  <div className="w-12 h-12 rounded-xl bg-mint/10 border border-mint/20 flex items-center justify-center mb-3">
+                    <Code2 className="h-6 w-6 text-mint" />
+                  </div>
+                  <h4 className="text-lg font-bold mb-1">{t('home.hero.cards.dev.title')}</h4>
+                  <p className="text-neutral-500 text-xs">
+                    {t('home.hero.cards.dev.description')}
                   </p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {['Figma', 'Design Systems', 'Prototyping'].map((tech) => (
-                      <span key={tech} className="px-3 py-1 text-xs bg-white/5 border border-white/10 rounded-full">
-                        {tech}
-                      </span>
-                    ))}
+                </div>
+
+                <div className="glass-card border-white/10 p-6 rounded-2xl hover:border-cyan-500/30 transition-all group">
+                  <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-3">
+                    <Workflow className="h-6 w-6 text-cyan-400" />
                   </div>
+                  <h4 className="text-lg font-bold mb-1">{t('home.hero.cards.automation.title')}</h4>
+                  <p className="text-neutral-500 text-xs">
+                    {t('home.hero.cards.automation.description')}
+                  </p>
                 </div>
               </div>
 
-              {/* Small Cards */}
-              <div className="glass-card border-white/10 p-6 rounded-3xl hover:border-mint/30 transition-all group">
-                <div className="w-10 h-10 rounded-xl bg-mint/20 border border-mint/30 flex items-center justify-center mb-4">
-                  <Code2 className="h-5 w-5 text-mint" />
-                </div>
-                <h3 className="text-lg font-bold mb-2">{t('home.hero.cards.dev.title')}</h3>
-                <p className="text-neutral-400 text-xs">
-                  {t('home.hero.cards.dev.description')}
-                </p>
-              </div>
-
-              <div className="glass-card border-white/10 p-6 rounded-3xl hover:border-cyan-500/30 transition-all group">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center mb-4">
-                  <Workflow className="h-5 w-5 text-cyan-400" />
-                </div>
-                <h3 className="text-lg font-bold mb-2">{t('home.hero.cards.automation.title')}</h3>
-                <p className="text-neutral-400 text-xs">
-                  {t('home.hero.cards.automation.description')}
-                </p>
-              </div>
-
-              {/* Progress Bar Card */}
-              <div className="col-span-2 glass-card border-white/10 p-6 rounded-3xl">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-neutral-400">Performance</span>
-                    <span className="text-mint font-semibold">95%</span>
+              {/* Performance indicator */}
+              <div className="glass-card border-white/10 p-6 rounded-2xl">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-mint rounded-full animate-pulse" />
+                    <span className="text-sm font-medium text-neutral-300">Performance</span>
                   </div>
-                  <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full bg-gradient-to-r from-mint to-cyan-400"
-                      initial={{ width: 0 }}
-                      animate={{ width: "95%" }}
-                      transition={{ duration: 1.5, delay: 1 }}
-                    />
-                  </div>
+                  <span className="text-xl font-bold text-mint">95%</span>
+                </div>
+                <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-mint via-cyan-400 to-mint"
+                    initial={{ width: 0 }}
+                    animate={{ width: "95%" }}
+                    transition={{ duration: 1.5, delay: 1, ease: "easeOut" }}
+                  />
                 </div>
               </div>
             </div>
