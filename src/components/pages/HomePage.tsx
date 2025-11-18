@@ -716,28 +716,31 @@ function HexagonPattern() {
 
 // Mouse Follow Spotlight
 function SpotlightEffect() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    setMousePosition({ x: e.clientX, y: e.clientY });
-  }, []);
+  const springConfig = { damping: 20, stiffness: 150, mass: 0.5 };
+  const x = useSpring(mouseX, springConfig);
+  const y = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX - 192);
+      mouseY.set(e.clientY - 192);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [handleMouseMove]);
+  }, [mouseX, mouseY]);
 
   return (
     <motion.div
       className="fixed pointer-events-none z-30 w-96 h-96 rounded-full blur-3xl"
       style={{
+        x,
+        y,
         background: "radial-gradient(circle, rgba(0, 255, 194, 0.15) 0%, transparent 70%)",
       }}
-      animate={{
-        x: mousePosition.x - 192,
-        y: mousePosition.y - 192,
-      }}
-      transition={{ type: "spring", damping: 30, stiffness: 200 }}
     />
   );
 }
