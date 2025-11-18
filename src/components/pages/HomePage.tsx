@@ -745,259 +745,246 @@ function SpotlightEffect() {
   );
 }
 
-// Interactive Skills Switcher Component
-function InteractiveSkillsSwitcher() {
-  const [activeMode, setActiveMode] = useState<'uiux' | 'ai' | 'automation'>('uiux');
-  const [isAnimating, setIsAnimating] = useState(false);
+// Premium Interactive Terminal Component
+function LiveCodingTerminal() {
+  const [currentLine, setCurrentLine] = useState(0);
+  const [isTyping, setIsTyping] = useState(false);
+  const [displayedCode, setDisplayedCode] = useState<string[]>([]);
 
-  const modes = {
-    uiux: {
+  const codeSequences = [
+    {
       title: "UI/UX Design",
+      color: "text-purple-400",
       icon: Palette,
-      color: "from-purple-500 to-pink-500",
-      description: "Interfaces modernes et intuitives",
-      elements: [
-        { icon: Layers, label: "Components", x: 100, y: 80 },
-        { icon: Target, label: "Wireframes", x: 250, y: 100 },
-        { icon: Sparkles, label: "Animations", x: 180, y: 200 },
+      lines: [
+        "// Création d'interface moderne",
+        "const design = createComponent({",
+        "  style: 'minimal & elegant',",
+        "  animation: 'smooth',",
+        "  responsive: true",
+        "});",
+        "✓ Interface créée avec succès!"
       ]
     },
-    ai: {
+    {
       title: "Dev IA",
+      color: "text-cyan-400",
       icon: Brain,
-      color: "from-cyan-500 to-blue-500",
-      description: "Intégrations intelligentes",
-      elements: [
-        { icon: Cpu, label: "ML Models", x: 120, y: 90 },
-        { icon: Sparkles, label: "AI APIs", x: 260, y: 110 },
-        { icon: Brain, label: "Training", x: 190, y: 210 },
+      lines: [
+        "// Intégration d'intelligence artificielle",
+        "const ai = initializeModel({",
+        "  type: 'GPT-4',",
+        "  temperature: 0.7,",
+        "  maxTokens: 2000",
+        "});",
+        "✓ Modèle IA activé!"
       ]
     },
-    automation: {
+    {
       title: "Automatisation",
+      color: "text-mint",
       icon: Zap,
-      color: "from-mint to-green-500",
-      description: "Workflows intelligents",
-      elements: [
-        { icon: Workflow, label: "Pipeline", x: 110, y: 85 },
-        { icon: Zap, label: "Triggers", x: 270, y: 105 },
-        { icon: LayoutDashboard, label: "Monitor", x: 200, y: 215 },
+      lines: [
+        "// Pipeline d'automatisation",
+        "const workflow = createPipeline({",
+        "  trigger: 'onCommit',",
+        "  actions: ['build', 'test', 'deploy'],",
+        "  notify: true",
+        "});",
+        "✓ Workflow déployé!"
       ]
     }
-  };
+  ];
 
-  const currentMode = modes[activeMode];
+  const [activeSequence, setActiveSequence] = useState(0);
+  const currentSequence = codeSequences[activeSequence];
 
-  const handleModeChange = (mode: 'uiux' | 'ai' | 'automation') => {
-    if (mode === activeMode) return;
-    setIsAnimating(true);
-    setActiveMode(mode);
-    setTimeout(() => setIsAnimating(false), 600);
-  };
+  useEffect(() => {
+    if (isTyping) return;
+
+    const timer = setTimeout(() => {
+      if (currentLine < currentSequence.lines.length) {
+        setIsTyping(true);
+        setDisplayedCode(prev => [...prev, currentSequence.lines[currentLine]]);
+        setCurrentLine(prev => prev + 1);
+        
+        setTimeout(() => setIsTyping(false), 600);
+      } else {
+        // Sequence complete, wait then switch
+        setTimeout(() => {
+          setDisplayedCode([]);
+          setCurrentLine(0);
+          setActiveSequence((prev) => (prev + 1) % codeSequences.length);
+        }, 3000);
+      }
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [currentLine, isTyping, currentSequence, activeSequence]);
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, delay: 0.5 }}
+      transition={{ duration: 0.6, delay: 0.4 }}
       className="relative w-full h-[500px]"
     >
-      {/* Mode Switcher */}
-      <div className="absolute top-0 left-0 right-0 z-20 flex gap-2 justify-center">
-        {(['uiux', 'ai', 'automation'] as const).map((mode) => {
-          const ModeIcon = modes[mode].icon;
-          return (
-            <motion.button
-              key={mode}
-              onClick={() => handleModeChange(mode)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2 rounded-lg border-2 transition-all duration-300 ${
-                activeMode === mode
-                  ? `border-mint bg-mint text-black font-semibold`
-                  : `border-mint/30 bg-black/60 text-neutral-400 hover:text-mint hover:border-mint/50`
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <ModeIcon className="w-4 h-4" />
-                <span className="text-sm">{modes[mode].title}</span>
-              </div>
-            </motion.button>
-          );
-        })}
-      </div>
-
-      {/* Main Container */}
-      <div className="relative w-full h-full rounded-2xl border-2 border-mint/20 bg-gradient-to-br from-neutral-900/50 to-neutral-950/50 backdrop-blur-xl overflow-hidden mt-14">
+      {/* Terminal Window */}
+      <div className="relative w-full h-full rounded-2xl bg-black/90 backdrop-blur-xl border-2 border-mint/30 overflow-hidden shadow-2xl">
         
-        {/* Animated gradient background */}
-        <motion.div
-          key={activeMode}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
-          transition={{ duration: 0.5 }}
-          className={`absolute inset-0 bg-gradient-to-br ${currentMode.color} blur-3xl`}
-        />
-
-        {/* Grid background */}
-        <div 
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(0, 255, 194, 0.2) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0, 255, 194, 0.2) 1px, transparent 1px)
-            `,
-            backgroundSize: '30px 30px',
-          }}
-        />
-
-        {/* Mode Title & Description */}
-        <motion.div
-          key={`title-${activeMode}`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="absolute top-6 left-6 z-10"
-        >
-          <div className="flex items-center gap-3 mb-2">
-            <div className={`p-2 rounded-lg bg-gradient-to-br ${currentMode.color}`}>
-              <currentMode.icon className="w-6 h-6 text-white" />
+        {/* Terminal Header */}
+        <div className="flex items-center justify-between px-4 py-3 bg-neutral-900/80 border-b border-mint/20">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1.5">
+              <div className="w-3 h-3 rounded-full bg-red-500/80" />
+              <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+              <div className="w-3 h-3 rounded-full bg-green-500/80" />
             </div>
-            <h3 className="text-2xl font-bold text-white">{currentMode.title}</h3>
+            <span className="ml-3 text-xs text-neutral-400 font-mono">terminal.tsx</span>
           </div>
-          <p className="text-sm text-neutral-400">{currentMode.description}</p>
-        </motion.div>
-
-        {/* Interactive Elements */}
-        <AnimatePresence mode="wait">
+          
+          {/* Mode Indicator */}
           <motion.div
-            key={activeMode}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.4, staggerChildren: 0.1 }}
-            className="relative w-full h-full"
+            key={activeSequence}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-2 px-3 py-1 rounded-md bg-mint/10 border border-mint/30"
           >
-            {currentMode.elements.map((element, index) => {
-              const ElementIcon = element.icon;
-              return (
-                <motion.div
-                  key={`${activeMode}-${index}`}
-                  initial={{ opacity: 0, scale: 0, rotate: -180 }}
-                  animate={{ 
-                    opacity: 1, 
-                    scale: 1, 
-                    rotate: 0,
-                    y: [0, -10, 0],
-                  }}
-                  transition={{ 
-                    delay: index * 0.15,
-                    y: {
-                      duration: 2,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                    }
-                  }}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  className="absolute cursor-pointer"
-                  style={{
-                    left: element.x,
-                    top: element.y + 50,
-                  }}
-                >
-                  <div className={`relative group`}>
-                    {/* Glow effect */}
-                    <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${currentMode.color} blur-xl opacity-50 group-hover:opacity-100 transition-opacity`} />
-                    
-                    {/* Card */}
-                    <div className={`relative w-24 h-24 rounded-2xl bg-gradient-to-br ${currentMode.color} p-[2px]`}>
-                      <div className="w-full h-full bg-black/90 rounded-2xl flex flex-col items-center justify-center gap-2">
-                        <ElementIcon className="w-8 h-8 text-white" />
-                        <span className="text-[10px] text-neutral-300 font-medium">{element.label}</span>
-                      </div>
-                    </div>
-
-                    {/* Pulse ring */}
-                    <motion.div
-                      className={`absolute -inset-1 rounded-2xl border-2 ${
-                        activeMode === 'uiux' ? 'border-purple-500' :
-                        activeMode === 'ai' ? 'border-cyan-500' : 'border-mint'
-                      }`}
-                      animate={{
-                        scale: [1, 1.1, 1],
-                        opacity: [0.5, 0, 0.5],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        delay: index * 0.3,
-                      }}
-                    />
-                  </div>
-                </motion.div>
-              );
-            })}
+            <currentSequence.icon className="w-4 h-4 text-mint" />
+            <span className={`text-xs font-semibold ${currentSequence.color}`}>
+              {currentSequence.title}
+            </span>
           </motion.div>
-        </AnimatePresence>
+        </div>
 
-        {/* Connection Lines */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.3 }}>
-          <motion.path
-            d="M 150,130 Q 250,150 300,160"
-            fill="none"
-            stroke={activeMode === 'uiux' ? '#a855f7' : activeMode === 'ai' ? '#06b6d4' : '#00ffc2'}
-            strokeWidth="2"
-            strokeDasharray="5,5"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-          />
-          <motion.path
-            d="M 180,180 Q 220,200 240,250"
-            fill="none"
-            stroke={activeMode === 'uiux' ? '#a855f7' : activeMode === 'ai' ? '#06b6d4' : '#00ffc2'}
-            strokeWidth="2"
-            strokeDasharray="5,5"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 1, delay: 0.2, ease: "easeInOut" }}
-          />
-        </svg>
-
-        {/* Floating particles */}
-        {[...Array(12)].map((_, i) => (
+        {/* Terminal Content */}
+        <div className="relative h-[calc(100%-52px)] p-6 font-mono text-sm overflow-hidden">
+          
+          {/* Glowing gradient background */}
           <motion.div
-            key={i}
-            className={`absolute w-1 h-1 rounded-full pointer-events-none ${
-              activeMode === 'uiux' ? 'bg-purple-500' :
-              activeMode === 'ai' ? 'bg-cyan-500' : 'bg-mint'
-            }`}
-            style={{
-              left: `${15 + i * 7}%`,
-              top: `${30 + (i % 4) * 15}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0.3, 0.8, 0.3],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 2.5 + i * 0.2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            key={`glow-${activeSequence}`}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 0.15, scale: 1 }}
+            className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-mint via-cyan-500 to-purple-500 blur-[120px] rounded-full"
           />
-        ))}
+
+          {/* Code Lines */}
+          <div className="relative z-10 space-y-2">
+            <AnimatePresence mode="popLayout">
+              {displayedCode.map((line, index) => (
+                <motion.div
+                  key={`${activeSequence}-${index}`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex items-start gap-3"
+                >
+                  <span className="text-neutral-600 select-none min-w-[24px]">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span className={`${
+                    line.startsWith('//') ? 'text-neutral-500 italic' :
+                    line.startsWith('✓') ? `${currentSequence.color} font-semibold` :
+                    line.includes(':') ? 'text-neutral-300' : 'text-neutral-400'
+                  }`}>
+                    {line.split(':').map((part, i, arr) => (
+                      i === 0 && arr.length > 1 ? (
+                        <span key={i}>
+                          <span className="text-mint">{part}</span>
+                          <span className="text-neutral-500">:</span>
+                        </span>
+                      ) : (
+                        <span key={i}>{i > 0 ? part : part}</span>
+                      )
+                    ))}
+                  </span>
+                  
+                  {/* Blinking cursor on last line */}
+                  {index === displayedCode.length - 1 && !line.startsWith('✓') && (
+                    <motion.span
+                      animate={{ opacity: [1, 0, 1] }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                      className="inline-block w-2 h-4 bg-mint ml-1"
+                    />
+                  )}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Progress Dots */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+            {codeSequences.map((_, index) => (
+              <motion.div
+                key={index}
+                className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                  index === activeSequence ? 'bg-mint w-6' : 'bg-neutral-600'
+                }`}
+                whileHover={{ scale: 1.2 }}
+              />
+            ))}
+          </div>
+
+          {/* Floating Code Particles */}
+          {[...Array(15)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 rounded-full bg-mint/30"
+              style={{
+                left: `${10 + i * 6}%`,
+                top: `${20 + (i % 5) * 15}%`,
+              }}
+              animate={{
+                y: [0, -10, 0],
+                opacity: [0.2, 0.5, 0.2],
+                scale: [1, 1.5, 1],
+              }}
+              transition={{
+                duration: 3 + i * 0.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Bottom Stats Bar */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-6 bg-mint/10 backdrop-blur-sm border-t border-mint/20 flex items-center justify-between px-4 text-[10px] font-mono"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <div className="flex items-center gap-4 text-neutral-400">
+            <span className="flex items-center gap-1">
+              <CheckCircle className="w-3 h-3 text-mint" />
+              Ready
+            </span>
+            <span>TypeScript</span>
+            <span>UTF-8</span>
+          </div>
+          <div className="flex items-center gap-3 text-neutral-400">
+            <motion.span
+              animate={{ opacity: [0.4, 1, 0.4] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="flex items-center gap-1"
+            >
+              <div className="w-1 h-1 rounded-full bg-mint" />
+              Live
+            </motion.span>
+          </div>
+        </motion.div>
       </div>
 
-      {/* Bottom hint */}
+      {/* Bottom Hint */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
+        transition={{ delay: 1.2 }}
         className="absolute -bottom-8 left-0 right-0 text-center text-xs text-neutral-500"
       >
-        Cliquez sur les onglets pour explorer mes compétences
+        Code en temps réel • Cycles automatiques entre compétences
       </motion.div>
     </motion.div>
   );
@@ -1464,7 +1451,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
               transition={{ duration: 1, type: "spring", delay: 0.3 }}
               className="relative hidden lg:block h-[700px]"
             >
-              <InteractiveSkillsSwitcher />
+              <LiveCodingTerminal />
             </motion.div>
           </div>
         </div>
