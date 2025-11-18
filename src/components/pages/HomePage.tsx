@@ -745,6 +745,134 @@ function SpotlightEffect() {
   );
 }
 
+// Animated Workflow Component
+function AnimatedWorkflow() {
+  const [activeStep, setActiveStep] = useState(0);
+  
+  const steps = [
+    { icon: Target, label: "Lead", color: "from-blue-500 to-cyan-500" },
+    { icon: Palette, label: "Interface", color: "from-purple-500 to-pink-500" },
+    { icon: CheckCircle2, label: "Validation", color: "from-green-500 to-emerald-500" },
+    { icon: LayoutDashboard, label: "Dashboard", color: "from-orange-500 to-yellow-500" },
+    { icon: Zap, label: "Automatisation", color: "from-mint to-cyan-500" }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % steps.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [steps.length]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay: 0.5 }}
+      className="relative w-full h-[500px] flex items-center justify-center"
+    >
+      {/* Connection lines */}
+      <svg className="absolute inset-0 w-full h-full" style={{ filter: 'drop-shadow(0 0 8px rgba(0, 255, 194, 0.3))' }}>
+        <motion.path
+          d="M 100,250 Q 200,100 300,250 T 500,250"
+          fill="none"
+          stroke="url(#lineGradient)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ duration: 2, ease: "easeInOut" }}
+        />
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#00ffc2" stopOpacity="0.3" />
+            <stop offset="50%" stopColor="#00ffc2" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#00ffc2" stopOpacity="0.3" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      {/* Workflow steps */}
+      <div className="relative w-full h-full">
+        {steps.map((step, index) => {
+          const angle = (index / steps.length) * Math.PI * 2 - Math.PI / 2;
+          const radius = 180;
+          const x = Math.cos(angle) * radius;
+          const y = Math.sin(angle) * radius;
+          const isActive = index === activeStep;
+          const Icon = step.icon;
+
+          return (
+            <motion.div
+              key={index}
+              className="absolute top-1/2 left-1/2"
+              style={{
+                x: x - 40,
+                y: y - 40,
+              }}
+              animate={{
+                scale: isActive ? 1.2 : 1,
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-br ${step.color} p-[2px] ${isActive ? 'shadow-[0_0_30px_rgba(0,255,194,0.5)]' : ''}`}>
+                <div className="w-full h-full bg-black rounded-2xl flex items-center justify-center">
+                  <Icon className={`w-8 h-8 ${isActive ? 'text-mint' : 'text-neutral-400'} transition-colors`} />
+                </div>
+              </div>
+              
+              {/* Label */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isActive ? 1 : 0.5 }}
+                className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm font-medium text-neutral-300"
+              >
+                {step.label}
+              </motion.div>
+
+              {/* Active pulse */}
+              {isActive && (
+                <motion.div
+                  className="absolute inset-0 rounded-2xl bg-mint"
+                  initial={{ opacity: 0.5, scale: 1 }}
+                  animate={{ opacity: 0, scale: 1.5 }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                />
+              )}
+            </motion.div>
+          );
+        })}
+
+        {/* Center badge */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-gradient-to-br from-mint/20 to-transparent border border-mint/30 flex items-center justify-center backdrop-blur-xl">
+          <Workflow className="w-10 h-10 text-mint" />
+        </div>
+      </div>
+
+      {/* Floating particles */}
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 rounded-full bg-mint/50"
+          style={{
+            left: `${20 + i * 15}%`,
+            top: `${30 + (i % 2) * 40}%`,
+          }}
+          animate={{
+            y: [0, -20, 0],
+            opacity: [0.3, 0.8, 0.3],
+          }}
+          transition={{
+            duration: 2 + i * 0.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </motion.div>
+  );
+}
+
 export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) {
   const { t } = useTranslation();
   const { language } = useLanguage();
@@ -962,8 +1090,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   <div className="w-2 h-2 rounded-full bg-mint"></div>
                   <div className="absolute inset-0 w-2 h-2 rounded-full bg-mint animate-ping"></div>
                 </motion.div>
-                <span className="text-sm text-mint font-medium group-hover:text-white transition-colors">{t('home.hero.badge')}</span>
-                <ArrowRight className="h-4 w-4 text-mint group-hover:translate-x-1 transition-transform" />
+                <span className="text-sm text-neutral-400 font-medium">Disponible en freelance — full remote</span>
               </motion.div>
 
               {/* Title with morphing animation */}
@@ -971,28 +1098,28 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.8 }}
-                className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-10 leading-[0.9]"
+                className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-10 leading-[0.95]"
               >
                 <motion.span 
-                  className="block text-white"
-                  whileHover={{ scale: 1.05, x: 10 }}
+                  className="block text-white mb-2"
+                  whileHover={{ scale: 1.02, x: 5 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  {t('home.hero.titleLine1')}
+                  UI/UX Designer.
                 </motion.span>
                 <motion.span 
-                  className="block text-white"
-                  whileHover={{ scale: 1.05, x: 10 }}
+                  className="block text-white mb-2"
+                  whileHover={{ scale: 1.02, x: 5 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  {t('home.hero.titleLine2')}
+                  Je crée des expériences
                 </motion.span>
                 <motion.span
                   className="block text-gradient-mint-animated relative"
-                  whileHover={{ scale: 1.05, x: 10 }}
+                  whileHover={{ scale: 1.02, x: 5 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  {t('home.hero.titleLine3')}
+                  modernes et intelligentes.
                   <motion.div
                     className="absolute -inset-2 bg-mint/20 blur-2xl -z-10"
                     animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
@@ -1006,11 +1133,11 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.8 }}
-                className="text-xl md:text-2xl text-neutral-400 mb-12 leading-relaxed max-w-xl"
+                className="text-lg md:text-xl text-neutral-300 mb-12 leading-relaxed max-w-xl"
               >
-                {t('home.hero.subtitle')}{" "}
-                <span className="text-mint font-medium">{t('home.hero.subtitleHighlight1')}</span> et{" "}
-                <span className="text-mint font-medium">{t('home.hero.subtitleHighlight2')}</span>.
+                Des interfaces belles, efficaces et pensées pour convertir.
+                <br />
+                <span className="text-neutral-400">Et quand c'est utile, j'y ajoute des systèmes simples qui travaillent pour vous.</span>
               </motion.p>
 
               {/* CTAs with advanced hover */}
@@ -1022,11 +1149,11 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
               >
                 <Button
                   size="lg"
-                  onClick={() => onNavigate("contact")}
+                  onClick={() => onNavigate("projects")}
                   className="bg-mint text-black hover:bg-mint/90 h-16 px-10 text-lg font-medium rounded-2xl group relative overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center">
-                    {t('home.hero.cta')}
+                    Découvrir mon travail
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform" />
                   </span>
                   <motion.div
@@ -1039,11 +1166,10 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 <Button
                   size="lg"
                   variant="ghost"
-                  onClick={() => onNavigate("projects")}
-                  className="border-2 border-neutral-800 hover:border-mint/30 bg-neutral-950/50 hover:bg-neutral-950 h-16 px-10 text-lg rounded-2xl group backdrop-blur-xl"
+                  onClick={() => onNavigate("contact")}
+                  className="border-2 border-mint/30 hover:border-mint/50 bg-neutral-950/50 hover:bg-neutral-950 h-16 px-10 text-lg rounded-2xl group backdrop-blur-xl"
                 >
-                  <Play className="mr-2 h-5 w-5 text-mint" />
-                  <span className="text-white">{t('home.hero.viewWork')}</span>
+                  <span className="text-white">Me contacter</span>
                 </Button>
               </motion.div>
 
@@ -1055,9 +1181,9 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 className="grid grid-cols-3 gap-6 pt-10 border-t border-neutral-900"
               >
                 {[
-                  { value: 30, suffix: "+", label: t('home.hero.stats.projects') },
-                  { value: 25, suffix: "+", label: t('home.hero.stats.clients') },
-                  { value: 15, suffix: "h", label: t('home.hero.stats.saved') }
+                  { value: 30, suffix: "+", label: "Projets" },
+                  { value: 25, suffix: "+", label: "Clients" },
+                  { value: 15, suffix: "h", label: "Économisées" }
                 ].map((stat, i) => (
                   <motion.div
                     key={i}
@@ -1080,7 +1206,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
               transition={{ duration: 1, type: "spring", delay: 0.3 }}
               className="relative hidden lg:block h-[700px]"
             >
-              <AutomationWorkflow />
+              <AnimatedWorkflow />
             </motion.div>
           </div>
         </div>
