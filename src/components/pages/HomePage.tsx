@@ -1,4 +1,5 @@
-﻿import { Button } from "../ui/button";
+﻿import React from "react";
+import { Button } from "../ui/button";
 import { ArrowRight, Workflow, LayoutDashboard, Sparkles, TrendingDown, Clock, Star, Zap, Users, Award, CheckCircle2, ArrowUpRight, Code2, Palette, Brain, Github, Linkedin, Twitter, Send, Play, ChevronDown, CheckCircle, BarChart3, Target, Rocket, Hexagon, Cpu, Database, Globe, Lock, Layers, MessageSquare, Calendar, Shield, Check, Upload, Phone, MessageCircle, Briefcase } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useInView, AnimatePresence } from "motion/react";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
@@ -1044,7 +1045,7 @@ function InteractiveWorkflowDemo() {
         {/* Demo content */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={activeStep}
+            key={`demo-${activeStep}`}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -1053,14 +1054,15 @@ function InteractiveWorkflowDemo() {
           >
             {/* Gradient background */}
             <motion.div
-              key={`bg-${activeStep}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.15 }}
               className={`absolute inset-0 bg-gradient-to-br ${currentStep.color} blur-3xl`}
             />
 
-            {/* Demo */}
-            {currentStep.demo}
+            {/* Demo - Force remount with unique key */}
+            <div key={`content-${activeStep}`}>
+              {currentStep.demo}
+            </div>
           </motion.div>
         </AnimatePresence>
 
