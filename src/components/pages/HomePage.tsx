@@ -795,6 +795,13 @@ function InteractiveWorkflowDemo() {
         {/* Content Area */}
         <div className="absolute inset-0 flex items-center justify-center">
           
+          {/* Background Gradient */}
+          <div className={`absolute inset-0 transition-opacity duration-500 ${
+            activeStep === 0 ? 'opacity-20 bg-gradient-to-br from-purple-500 to-pink-500' :
+            activeStep === 1 ? 'opacity-20 bg-gradient-to-br from-cyan-500 to-blue-500' :
+            'opacity-20 bg-gradient-to-br from-mint to-green-500'
+          } blur-3xl`} />
+          
           {/* UI/UX Demo */}
           {activeStep === 0 && (
             <motion.div
@@ -802,29 +809,29 @@ function InteractiveWorkflowDemo() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="w-full max-w-lg space-y-6 p-8"
+              className="relative z-10 w-full max-w-lg space-y-6 p-8"
             >
               {/* Design System Card */}
-              <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-5 backdrop-blur-sm">
+              <div className="bg-purple-500/20 border-2 border-purple-500/40 rounded-xl p-5 backdrop-blur-md shadow-lg">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500" />
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg" />
                   <div className="flex-1">
-                    <div className="h-3 bg-white/20 rounded w-32 mb-2" />
-                    <div className="h-2 bg-white/10 rounded w-20" />
+                    <div className="h-3 bg-white/30 rounded w-32 mb-2" />
+                    <div className="h-2 bg-white/20 rounded w-20" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <div className="h-2 bg-white/10 rounded" />
-                  <div className="h-2 bg-white/10 rounded w-4/5" />
+                  <div className="h-2 bg-white/20 rounded" />
+                  <div className="h-2 bg-white/20 rounded w-4/5" />
                 </div>
               </div>
 
               {/* Buttons */}
               <div className="flex gap-3">
-                <div className="flex-1 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white font-semibold">
+                <div className="flex-1 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white font-semibold shadow-lg">
                   Primary
                 </div>
-                <div className="flex-1 h-12 border-2 border-purple-500/50 rounded-lg flex items-center justify-center text-purple-300 font-semibold">
+                <div className="flex-1 h-12 border-2 border-purple-400 rounded-lg flex items-center justify-center text-purple-200 font-semibold backdrop-blur-sm bg-purple-500/10">
                   Secondary
                 </div>
               </div>
@@ -834,9 +841,16 @@ function InteractiveWorkflowDemo() {
                 {[0, 1, 2].map((i) => (
                   <motion.div
                     key={i}
-                    animate={{ scale: [1, 1.1, 1] }}
+                    animate={{ 
+                      scale: [1, 1.1, 1],
+                      boxShadow: [
+                        '0 0 20px rgba(168, 85, 247, 0.3)',
+                        '0 0 40px rgba(168, 85, 247, 0.6)',
+                        '0 0 20px rgba(168, 85, 247, 0.3)'
+                      ]
+                    }}
                     transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                    className="flex-1 h-20 rounded-xl bg-purple-500/20 border border-purple-500/30"
+                    className="flex-1 h-20 rounded-xl bg-gradient-to-br from-purple-500/30 to-pink-500/30 border-2 border-purple-400/40"
                   />
                 ))}
               </div>
@@ -850,34 +864,38 @@ function InteractiveWorkflowDemo() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="w-full max-w-lg space-y-4 p-8"
+              className="relative z-10 w-full max-w-lg space-y-4 p-8"
             >
               {/* User Message */}
               <div className="flex gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex-shrink-0" />
-                <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-2xl rounded-tl-none p-4 flex-1">
-                  <p className="text-neutral-200">Analyse ces données et génère un rapport détaillé</p>
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex-shrink-0 shadow-lg flex items-center justify-center">
+                  <span className="text-white text-sm font-bold">U</span>
+                </div>
+                <div className="bg-cyan-500/20 border-2 border-cyan-400/40 rounded-2xl rounded-tl-none p-4 flex-1 backdrop-blur-sm">
+                  <p className="text-white">Analyse ces données et génère un rapport détaillé</p>
                 </div>
               </div>
 
               {/* AI Response Loading */}
               <div className="flex gap-3 justify-end">
-                <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl rounded-tr-none p-4 flex-1">
+                <div className="bg-blue-500/20 border-2 border-blue-400/40 rounded-2xl rounded-tr-none p-4 flex-1 backdrop-blur-sm">
                   <div className="flex items-center gap-2 mb-3">
-                    <Brain className="w-4 h-4 text-cyan-400" />
-                    <span className="text-xs text-cyan-400 font-semibold">IA en cours...</span>
+                    <Brain className="w-5 h-5 text-cyan-300" />
+                    <span className="text-sm text-cyan-300 font-semibold">IA en cours...</span>
                   </div>
                   <motion.div
                     animate={{ opacity: [0.4, 1, 0.4] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
                     className="space-y-2"
                   >
-                    <div className="h-2 bg-cyan-500/20 rounded" />
-                    <div className="h-2 bg-cyan-500/20 rounded w-3/4" />
-                    <div className="h-2 bg-cyan-500/20 rounded w-1/2" />
+                    <div className="h-2.5 bg-cyan-400/30 rounded" />
+                    <div className="h-2.5 bg-cyan-400/30 rounded w-3/4" />
+                    <div className="h-2.5 bg-cyan-400/30 rounded w-1/2" />
                   </motion.div>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex-shrink-0" />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex-shrink-0 shadow-lg flex items-center justify-center">
+                  <Brain className="w-5 h-5 text-white" />
+                </div>
               </div>
 
               {/* Model Info */}
@@ -895,7 +913,7 @@ function InteractiveWorkflowDemo() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="flex flex-col items-center gap-8 p-8"
+              className="relative z-10 flex flex-col items-center gap-8 p-8"
             >
               {/* Pipeline */}
               <div className="flex items-center gap-6">
