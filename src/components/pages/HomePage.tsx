@@ -798,10 +798,10 @@ function LiveCodingTerminal() {
   ];
 
   const [activeSequence, setActiveSequence] = useState(0);
-  const currentSequence = codeSequences[activeSequence];
+  const currentSequence = showFinal ? codeSequences[0] : codeSequences[activeSequence];
 
   useEffect(() => {
-    if (isTyping) return;
+    if (isTyping || showFinal) return;
 
     const timer = setTimeout(() => {
       if (currentLine < currentSequence.lines.length) {
