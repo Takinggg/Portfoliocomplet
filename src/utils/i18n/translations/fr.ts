@@ -48,6 +48,10 @@ export default {
     "rights": "Tous droits réservés",
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
+    "sections": {
+      "services": "Services",
+      "contact": "Contact"
+    },
     "services": "Services",
     "contact": "Contact",
     "available": "Disponible"
@@ -67,39 +71,8 @@ export default {
       "scrollDown": "Scroll",
       "stats": {
         "projects": "Projets",
-      "contact": "Contact",
-      "available": "Disponible",
-      "sections": {
-        "services": "Services",
-        "contact": "Contact"
-      },
-      "servicesList": [
-        "Automatisation",
-        "Design de dashboard",
-        "Intégration IA",
-        "Consulting"
-      ],
-      "contactInfo": {
-        "email": "contact@maxence.dev",
-        "location": "Paris, France",
-        "availability": "Disponible pour de nouveaux projets",
-        "status": "Disponible",
-        "response": "Temps de réponse moyen < 24h"
-      },
-      "metrics": [
-        { "label": "Workflows automatisés livrés", "value": "85+" },
-        { "label": "Heures économisées chaque mois", "value": "320+" },
-        { "label": "Satisfaction client", "value": "4,9/5" }
-      ],
-      "trust": {
-        "title": "Partenaire certifié & fiable",
-        "subtitle": "Intégrations officielles avec Stripe, Supabase, Notion et plus encore."
-      },
-      "legalLinks": {
-        "legalNotice": "Mentions légales",
-        "privacy": "Politique de confidentialité",
-        "terms": "Conditions générales"
-      }
+        "clients": "Clients",
+        "saved": "Économisées"
       },
       "metrics": {
         "timeSaved": "Temps économisé",
