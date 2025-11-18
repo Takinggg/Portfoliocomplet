@@ -36,20 +36,20 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
         style={{ opacity }}
       />
       
-      {/* Floating Orbs */}
+      {/* Floating Orbs - Neutral */}
       <motion.div
-        className="absolute top-20 right-[10%] w-[500px] h-[500px] bg-mint/10 rounded-full blur-[120px] pointer-events-none"
+        className="absolute top-20 right-[10%] w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] pointer-events-none"
         animate={{
           scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
+          opacity: [0.2, 0.4, 0.2],
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute bottom-20 left-[10%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none"
+        className="absolute bottom-20 left-[10%] w-[400px] h-[400px] bg-white/5 rounded-full blur-[100px] pointer-events-none"
         animate={{
           scale: [1, 1.15, 1],
-          opacity: [0.2, 0.4, 0.2],
+          opacity: [0.15, 0.3, 0.15],
         }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
       />
@@ -71,7 +71,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border-mint-10"
             >
               <Sparkles className="h-4 w-4 text-mint" />
-              <span className="text-sm text-mint font-medium">Designer • Développeur • Créateur</span>
+              <span className="text-sm text-mint font-medium">UI/UX Engineer • Designer • Développeur</span>
             </motion.div>
 
             {/* Title */}
@@ -139,19 +139,19 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
             className="relative hidden lg:block"
           >
             <div className="grid grid-cols-2 gap-4">
-              {/* Large Card */}
-              <div className="col-span-2 glass-card-strong border-white/10 p-6 rounded-3xl relative overflow-hidden group hover:border-mint/30 transition-all">
-                <div className="absolute inset-0 bg-gradient-to-br from-mint/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              {/* Large Card - UI/UX Design Priority */}
+              <div className="col-span-2 glass-card-strong border-white/10 p-6 rounded-3xl relative overflow-hidden group hover:border-purple-500/30 transition-all">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10">
-                  <div className="w-12 h-12 rounded-2xl bg-mint/20 border border-mint/30 flex items-center justify-center mb-4">
-                    <Code2 className="h-6 w-6 text-mint" />
+                  <div className="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center mb-4">
+                    <Palette className="h-6 w-6 text-purple-400" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2">Développement Full-Stack</h3>
+                  <h3 className="text-xl font-bold mb-2">UI/UX Engineer & Design</h3>
                   <p className="text-neutral-400 text-sm">
-                    React, TypeScript, Node.js, PostgreSQL, Supabase
+                    Figma, Design Systems, Prototyping, User Research
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {['React', 'TypeScript', 'Supabase'].map((tech) => (
+                    {['Figma', 'Design Systems', 'Prototyping'].map((tech) => (
                       <span key={tech} className="px-3 py-1 text-xs bg-white/5 border border-white/10 rounded-full">
                         {tech}
                       </span>
@@ -161,19 +161,19 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
               </div>
 
               {/* Small Cards */}
-              <div className="glass-card border-white/10 p-6 rounded-3xl hover:border-purple-500/30 transition-all group">
-                <div className="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center mb-4">
-                  <Palette className="h-5 w-5 text-purple-400" />
+              <div className="glass-card border-white/10 p-6 rounded-3xl hover:border-mint/30 transition-all group">
+                <div className="w-10 h-10 rounded-xl bg-mint/20 border border-mint/30 flex items-center justify-center mb-4">
+                  <Code2 className="h-5 w-5 text-mint" />
                 </div>
-                <h3 className="text-lg font-bold mb-2">UI/UX Design</h3>
+                <h3 className="text-lg font-bold mb-2">Développement</h3>
                 <p className="text-neutral-400 text-xs">
-                  Interfaces modernes et intuitives
+                  React, TypeScript, Supabase
                 </p>
               </div>
 
-              <div className="glass-card border-white/10 p-6 rounded-3xl hover:border-mint/30 transition-all group">
-                <div className="w-10 h-10 rounded-xl bg-mint/20 border border-mint/30 flex items-center justify-center mb-4">
-                  <Workflow className="h-5 w-5 text-mint" />
+              <div className="glass-card border-white/10 p-6 rounded-3xl hover:border-cyan-500/30 transition-all group">
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center mb-4">
+                  <Workflow className="h-5 w-5 text-cyan-400" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">Automatisation</h3>
                 <p className="text-neutral-400 text-xs">
