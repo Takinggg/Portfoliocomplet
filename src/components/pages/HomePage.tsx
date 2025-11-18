@@ -800,10 +800,17 @@ function LiveCodingTerminal() {
   const [activeSequence, setActiveSequence] = useState(0);
   const currentSequence = showFinal ? codeSequences[0] : codeSequences[activeSequence];
 
+  // Debug: force initial render
+  useEffect(() => {
+    console.log('Terminal mounted, starting animation...');
+  }, []);
+
   useEffect(() => {
     if (showFinal) return;
     
     if (isTyping) return;
+
+    console.log('useEffect triggered - currentLine:', currentLine, 'sequence:', activeSequence);
 
     const timer = setTimeout(() => {
       if (currentLine < currentSequence.lines.length) {
