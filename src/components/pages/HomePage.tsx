@@ -745,100 +745,271 @@ function SpotlightEffect() {
   );
 }
 
-// Premium Interactive Terminal Component
-function LiveCodingTerminal() {
-  const [currentLine, setCurrentLine] = useState(0);
-  const [isTyping, setIsTyping] = useState(false);
-  const [displayedCode, setDisplayedCode] = useState<string[]>([]);
-  const [showFinal, setShowFinal] = useState(false);
+// Interactive Workflow Demo
+function InteractiveWorkflowDemo() {
+  const [activeStep, setActiveStep] = useState(0);
 
-  const codeSequences = [
+  const steps = [
     {
+      id: 0,
       title: "UI/UX Design",
-      color: "text-purple-400",
       icon: Palette,
-      lines: [
-        "// Création d'interface moderne",
-        "const design = createComponent({",
-        "  style: 'minimal & elegant',",
-        "  animation: 'smooth',",
-        "  responsive: true",
-        "});",
-        "✓ Interface créée avec succès!"
-      ]
+      color: "from-purple-500 to-pink-500",
+      demo: (
+        <div className="relative w-full h-full flex items-center justify-center p-8">
+          {/* Mini Design System Demo */}
+          <div className="space-y-4 w-full max-w-md">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl p-4"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500" />
+                <div>
+                  <div className="h-3 w-24 bg-white/20 rounded" />
+                  <div className="h-2 w-16 bg-white/10 rounded mt-1" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="h-2 w-full bg-white/10 rounded" />
+                <div className="h-2 w-3/4 bg-white/10 rounded" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex gap-2"
+            >
+              <div className="flex-1 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white text-sm font-semibold">
+                Primary
+              </div>
+              <div className="flex-1 h-10 border-2 border-purple-500/50 rounded-lg flex items-center justify-center text-purple-400 text-sm font-semibold">
+                Secondary
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="flex gap-3"
+            >
+              {[1, 2, 3].map((i) => (
+                <motion.div
+                  key={i}
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+                  className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30"
+                />
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Floating design elements */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 rounded-full bg-purple-500"
+              style={{
+                left: `${20 + i * 15}%`,
+                top: `${30 + (i % 3) * 20}%`,
+              }}
+              animate={{
+                y: [0, -15, 0],
+                opacity: [0.3, 0.8, 0.3],
+              }}
+              transition={{
+                duration: 2 + i * 0.3,
+                repeat: Infinity,
+              }}
+            />
+          ))}
+        </div>
+      ),
     },
     {
+      id: 1,
       title: "Dev IA",
-      color: "text-cyan-400",
       icon: Brain,
-      lines: [
-        "// Intégration d'intelligence artificielle",
-        "const ai = initializeModel({",
-        "  type: 'GPT-4',",
-        "  temperature: 0.7,",
-        "  maxTokens: 2000",
-        "});",
-        "✓ Modèle IA activé!"
-      ]
+      color: "from-cyan-500 to-blue-500",
+      demo: (
+        <div className="relative w-full h-full flex items-center justify-center p-8">
+          {/* AI Chat Demo */}
+          <div className="w-full max-w-md space-y-3">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex gap-2"
+            >
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex-shrink-0" />
+              <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-2xl rounded-tl-none p-3 max-w-[80%]">
+                <p className="text-sm text-neutral-300">Analyse ces données et génère un rapport</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex gap-2 justify-end"
+            >
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl rounded-tr-none p-3 max-w-[80%]">
+                <div className="flex items-center gap-2 mb-2">
+                  <Brain className="w-4 h-4 text-cyan-400" />
+                  <span className="text-xs text-cyan-400 font-semibold">IA en cours...</span>
+                </div>
+                <motion.div
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="space-y-1"
+                >
+                  <div className="h-2 w-full bg-cyan-500/20 rounded" />
+                  <div className="h-2 w-3/4 bg-cyan-500/20 rounded" />
+                  <div className="h-2 w-1/2 bg-cyan-500/20 rounded" />
+                </motion.div>
+              </div>
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex-shrink-0" />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8 }}
+              className="flex items-center justify-center gap-2 text-xs text-cyan-400"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>Modèle GPT-4 • Réponse en 2.3s</span>
+            </motion.div>
+          </div>
+
+          {/* AI particles */}
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 rounded-full bg-cyan-500"
+              style={{
+                left: `${15 + i * 12}%`,
+                top: `${25 + (i % 4) * 18}%`,
+              }}
+              animate={{
+                scale: [0, 1.5, 0],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: i * 0.25,
+              }}
+            />
+          ))}
+        </div>
+      ),
     },
     {
+      id: 2,
       title: "Automatisation",
-      color: "text-mint",
       icon: Zap,
-      lines: [
-        "// Pipeline d'automatisation",
-        "const workflow = createPipeline({",
-        "  trigger: 'onCommit',",
-        "  actions: ['build', 'test', 'deploy'],",
-        "  notify: true",
-        "});",
-        "✓ Workflow déployé!"
-      ]
-    }
+      color: "from-mint to-green-500",
+      demo: (
+        <div className="relative w-full h-full flex items-center justify-center p-8">
+          {/* Automation Pipeline */}
+          <div className="flex items-center gap-4">
+            {[
+              { icon: Workflow, label: "Trigger" },
+              { icon: Cpu, label: "Process" },
+              { icon: CheckCircle, label: "Deploy" },
+            ].map((step, i) => (
+              <React.Fragment key={i}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.3 }}
+                  className="flex flex-col items-center"
+                >
+                  <motion.div
+                    animate={{
+                      boxShadow: [
+                        "0 0 20px rgba(0, 255, 194, 0.3)",
+                        "0 0 40px rgba(0, 255, 194, 0.6)",
+                        "0 0 20px rgba(0, 255, 194, 0.3)",
+                      ],
+                    }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                    className="w-16 h-16 rounded-xl bg-gradient-to-br from-mint to-green-500 flex items-center justify-center"
+                  >
+                    <step.icon className="w-8 h-8 text-black" />
+                  </motion.div>
+                  <span className="text-xs text-mint font-semibold mt-2">{step.label}</span>
+                </motion.div>
+
+                {i < 2 && (
+                  <motion.div
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ delay: i * 0.3 + 0.2, duration: 0.4 }}
+                    className="relative w-12 h-0.5 bg-mint/30"
+                  >
+                    <motion.div
+                      animate={{ x: [-10, 50] }}
+                      transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.5 }}
+                      className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-mint"
+                    />
+                  </motion.div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+
+          {/* Status indicator */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="absolute bottom-12 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg bg-mint/10 border border-mint/30 flex items-center gap-2"
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            >
+              <Zap className="w-4 h-4 text-mint" />
+            </motion.div>
+            <span className="text-xs text-mint font-semibold">Workflow actif • 24/7</span>
+          </motion.div>
+
+          {/* Energy waves */}
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute inset-0 border-2 border-mint/20 rounded-xl"
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.5, 0, 0.5],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                delay: i * 1,
+              }}
+            />
+          ))}
+        </div>
+      ),
+    },
   ];
 
-  const [activeSequence, setActiveSequence] = useState(0);
-  const currentSequence = showFinal ? codeSequences[0] : codeSequences[activeSequence];
+  const currentStep = steps[activeStep];
 
-  // Debug: force initial render
   useEffect(() => {
-    console.log('Terminal mounted, starting animation...');
+    const timer = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % steps.length);
+    }, 5000);
+    return () => clearInterval(timer);
   }, []);
-
-  useEffect(() => {
-    if (showFinal) return;
-    
-    if (isTyping) return;
-
-    console.log('useEffect triggered - currentLine:', currentLine, 'sequence:', activeSequence);
-
-    const timer = setTimeout(() => {
-      if (currentLine < currentSequence.lines.length) {
-        setIsTyping(true);
-        setDisplayedCode(prev => [...prev, currentSequence.lines[currentLine]]);
-        setCurrentLine(prev => prev + 1);
-        
-        setTimeout(() => setIsTyping(false), 250);
-      } else {
-        // Sequence complete
-        if (activeSequence === codeSequences.length - 1) {
-          // Last sequence - show final screen
-          setTimeout(() => {
-            setShowFinal(true);
-          }, 1500);
-        } else {
-          // Switch to next sequence
-          setTimeout(() => {
-            setDisplayedCode([]);
-            setCurrentLine(0);
-            setActiveSequence((prev) => prev + 1);
-          }, 1500);
-        }
-      }
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [currentLine, isTyping, showFinal, currentSequence.lines.length, activeSequence, codeSequences.length]);
 
   return (
     <motion.div
@@ -847,283 +1018,74 @@ function LiveCodingTerminal() {
       transition={{ duration: 0.6, delay: 0.4 }}
       className="relative w-full h-[500px]"
     >
-      {/* Terminal Window */}
+      {/* Main container */}
       <div className="relative w-full h-full rounded-2xl bg-black/90 backdrop-blur-xl border-2 border-mint/30 overflow-hidden shadow-2xl">
         
-        {/* Terminal Header */}
-        <div className="flex items-center justify-between px-4 py-3 bg-neutral-900/80 border-b border-mint/20">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-red-500/80" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-              <div className="w-3 h-3 rounded-full bg-green-500/80" />
-            </div>
-            <span className="ml-3 text-xs text-neutral-400 font-mono">terminal.tsx</span>
-          </div>
-          
-          {/* Mode Indicator */}
-          {!showFinal && (
-            <motion.div
-              key={activeSequence}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-2 px-3 py-1 rounded-md bg-mint/10 border border-mint/30"
+        {/* Tab switcher */}
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex gap-2 bg-black/60 backdrop-blur-md rounded-xl p-1 border border-mint/20">
+          {steps.map((step) => (
+            <motion.button
+              key={step.id}
+              onClick={() => setActiveStep(step.id)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all ${
+                activeStep === step.id
+                  ? `bg-gradient-to-r ${step.color} text-black`
+                  : 'text-neutral-400 hover:text-white'
+              }`}
             >
-              <currentSequence.icon className="w-4 h-4 text-mint" />
-              <span className={`text-xs font-semibold ${currentSequence.color}`}>
-                {currentSequence.title}
-              </span>
-            </motion.div>
-          )}
+              <step.icon className="w-4 h-4" />
+              <span className="hidden sm:inline">{step.title}</span>
+            </motion.button>
+          ))}
         </div>
 
-        {/* Terminal Content */}
-        <div className="relative h-[calc(100%-52px)] p-6 font-mono text-sm overflow-hidden">
-          
-          {/* Final Success Screen */}
-          <AnimatePresence>
-            {showFinal && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="absolute inset-6 flex flex-col items-center justify-center z-50 bg-black/98 backdrop-blur-md rounded-xl"
-              >
-                {/* Success Icon */}
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                  className="relative mb-6"
-                >
-                  <motion.div
-                    animate={{ 
-                      scale: [1, 1.2, 1],
-                      opacity: [0.5, 0.8, 0.5]
-                    }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="absolute inset-0 rounded-full bg-mint/30 blur-2xl"
-                  />
-                  <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-mint to-green-500 flex items-center justify-center">
-                    <CheckCircle className="w-10 h-10 text-black" strokeWidth={3} />
-                  </div>
-                </motion.div>
-
-                {/* Success Message */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="text-center space-y-3"
-                >
-                  <h3 className="text-2xl font-bold text-white">
-                    Projet complet déployé!
-                  </h3>
-                  <p className="text-sm text-neutral-400">
-                    UI/UX + IA + Automatisation intégrés
-                  </p>
-                  
-                  {/* Stats */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.6 }}
-                    className="flex gap-3 justify-center mt-6"
-                  >
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/30">
-                      <Palette className="w-3.5 h-3.5 text-purple-400" />
-                      <span className="text-purple-400 font-semibold text-xs">Design</span>
-                    </div>
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
-                      <Brain className="w-3.5 h-3.5 text-cyan-400" />
-                      <span className="text-cyan-400 font-semibold text-xs">IA</span>
-                    </div>
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mint/10 border border-mint/30">
-                      <Zap className="w-3.5 h-3.5 text-mint" />
-                      <span className="text-mint font-semibold text-xs">Auto</span>
-                    </div>
-                  </motion.div>
-
-                  {/* Restart button */}
-                  <motion.button
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.8 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      setShowFinal(false);
-                      setDisplayedCode([]);
-                      setCurrentLine(0);
-                      setActiveSequence(0);
-                    }}
-                    className="mt-5 px-5 py-2.5 rounded-lg bg-mint text-black text-sm font-semibold hover:bg-mint/90 transition-colors"
-                  >
-                    Recommencer
-                  </motion.button>
-                </motion.div>
-
-                {/* Particles */}
-                {[...Array(20)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-1 h-1 rounded-full bg-mint"
-                    style={{
-                      left: `${Math.random() * 100}%`,
-                      top: `${Math.random() * 100}%`,
-                    }}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{
-                      opacity: [0, 1, 0],
-                      scale: [0, 2, 0],
-                      y: [0, -50, -100],
-                    }}
-                    transition={{
-                      duration: 2,
-                      delay: 0.5 + i * 0.1,
-                      ease: "easeOut",
-                    }}
-                  />
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Regular Code Display */}
-          {!showFinal && (
-            <>
-              {/* Glowing gradient background */}
-              <motion.div
-                key={`glow-${activeSequence}`}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 0.15, scale: 1 }}
-                className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-mint via-cyan-500 to-purple-500 blur-[120px] rounded-full"
-              />
-
-              {/* Code Lines */}
-              <div className="relative z-10 space-y-2">
-                <AnimatePresence mode="popLayout">
-                  {displayedCode.map((line, index) => (
-                    <motion.div
-                      key={`${activeSequence}-${index}`}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
-                      transition={{ duration: 0.2 }}
-                      className="flex items-start gap-3"
-                    >
-                      <span className="text-neutral-600 select-none min-w-[24px]">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <span className={`${
-                        line.startsWith('//') ? 'text-neutral-500 italic' :
-                        line.startsWith('✓') ? `${currentSequence.color} font-semibold` :
-                        line.includes(':') ? 'text-neutral-300' : 'text-neutral-400'
-                      }`}>
-                        {line.split(':').map((part, i, arr) => (
-                          i === 0 && arr.length > 1 ? (
-                            <span key={i}>
-                              <span className="text-mint">{part}</span>
-                              <span className="text-neutral-500">:</span>
-                            </span>
-                          ) : (
-                            <span key={i}>{i > 0 ? part : part}</span>
-                          )
-                        ))}
-                      </span>
-                      
-                      {/* Blinking cursor on last line */}
-                      {index === displayedCode.length - 1 && !line.startsWith('✓') && (
-                        <motion.span
-                          animate={{ opacity: [1, 0, 1] }}
-                          transition={{ duration: 0.8, repeat: Infinity }}
-                          className="inline-block w-2 h-4 bg-mint ml-1"
-                        />
-                      )}
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-
-              {/* Progress Dots */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-                {codeSequences.map((_, index) => (
-                  <motion.div
-                    key={index}
-                    className={`w-2 h-2 rounded-full transition-all duration-500 ${
-                      index === activeSequence ? 'bg-mint w-6' : 
-                      index < activeSequence ? 'bg-mint/50' : 'bg-neutral-600'
-                    }`}
-                    whileHover={{ scale: 1.2 }}
-                  />
-                ))}
-              </div>
-
-              {/* Floating Code Particles */}
-              {[...Array(15)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute w-1 h-1 rounded-full bg-mint/30"
-                  style={{
-                    left: `${10 + i * 6}%`,
-                    top: `${20 + (i % 5) * 15}%`,
-                  }}
-                  animate={{
-                    y: [0, -10, 0],
-                    opacity: [0.2, 0.5, 0.2],
-                    scale: [1, 1.5, 1],
-                  }}
-                  transition={{
-                    duration: 3 + i * 0.2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-              ))}
-            </>
-          )}
-        </div>
-
-        {/* Bottom Stats Bar */}
-        {!showFinal && (
+        {/* Demo content */}
+        <AnimatePresence mode="wait">
           <motion.div
-            className="absolute bottom-0 left-0 right-0 h-6 bg-mint/10 backdrop-blur-sm border-t border-mint/20 flex items-center justify-between px-4 text-[10px] font-mono"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
+            key={activeStep}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.4 }}
+            className="w-full h-full"
           >
-            <div className="flex items-center gap-4 text-neutral-400">
-              <span className="flex items-center gap-1">
-                <CheckCircle className="w-3 h-3 text-mint" />
-                Ready
-              </span>
-              <span>TypeScript</span>
-              <span>UTF-8</span>
-            </div>
-            <div className="flex items-center gap-3 text-neutral-400">
-              <motion.span
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="flex items-center gap-1"
-              >
-                <div className="w-1 h-1 rounded-full bg-mint" />
-                Live
-              </motion.span>
-            </div>
+            {/* Gradient background */}
+            <motion.div
+              key={`bg-${activeStep}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.15 }}
+              className={`absolute inset-0 bg-gradient-to-br ${currentStep.color} blur-3xl`}
+            />
+
+            {/* Demo */}
+            {currentStep.demo}
           </motion.div>
-        )}
+        </AnimatePresence>
+
+        {/* Progress indicator */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          {steps.map((step) => (
+            <motion.div
+              key={step.id}
+              className={`h-1 rounded-full transition-all ${
+                activeStep === step.id ? 'w-8 bg-mint' : 'w-1 bg-neutral-600'
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Bottom Hint */}
-      {!showFinal && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2 }}
-          className="absolute -bottom-8 left-0 right-0 text-center text-xs text-neutral-500"
-        >
-          Code en temps réel • Cycles automatiques entre compétences
-        </motion.div>
-      )}
+      {/* Bottom hint */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1 }}
+        className="absolute -bottom-8 left-0 right-0 text-center text-xs text-neutral-500"
+      >
+        Démonstration interactive • Change automatiquement toutes les 5s
+      </motion.div>
     </motion.div>
   );
 }
@@ -1589,7 +1551,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
               transition={{ duration: 1, type: "spring", delay: 0.3 }}
               className="relative h-[700px] w-full"
             >
-              <LiveCodingTerminal />
+              <InteractiveWorkflowDemo />
             </motion.div>
           </div>
         </div>
