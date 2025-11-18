@@ -1,6 +1,6 @@
-import React from "react";
-import { motion } from "motion/react";
-import { Sparkles, ArrowRight, Code2, Palette, Zap } from "lucide-react";
+import React, { useRef, useEffect } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { Sparkles, ArrowRight, Code2, Palette, Zap, Workflow, Target, TrendingUp } from "lucide-react";
 import { Button } from "../ui/button";
 
 type HeroNavTarget =
@@ -16,164 +16,232 @@ interface HeroDesignerAutomateProps {
 }
 
 export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
   return (
-    <div className="relative w-full min-h-[85vh] flex items-center justify-center py-20 px-4">
-      {/* Background effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-mint/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
-      </div>
+    <div ref={containerRef} className="relative w-full min-h-screen flex items-center overflow-hidden">
+      {/* Animated Grid Background */}
+      <div className="absolute inset-0 grid-pattern opacity-30 pointer-events-none" />
+      
+      {/* Gradient Mesh Background */}
+      <motion.div 
+        className="absolute inset-0 gradient-mesh pointer-events-none"
+        style={{ opacity }}
+      />
+      
+      {/* Floating Orbs */}
+      <motion.div
+        className="absolute top-20 right-[10%] w-[500px] h-[500px] bg-mint/10 rounded-full blur-[120px] pointer-events-none"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-20 left-[10%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none"
+        animate={{
+          scale: [1, 1.15, 1],
+          opacity: [0.2, 0.4, 0.2],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+      />
 
-      {/* Main content */}
-      <div className="relative z-10 max-w-6xl mx-auto text-center space-y-12">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/20 bg-mint/5 text-sm text-mint"
-        >
-          <Sparkles className="h-4 w-4" />
-          <span>Designer • Developer • Creator</span>
-        </motion.div>
+      {/* Main Content */}
+      <motion.div 
+        className="relative z-10 w-full max-w-7xl mx-auto px-6 py-20"
+        style={{ y }}
+      >
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          
+          {/* Left Content */}
+          <div className="space-y-8">
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border-mint-10"
+            >
+              <Sparkles className="h-4 w-4 text-mint" />
+              <span className="text-sm text-mint font-medium">Designer • Développeur • Créateur</span>
+            </motion.div>
 
-        {/* Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="space-y-6"
-        >
-          <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-            Je crée des expériences
-            <span className="block mt-2 bg-gradient-to-r from-mint via-cyan-400 to-mint bg-clip-text text-transparent">
-              numériques mémorables
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl text-neutral-400 max-w-3xl mx-auto">
-            Design moderne, code performant et automatisation intelligente pour transformer vos idées en réalité digitale
-          </p>
-        </motion.div>
+            {/* Title */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="space-y-4"
+            >
+              <h1 className="text-5xl lg:text-7xl font-bold leading-[1.1] tracking-tight">
+                Transformez vos idées en
+                <span className="block mt-2 text-gradient-mint-animated">
+                  expériences digitales
+                </span>
+              </h1>
+              <p className="text-xl text-neutral-400 leading-relaxed max-w-xl">
+                Design élégant, code performant et automatisation intelligente. 
+                Je créé des solutions web qui font la différence.
+              </p>
+            </motion.div>
 
-        {/* Feature cards */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto"
-        >
-          <FeatureCard
-            icon={<Palette className="h-6 w-6" />}
-            title="Design UI/UX"
-            description="Interfaces élégantes et intuitives"
-            color="from-pink-500/20 to-purple-500/20"
-          />
-          <FeatureCard
-            icon={<Code2 className="h-6 w-6" />}
-            title="Développement"
-            description="Code propre et performant"
-            color="from-cyan-500/20 to-mint/20"
-          />
-          <FeatureCard
-            icon={<Zap className="h-6 w-6" />}
-            title="Automatisation"
-            description="Workflows optimisés et intelligents"
-            color="from-yellow-500/20 to-orange-500/20"
-          />
-        </motion.div>
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="flex flex-wrap gap-4"
+            >
+              <Button
+                size="lg"
+                onClick={() => onNavigate("projects")}
+                className="bg-mint text-[#0C0C0C] hover:bg-mint/90 h-14 px-8 text-base font-semibold rounded-2xl glow-mint-hover group shadow-lg"
+              >
+                Voir mes projets
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button
+                size="lg"
+                variant="ghost"
+                onClick={() => onNavigate("contact")}
+                className="h-14 px-8 text-base font-semibold rounded-2xl border-2 border-white/10 hover:border-mint/50 hover:bg-white/5 transition-all"
+              >
+                Me contacter
+              </Button>
+            </motion.div>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <Button
-            size="lg"
-            onClick={() => onNavigate("projects")}
-            className="bg-mint text-black hover:bg-mint/90 h-14 px-8 text-base rounded-2xl group"
+            {/* Stats */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="flex flex-wrap gap-8 pt-4"
+            >
+              <StatItem icon={<Target className="h-5 w-5" />} label="Projets livrés" value="50+" />
+              <StatItem icon={<TrendingUp className="h-5 w-5" />} label="Satisfaction" value="98%" />
+              <StatItem icon={<Zap className="h-5 w-5" />} label="Uptime" value="99.9%" />
+            </motion.div>
+          </div>
+
+          {/* Right Content - Bento Grid */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative hidden lg:block"
           >
-            Voir mes projets
-            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
-          <Button
-            size="lg"
-            variant="ghost"
-            onClick={() => onNavigate("contact")}
-            className="border-2 border-mint/30 hover:border-mint/60 bg-transparent text-white h-14 px-8 rounded-2xl"
-          >
-            Me contacter
-          </Button>
-        </motion.div>
+            <div className="grid grid-cols-2 gap-4">
+              {/* Large Card */}
+              <div className="col-span-2 glass-card-strong border-white/10 p-6 rounded-3xl relative overflow-hidden group hover:border-mint/30 transition-all">
+                <div className="absolute inset-0 bg-gradient-to-br from-mint/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative z-10">
+                  <div className="w-12 h-12 rounded-2xl bg-mint/20 border border-mint/30 flex items-center justify-center mb-4">
+                    <Code2 className="h-6 w-6 text-mint" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">Développement Full-Stack</h3>
+                  <p className="text-neutral-400 text-sm">
+                    React, TypeScript, Node.js, PostgreSQL, Supabase
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {['React', 'TypeScript', 'Supabase'].map((tech) => (
+                      <span key={tech} className="px-3 py-1 text-xs bg-white/5 border border-white/10 rounded-full">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
 
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="flex flex-wrap items-center justify-center gap-8 pt-8"
-        >
-          <StatItem label="Projets réalisés" value="50+" />
-          <StatItem label="Clients satisfaits" value="30+" />
-          <StatItem label="Années d'expérience" value="5+" />
-        </motion.div>
-      </div>
+              {/* Small Cards */}
+              <div className="glass-card border-white/10 p-6 rounded-3xl hover:border-purple-500/30 transition-all group">
+                <div className="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center mb-4">
+                  <Palette className="h-5 w-5 text-purple-400" />
+                </div>
+                <h3 className="text-lg font-bold mb-2">UI/UX Design</h3>
+                <p className="text-neutral-400 text-xs">
+                  Interfaces modernes et intuitives
+                </p>
+              </div>
 
-      {/* Scroll indicator */}
+              <div className="glass-card border-white/10 p-6 rounded-3xl hover:border-mint/30 transition-all group">
+                <div className="w-10 h-10 rounded-xl bg-mint/20 border border-mint/30 flex items-center justify-center mb-4">
+                  <Workflow className="h-5 w-5 text-mint" />
+                </div>
+                <h3 className="text-lg font-bold mb-2">Automatisation</h3>
+                <p className="text-neutral-400 text-xs">
+                  Optimisation des workflows
+                </p>
+              </div>
+
+              {/* Progress Bar Card */}
+              <div className="col-span-2 glass-card border-white/10 p-6 rounded-3xl">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-neutral-400">Performance</span>
+                    <span className="text-mint font-semibold">95%</span>
+                  </div>
+                  <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-mint to-cyan-400"
+                      initial={{ width: 0 }}
+                      animate={{ width: "95%" }}
+                      transition={{ duration: 1.5, delay: 1 }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        transition={{ duration: 1, delay: 1.5 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden lg:block"
       >
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           className="w-6 h-10 rounded-full border-2 border-mint/30 flex items-start justify-center p-2"
         >
-          <motion.div className="w-1.5 h-1.5 bg-mint rounded-full" />
+          <motion.div 
+            className="w-1.5 h-1.5 bg-mint rounded-full"
+            animate={{ opacity: [1, 0.3, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
         </motion.div>
       </motion.div>
     </div>
   );
 }
 
-interface FeatureCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  color: string;
-}
-
-function FeatureCard({ icon, title, description, color }: FeatureCardProps) {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.05, y: -5 }}
-      className={`relative p-6 rounded-3xl border border-white/10 bg-gradient-to-br ${color} backdrop-blur-sm overflow-hidden group`}
-    >
-      <div className="relative z-10">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white/10 border border-white/20 text-mint mb-4 group-hover:scale-110 transition-transform">
-          {icon}
-        </div>
-        <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
-        <p className="text-sm text-neutral-400">{description}</p>
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-    </motion.div>
-  );
-}
-
 interface StatItemProps {
+  icon: React.ReactNode;
   label: string;
   value: string;
 }
 
-function StatItem({ label, value }: StatItemProps) {
+function StatItem({ icon, label, value }: StatItemProps) {
   return (
-    <div className="text-center">
-      <div className="text-3xl md:text-4xl font-bold text-mint mb-1">{value}</div>
-      <div className="text-sm text-neutral-500 uppercase tracking-wider">{label}</div>
+    <div className="flex items-center gap-3">
+      <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-mint/10 border border-mint/20 text-mint">
+        {icon}
+      </div>
+      <div>
+        <div className="text-2xl font-bold text-white">{value}</div>
+        <div className="text-xs text-neutral-500 uppercase tracking-wider">{label}</div>
+      </div>
     </div>
   );
 }
