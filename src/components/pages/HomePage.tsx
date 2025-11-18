@@ -829,7 +829,7 @@ function LiveCodingTerminal() {
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [currentLine, isTyping, currentSequence, activeSequence]);
+  }, [currentLine, isTyping, currentSequence, activeSequence, showFinal, codeSequences.length]);
 
   return (
     <motion.div
