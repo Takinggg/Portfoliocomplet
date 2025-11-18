@@ -79,6 +79,68 @@ export default {
         "gainedPerWeek": "Gagné par semaine"
       }
     },
+    "heroAutomate": {
+      "badge": "Concept 1 · Le Designer Automate",
+      "title": "Je crée des expériences intelligentes —",
+      "highlight": "Un design vivant. Un code qui s'adapte. Des automatisations qui travaillent pour vous.",
+      "description": "Un héros triple panneau où l'interface se sculpte, l'IA répond en direct et les workflows s'allument avant même que nous collaborions.",
+      "overlay": "Je conçois de meilleures expériences. J'automatise ce qui vous fait perdre du temps. Je construis avec l'IA.",
+      "buttons": {
+        "primary": "Voir les projets réels",
+        "secondary": "Réserver un appel"
+      },
+      "stats": [
+        { "label": "Disponibilité des automatisations", "value": "24/7" },
+        { "label": "Livraison moyenne", "value": "8 jours" },
+        { "label": "Rétention", "value": "+92%" }
+      ],
+      "interfaceSculptor": {
+        "panelLabel": "L'Interface Sculpteur",
+        "title": "Une UX qui respire",
+        "description": "Les composants se mettent en place au survol. Les layouts se réorganisent au scroll. Les couleurs vibrent avec votre curseur.",
+        "chipLabel": "Prototype live",
+        "status": "Auto-layout activé"
+      },
+      "thinkingEngine": {
+        "panelLabel": "Le Moteur Pensant",
+        "title": "Une IA qui co-crée",
+        "description": "Écrivez une idée, cliquez dans la sphère et laissez naître des suggestions à glisser dans vos projets.",
+        "placeholder": "Briefez le moteur...",
+        "button": "Injecter",
+        "status": "à l'écoute...",
+        "liveLabel": "Suggestions en direct",
+        "baseNodes": ["UI", "Automatisation", "Business", "Croissance"],
+        "suggestions": [
+          "Idée de layout UI",
+          "Parcours de conversion",
+          "Optimisation onboarding",
+          "Workflow métier",
+          "Hook d'automatisation",
+          "Matrice de prix",
+          "Sync CRM",
+          "Positionnement produit",
+          "Escalade support",
+          "Expérience growth"
+        ]
+      },
+      "workflowMachine": {
+        "panelLabel": "La Machine à Workflows",
+        "title": "Plan d'automatisation",
+        "description": "Survolez pour jouer un parcours. Glissez pour explorer. Zoomez pour inspecter chaque déclencheur.",
+        "instructions": {
+          "drag": "Glisser & Explorer",
+          "zoom": "Contrôles de zoom"
+        },
+        "zoomLabel": "Zoom {{value}}%",
+        "pathLabel": "• Scénario en lecture : {{node}}",
+        "nodes": {
+          "lead": { "label": "Lead", "description": "Capture + qualification" },
+          "client": { "label": "Client", "description": "Transmission & brief" },
+          "project": { "label": "Projet", "description": "Sprint + QA" },
+          "delivery": { "label": "Livraison", "description": "Assets + automation" }
+        }
+      }
+    },
     "intro": {
       "title": "Interfaces & Intelligence",
       "subtitle": "Des expériences digitales qui allient esthétique et performance",

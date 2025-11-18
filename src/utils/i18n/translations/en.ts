@@ -106,6 +106,68 @@ export default {
         "gainedPerWeek": "Gained per week"
       }
     },
+    "heroAutomate": {
+      "badge": "Concept 1 · The Designer Automate",
+      "title": "I build intelligent experiences —",
+      "highlight": "Design that feels alive. Code that adapts. Automation that works for you.",
+      "description": "A triple-panel hero where UI design sculpts itself, AI responds in real-time, and workflows glow as they automate — all before we even start working together.",
+      "overlay": "I design better experiences. I automate what wastes your time. I build with AI.",
+      "buttons": {
+        "primary": "See the real projects",
+        "secondary": "Book a call"
+      },
+      "stats": [
+        { "label": "Automation uptime", "value": "24/7" },
+        { "label": "Average delivery", "value": "8 days" },
+        { "label": "Retention", "value": "+92%" }
+      ],
+      "interfaceSculptor": {
+        "panelLabel": "The Interface Sculptor",
+        "title": "UX that feels alive",
+        "description": "Components pop into place as you hover. Layouts reorganize on scroll. Colors breathe with your cursor angle.",
+        "chipLabel": "Live prototype",
+        "status": "Auto-layout engaged"
+      },
+      "thinkingEngine": {
+        "panelLabel": "The Thinking Engine",
+        "title": "AI that collaborates",
+        "description": "Type an idea, click anywhere, and the sphere spawns live suggestions that you can drag into your projects.",
+        "placeholder": "Prompt the engine...",
+        "button": "Inject",
+        "status": "listening...",
+        "liveLabel": "Live suggestions",
+        "baseNodes": ["UI", "Automation", "Business", "Growth"],
+        "suggestions": [
+          "UI layout idea",
+          "Conversion flow",
+          "Onboarding tweak",
+          "Business workflow",
+          "Automation hook",
+          "Pricing matrix",
+          "CRM sync",
+          "Product positioning",
+          "Support escalation",
+          "Growth experiment"
+        ]
+      },
+      "workflowMachine": {
+        "panelLabel": "The Workflow Machine",
+        "title": "Automation blueprint",
+        "description": "Hover nodes to play a flow. Drag to explore. Use the zoom to inspect each automation trigger.",
+        "instructions": {
+          "drag": "Drag & Explore",
+          "zoom": "Zoom controls"
+        },
+        "zoomLabel": "Zoom {{value}}%",
+        "pathLabel": "• Path now playing: {{node}}",
+        "nodes": {
+          "lead": { "label": "Lead", "description": "Capture + qualify" },
+          "client": { "label": "Client", "description": "Hand-off & briefing" },
+          "project": { "label": "Project", "description": "Sprint + QA" },
+          "delivery": { "label": "Delivery", "description": "Assets + automation" }
+        }
+      }
+    },
     "intro": {
       "title": "Interfaces & Intelligence",
       "subtitle": "Digital experiences that combine aesthetics and performance",
