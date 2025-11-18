@@ -748,13 +748,12 @@ function SpotlightEffect() {
 // Interactive UI Builder Component
 function InteractiveUIBuilder() {
   const [components, setComponents] = useState([
-    { id: 1, type: "card", x: 50, y: 50, color: "from-blue-500 to-cyan-500", isDragging: false },
-    { id: 2, type: "button", x: 250, y: 100, color: "from-purple-500 to-pink-500", isDragging: false },
-    { id: 3, type: "input", x: 150, y: 200, color: "from-green-500 to-emerald-500", isDragging: false },
+    { id: 1, type: "card", x: 80, y: 80, color: "from-blue-500 to-cyan-500" },
+    { id: 2, type: "button", x: 280, y: 120, color: "from-purple-500 to-pink-500" },
+    { id: 3, type: "input", x: 180, y: 250, color: "from-green-500 to-emerald-500" },
   ]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [showToast, setShowToast] = useState(false);
-  const constraintsRef = useRef<HTMLDivElement>(null);
 
   const componentIcons = {
     card: Layers,
@@ -762,28 +761,15 @@ function InteractiveUIBuilder() {
     input: Target,
   };
 
-  const handleDragEnd = (id: number, info: any) => {
-    setComponents(prev =>
-      prev.map(comp => {
-        if (comp.id === id) {
-          // Snap to grid
-          const snapSize = 20;
-          const newX = Math.round(info.point.x / snapSize) * snapSize;
-          const newY = Math.round(info.point.y / snapSize) * snapSize;
-          return { ...comp, x: newX, y: newY, isDragging: false };
-        }
-        return comp;
-      })
-    );
-  };
-
-  const handleComponentClick = (id: number) => {
+  const handleComponentClick = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
     setSelectedId(id);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2000);
   };
 
-  const handleColorChange = (id: number) => {
+  const handleColorChange = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
     const colors = [
       "from-blue-500 to-cyan-500",
       "from-purple-500 to-pink-500",
@@ -809,13 +795,10 @@ function InteractiveUIBuilder() {
       className="relative w-full h-[500px]"
     >
       {/* Container */}
-      <div 
-        ref={constraintsRef}
-        className="relative w-full h-full rounded-2xl border-2 border-mint/20 bg-gradient-to-br from-neutral-900/50 to-neutral-950/50 backdrop-blur-xl overflow-hidden"
-      >
+      <div className="relative w-full h-full rounded-2xl border-2 border-mint/20 bg-gradient-to-br from-neutral-900/50 to-neutral-950/50 backdrop-blur-xl overflow-hidden">
         {/* Grid background */}
         <div 
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-20 pointer-events-none"
           style={{
             backgroundImage: `
               linear-gradient(to right, rgba(0, 255, 194, 0.1) 1px, transparent 1px),
@@ -826,7 +809,7 @@ function InteractiveUIBuilder() {
         />
 
         {/* Instructions */}
-        <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+        <div className="absolute top-4 left-4 z-10 flex flex-col gap-2 pointer-events-none">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -852,47 +835,45 @@ function InteractiveUIBuilder() {
             <motion.div
               key={comp.id}
               drag
-              dragConstraints={constraintsRef}
-              dragElastic={0.1}
-              dragTransition={{ bounceStiffness: 300, bounceDamping: 20 }}
-              onDragEnd={(e, info) => handleDragEnd(comp.id, info)}
-              onClick={() => handleComponentClick(comp.id)}
-              onDoubleClick={() => handleColorChange(comp.id)}
+              dragMomentum={false}
+              dragElastic={0}
+              dragConstraints={{ left: 0, right: 400, top: 0, bottom: 400 }}
+              onClick={(e) => handleComponentClick(comp.id, e)}
+              onDoubleClick={(e) => handleColorChange(comp.id, e)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               whileDrag={{ scale: 1.1, zIndex: 100 }}
+              initial={{ x: comp.x, y: comp.y }}
               className={`absolute w-20 h-20 rounded-xl bg-gradient-to-br ${comp.color} p-[2px] cursor-grab active:cursor-grabbing ${
                 selectedId === comp.id ? 'ring-2 ring-mint ring-offset-2 ring-offset-black' : ''
               }`}
-              style={{
-                left: comp.x,
-                top: comp.y,
-              }}
             >
-              <div className="w-full h-full bg-black/80 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center">
+              <div className="w-full h-full bg-black/80 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center pointer-events-none">
                 <Icon className="w-8 h-8 text-white mb-1" />
                 <span className="text-[10px] text-neutral-400 font-medium uppercase">
                   {comp.type}
                 </span>
               </div>
 
-              {/* Magnetic effect indicator */}
-              <motion.div
-                className="absolute -inset-2 rounded-xl border-2 border-mint/50"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ 
-                  opacity: selectedId === comp.id ? [0.5, 0, 0.5] : 0,
-                  scale: selectedId === comp.id ? [0.8, 1.2, 0.8] : 0.8
-                }}
-                transition={{ duration: 1, repeat: selectedId === comp.id ? Infinity : 0 }}
-              />
+              {/* Active pulse */}
+              {selectedId === comp.id && (
+                <motion.div
+                  className="absolute -inset-2 rounded-xl border-2 border-mint/50 pointer-events-none"
+                  initial={{ opacity: 0.5, scale: 0.8 }}
+                  animate={{ 
+                    opacity: [0.5, 0, 0.5],
+                    scale: [0.8, 1.2, 0.8]
+                  }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                />
+              )}
             </motion.div>
           );
         })}
 
         {/* Center target zone */}
         <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-dashed border-mint/30 flex items-center justify-center"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-dashed border-mint/30 flex items-center justify-center pointer-events-none"
           animate={{
             scale: [1, 1.05, 1],
             opacity: [0.3, 0.5, 0.3],
@@ -912,7 +893,7 @@ function InteractiveUIBuilder() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="absolute bottom-4 right-4 px-4 py-3 rounded-lg bg-mint text-black font-semibold text-sm shadow-lg flex items-center gap-2"
+              className="absolute bottom-4 right-4 px-4 py-3 rounded-lg bg-mint text-black font-semibold text-sm shadow-lg flex items-center gap-2 pointer-events-none"
             >
               <CheckCircle className="w-4 h-4" />
               Component selected!
@@ -924,7 +905,7 @@ function InteractiveUIBuilder() {
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 rounded-full bg-mint/40"
+            className="absolute w-1 h-1 rounded-full bg-mint/40 pointer-events-none"
             style={{
               left: `${10 + i * 12}%`,
               top: `${20 + (i % 3) * 25}%`,
