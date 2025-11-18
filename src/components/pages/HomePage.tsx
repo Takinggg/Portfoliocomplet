@@ -877,14 +877,14 @@ function LiveCodingTerminal() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black/95 backdrop-blur-sm"
+                className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black/98 backdrop-blur-md m-6"
               >
                 {/* Success Icon */}
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                  className="relative mb-8"
+                  className="relative mb-6"
                 >
                   <motion.div
                     animate={{ 
@@ -894,8 +894,8 @@ function LiveCodingTerminal() {
                     transition={{ duration: 2, repeat: Infinity }}
                     className="absolute inset-0 rounded-full bg-mint/30 blur-2xl"
                   />
-                  <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-mint to-green-500 flex items-center justify-center">
-                    <CheckCircle className="w-12 h-12 text-black" strokeWidth={3} />
+                  <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-mint to-green-500 flex items-center justify-center">
+                    <CheckCircle className="w-10 h-10 text-black" strokeWidth={3} />
                   </div>
                 </motion.div>
 
@@ -904,12 +904,12 @@ function LiveCodingTerminal() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="text-center space-y-4"
+                  className="text-center space-y-3"
                 >
-                  <h3 className="text-3xl font-bold text-white">
+                  <h3 className="text-2xl font-bold text-white">
                     Projet complet déployé!
                   </h3>
-                  <p className="text-lg text-neutral-400">
+                  <p className="text-sm text-neutral-400">
                     UI/UX + IA + Automatisation intégrés
                   </p>
                   
@@ -918,19 +918,19 @@ function LiveCodingTerminal() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.6 }}
-                    className="flex gap-6 justify-center mt-8"
+                    className="flex gap-3 justify-center mt-6"
                   >
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/10 border border-purple-500/30">
-                      <Palette className="w-4 h-4 text-purple-400" />
-                      <span className="text-purple-400 font-semibold">Design</span>
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/30">
+                      <Palette className="w-3.5 h-3.5 text-purple-400" />
+                      <span className="text-purple-400 font-semibold text-xs">Design</span>
                     </div>
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
-                      <Brain className="w-4 h-4 text-cyan-400" />
-                      <span className="text-cyan-400 font-semibold">IA</span>
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                      <Brain className="w-3.5 h-3.5 text-cyan-400" />
+                      <span className="text-cyan-400 font-semibold text-xs">IA</span>
                     </div>
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-mint/10 border border-mint/30">
-                      <Zap className="w-4 h-4 text-mint" />
-                      <span className="text-mint font-semibold">Auto</span>
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mint/10 border border-mint/30">
+                      <Zap className="w-3.5 h-3.5 text-mint" />
+                      <span className="text-mint font-semibold text-xs">Auto</span>
                     </div>
                   </motion.div>
 
@@ -947,7 +947,7 @@ function LiveCodingTerminal() {
                       setCurrentLine(0);
                       setActiveSequence(0);
                     }}
-                    className="mt-6 px-6 py-3 rounded-lg bg-mint text-black font-semibold hover:bg-mint/90 transition-colors"
+                    className="mt-5 px-5 py-2.5 rounded-lg bg-mint text-black text-sm font-semibold hover:bg-mint/90 transition-colors"
                   >
                     Recommencer
                   </motion.button>
