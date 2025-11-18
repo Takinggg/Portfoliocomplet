@@ -746,269 +746,20 @@ function SpotlightEffect() {
   );
 }
 
-// Interactive Workflow Demo
+// Simple Skills Showcase - Clean & Stable
 function InteractiveWorkflowDemo() {
   const [activeStep, setActiveStep] = useState(0);
 
   const steps = [
-    {
-      id: 0,
-      title: "UI/UX Design",
-      icon: Palette,
-      color: "from-purple-500 to-pink-500",
-      demo: (
-        <div className="relative w-full h-full flex items-center justify-center p-8">
-          {/* Mini Design System Demo */}
-          <div className="space-y-4 w-full max-w-md">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl p-4"
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500" />
-                <div>
-                  <div className="h-3 w-24 bg-white/20 rounded" />
-                  <div className="h-2 w-16 bg-white/10 rounded mt-1" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="h-2 w-full bg-white/10 rounded" />
-                <div className="h-2 w-3/4 bg-white/10 rounded" />
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="flex gap-2"
-            >
-              <div className="flex-1 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white text-sm font-semibold">
-                Primary
-              </div>
-              <div className="flex-1 h-10 border-2 border-purple-500/50 rounded-lg flex items-center justify-center text-purple-400 text-sm font-semibold">
-                Secondary
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="flex gap-3"
-            >
-              {[1, 2, 3].map((i) => (
-                <motion.div
-                  key={i}
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
-                  className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30"
-                />
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Floating design elements */}
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 rounded-full bg-purple-500"
-              style={{
-                left: `${20 + i * 15}%`,
-                top: `${30 + (i % 3) * 20}%`,
-              }}
-              animate={{
-                y: [0, -15, 0],
-                opacity: [0.3, 0.8, 0.3],
-              }}
-              transition={{
-                duration: 2 + i * 0.3,
-                repeat: Infinity,
-              }}
-            />
-          ))}
-        </div>
-      ),
-    },
-    {
-      id: 1,
-      title: "Dev IA",
-      icon: Brain,
-      color: "from-cyan-500 to-blue-500",
-      demo: (
-        <div className="relative w-full h-full flex items-center justify-center p-8">
-          {/* AI Chat Demo */}
-          <div className="w-full max-w-md space-y-3">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex gap-2"
-            >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex-shrink-0" />
-              <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-2xl rounded-tl-none p-3 max-w-[80%]">
-                <p className="text-sm text-neutral-300">Analyse ces données et génère un rapport</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 }}
-              className="flex gap-2 justify-end"
-            >
-              <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl rounded-tr-none p-3 max-w-[80%]">
-                <div className="flex items-center gap-2 mb-2">
-                  <Brain className="w-4 h-4 text-cyan-400" />
-                  <span className="text-xs text-cyan-400 font-semibold">IA en cours...</span>
-                </div>
-                <motion.div
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="space-y-1"
-                >
-                  <div className="h-2 w-full bg-cyan-500/20 rounded" />
-                  <div className="h-2 w-3/4 bg-cyan-500/20 rounded" />
-                  <div className="h-2 w-1/2 bg-cyan-500/20 rounded" />
-                </motion.div>
-              </div>
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex-shrink-0" />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8 }}
-              className="flex items-center justify-center gap-2 text-xs text-cyan-400"
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>Modèle GPT-4 • Réponse en 2.3s</span>
-            </motion.div>
-          </div>
-
-          {/* AI particles */}
-          {[...Array(8)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 rounded-full bg-cyan-500"
-              style={{
-                left: `${15 + i * 12}%`,
-                top: `${25 + (i % 4) * 18}%`,
-              }}
-              animate={{
-                scale: [0, 1.5, 0],
-                opacity: [0, 1, 0],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                delay: i * 0.25,
-              }}
-            />
-          ))}
-        </div>
-      ),
-    },
-    {
-      id: 2,
-      title: "Automatisation",
-      icon: Zap,
-      color: "from-mint to-green-500",
-      demo: (
-        <div className="relative w-full h-full flex items-center justify-center p-8">
-          {/* Automation Pipeline */}
-          <div className="flex items-center gap-4">
-            {[
-              { icon: Workflow, label: "Trigger" },
-              { icon: Cpu, label: "Process" },
-              { icon: CheckCircle, label: "Deploy" },
-            ].map((step, i) => (
-              <React.Fragment key={i}>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.3 }}
-                  className="flex flex-col items-center"
-                >
-                  <motion.div
-                    animate={{
-                      boxShadow: [
-                        "0 0 20px rgba(0, 255, 194, 0.3)",
-                        "0 0 40px rgba(0, 255, 194, 0.6)",
-                        "0 0 20px rgba(0, 255, 194, 0.3)",
-                      ],
-                    }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                    className="w-16 h-16 rounded-xl bg-gradient-to-br from-mint to-green-500 flex items-center justify-center"
-                  >
-                    <step.icon className="w-8 h-8 text-black" />
-                  </motion.div>
-                  <span className="text-xs text-mint font-semibold mt-2">{step.label}</span>
-                </motion.div>
-
-                {i < 2 && (
-                  <motion.div
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ delay: i * 0.3 + 0.2, duration: 0.4 }}
-                    className="relative w-12 h-0.5 bg-mint/30"
-                  >
-                    <motion.div
-                      animate={{ x: [-10, 50] }}
-                      transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.5 }}
-                      className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-mint"
-                    />
-                  </motion.div>
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-
-          {/* Status indicator */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className="absolute bottom-12 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg bg-mint/10 border border-mint/30 flex items-center gap-2"
-          >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            >
-              <Zap className="w-4 h-4 text-mint" />
-            </motion.div>
-            <span className="text-xs text-mint font-semibold">Workflow actif • 24/7</span>
-          </motion.div>
-
-          {/* Energy waves */}
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute inset-0 border-2 border-mint/20 rounded-xl"
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.5, 0, 0.5],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                delay: i * 1,
-              }}
-            />
-          ))}
-        </div>
-      ),
-    },
+    { id: 0, title: "UI/UX Design", icon: Palette, color: "purple" },
+    { id: 1, title: "Dev IA", icon: Brain, color: "cyan" },
+    { id: 2, title: "Automatisation", icon: Zap, color: "mint" },
   ];
-
-  const currentStep = steps[activeStep];
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % steps.length);
-    }, 5000);
+      setActiveStep((prev) => (prev + 1) % 3);
+    }, 4000);
     return () => clearInterval(timer);
   }, []);
 
@@ -1019,75 +770,203 @@ function InteractiveWorkflowDemo() {
       transition={{ duration: 0.6, delay: 0.4 }}
       className="relative w-full h-[500px]"
     >
-      {/* Main container */}
       <div className="relative w-full h-full rounded-2xl bg-black/90 backdrop-blur-xl border-2 border-mint/30 overflow-hidden shadow-2xl">
         
-        {/* Tab switcher */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex gap-2 bg-black/60 backdrop-blur-md rounded-xl p-1 border border-mint/20">
+        {/* Tab Switcher */}
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 flex gap-2 bg-black/80 backdrop-blur-md rounded-xl p-1.5 border border-mint/20">
           {steps.map((step) => (
-            <motion.button
+            <button
               key={step.id}
               onClick={() => setActiveStep(step.id)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all ${
+              className={`px-6 py-3 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all duration-300 ${
                 activeStep === step.id
-                  ? `bg-gradient-to-r ${step.color} text-black`
+                  ? step.color === 'purple' ? 'bg-purple-500 text-white' :
+                    step.color === 'cyan' ? 'bg-cyan-500 text-white' :
+                    'bg-mint text-black'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
               <step.icon className="w-4 h-4" />
-              <span className="hidden sm:inline">{step.title}</span>
-            </motion.button>
+              {step.title}
+            </button>
           ))}
         </div>
 
-        {/* Demo content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`demo-${activeStep}`}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.4 }}
-            className="w-full h-full"
-          >
-            {/* Gradient background */}
+        {/* Content Area */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          
+          {/* UI/UX Demo */}
+          {activeStep === 0 && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.15 }}
-              className={`absolute inset-0 bg-gradient-to-br ${currentStep.color} blur-3xl`}
-            />
+              key="uiux"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="w-full max-w-lg space-y-6 p-8"
+            >
+              {/* Design System Card */}
+              <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-5 backdrop-blur-sm">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500" />
+                  <div className="flex-1">
+                    <div className="h-3 bg-white/20 rounded w-32 mb-2" />
+                    <div className="h-2 bg-white/10 rounded w-20" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-2 bg-white/10 rounded" />
+                  <div className="h-2 bg-white/10 rounded w-4/5" />
+                </div>
+              </div>
 
-            {/* Demo - Force remount with unique key */}
-            <div key={`content-${activeStep}`}>
-              {currentStep.demo}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+              {/* Buttons */}
+              <div className="flex gap-3">
+                <div className="flex-1 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white font-semibold">
+                  Primary
+                </div>
+                <div className="flex-1 h-12 border-2 border-purple-500/50 rounded-lg flex items-center justify-center text-purple-300 font-semibold">
+                  Secondary
+                </div>
+              </div>
 
-        {/* Progress indicator */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-          {steps.map((step) => (
+              {/* Animated Boxes */}
+              <div className="flex gap-3">
+                {[0, 1, 2].map((i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                    className="flex-1 h-20 rounded-xl bg-purple-500/20 border border-purple-500/30"
+                  />
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* AI Demo */}
+          {activeStep === 1 && (
             <motion.div
-              key={step.id}
-              className={`h-1 rounded-full transition-all ${
-                activeStep === step.id ? 'w-8 bg-mint' : 'w-1 bg-neutral-600'
+              key="ai"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="w-full max-w-lg space-y-4 p-8"
+            >
+              {/* User Message */}
+              <div className="flex gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex-shrink-0" />
+                <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-2xl rounded-tl-none p-4 flex-1">
+                  <p className="text-neutral-200">Analyse ces données et génère un rapport détaillé</p>
+                </div>
+              </div>
+
+              {/* AI Response Loading */}
+              <div className="flex gap-3 justify-end">
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl rounded-tr-none p-4 flex-1">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Brain className="w-4 h-4 text-cyan-400" />
+                    <span className="text-xs text-cyan-400 font-semibold">IA en cours...</span>
+                  </div>
+                  <motion.div
+                    animate={{ opacity: [0.4, 1, 0.4] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    className="space-y-2"
+                  >
+                    <div className="h-2 bg-cyan-500/20 rounded" />
+                    <div className="h-2 bg-cyan-500/20 rounded w-3/4" />
+                    <div className="h-2 bg-cyan-500/20 rounded w-1/2" />
+                  </motion.div>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex-shrink-0" />
+              </div>
+
+              {/* Model Info */}
+              <div className="flex items-center justify-center gap-2 text-sm text-cyan-400 pt-2">
+                <Sparkles className="w-4 h-4" />
+                <span>Modèle GPT-4 • Réponse en 2.3s</span>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Automation Demo */}
+          {activeStep === 2 && (
+            <motion.div
+              key="auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="flex flex-col items-center gap-8 p-8"
+            >
+              {/* Pipeline */}
+              <div className="flex items-center gap-6">
+                {[
+                  { icon: Workflow, label: "Trigger" },
+                  { icon: Cpu, label: "Process" },
+                  { icon: CheckCircle, label: "Deploy" },
+                ].map((step, i) => (
+                  <React.Fragment key={i}>
+                    <div className="flex flex-col items-center gap-2">
+                      <motion.div
+                        animate={{
+                          boxShadow: [
+                            "0 0 20px rgba(0, 255, 194, 0.3)",
+                            "0 0 40px rgba(0, 255, 194, 0.6)",
+                            "0 0 20px rgba(0, 255, 194, 0.3)",
+                          ],
+                        }}
+                        transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+                        className="w-20 h-20 rounded-xl bg-gradient-to-br from-mint to-green-500 flex items-center justify-center"
+                      >
+                        <step.icon className="w-10 h-10 text-black" />
+                      </motion.div>
+                      <span className="text-mint font-semibold text-sm">{step.label}</span>
+                    </div>
+
+                    {i < 2 && (
+                      <div className="relative w-16 h-1 bg-mint/30 rounded-full">
+                        <motion.div
+                          animate={{ x: [-8, 72] }}
+                          transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.5 }}
+                          className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-mint shadow-lg shadow-mint/50"
+                        />
+                      </div>
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+
+              {/* Status Badge */}
+              <div className="px-6 py-3 rounded-xl bg-mint/10 border border-mint/30 flex items-center gap-3">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                >
+                  <Zap className="w-5 h-5 text-mint" />
+                </motion.div>
+                <span className="text-mint font-semibold">Workflow actif • 24/7</span>
+              </div>
+            </motion.div>
+          )}
+
+        </div>
+
+        {/* Progress Dots */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                activeStep === i ? 'w-8 bg-mint' : 'w-2 bg-neutral-600'
               }`}
             />
           ))}
         </div>
       </div>
 
-      {/* Bottom hint */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-        className="absolute -bottom-8 left-0 right-0 text-center text-xs text-neutral-500"
-      >
-        Démonstration interactive • Change automatiquement toutes les 5s
-      </motion.div>
+      {/* Hint */}
+      <div className="absolute -bottom-8 left-0 right-0 text-center text-xs text-neutral-500">
+        Démonstration interactive • Change automatiquement toutes les 4s
+      </div>
     </motion.div>
   );
 }
