@@ -745,6 +745,216 @@ function SpotlightEffect() {
   );
 }
 
+// Interactive UI Builder Component
+function InteractiveUIBuilder() {
+  const [components, setComponents] = useState([
+    { id: 1, type: "card", x: 50, y: 50, color: "from-blue-500 to-cyan-500", isDragging: false },
+    { id: 2, type: "button", x: 250, y: 100, color: "from-purple-500 to-pink-500", isDragging: false },
+    { id: 3, type: "input", x: 150, y: 200, color: "from-green-500 to-emerald-500", isDragging: false },
+  ]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const constraintsRef = useRef<HTMLDivElement>(null);
+
+  const componentIcons = {
+    card: Layers,
+    button: CheckCircle2,
+    input: Target,
+  };
+
+  const handleDragEnd = (id: number, info: any) => {
+    setComponents(prev =>
+      prev.map(comp => {
+        if (comp.id === id) {
+          // Snap to grid
+          const snapSize = 20;
+          const newX = Math.round(info.point.x / snapSize) * snapSize;
+          const newY = Math.round(info.point.y / snapSize) * snapSize;
+          return { ...comp, x: newX, y: newY, isDragging: false };
+        }
+        return comp;
+      })
+    );
+  };
+
+  const handleComponentClick = (id: number) => {
+    setSelectedId(id);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2000);
+  };
+
+  const handleColorChange = (id: number) => {
+    const colors = [
+      "from-blue-500 to-cyan-500",
+      "from-purple-500 to-pink-500",
+      "from-green-500 to-emerald-500",
+      "from-orange-500 to-yellow-500",
+      "from-mint to-cyan-500",
+      "from-red-500 to-pink-500",
+    ];
+    setComponents(prev =>
+      prev.map(comp =>
+        comp.id === id
+          ? { ...comp, color: colors[Math.floor(Math.random() * colors.length)] }
+          : comp
+      )
+    );
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay: 0.5 }}
+      className="relative w-full h-[500px]"
+    >
+      {/* Container */}
+      <div 
+        ref={constraintsRef}
+        className="relative w-full h-full rounded-2xl border-2 border-mint/20 bg-gradient-to-br from-neutral-900/50 to-neutral-950/50 backdrop-blur-xl overflow-hidden"
+      >
+        {/* Grid background */}
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(0, 255, 194, 0.1) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 255, 194, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '20px 20px',
+          }}
+        />
+
+        {/* Instructions */}
+        <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.7 }}
+            className="px-4 py-2 rounded-lg bg-black/60 backdrop-blur-md border border-mint/30 text-xs text-neutral-300"
+          >
+            <span className="text-mint font-semibold">Drag & Drop</span> les composants
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8 }}
+            className="px-4 py-2 rounded-lg bg-black/60 backdrop-blur-md border border-mint/30 text-xs text-neutral-300"
+          >
+            <span className="text-mint font-semibold">Double-click</span> pour changer la couleur
+          </motion.div>
+        </div>
+
+        {/* Draggable Components */}
+        {components.map((comp) => {
+          const Icon = componentIcons[comp.type];
+          return (
+            <motion.div
+              key={comp.id}
+              drag
+              dragConstraints={constraintsRef}
+              dragElastic={0.1}
+              dragTransition={{ bounceStiffness: 300, bounceDamping: 20 }}
+              onDragEnd={(e, info) => handleDragEnd(comp.id, info)}
+              onClick={() => handleComponentClick(comp.id)}
+              onDoubleClick={() => handleColorChange(comp.id)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              whileDrag={{ scale: 1.1, zIndex: 100 }}
+              className={`absolute w-20 h-20 rounded-xl bg-gradient-to-br ${comp.color} p-[2px] cursor-grab active:cursor-grabbing ${
+                selectedId === comp.id ? 'ring-2 ring-mint ring-offset-2 ring-offset-black' : ''
+              }`}
+              style={{
+                left: comp.x,
+                top: comp.y,
+              }}
+            >
+              <div className="w-full h-full bg-black/80 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center">
+                <Icon className="w-8 h-8 text-white mb-1" />
+                <span className="text-[10px] text-neutral-400 font-medium uppercase">
+                  {comp.type}
+                </span>
+              </div>
+
+              {/* Magnetic effect indicator */}
+              <motion.div
+                className="absolute -inset-2 rounded-xl border-2 border-mint/50"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ 
+                  opacity: selectedId === comp.id ? [0.5, 0, 0.5] : 0,
+                  scale: selectedId === comp.id ? [0.8, 1.2, 0.8] : 0.8
+                }}
+                transition={{ duration: 1, repeat: selectedId === comp.id ? Infinity : 0 }}
+              />
+            </motion.div>
+          );
+        })}
+
+        {/* Center target zone */}
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-dashed border-mint/30 flex items-center justify-center"
+          animate={{
+            scale: [1, 1.05, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
+          <div className="text-center">
+            <Sparkles className="w-6 h-6 text-mint mx-auto mb-1" />
+            <span className="text-xs text-neutral-500">Drop Zone</span>
+          </div>
+        </motion.div>
+
+        {/* Toast notification */}
+        <AnimatePresence>
+          {showToast && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="absolute bottom-4 right-4 px-4 py-3 rounded-lg bg-mint text-black font-semibold text-sm shadow-lg flex items-center gap-2"
+            >
+              <CheckCircle className="w-4 h-4" />
+              Component selected!
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Floating particles */}
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 rounded-full bg-mint/40"
+            style={{
+              left: `${10 + i * 12}%`,
+              top: `${20 + (i % 3) * 25}%`,
+            }}
+            animate={{
+              y: [0, -15, 0],
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{
+              duration: 2 + i * 0.3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Bottom hint */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1 }}
+        className="absolute -bottom-8 left-0 right-0 text-center text-xs text-neutral-500"
+      >
+        Déplacez les éléments pour construire votre interface
+      </motion.div>
+    </motion.div>
+  );
+}
+
 // Animated Workflow Component
 function AnimatedWorkflow() {
   const [activeStep, setActiveStep] = useState(0);
@@ -1199,14 +1409,14 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
               </motion.div>
             </motion.div>
 
-            {/* Right - Automation Workflow */}
+            {/* Right - Interactive UI Builder */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, type: "spring", delay: 0.3 }}
               className="relative hidden lg:block h-[700px]"
             >
-              <AnimatedWorkflow />
+              <InteractiveUIBuilder />
             </motion.div>
           </div>
         </div>
