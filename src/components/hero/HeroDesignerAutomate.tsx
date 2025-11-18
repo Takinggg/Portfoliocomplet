@@ -82,14 +82,14 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
               className="space-y-4"
             >
               <h1 className="text-5xl lg:text-7xl font-bold leading-[1.1] tracking-tight">
-                Transformez vos idées en
+                I transform ideas into
                 <span className="block mt-2 text-gradient-mint-animated">
-                  expériences digitales
+                  digital experiences
                 </span>
               </h1>
               <p className="text-xl text-neutral-400 leading-relaxed max-w-xl">
-                Design élégant, code performant et automatisation intelligente. 
-                Je créé des solutions web qui font la différence.
+                Elegant design, performant code and intelligent automation. 
+                I create web solutions that make the difference.
               </p>
             </motion.div>
 
@@ -105,7 +105,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                 onClick={() => onNavigate("projects")}
                 className="bg-mint text-[#0C0C0C] hover:bg-mint/90 h-14 px-8 text-base font-semibold rounded-2xl glow-mint-hover group shadow-lg"
               >
-                Voir mes projets
+                View projects
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button
@@ -114,7 +114,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                 onClick={() => onNavigate("contact")}
                 className="h-14 px-8 text-base font-semibold rounded-2xl border-2 border-white/10 hover:border-mint/50 hover:bg-white/5 transition-all"
               >
-                Me contacter
+                Contact me
               </Button>
             </motion.div>
 
@@ -125,7 +125,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
               transition={{ duration: 0.8, delay: 0.5 }}
               className="flex flex-wrap gap-8 pt-4"
             >
-              <StatItem icon={<Target className="h-5 w-5" />} label="Projets livrés" value="50+" />
+              <StatItem icon={<Target className="h-5 w-5" />} label="Projects delivered" value="50+" />
               <StatItem icon={<TrendingUp className="h-5 w-5" />} label="Satisfaction" value="98%" />
               <StatItem icon={<Zap className="h-5 w-5" />} label="Uptime" value="99.9%" />
             </motion.div>
@@ -165,7 +165,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                 <div className="w-10 h-10 rounded-xl bg-mint/20 border border-mint/30 flex items-center justify-center mb-4">
                   <Code2 className="h-5 w-5 text-mint" />
                 </div>
-                <h3 className="text-lg font-bold mb-2">Développement</h3>
+                <h3 className="text-lg font-bold mb-2">Development</h3>
                 <p className="text-neutral-400 text-xs">
                   React, TypeScript, Supabase
                 </p>
@@ -175,9 +175,9 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center mb-4">
                   <Workflow className="h-5 w-5 text-cyan-400" />
                 </div>
-                <h3 className="text-lg font-bold mb-2">Automatisation</h3>
+                <h3 className="text-lg font-bold mb-2">Automation</h3>
                 <p className="text-neutral-400 text-xs">
-                  Optimisation des workflows
+                  Workflow optimization
                 </p>
               </div>
 
