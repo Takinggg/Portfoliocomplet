@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Sparkles, ArrowRight, Code2, Palette, Zap, Workflow, Target, TrendingUp } from "lucide-react";
 import { Button } from "../ui/button";
+import { useTranslation } from "../../utils/i18n/useTranslation";
 
 type HeroNavTarget =
   | "contact"
@@ -16,6 +17,7 @@ interface HeroDesignerAutomateProps {
 }
 
 export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -23,18 +25,11 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
   });
   
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
     <div ref={containerRef} className="relative w-full min-h-screen flex items-center overflow-hidden">
       {/* Animated Grid Background */}
-      <div className="absolute inset-0 grid-pattern opacity-30 pointer-events-none" />
-      
-      {/* Gradient Mesh Background */}
-      <motion.div 
-        className="absolute inset-0 gradient-mesh pointer-events-none"
-        style={{ opacity }}
-      />
+      <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
       
       {/* Floating Orbs - Neutral */}
       <motion.div
@@ -71,7 +66,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border-mint-10"
             >
               <Sparkles className="h-4 w-4 text-mint" />
-              <span className="text-sm text-mint font-medium">UI/UX Engineer • Designer • Développeur</span>
+              <span className="text-sm text-mint font-medium">{t('home.hero.badge')}</span>
             </motion.div>
 
             {/* Title */}
@@ -82,14 +77,13 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
               className="space-y-4"
             >
               <h1 className="text-5xl lg:text-7xl font-bold leading-[1.1] tracking-tight">
-                I transform ideas into
+                {t('home.hero.title')}
                 <span className="block mt-2 text-gradient-mint-animated">
-                  digital experiences
+                  {t('home.hero.highlight')}
                 </span>
               </h1>
               <p className="text-xl text-neutral-400 leading-relaxed max-w-xl">
-                Elegant design, performant code and intelligent automation. 
-                I create web solutions that make the difference.
+                {t('home.hero.description')}
               </p>
             </motion.div>
 
@@ -105,7 +99,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                 onClick={() => onNavigate("projects")}
                 className="bg-mint text-[#0C0C0C] hover:bg-mint/90 h-14 px-8 text-base font-semibold rounded-2xl glow-mint-hover group shadow-lg"
               >
-                View projects
+                {t('home.hero.cta.primary')}
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button
@@ -114,7 +108,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                 onClick={() => onNavigate("contact")}
                 className="h-14 px-8 text-base font-semibold rounded-2xl border-2 border-white/10 hover:border-mint/50 hover:bg-white/5 transition-all"
               >
-                Contact me
+                {t('home.hero.cta.secondary')}
               </Button>
             </motion.div>
 
@@ -125,9 +119,9 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
               transition={{ duration: 0.8, delay: 0.5 }}
               className="flex flex-wrap gap-8 pt-4"
             >
-              <StatItem icon={<Target className="h-5 w-5" />} label="Projects delivered" value="50+" />
-              <StatItem icon={<TrendingUp className="h-5 w-5" />} label="Satisfaction" value="98%" />
-              <StatItem icon={<Zap className="h-5 w-5" />} label="Uptime" value="99.9%" />
+              <StatItem icon={<Target className="h-5 w-5" />} label={t('home.hero.stats.projects')} value="50+" />
+              <StatItem icon={<TrendingUp className="h-5 w-5" />} label={t('home.hero.stats.satisfaction')} value="98%" />
+              <StatItem icon={<Zap className="h-5 w-5" />} label={t('home.hero.stats.uptime')} value="99.9%" />
             </motion.div>
           </div>
 
@@ -146,9 +140,9 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                   <div className="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center mb-4">
                     <Palette className="h-6 w-6 text-purple-400" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2">UI/UX Engineer & Design</h3>
+                  <h3 className="text-xl font-bold mb-2">{t('home.hero.cards.design.title')}</h3>
                   <p className="text-neutral-400 text-sm">
-                    Figma, Design Systems, Prototyping, User Research
+                    {t('home.hero.cards.design.description')}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {['Figma', 'Design Systems', 'Prototyping'].map((tech) => (
@@ -165,9 +159,9 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                 <div className="w-10 h-10 rounded-xl bg-mint/20 border border-mint/30 flex items-center justify-center mb-4">
                   <Code2 className="h-5 w-5 text-mint" />
                 </div>
-                <h3 className="text-lg font-bold mb-2">Development</h3>
+                <h3 className="text-lg font-bold mb-2">{t('home.hero.cards.dev.title')}</h3>
                 <p className="text-neutral-400 text-xs">
-                  React, TypeScript, Supabase
+                  {t('home.hero.cards.dev.description')}
                 </p>
               </div>
 
@@ -175,9 +169,9 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center mb-4">
                   <Workflow className="h-5 w-5 text-cyan-400" />
                 </div>
-                <h3 className="text-lg font-bold mb-2">Automation</h3>
+                <h3 className="text-lg font-bold mb-2">{t('home.hero.cards.automation.title')}</h3>
                 <p className="text-neutral-400 text-xs">
-                  Workflow optimization
+                  {t('home.hero.cards.automation.description')}
                 </p>
               </div>
 

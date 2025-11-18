@@ -85,22 +85,41 @@ export default {
   },
   "home": {
     "hero": {
-      "badge": "Available for new projects",
-      "title": "WebDesign, UI/UX & AI",
+      "badge": "UI/UX Engineer • Designer • Developer",
+      "title": "I transform ideas into",
+      "highlight": "digital experiences",
+      "description": "Elegant design, performant code and intelligent automation. I create web solutions that make the difference.",
+      "cta": {
+        "primary": "View projects",
+        "secondary": "Contact me"
+      },
+      "stats": {
+        "projects": "Projects delivered",
+        "satisfaction": "Satisfaction",
+        "uptime": "Uptime"
+      },
+      "cards": {
+        "design": {
+          "title": "UI/UX Engineer & Design",
+          "description": "Figma, Design Systems, Prototyping, User Research"
+        },
+        "dev": {
+          "title": "Development",
+          "description": "React, TypeScript, Supabase"
+        },
+        "automation": {
+          "title": "Automation",
+          "description": "Workflow optimization"
+        }
+      },
       "titleLine1": "WebDesign,",
       "titleLine2": "UI/UX",
       "titleLine3": "& AI",
       "subtitle": "Designer and developer specialized in crafting digital experiences that",
       "subtitleHighlight1": "captivate your users",
       "subtitleHighlight2": "transform your ideas",
-      "cta": "Discuss your project",
       "viewWork": "View my work",
       "scrollDown": "Scroll",
-      "stats": {
-        "projects": "Projects",
-        "clients": "Clients",
-        "saved": "Saved"
-      },
       "metrics": {
         "timeSaved": "Time saved",
         "gainedPerWeek": "Gained per week"

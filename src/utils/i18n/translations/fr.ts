@@ -58,22 +58,41 @@ export default {
   },
   "home": {
     "hero": {
-      "badge": "Disponible pour de nouveaux projets",
-      "title": "WebDesign, UI/UX & IA",
+      "badge": "UI/UX Engineer • Designer • Développeur",
+      "title": "Je transforme vos idées en",
+      "highlight": "expériences digitales",
+      "description": "Design élégant, code performant et automatisation intelligente. Je crée des solutions web qui font la différence.",
+      "cta": {
+        "primary": "Voir les projets",
+        "secondary": "Me contacter"
+      },
+      "stats": {
+        "projects": "Projets livrés",
+        "satisfaction": "Satisfaction",
+        "uptime": "Uptime"
+      },
+      "cards": {
+        "design": {
+          "title": "UI/UX Engineer & Design",
+          "description": "Figma, Design Systems, Prototypage, Recherche utilisateur"
+        },
+        "dev": {
+          "title": "Développement",
+          "description": "React, TypeScript, Supabase"
+        },
+        "automation": {
+          "title": "Automatisation",
+          "description": "Optimisation des workflows"
+        }
+      },
       "titleLine1": "WebDesign,",
       "titleLine2": "UI/UX",
       "titleLine3": "& IA",
       "subtitle": "Designer et développeur spécialisé dans la création d'expériences digitales qui",
       "subtitleHighlight1": "captivent vos utilisateurs",
       "subtitleHighlight2": "transforment vos idées",
-      "cta": "Discuter de votre projet",
       "viewWork": "Voir mes réalisations",
       "scrollDown": "Scroll",
-      "stats": {
-        "projects": "Projets",
-        "clients": "Clients",
-        "saved": "Économisées"
-      },
       "metrics": {
         "timeSaved": "Temps économisé",
         "gainedPerWeek": "Gagné par semaine"
