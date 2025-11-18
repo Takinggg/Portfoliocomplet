@@ -29,8 +29,8 @@ export default {
     "contactDesc": "Let's start your project"
   },
   "footer": {
-    "tagline": "Freelance Web Designer & Developer",
-    "description": "Specialist in automation and artificial intelligence. I create systems that save time and generate results.",
+    "tagline": "WebDesign, UI/UX & AI Development",
+    "description": "Designer and developer creating memorable digital experiences that blend aesthetics, performance and artificial intelligence.",
     "cta": {
       "badge": "Need an automated system?",
       "title": "Let's map your next growth lever",
@@ -86,15 +86,15 @@ export default {
   "home": {
     "hero": {
       "badge": "Available for new projects",
-      "title": "Intelligent automated systems",
-      "titleLine1": "Intelligent",
-      "titleLine2": "automated",
-      "titleLine3": "systems",
-      "subtitle": "I transform your manual processes into automated workflows that",
-      "subtitleHighlight1": "save time",
-      "subtitleHighlight2": "generate results",
-      "cta": "Request a free audit",
-      "viewWork": "View projects",
+      "title": "WebDesign, UI/UX & AI",
+      "titleLine1": "WebDesign,",
+      "titleLine2": "UI/UX",
+      "titleLine3": "& AI",
+      "subtitle": "Designer and developer specialized in crafting digital experiences that",
+      "subtitleHighlight1": "captivate your users",
+      "subtitleHighlight2": "transform your ideas",
+      "cta": "Discuss your project",
+      "viewWork": "View my work",
       "scrollDown": "Scroll",
       "stats": {
         "projects": "Projects",
@@ -107,10 +107,10 @@ export default {
       }
     },
     "intro": {
-      "title": "Complete solutions",
-      "subtitle": "Automated systems that transform your business",
-      "description": "From design to automation, I build digital ecosystems that work for you, even while you sleep.",
-      "cta": "Discover how"
+      "title": "Interfaces & Intelligence",
+      "subtitle": "Digital experiences that combine aesthetics and performance",
+      "description": "From Figma prototyping to React development, including AI integration — I craft digital products that make a difference.",
+      "cta": "Discover my approach"
     },
     "ecosystem": {
       "title": "An intelligent ecosystem",
@@ -127,27 +127,22 @@ export default {
     },
     "expertise": {
       "title": "My areas of expertise",
-      "subtitle": "Four domains of mastery to create complete systems",
+      "subtitle": "Three pillars to create memorable digital experiences",
       "pillars": {
         "design": {
-          "title": "Design & Experience",
-          "subtitle": "Interfaces designed for action",
-          "description": "Custom UX/UI, optimized for conversion and simplicity."
+          "title": "WebDesign & UI/UX",
+          "subtitle": "Interfaces that tell your story",
+          "description": "Design systems, interactive prototypes, pixel-perfect Figma interfaces converted to code."
         },
-        "automation": {
-          "title": "Automation",
-          "subtitle": "Free yourself from repetitive tasks",
-          "description": "Workflows, API integrations, tool synchronization."
+        "development": {
+          "title": "Front-End Development",
+          "subtitle": "Modern and performant code",
+          "description": "React, TypeScript, smooth animations, reusable components and scalable architecture."
         },
         "ai": {
-          "title": "Intelligence & AI",
-          "subtitle": "Data that learns from your clients",
-          "description": "Chatbots, content generation, intelligent scoring."
-        },
-        "growth": {
-          "title": "Growth & Analytics",
-          "subtitle": "Systems that measure and adapt",
-          "description": "Dashboards, KPIs, real-time performance tracking."
+          "title": "Artificial Intelligence",
+          "subtitle": "AI powering great experiences",
+          "description": "AI API integration, intelligent chatbots, dynamic personalization, content generation."
         }
       }
     },
@@ -184,38 +179,38 @@ export default {
       }
     },
     "process": {
-      "title": "How I build your digital ecosystem",
-      "subtitle": "A proven method in 4 steps",
+      "title": "My work process",
+      "subtitle": "A collaborative process in 4 steps",
       "steps": {
-        "audit": {
+        "discovery": {
           "number": "01",
-          "title": "Audit & Mapping",
-          "description": "Understanding your needs and existing tools."
+          "title": "Discovery & Strategy",
+          "description": "Understanding your vision, users and goals."
         },
         "design": {
           "number": "02",
-          "title": "Flow design",
-          "description": "Designing the system architecture."
+          "title": "Design & Prototyping",
+          "description": "Creating interactive mockups and validating UX."
         },
-        "implementation": {
+        "development": {
           "number": "03",
-          "title": "Implementation",
-          "description": "Connecting and testing each element."
+          "title": "Development",
+          "description": "Transforming design into a functional and performant product."
         },
-        "monitoring": {
+        "launch": {
           "number": "04",
-          "title": "Monitoring",
-          "description": "Continuously improving based on data."
+          "title": "Launch & Support",
+          "description": "Deploy, measure and iterate to improve."
         }
       }
     },
     "cta": {
-      "badge": "Ready to transform your business?",
+      "badge": "Ready to bring your project to life?",
       "title": "Let's create together",
-      "titleHighlight": "your custom system",
-      "subtitle": "Request your free audit and discover how many hours you could save",
-      "button": "Schedule an appointment",
-      "secondary": "See my results"
+      "titleHighlight": "your digital experience",
+      "subtitle": "Let's discuss your project and discover how I can turn your vision into reality",
+      "button": "Discuss my project",
+      "secondary": "View my portfolio"
     },
     "pinnedProjects": {
       "title": "Recent Projects",
@@ -231,8 +226,8 @@ export default {
     "hero": {
       "badge": "About",
       "title": "Maxence,",
-      "titleHighlight": "Automation Expert",
-      "subtitle": "I create automated systems that transform manual processes into intelligent workflows"
+      "titleHighlight": "Designer & Developer",
+      "subtitle": "I create digital experiences that blend unforgettable design with cutting-edge technology"
     },
     "stats": {
       "projectsCompleted": "Projects completed",
@@ -241,7 +236,7 @@ export default {
     },
     "story": {
       "title": "My Journey",
-      "content": "For several years, I've been helping entrepreneurs and businesses automate their processes to save time and focus on what matters most: growing their business."
+      "content": "Passionate about design and development, I help companies create digital products that captivate their users. From Figma design to React code, including AI integration, I transform ideas into memorable experiences."
     },
     "skills": {
       "title": "Skills & Technologies",
@@ -252,23 +247,23 @@ export default {
     },
     "values": {
       "title": "My Values",
-      "roi": {
-        "title": "Guaranteed ROI",
-        "description": "Every automation is designed to generate a measurable and fast return on investment."
+      "quality": {
+        "title": "Quality & Attention to Details",
+        "description": "Every pixel matters. I pay meticulous attention to design and user experience."
       },
-      "speed": {
-        "title": "Fast Execution",
-        "description": "Deployment in weeks, not months. Ready-to-use solutions from day 1."
+      "performance": {
+        "title": "Performance & Accessibility",
+        "description": "Optimized code, fast loading and accessible to everyone. Modern standards for lasting products."
       },
-      "autonomy": {
-        "title": "Client Autonomy",
-        "description": "Complete training and detailed documentation to make you autonomous on your systems."
+      "collaboration": {
+        "title": "Collaboration & Transparency",
+        "description": "Clear communication, iterative process and you always keep control over your project."
       }
     },
     "cta": {
       "title": "Let's Work Together",
-      "subtitle": "Ready to automate your business?",
-      "button": "Contact Me"
+      "subtitle": "Ready to create something exceptional?",
+      "button": "Discuss my project"
     }
   },
   "services": {

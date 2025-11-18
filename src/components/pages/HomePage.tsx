@@ -1367,7 +1367,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 {
                   icon: Palette,
@@ -1377,10 +1377,10 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   color: "from-mint/20 to-mint/5",
                 },
                 {
-                  icon: Workflow,
-                  title: t('home.expertise.pillars.automation.title'),
-                  subtitle: t('home.expertise.pillars.automation.subtitle'),
-                  description: t('home.expertise.pillars.automation.description'),
+                  icon: Code2,
+                  title: t('home.expertise.pillars.development.title'),
+                  subtitle: t('home.expertise.pillars.development.subtitle'),
+                  description: t('home.expertise.pillars.development.description'),
                   color: "from-blue-500/20 to-blue-500/5",
                 },
                 {
@@ -1389,13 +1389,6 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   subtitle: t('home.expertise.pillars.ai.subtitle'),
                   description: t('home.expertise.pillars.ai.description'),
                   color: "from-purple-500/20 to-purple-500/5",
-                },
-                {
-                  icon: BarChart3,
-                  title: t('home.expertise.pillars.growth.title'),
-                  subtitle: t('home.expertise.pillars.growth.subtitle'),
-                  description: t('home.expertise.pillars.growth.description'),
-                  color: "from-orange-500/20 to-orange-500/5",
                 },
               ].map((pillar, i) => (
                 <motion.div
@@ -1659,28 +1652,28 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
                 {[
                   {
-                    number: t('home.process.steps.audit.number'),
-                    title: t('home.process.steps.audit.title'),
-                    description: t('home.process.steps.audit.description'),
+                    number: t('home.process.steps.discovery.number'),
+                    title: t('home.process.steps.discovery.title'),
+                    description: t('home.process.steps.discovery.description'),
                     icon: Target,
                   },
                   {
                     number: t('home.process.steps.design.number'),
                     title: t('home.process.steps.design.title'),
                     description: t('home.process.steps.design.description'),
-                    icon: Workflow,
+                    icon: Palette,
                   },
                   {
-                    number: t('home.process.steps.implementation.number'),
-                    title: t('home.process.steps.implementation.title'),
-                    description: t('home.process.steps.implementation.description'),
-                    icon: Cpu,
+                    number: t('home.process.steps.development.number'),
+                    title: t('home.process.steps.development.title'),
+                    description: t('home.process.steps.development.description'),
+                    icon: Code2,
                   },
                   {
-                    number: t('home.process.steps.monitoring.number'),
-                    title: t('home.process.steps.monitoring.title'),
-                    description: t('home.process.steps.monitoring.description'),
-                    icon: BarChart3,
+                    number: t('home.process.steps.launch.number'),
+                    title: t('home.process.steps.launch.title'),
+                    description: t('home.process.steps.launch.description'),
+                    icon: Rocket,
                   },
                 ].map((step, i) => (
                   <motion.div

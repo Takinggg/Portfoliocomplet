@@ -29,8 +29,8 @@ export default {
     "contactDesc": "Démarrons votre projet"
   },
   "footer": {
-    "tagline": "Designer & Développeur Web Freelance",
-    "description": "Spécialiste en automatisation et intelligence artificielle. Je crée des systèmes qui économisent du temps et génèrent des résultats.",
+    "tagline": "WebDesign, UI/UX & Développement IA",
+    "description": "Designer et développeur créant des expériences digitales mémorables qui allient esthétique, performance et intelligence artificielle.",
     "cta": {
       "badge": "Besoin d'un système automatisé ?",
       "title": "Cartographions votre prochain levier",
@@ -55,15 +55,15 @@ export default {
   "home": {
     "hero": {
       "badge": "Disponible pour de nouveaux projets",
-      "title": "Systèmes automatisés intelligents",
-      "titleLine1": "Systèmes",
-      "titleLine2": "automatisés",
-      "titleLine3": "intelligents",
-      "subtitle": "Je transforme vos processus manuels en workflows automatisés qui",
-      "subtitleHighlight1": "économisent du temps",
-      "subtitleHighlight2": "génèrent des résultats",
-      "cta": "Demander un audit gratuit",
-      "viewWork": "Voir les projets",
+      "title": "WebDesign, UI/UX & IA",
+      "titleLine1": "WebDesign,",
+      "titleLine2": "UI/UX",
+      "titleLine3": "& IA",
+      "subtitle": "Designer et développeur spécialisé dans la création d'expériences digitales qui",
+      "subtitleHighlight1": "captivent vos utilisateurs",
+      "subtitleHighlight2": "transforment vos idées",
+      "cta": "Discuter de votre projet",
+      "viewWork": "Voir mes réalisations",
       "scrollDown": "Scroll",
       "stats": {
         "projects": "Projets",
@@ -107,10 +107,10 @@ export default {
       }
     },
     "intro": {
-      "title": "Des solutions complètes",
-      "subtitle": "Des systèmes automatisés qui transforment votre activité",
-      "description": "Du design à l'automatisation, je construis des écosystèmes digitaux qui travaillent pour vous, même quand vous dormez.",
-      "cta": "Découvrir comment"
+      "title": "Interfaces & Intelligence",
+      "subtitle": "Des expériences digitales qui allient esthétique et performance",
+      "description": "Du maquettage Figma au développement React, en passant par l'intégration d'IA — je crée des produits digitaux qui font la différence.",
+      "cta": "Découvrir mon approche"
     },
     "ecosystem": {
       "title": "Un écosystème intelligent",
@@ -126,28 +126,23 @@ export default {
       }
     },
     "expertise": {
-      "title": "Mes piliers d'expertise",
-      "subtitle": "Quatre domaines de maîtrise pour créer des systèmes complets",
+      "title": "Mes domaines d'expertise",
+      "subtitle": "Trois piliers pour créer des expériences digitales mémorables",
       "pillars": {
         "design": {
-          "title": "Design & Expérience",
-          "subtitle": "Des interfaces pensées pour l'action",
-          "description": "UX/UI sur mesure, optimisées pour la conversion et la simplicité."
+          "title": "WebDesign & UI/UX",
+          "subtitle": "Des interfaces qui racontent votre histoire",
+          "description": "Design systems, prototypes interactifs, interfaces Figma pixel-perfect converties en code."
         },
-        "automation": {
-          "title": "Automatisation",
-          "subtitle": "Libérez-vous des tâches répétitives",
-          "description": "Workflows, intégrations API, synchronisation entre outils."
+        "development": {
+          "title": "Développement Front-End",
+          "subtitle": "Du code moderne et performant",
+          "description": "React, TypeScript, animations fluides, composants réutilisables et architecture scalable."
         },
         "ai": {
-          "title": "Intelligence & IA",
-          "subtitle": "Des données qui apprennent de vos clients",
-          "description": "Chatbots, génération de contenu, scoring intelligent."
-        },
-        "growth": {
-          "title": "Croissance & Analyse",
-          "subtitle": "Des systèmes qui mesurent et s'adaptent",
-          "description": "Dashboards, KPIs, suivi des performances en temps réel."
+          "title": "Intelligence Artificielle",
+          "subtitle": "L'IA au service de l'expérience",
+          "description": "Intégration d'APIs IA, chatbots intelligents, personnalisation dynamique, génération de contenu."
         }
       }
     },
@@ -184,38 +179,38 @@ export default {
       }
     },
     "process": {
-      "title": "Comment je construis votre écosystème digital",
-      "subtitle": "Une méthode éprouvée en 4 étapes",
+      "title": "Ma méthode de travail",
+      "subtitle": "Un processus collaboratif en 4 étapes",
       "steps": {
-        "audit": {
+        "discovery": {
           "number": "01",
-          "title": "Audit & Mapping",
-          "description": "Comprendre vos besoins et outils existants."
+          "title": "Découverte & Stratégie",
+          "description": "Comprendre votre vision, vos utilisateurs et vos objectifs."
         },
         "design": {
           "number": "02",
-          "title": "Design du flux",
-          "description": "Concevoir l'architecture du système."
+          "title": "Design & Prototypage",
+          "description": "Créer des maquettes interactives et valider l'UX."
         },
-        "implementation": {
+        "development": {
           "number": "03",
-          "title": "Mise en place",
-          "description": "Connecter et tester chaque élément."
+          "title": "Développement",
+          "description": "Transformer le design en produit fonctionnel et performant."
         },
-        "monitoring": {
+        "launch": {
           "number": "04",
-          "title": "Monitoring",
-          "description": "Améliorer continuellement selon les données."
+          "title": "Lancement & Support",
+          "description": "Déployer, mesurer et itérer pour améliorer."
         }
       }
     },
     "cta": {
-      "badge": "Prêt à transformer votre activité ?",
+      "badge": "Prêt à donner vie à votre projet ?",
       "title": "Créons ensemble",
-      "titleHighlight": "votre système sur mesure",
-      "subtitle": "Demandez votre audit gratuit et découvrez combien d'heures vous pourriez économiser",
-      "button": "Prendre un rendez-vous",
-      "secondary": "Voir mes résultats"
+      "titleHighlight": "votre expérience digitale",
+      "subtitle": "Discutons de votre projet et découvrez comment je peux transformer votre vision en réalité",
+      "button": "Discuter de mon projet",
+      "secondary": "Voir mon portfolio"
     },
     "pinnedProjects": {
       "title": "Projets récents",
@@ -231,8 +226,8 @@ export default {
     "hero": {
       "badge": "À propos",
       "title": "Maxence,",
-      "titleHighlight": "Expert automatisation",
-      "subtitle": "Je crée des systèmes automatisés qui transforment les processus manuels en workflows intelligents"
+      "titleHighlight": "Designer & Développeur",
+      "subtitle": "Je crée des expériences digitales qui allient design inoubliable et technologie de pointe"
     },
     "stats": {
       "projectsCompleted": "Projets réalisés",
@@ -241,7 +236,7 @@ export default {
     },
     "story": {
       "title": "Mon parcours",
-      "content": "Depuis plusieurs années, j'aide les entrepreneurs et entreprises à automatiser leurs processus pour gagner du temps et se concentrer sur l'essentiel : la croissance de leur activité."
+      "content": "Passionné par le design et le développement, j'aide les entreprises à créer des produits digitaux qui captivent leurs utilisateurs. De la conception Figma au code React, en passant par l'intégration d'IA, je transforme des idées en expériences mémorables."
     },
     "skills": {
       "title": "Compétences & Technologies",
@@ -252,23 +247,23 @@ export default {
     },
     "values": {
       "title": "Mes valeurs",
-      "roi": {
-        "title": "ROI garanti",
-        "description": "Chaque automatisation est pensée pour générer un retour sur investissement mesurable et rapide."
+      "quality": {
+        "title": "Qualité & Attention aux détails",
+        "description": "Chaque pixel compte. Je porte une attention méticuleuse au design et à l'expérience utilisateur."
       },
-      "speed": {
-        "title": "Rapidité d'exécution",
-        "description": "Déploiement en quelques semaines, pas plusieurs mois. Solutions prêtes à l'emploi dès le jour 1."
+      "performance": {
+        "title": "Performance & Accessibilité",
+        "description": "Code optimisé, chargement rapide et accessible à tous. Des standards modernes pour des produits durables."
       },
-      "autonomy": {
-        "title": "Autonomie client",
-        "description": "Formation complète et documentation détaillée pour vous rendre autonome sur vos systèmes."
+      "collaboration": {
+        "title": "Collaboration & Transparence",
+        "description": "Communication claire, processus itératif et vous gardez toujours le contrôle sur votre projet."
       }
     },
     "cta": {
       "title": "Travaillons ensemble",
-      "subtitle": "Prêt à automatiser votre activité ?",
-      "button": "Me contacter"
+      "subtitle": "Prêt à créer quelque chose d'exceptionnel ?",
+      "button": "Discuter de mon projet"
     }
   },
   "services": {
