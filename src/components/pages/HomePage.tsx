@@ -801,7 +801,9 @@ function LiveCodingTerminal() {
   const currentSequence = showFinal ? codeSequences[0] : codeSequences[activeSequence];
 
   useEffect(() => {
-    if (isTyping || showFinal) return;
+    if (showFinal) return;
+    
+    if (isTyping) return;
 
     const timer = setTimeout(() => {
       if (currentLine < currentSequence.lines.length) {
@@ -829,7 +831,7 @@ function LiveCodingTerminal() {
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [currentLine, isTyping, currentSequence, activeSequence, showFinal, codeSequences.length]);
+  }, [currentLine, isTyping, showFinal]);
 
   return (
     <motion.div
