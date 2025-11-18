@@ -831,7 +831,7 @@ function LiveCodingTerminal() {
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [currentLine, isTyping, showFinal]);
+  }, [currentLine, isTyping, showFinal, currentSequence.lines.length, activeSequence, codeSequences.length]);
 
   return (
     <motion.div
