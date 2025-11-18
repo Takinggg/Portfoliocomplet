@@ -745,46 +745,54 @@ function SpotlightEffect() {
   );
 }
 
-// Interactive UI Builder Component
-function InteractiveUIBuilder() {
-  const [components, setComponents] = useState([
-    { id: 1, type: "card", x: 80, y: 80, color: "from-blue-500 to-cyan-500" },
-    { id: 2, type: "button", x: 280, y: 120, color: "from-purple-500 to-pink-500" },
-    { id: 3, type: "input", x: 180, y: 250, color: "from-green-500 to-emerald-500" },
-  ]);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [showToast, setShowToast] = useState(false);
+// Interactive Skills Switcher Component
+function InteractiveSkillsSwitcher() {
+  const [activeMode, setActiveMode] = useState<'uiux' | 'ai' | 'automation'>('uiux');
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const componentIcons = {
-    card: Layers,
-    button: CheckCircle2,
-    input: Target,
+  const modes = {
+    uiux: {
+      title: "UI/UX Design",
+      icon: Palette,
+      color: "from-purple-500 to-pink-500",
+      description: "Interfaces modernes et intuitives",
+      elements: [
+        { icon: Layers, label: "Components", x: 100, y: 80 },
+        { icon: Target, label: "Wireframes", x: 250, y: 100 },
+        { icon: Sparkles, label: "Animations", x: 180, y: 200 },
+      ]
+    },
+    ai: {
+      title: "Dev IA",
+      icon: Brain,
+      color: "from-cyan-500 to-blue-500",
+      description: "Intégrations intelligentes",
+      elements: [
+        { icon: Cpu, label: "ML Models", x: 120, y: 90 },
+        { icon: Sparkles, label: "AI APIs", x: 260, y: 110 },
+        { icon: Brain, label: "Training", x: 190, y: 210 },
+      ]
+    },
+    automation: {
+      title: "Automatisation",
+      icon: Zap,
+      color: "from-mint to-green-500",
+      description: "Workflows intelligents",
+      elements: [
+        { icon: Workflow, label: "Pipeline", x: 110, y: 85 },
+        { icon: Zap, label: "Triggers", x: 270, y: 105 },
+        { icon: LayoutDashboard, label: "Monitor", x: 200, y: 215 },
+      ]
+    }
   };
 
-  const handleComponentClick = (id: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setSelectedId(id);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 2000);
-  };
+  const currentMode = modes[activeMode];
 
-  const handleColorChange = (id: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    const colors = [
-      "from-blue-500 to-cyan-500",
-      "from-purple-500 to-pink-500",
-      "from-green-500 to-emerald-500",
-      "from-orange-500 to-yellow-500",
-      "from-mint to-cyan-500",
-      "from-red-500 to-pink-500",
-    ];
-    setComponents(prev =>
-      prev.map(comp =>
-        comp.id === id
-          ? { ...comp, color: colors[Math.floor(Math.random() * colors.length)] }
-          : comp
-      )
-    );
+  const handleModeChange = (mode: 'uiux' | 'ai' | 'automation') => {
+    if (mode === activeMode) return;
+    setIsAnimating(true);
+    setActiveMode(mode);
+    setTimeout(() => setIsAnimating(false), 600);
   };
 
   return (
@@ -794,128 +802,187 @@ function InteractiveUIBuilder() {
       transition={{ duration: 0.5, delay: 0.5 }}
       className="relative w-full h-[500px]"
     >
-      {/* Container */}
-      <div className="relative w-full h-full rounded-2xl border-2 border-mint/20 bg-gradient-to-br from-neutral-900/50 to-neutral-950/50 backdrop-blur-xl overflow-hidden">
+      {/* Mode Switcher */}
+      <div className="absolute top-0 left-0 right-0 z-20 flex gap-2 justify-center">
+        {(['uiux', 'ai', 'automation'] as const).map((mode) => {
+          const ModeIcon = modes[mode].icon;
+          return (
+            <motion.button
+              key={mode}
+              onClick={() => handleModeChange(mode)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-4 py-2 rounded-lg border-2 transition-all duration-300 ${
+                activeMode === mode
+                  ? `border-mint bg-mint text-black font-semibold`
+                  : `border-mint/30 bg-black/60 text-neutral-400 hover:text-mint hover:border-mint/50`
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <ModeIcon className="w-4 h-4" />
+                <span className="text-sm">{modes[mode].title}</span>
+              </div>
+            </motion.button>
+          );
+        })}
+      </div>
+
+      {/* Main Container */}
+      <div className="relative w-full h-full rounded-2xl border-2 border-mint/20 bg-gradient-to-br from-neutral-900/50 to-neutral-950/50 backdrop-blur-xl overflow-hidden mt-14">
+        
+        {/* Animated gradient background */}
+        <motion.div
+          key={activeMode}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.3 }}
+          transition={{ duration: 0.5 }}
+          className={`absolute inset-0 bg-gradient-to-br ${currentMode.color} blur-3xl`}
+        />
+
         {/* Grid background */}
         <div 
-          className="absolute inset-0 opacity-20 pointer-events-none"
+          className="absolute inset-0 opacity-10 pointer-events-none"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(0, 255, 194, 0.1) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0, 255, 194, 0.1) 1px, transparent 1px)
+              linear-gradient(to right, rgba(0, 255, 194, 0.2) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 255, 194, 0.2) 1px, transparent 1px)
             `,
-            backgroundSize: '20px 20px',
+            backgroundSize: '30px 30px',
           }}
         />
 
-        {/* Instructions */}
-        <div className="absolute top-4 left-4 z-10 flex flex-col gap-2 pointer-events-none">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.7 }}
-            className="px-4 py-2 rounded-lg bg-black/60 backdrop-blur-md border border-mint/30 text-xs text-neutral-300"
-          >
-            <span className="text-mint font-semibold">Drag & Drop</span> les composants
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.8 }}
-            className="px-4 py-2 rounded-lg bg-black/60 backdrop-blur-md border border-mint/30 text-xs text-neutral-300"
-          >
-            <span className="text-mint font-semibold">Double-click</span> pour changer la couleur
-          </motion.div>
-        </div>
-
-        {/* Draggable Components */}
-        {components.map((comp) => {
-          const Icon = componentIcons[comp.type];
-          return (
-            <motion.div
-              key={comp.id}
-              drag
-              dragMomentum={false}
-              dragElastic={0}
-              dragConstraints={{ left: 0, right: 400, top: 0, bottom: 400 }}
-              onClick={(e) => handleComponentClick(comp.id, e)}
-              onDoubleClick={(e) => handleColorChange(comp.id, e)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              whileDrag={{ scale: 1.1, zIndex: 100 }}
-              initial={{ x: comp.x, y: comp.y }}
-              className={`absolute w-20 h-20 rounded-xl bg-gradient-to-br ${comp.color} p-[2px] cursor-grab active:cursor-grabbing ${
-                selectedId === comp.id ? 'ring-2 ring-mint ring-offset-2 ring-offset-black' : ''
-              }`}
-            >
-              <div className="w-full h-full bg-black/80 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center pointer-events-none">
-                <Icon className="w-8 h-8 text-white mb-1" />
-                <span className="text-[10px] text-neutral-400 font-medium uppercase">
-                  {comp.type}
-                </span>
-              </div>
-
-              {/* Active pulse */}
-              {selectedId === comp.id && (
-                <motion.div
-                  className="absolute -inset-2 rounded-xl border-2 border-mint/50 pointer-events-none"
-                  initial={{ opacity: 0.5, scale: 0.8 }}
-                  animate={{ 
-                    opacity: [0.5, 0, 0.5],
-                    scale: [0.8, 1.2, 0.8]
-                  }}
-                  transition={{ duration: 1, repeat: Infinity }}
-                />
-              )}
-            </motion.div>
-          );
-        })}
-
-        {/* Center target zone */}
+        {/* Mode Title & Description */}
         <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-dashed border-mint/30 flex items-center justify-center pointer-events-none"
-          animate={{
-            scale: [1, 1.05, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 3, repeat: Infinity }}
+          key={`title-${activeMode}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="absolute top-6 left-6 z-10"
         >
-          <div className="text-center">
-            <Sparkles className="w-6 h-6 text-mint mx-auto mb-1" />
-            <span className="text-xs text-neutral-500">Drop Zone</span>
+          <div className="flex items-center gap-3 mb-2">
+            <div className={`p-2 rounded-lg bg-gradient-to-br ${currentMode.color}`}>
+              <currentMode.icon className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-white">{currentMode.title}</h3>
           </div>
+          <p className="text-sm text-neutral-400">{currentMode.description}</p>
         </motion.div>
 
-        {/* Toast notification */}
-        <AnimatePresence>
-          {showToast && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="absolute bottom-4 right-4 px-4 py-3 rounded-lg bg-mint text-black font-semibold text-sm shadow-lg flex items-center gap-2 pointer-events-none"
-            >
-              <CheckCircle className="w-4 h-4" />
-              Component selected!
-            </motion.div>
-          )}
+        {/* Interactive Elements */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeMode}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.4, staggerChildren: 0.1 }}
+            className="relative w-full h-full"
+          >
+            {currentMode.elements.map((element, index) => {
+              const ElementIcon = element.icon;
+              return (
+                <motion.div
+                  key={`${activeMode}-${index}`}
+                  initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                  animate={{ 
+                    opacity: 1, 
+                    scale: 1, 
+                    rotate: 0,
+                    y: [0, -10, 0],
+                  }}
+                  transition={{ 
+                    delay: index * 0.15,
+                    y: {
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                    }
+                  }}
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  className="absolute cursor-pointer"
+                  style={{
+                    left: element.x,
+                    top: element.y + 50,
+                  }}
+                >
+                  <div className={`relative group`}>
+                    {/* Glow effect */}
+                    <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${currentMode.color} blur-xl opacity-50 group-hover:opacity-100 transition-opacity`} />
+                    
+                    {/* Card */}
+                    <div className={`relative w-24 h-24 rounded-2xl bg-gradient-to-br ${currentMode.color} p-[2px]`}>
+                      <div className="w-full h-full bg-black/90 rounded-2xl flex flex-col items-center justify-center gap-2">
+                        <ElementIcon className="w-8 h-8 text-white" />
+                        <span className="text-[10px] text-neutral-300 font-medium">{element.label}</span>
+                      </div>
+                    </div>
+
+                    {/* Pulse ring */}
+                    <motion.div
+                      className={`absolute -inset-1 rounded-2xl border-2 ${
+                        activeMode === 'uiux' ? 'border-purple-500' :
+                        activeMode === 'ai' ? 'border-cyan-500' : 'border-mint'
+                      }`}
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        opacity: [0.5, 0, 0.5],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        delay: index * 0.3,
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </AnimatePresence>
 
+        {/* Connection Lines */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.3 }}>
+          <motion.path
+            d="M 150,130 Q 250,150 300,160"
+            fill="none"
+            stroke={activeMode === 'uiux' ? '#a855f7' : activeMode === 'ai' ? '#06b6d4' : '#00ffc2'}
+            strokeWidth="2"
+            strokeDasharray="5,5"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+          />
+          <motion.path
+            d="M 180,180 Q 220,200 240,250"
+            fill="none"
+            stroke={activeMode === 'uiux' ? '#a855f7' : activeMode === 'ai' ? '#06b6d4' : '#00ffc2'}
+            strokeWidth="2"
+            strokeDasharray="5,5"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 1, delay: 0.2, ease: "easeInOut" }}
+          />
+        </svg>
+
         {/* Floating particles */}
-        {[...Array(8)].map((_, i) => (
+        {[...Array(12)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 rounded-full bg-mint/40 pointer-events-none"
+            className={`absolute w-1 h-1 rounded-full pointer-events-none ${
+              activeMode === 'uiux' ? 'bg-purple-500' :
+              activeMode === 'ai' ? 'bg-cyan-500' : 'bg-mint'
+            }`}
             style={{
-              left: `${10 + i * 12}%`,
-              top: `${20 + (i % 3) * 25}%`,
+              left: `${15 + i * 7}%`,
+              top: `${30 + (i % 4) * 15}%`,
             }}
             animate={{
-              y: [0, -15, 0],
-              opacity: [0.2, 0.6, 0.2],
+              y: [0, -20, 0],
+              opacity: [0.3, 0.8, 0.3],
+              scale: [1, 1.5, 1],
             }}
             transition={{
-              duration: 2 + i * 0.3,
+              duration: 2.5 + i * 0.2,
               repeat: Infinity,
               ease: "easeInOut",
             }}
@@ -930,7 +997,7 @@ function InteractiveUIBuilder() {
         transition={{ delay: 1 }}
         className="absolute -bottom-8 left-0 right-0 text-center text-xs text-neutral-500"
       >
-        Déplacez les éléments pour construire votre interface
+        Cliquez sur les onglets pour explorer mes compétences
       </motion.div>
     </motion.div>
   );
@@ -1397,7 +1464,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
               transition={{ duration: 1, type: "spring", delay: 0.3 }}
               className="relative hidden lg:block h-[700px]"
             >
-              <InteractiveUIBuilder />
+              <InteractiveSkillsSwitcher />
             </motion.div>
           </div>
         </div>
