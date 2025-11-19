@@ -252,9 +252,15 @@ export function ServiceContactForm({ onSuccess }: ServiceContactFormProps) {
                     <div className="w-2.5 h-2.5 rounded-full bg-mint" />
                   )}
                 </div>
-                <span className={`text-sm ${isSelected ? 'text-white font-medium' : 'text-neutral-400'}`}>
-                  {reason}
-                </span>
+                {isSelected ? (
+                  <span className="text-sm text-white font-medium">
+                    {reason}
+                  </span>
+                ) : (
+                  <span className="text-sm text-neutral-400">
+                    {reason}
+                  </span>
+                )}
               </button>
             );
           })}
