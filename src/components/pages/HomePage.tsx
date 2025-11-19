@@ -1163,28 +1163,65 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 transition={{ delay: 0.2 }}
                 className="grid grid-cols-2 gap-4"
               >
-                {[
-                  { value: "50+", label: "Projets livrés", icon: Target, color: "mint" },
-                  { value: "98%", label: "Satisfaction", icon: TrendingUp, color: "purple" },
-                  { value: "99.9%", label: "Uptime", icon: Zap, color: "cyan" },
-                  { value: "2h/j", label: "Économisés", icon: Clock, color: "green" },
-                ].map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 + i * 0.1 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    className="glass-card border-white/10 p-6 rounded-2xl hover:border-mint/30 transition-all group"
-                  >
-                    <div className={`w-12 h-12 rounded-xl bg-${stat.color}-500/10 border border-${stat.color}-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                      <stat.icon className={`h-6 w-6 text-${stat.color}-400`} />
-                    </div>
-                    <div className="text-3xl font-bold mb-1 text-gradient-mint">{stat.value}</div>
-                    <div className="text-sm text-neutral-500 uppercase tracking-wider">{stat.label}</div>
-                  </motion.div>
-                ))}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="glass-card border-white/10 p-6 rounded-2xl hover:border-mint/30 transition-all group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-mint/10 border border-mint/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Target className="h-6 w-6 text-mint" />
+                  </div>
+                  <div className="text-3xl font-bold mb-1 text-gradient-mint">50+</div>
+                  <div className="text-sm text-neutral-500 uppercase tracking-wider">Projets livrés</div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="glass-card border-white/10 p-6 rounded-2xl hover:border-purple-500/30 transition-all group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <TrendingUp className="h-6 w-6 text-purple-400" />
+                  </div>
+                  <div className="text-3xl font-bold mb-1 text-gradient-mint">98%</div>
+                  <div className="text-sm text-neutral-500 uppercase tracking-wider">Satisfaction</div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="glass-card border-white/10 p-6 rounded-2xl hover:border-cyan-500/30 transition-all group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Zap className="h-6 w-6 text-cyan-400" />
+                  </div>
+                  <div className="text-3xl font-bold mb-1 text-gradient-mint">99.9%</div>
+                  <div className="text-sm text-neutral-500 uppercase tracking-wider">Uptime</div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="glass-card border-white/10 p-6 rounded-2xl hover:border-green-500/30 transition-all group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Clock className="h-6 w-6 text-green-400" />
+                  </div>
+                  <div className="text-3xl font-bold mb-1 text-gradient-mint">2h/j</div>
+                  <div className="text-sm text-neutral-500 uppercase tracking-wider">Économisés</div>
+                </motion.div>
               </motion.div>
             </div>
           </motion.div>
