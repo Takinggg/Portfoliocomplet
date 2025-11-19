@@ -1,5 +1,4 @@
-﻿import React from "react";
-import { Button } from "../ui/button";
+﻿import { Button } from "../ui/button";
 import { HeroDesignerAutomate } from "../hero/HeroDesignerAutomate";
 import { ArrowRight, Workflow, LayoutDashboard, Sparkles, TrendingDown, Clock, Star, Zap, Users, Award, CheckCircle2, ArrowUpRight, Code2, Palette, Brain, Github, Linkedin, Twitter, Send, Play, ChevronDown, CheckCircle, BarChart3, Target, Rocket, Hexagon, Cpu, Database, Globe, Lock, Layers, MessageSquare, Calendar, Shield, Check, Upload, Phone, MessageCircle, Briefcase } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useInView, AnimatePresence } from "motion/react";
