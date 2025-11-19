@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { useState } from "react";
 import { Palette, Code2, Workflow } from "lucide-react";
+import { useLanguage } from "../../utils/i18n/LanguageContext";
 
 type EngineType = "ui" | "code" | "workflow";
 
@@ -42,6 +43,7 @@ const demoData: TripleEngineMapping = {
 
 export function TripleEngineDemo() {
   const [activeEngine, setActiveEngine] = useState<EngineType>("ui");
+  const { language } = useLanguage();
 
   return (
     <div className="relative rounded-2xl border border-neutral-900 bg-neutral-950/50 overflow-hidden">
@@ -50,7 +52,7 @@ export function TripleEngineDemo() {
         <div>
           <h3 className="text-2xl font-bold mb-1">Triple Engine Concept</h3>
           <p className="text-sm text-neutral-400">
-            Hover sur chaque bloc pour voir l'interaction
+            {language === 'en' ? 'Hover on each block to see the interaction' : 'Hover sur chaque bloc pour voir l\'interaction'}
           </p>
         </div>
       </div>
@@ -190,20 +192,20 @@ export function TripleEngineDemo() {
           <div className="text-sm text-neutral-300">
             {activeEngine === "ui" && (
               <>
-                <strong className="text-mint">Design centré utilisateur :</strong> Interface
-                intuitive avec micro-interactions et états visuels clairs.
+                <strong className="text-mint">{language === 'en' ? 'User-centered design:' : 'Design centré utilisateur :'}</strong>{" "}
+                {language === 'en' ? 'Intuitive interface with micro-interactions and clear visual states.' : 'Interface intuitive avec micro-interactions et états visuels clairs.'}
               </>
             )}
             {activeEngine === "code" && (
               <>
-                <strong className="text-mint">Code propre et maintenable :</strong>{" "}
-                Composants réutilisables, typés et optimisés pour la performance.
+                <strong className="text-mint">{language === 'en' ? 'Clean and maintainable code:' : 'Code propre et maintenable :'}</strong>{" "}
+                {language === 'en' ? 'Reusable, typed components optimized for performance.' : 'Composants réutilisables, typés et optimisés pour la performance.'}
               </>
             )}
             {activeEngine === "workflow" && (
               <>
-                <strong className="text-mint">Automatisation intelligente :</strong> Chaque
-                action déclenche un workflow pour économiser du temps et réduire les erreurs.
+                <strong className="text-mint">{language === 'en' ? 'Smart automation:' : 'Automatisation intelligente :'}</strong>{" "}
+                {language === 'en' ? 'Every action triggers a workflow to save time and reduce errors.' : 'Chaque action déclenche un workflow pour économiser du temps et réduire les erreurs.'}
               </>
             )}
           </div>
