@@ -570,40 +570,6 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
         </div>
       </section>
 
-      {/* Service Packages */}
-      <section className="py-32 px-6" id="packages">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/20 bg-mint/5 backdrop-blur-sm mb-6">
-              <span className="text-sm text-mint font-medium">Offres & Packs</span>
-            </div>
-            <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              Choisissez votre pack
-            </h2>
-            <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
-              Trois formules claires pour répondre à vos besoins, du quick-win au
-              projet complet
-            </p>
-          </motion.div>
-
-          <div className="grid lg:grid-cols-3 gap-8">
-            {packages.map((pkg, index) => (
-              <ServicePackageCard
-                key={pkg.id}
-                package={pkg}
-                index={index}
-                onAuditClick={() => onNavigate("booking")}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Process Timeline */}
       <section className="py-32 px-6 bg-neutral-950/30 border-t border-neutral-900">
         <div className="max-w-7xl mx-auto">
