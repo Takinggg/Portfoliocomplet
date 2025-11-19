@@ -51,6 +51,27 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       cta1: language === 'en' ? 'Request free audit — 15 min' : 'Demander un audit gratuit — 15 min',
       cta2: language === 'en' ? 'View my work' : 'Voir mes réalisations',
     },
+    sections: {
+      services: language === 'en' ? 'Detailed Services' : 'Services détaillés',
+      servicesTitle: language === 'en' ? 'What I do' : 'Ce que je propose',
+      servicesSubtitle: language === 'en' ? '5 modular services to build your perfect product' : '5 services modulaires pour construire votre produit parfait',
+      faq: 'FAQ',
+      faqTitle: language === 'en' ? 'Frequently asked questions' : 'Questions fréquentes',
+      faqSubtitle: language === 'en' ? 'Everything you need to know before getting started' : 'Tout ce que vous devez savoir avant de démarrer',
+      contact: 'Contact',
+      contactTitle: language === 'en' ? 'Let\'s start your project' : 'Démarrons votre projet',
+      contactSubtitle: language === 'en' ? 'Describe your needs, I\'ll respond within 24h with an action plan' : 'Décrivez votre besoin, je vous réponds sous 24h avec un plan d\'action',
+      finalCta: language === 'en' ? 'Ready to transform your product?' : 'Prêt à transformer votre produit ?',
+      finalCtaSubtitle: language === 'en' ? 'Start with a free 15-minute audit. No commitment, no obligation.' : 'Commencez par un audit gratuit de 15 minutes. Sans engagement, sans obligation.',
+      bookAudit: language === 'en' ? 'Book my free audit' : 'Réserver mon audit gratuit',
+      sendBrief: language === 'en' ? 'Send a detailed brief' : 'Envoyer un brief détaillé',
+    },
+    trust: {
+      satisfaction: language === 'en' ? 'Client satisfaction' : 'Satisfaction clients',
+      responseTime: language === 'en' ? 'Response time' : 'Temps de réponse',
+      compliance: language === 'en' ? 'Compliance guaranteed' : 'Conformité garantie',
+      nda: language === 'en' ? 'On request' : 'Sur demande',
+    },
   };
 
   // SEO Meta tags
@@ -654,14 +675,14 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/20 bg-mint/5 backdrop-blur-sm mb-6">
               <span className="text-sm text-mint font-medium">
-                Services détaillés
+                {text.sections.services}
               </span>
             </div>
             <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              Ce que je propose
+              {text.sections.servicesTitle}
             </h2>
             <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
-              5 services modulaires pour construire votre produit parfait
+              {text.sections.servicesSubtitle}
             </p>
           </motion.div>
 
@@ -679,13 +700,13 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/20 bg-mint/5 backdrop-blur-sm mb-6">
-              <span className="text-sm text-mint font-medium">FAQ</span>
+              <span className="text-sm text-mint font-medium">{text.sections.faq}</span>
             </div>
             <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              Questions fréquentes
+              {text.sections.faqTitle}
             </h2>
             <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
-              Tout ce que vous devez savoir avant de démarrer
+              {text.sections.faqSubtitle}
             </p>
           </motion.div>
 
@@ -705,13 +726,13 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
             className="text-center mb-12"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/20 bg-mint/5 backdrop-blur-sm mb-6">
-              <span className="text-sm text-mint font-medium">Contact</span>
+              <span className="text-sm text-mint font-medium">{text.sections.contact}</span>
             </div>
             <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              Démarrons votre projet
+              {text.sections.contactTitle}
             </h2>
             <p className="text-xl text-neutral-400">
-              Décrivez votre besoin, je vous réponds sous 24h avec un plan d'action
+              {text.sections.contactSubtitle}
             </p>
           </motion.div>
 
@@ -734,11 +755,10 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
             viewport={{ once: true }}
           >
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8">
-              Prêt à transformer votre produit ?
+              {text.sections.finalCta}
             </h2>
             <p className="text-xl text-neutral-400 mb-12 max-w-2xl mx-auto">
-              Commencez par un audit gratuit de 15 minutes. Sans engagement, sans
-              obligation.
+              {text.sections.finalCtaSubtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -746,7 +766,7 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
                 onClick={() => onNavigate("booking")}
                 className="bg-mint text-black hover:bg-mint/90 h-14 px-10 rounded-full text-lg"
               >
-                Réserver mon audit gratuit
+                {text.sections.bookAudit}
               </Button>
               <Button
                 size="lg"
@@ -758,7 +778,7 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
                 }}
                 className="border-neutral-800 hover:border-mint/20 hover:bg-neutral-950 h-14 px-10 rounded-full text-lg"
               >
-                Envoyer un brief détaillé
+                {text.sections.sendBrief}
               </Button>
             </div>
           </motion.div>
@@ -772,23 +792,23 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
             <div>
               <div className="text-3xl font-bold text-mint mb-2">100%</div>
               <div className="text-sm text-neutral-400">
-                Satisfaction clients
+                {text.trust.satisfaction}
               </div>
             </div>
             <div>
               <div className="text-3xl font-bold text-mint mb-2">&lt; 24h</div>
-              <div className="text-sm text-neutral-400">Temps de réponse</div>
+              <div className="text-sm text-neutral-400">{text.trust.responseTime}</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-mint mb-2">RGPD</div>
+              <div className="text-3xl font-bold text-mint mb-2">{language === 'en' ? 'GDPR' : 'RGPD'}</div>
               <div className="text-sm text-neutral-400">
-                Conformité garantie
+                {text.trust.compliance}
               </div>
             </div>
             <div>
               <div className="text-3xl font-bold text-mint mb-2">NDA</div>
               <div className="text-sm text-neutral-400">
-                Sur demande
+                {text.trust.nda}
               </div>
             </div>
           </div>
