@@ -2004,9 +2004,9 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   className="flex flex-wrap items-center justify-center gap-6 mb-10"
                 >
                   {[
-                    { icon: Shield, text: "Paiement sécurisé" },
-                    { icon: Award, text: "Garantie qualité" },
-                    { icon: Clock, text: "Délais respectés" },
+                    { icon: Shield, text: t('home.cta.features.secure') },
+                    { icon: Award, text: t('home.cta.features.quality') },
+                    { icon: Clock, text: t('home.cta.features.deadline') },
                   ].map((item, i) => (
                     <motion.div
                       key={i}

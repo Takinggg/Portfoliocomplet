@@ -290,7 +290,12 @@ export default {
       "titleHighlight": "votre expérience digitale",
       "subtitle": "Discutons de votre projet et découvrez comment je peux transformer votre vision en réalité",
       "button": "Discuter de mon projet",
-      "secondary": "Voir mon portfolio"
+      "secondary": "Voir mon portfolio",
+      "features": {
+        "secure": "Paiement sécurisé",
+        "quality": "Garantie qualité",
+        "deadline": "Délais respectés"
+      }
     },
     "pinnedProjects": {
       "title": "Projets récents",

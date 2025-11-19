@@ -317,7 +317,12 @@ export default {
       "titleHighlight": "your digital experience",
       "subtitle": "Let's discuss your project and discover how I can turn your vision into reality",
       "button": "Discuss my project",
-      "secondary": "View my portfolio"
+      "secondary": "View my portfolio",
+      "features": {
+        "secure": "Secure payment",
+        "quality": "Quality guarantee",
+        "deadline": "Deadlines met"
+      }
     },
     "pinnedProjects": {
       "title": "Recent Projects",
