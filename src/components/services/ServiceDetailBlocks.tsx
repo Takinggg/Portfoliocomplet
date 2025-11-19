@@ -80,13 +80,21 @@ export function ServiceDetailBlocks({ services }: ServiceDetailBlocksProps) {
                   <Clock className="h-4 w-4" />
                   <span>{service.duration}</span>
                 </div>
-                <div
-                  className={`px-2 py-1 rounded-md text-xs font-medium border ${
-                    complexityColors[service.complexity]
-                  }`}
-                >
-                  {service.complexity}
-                </div>
+                {service.complexity === 'simple' && (
+                  <div className="px-2 py-1 rounded-md text-xs font-medium border text-green-400 bg-green-400/10 border-green-400/20">
+                    {service.complexity}
+                  </div>
+                )}
+                {service.complexity === 'modérée' && (
+                  <div className="px-2 py-1 rounded-md text-xs font-medium border text-yellow-400 bg-yellow-400/10 border-yellow-400/20">
+                    {service.complexity}
+                  </div>
+                )}
+                {service.complexity === 'avancée' && (
+                  <div className="px-2 py-1 rounded-md text-xs font-medium border text-red-400 bg-red-400/10 border-red-400/20">
+                    {service.complexity}
+                  </div>
+                )}
               </div>
             </div>
           </div>
