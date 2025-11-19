@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { ArrowRight, TrendingUp } from "lucide-react";
 import { Button } from "../ui/button";
+import { useLanguage } from "../../utils/i18n/LanguageContext";
 
 interface MiniCaseStudy {
   id: string;
@@ -24,6 +25,8 @@ interface MiniCaseStudiesProps {
 }
 
 export function MiniCaseStudies({ cases, onViewMore }: MiniCaseStudiesProps) {
+  const { language } = useLanguage();
+
   return (
     <div className="grid md:grid-cols-3 gap-8">
       {cases.map((caseStudy, index) => (
@@ -76,7 +79,7 @@ export function MiniCaseStudies({ cases, onViewMore }: MiniCaseStudiesProps) {
               <div className="space-y-3 mb-4">
                 <div>
                   <div className="text-xs font-semibold text-red-400 mb-1">
-                    ❌ Problème
+                    ❌ {language === 'en' ? 'Problem' : 'Problème'}
                   </div>
                   <p className="text-sm text-neutral-400 leading-relaxed">
                     {caseStudy.problem}
@@ -85,7 +88,7 @@ export function MiniCaseStudies({ cases, onViewMore }: MiniCaseStudiesProps) {
 
                 <div>
                   <div className="text-xs font-semibold text-blue-400 mb-1">
-                    🔧 Action
+                    🔧 {language === 'en' ? 'Action' : 'Action'}
                   </div>
                   <p className="text-sm text-neutral-400 leading-relaxed">
                     {caseStudy.action}
@@ -94,7 +97,7 @@ export function MiniCaseStudies({ cases, onViewMore }: MiniCaseStudiesProps) {
 
                 <div>
                   <div className="text-xs font-semibold text-mint mb-1">
-                    ✅ Résultat
+                    ✅ {language === 'en' ? 'Result' : 'Résultat'}
                   </div>
                   <p className="text-sm text-neutral-300 leading-relaxed font-medium">
                     {caseStudy.result}
@@ -139,7 +142,7 @@ export function MiniCaseStudies({ cases, onViewMore }: MiniCaseStudiesProps) {
                   onClick={() => onViewMore(caseStudy.id)}
                   className="w-full text-mint hover:text-mint hover:bg-mint/5 group/btn"
                 >
-                  Voir l'étude complète
+                  {language === 'en' ? 'View full case study' : 'Voir l\'étude complète'}
                   <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                 </Button>
               )}
