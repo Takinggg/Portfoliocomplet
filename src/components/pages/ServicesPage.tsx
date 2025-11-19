@@ -65,6 +65,40 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       finalCtaSubtitle: language === 'en' ? 'Start with a free 15-minute audit. No commitment, no obligation.' : 'Commencez par un audit gratuit de 15 minutes. Sans engagement, sans obligation.',
       bookAudit: language === 'en' ? 'Book my free audit' : 'Réserver mon audit gratuit',
       sendBrief: language === 'en' ? 'Send a detailed brief' : 'Envoyer un brief détaillé',
+      whyItWorks: language === 'en' ? 'Why it works' : 'Pourquoi ça marche',
+      whyItWorksSubtitle: language === 'en' ? 'A complete approach that combines design, tech, and results' : 'Une approche complète qui allie design, tech et résultats',
+      methodology: language === 'en' ? 'Methodology' : 'Méthodologie',
+      howIWork: language === 'en' ? 'How I work' : 'Comment je travaille',
+      howIWorkSubtitle: language === 'en' ? 'A proven 5-step process for predictable, quality results' : 'Un process en 5 étapes éprouvé pour des résultats prévisibles et de qualité',
+      results: language === 'en' ? 'Results' : 'Résultats',
+      caseStudiesTitle: language === 'en' ? 'Quick case studies' : 'Études de cas rapides',
+      caseStudiesSubtitle: language === 'en' ? 'Problem → Action → Result' : 'Problème → Action → Résultat',
+    },
+    whyItWorks: {
+      card1: {
+        title: language === 'en' ? 'User-centered design' : 'Design centré',
+        description: language === 'en'
+          ? 'Interfaces designed for your users, tested and validated before implementation.'
+          : 'Interfaces pensées pour vos utilisateurs, testées et validées avant implémentation.',
+        metric: '+15%',
+        metricLabel: language === 'en' ? 'average conversion rate' : 'taux de conversion moyen',
+      },
+      card2: {
+        title: language === 'en' ? 'Actionable systems' : 'Systèmes actionnables',
+        description: language === 'en'
+          ? 'Automations and workflows that save time and reduce human errors.'
+          : 'Automatisations et workflows qui économisent du temps et réduisent les erreurs humaines.',
+        metric: '-20h',
+        metricLabel: language === 'en' ? 'per month automated' : 'par mois automatisé',
+      },
+      card3: {
+        title: language === 'en' ? 'Measurable results' : 'Résultats mesurables',
+        description: language === 'en'
+          ? 'Analytics, dashboards, and KPIs to track the real impact of every improvement.'
+          : 'Analytics, dashboards et KPIs pour suivre l\'impact réel de chaque amélioration.',
+        metric: 'ROI',
+        metricLabel: language === 'en' ? 'recovered in 2-4 weeks' : 'récupéré en 2-4 semaines',
+      },
     },
     trust: {
       satisfaction: language === 'en' ? 'Client satisfaction' : 'Satisfaction clients',
@@ -538,10 +572,10 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Pourquoi ça marche
+              {text.sections.whyItWorks}
             </h2>
             <p className="text-xl text-neutral-400">
-              Une approche complète qui allie design, tech et résultats
+              {text.sections.whyItWorksSubtitle}
             </p>
           </motion.div>
 
@@ -549,27 +583,24 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
             {[
               {
                 icon: Target,
-                title: "Design centré",
-                description:
-                  "Interfaces pensées pour vos utilisateurs, testées et validées avant implémentation.",
-                metric: "+15%",
-                metricLabel: "taux de conversion moyen",
+                title: text.whyItWorks.card1.title,
+                description: text.whyItWorks.card1.description,
+                metric: text.whyItWorks.card1.metric,
+                metricLabel: text.whyItWorks.card1.metricLabel,
               },
               {
                 icon: Workflow,
-                title: "Systèmes actionnables",
-                description:
-                  "Automatisations et workflows qui économisent du temps et réduisent les erreurs humaines.",
-                metric: "-20h",
-                metricLabel: "par mois automatisé",
+                title: text.whyItWorks.card2.title,
+                description: text.whyItWorks.card2.description,
+                metric: text.whyItWorks.card2.metric,
+                metricLabel: text.whyItWorks.card2.metricLabel,
               },
               {
                 icon: TrendingUp,
-                title: "Résultats mesurables",
-                description:
-                  "Analytics, dashboards et KPIs pour suivre l'impact réel de chaque amélioration.",
-                metric: "ROI",
-                metricLabel: "récupéré en 2-4 semaines",
+                title: text.whyItWorks.card3.title,
+                description: text.whyItWorks.card3.description,
+                metric: text.whyItWorks.card3.metric,
+                metricLabel: text.whyItWorks.card3.metricLabel,
               },
             ].map((item, index) => (
               <motion.div
@@ -622,14 +653,13 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/20 bg-mint/5 backdrop-blur-sm mb-6">
-              <span className="text-sm text-mint font-medium">Méthodologie</span>
+              <span className="text-sm text-mint font-medium">{text.sections.methodology}</span>
             </div>
             <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              Comment je travaille
+              {text.sections.howIWork}
             </h2>
             <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
-              Un process en 5 étapes éprouvé pour des résultats prévisibles et de
-              qualité
+              {text.sections.howIWorkSubtitle}
             </p>
           </motion.div>
 
@@ -647,13 +677,13 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/20 bg-mint/5 backdrop-blur-sm mb-6">
-              <span className="text-sm text-mint font-medium">Résultats</span>
+              <span className="text-sm text-mint font-medium">{text.sections.results}</span>
             </div>
             <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              Études de cas rapides
+              {text.sections.caseStudiesTitle}
             </h2>
             <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
-              Problème → Action → Résultat
+              {text.sections.caseStudiesSubtitle}
             </p>
           </motion.div>
 
