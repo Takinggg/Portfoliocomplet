@@ -1,9 +1,16 @@
 // Utilitaires PWA pour Portfolio Freelance Pro
 
 /**
- * Détecte si l'application est dans un environnement de preview (Figma Make)
+ * Détecte si l'application est dans un environnement de preview (Figma Make) ou développement local
  */
 function isPreviewEnvironment(): boolean {
+  // Détecter l'environnement de développement local
+  const isDevelopment = import.meta.env.DEV || 
+                        window.location.hostname === 'localhost' || 
+                        window.location.hostname === '127.0.0.1' ||
+                        window.location.port === '3000' ||
+                        window.location.port === '5173';
+  
   // Détecter l'environnement Figma Make iframe
   const isFigmaPreview = window.location.hostname.includes('figmaiframepreview') || 
                          window.location.hostname.includes('figma.site');
@@ -11,20 +18,20 @@ function isPreviewEnvironment(): boolean {
   // Détecter si on est dans un iframe
   const isInIframe = window.self !== window.top;
   
-  return isFigmaPreview || isInIframe;
+  return isDevelopment || isFigmaPreview || isInIframe;
 }
 
 /**
  * Enregistre le Service Worker
- * Note: Désactivé dans l'environnement de preview Figma Make
+ * Note: Désactivé en développement local et dans l'environnement de preview Figma Make
  */
 export async function registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
-  // Vérifier si on est dans un environnement de preview
+  // Vérifier si on est dans un environnement de preview ou développement
   if (isPreviewEnvironment()) {
     console.log(
-      '%c[PWA] Service Worker désactivé en mode preview',
+      '%c[PWA] Service Worker désactivé en mode développement/preview',
       'color: #00FFC2; font-weight: bold;',
-      '\n📱 Les PWA ne sont pas supportées dans les iframes de preview.',
+      '\n📱 Les PWA ne sont pas supportées en développement local ou dans les iframes.',
       '\n✅ Le Service Worker sera actif après déploiement en production.',
       '\n📦 Fichiers PWA prêts: /public/service-worker.js, /public/manifest.json, /public/offline.html'
     );

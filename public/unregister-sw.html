@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Désinstaller Service Worker</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #00FFC2;
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background: #00e5af;
+    }
+    .danger {
+      background: #ef4444;
+      color: #fff;
+    }
+    .danger:hover {
+      background: #dc2626;
+    }
+    .success {
+      color: #10b981;
+      margin-top: 10px;
+    }
+    .error {
+      color: #ef4444;
+      margin-top: 10px;
+    }
+    pre {
+      background: #000;
+      padding: 12px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🔧 Utilitaire Service Worker</h1>
+    <p>Cet outil permet de diagnostiquer et désinstaller le service worker qui peut causer des problèmes en développement.</p>
+  </div>
+
+  <div class="card">
+    <h2>Actions rapides</h2>
+    <button onclick="unregisterServiceWorker()">🗑️ Désinstaller Service Worker</button>
+    <button onclick="clearAllCaches()" class="danger">🧹 Vider tous les caches</button>
+    <button onclick="fullReset()" class="danger">💣 Reset complet + Recharger</button>
+    <button onclick="checkStatus()">🔍 Vérifier statut</button>
+    <div id="result"></div>
+  </div>
+
+  <div class="card">
+    <h2>État actuel</h2>
+    <pre id="status">Chargement...</pre>
+  </div>
+
+  <script>
+    const result = document.getElementById('result');
+    const status = document.getElementById('status');
+
+    async function checkStatus() {
+      try {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        const cacheNames = await caches.keys();
+        
+        const info = {
+          serviceWorkersActifs: registrations.length,
+          serviceWorkers: registrations.map(r => ({
+            scope: r.scope,
+            state: r.active?.state || 'none'
+          })),
+          caches: cacheNames,
+          controller: !!navigator.serviceWorker.controller
+        };
+        
+        status.textContent = JSON.stringify(info, null, 2);
+      } catch (error) {
+        status.textContent = `Erreur: ${error.message}`;
+      }
+    }
+
+    async function unregisterServiceWorker() {
+      try {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        
+        if (registrations.length === 0) {
+          result.innerHTML = '<p class="success">✅ Aucun service worker à désinstaller</p>';
+          await checkStatus();
+          return;
+        }
+
+        for (let registration of registrations) {
+          await registration.unregister();
+        }
+        
+        result.innerHTML = `<p class="success">✅ ${registrations.length} service worker(s) désinstallé(s)</p>`;
+        await checkStatus();
+      } catch (error) {
+        result.innerHTML = `<p class="error">❌ Erreur: ${error.message}</p>`;
+      }
+    }
+
+    async function clearAllCaches() {
+      try {
+        const cacheNames = await caches.keys();
+        
+        if (cacheNames.length === 0) {
+          result.innerHTML = '<p class="success">✅ Aucun cache à vider</p>';
+          return;
+        }
+
+        await Promise.all(cacheNames.map(name => caches.delete(name)));
+        
+        result.innerHTML = `<p class="success">✅ ${cacheNames.length} cache(s) vidé(s)</p>`;
+        await checkStatus();
+      } catch (error) {
+        result.innerHTML = `<p class="error">❌ Erreur: ${error.message}</p>`;
+      }
+    }
+
+    async function fullReset() {
+      try {
+        // Désinstaller SW
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (let registration of registrations) {
+          await registration.unregister();
+        }
+
+        // Vider caches
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map(name => caches.delete(name)));
+
+        // Vider localStorage
+        localStorage.clear();
+        sessionStorage.clear();
+
+        result.innerHTML = '<p class="success">✅ Reset complet effectué. Rechargement dans 2 secondes...</p>';
+        
+        setTimeout(() => {
+          window.location.reload(true);
+        }, 2000);
+      } catch (error) {
+        result.innerHTML = `<p class="error">❌ Erreur: ${error.message}</p>`;
+      }
+    }
+
+    // Vérifier le statut au chargement
+    checkStatus();
+  </script>
+</body>
+</html>
