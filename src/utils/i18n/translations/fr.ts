@@ -295,6 +295,17 @@ export default {
         "secure": "Paiement sécurisé",
         "quality": "Garantie qualité",
         "deadline": "Délais respectés"
+      },
+      "floatingStats": {
+        "projects": "Projets livrés",
+        "delivery": "Livraison rapide",
+        "support": "Support client"
+      },
+      "bottomStats": {
+        "satisfaction": "Clients satisfaits",
+        "projects": "Projets livrés",
+        "timeline": "Délai moyen",
+        "support": "Support disponible"
       }
     },
     "pinnedProjects": {

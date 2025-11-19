@@ -1882,7 +1882,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     </div>
                     <div>
                       <div className="font-bold text-white">50+</div>
-                      <div className="text-xs text-neutral-400">Projets livrés</div>
+                      <div className="text-xs text-neutral-400">{t('home.cta.floatingStats.projects')}</div>
                     </div>
                   </div>
                 </motion.div>
@@ -1901,7 +1901,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     </div>
                     <div>
                       <div className="font-bold text-white">2-4 sem</div>
-                      <div className="text-xs text-neutral-400">Livraison rapide</div>
+                      <div className="text-xs text-neutral-400">{t('home.cta.floatingStats.delivery')}</div>
                     </div>
                   </div>
                 </motion.div>
@@ -1920,7 +1920,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     </div>
                     <div>
                       <div className="font-bold text-white">24/7</div>
-                      <div className="text-xs text-neutral-400">Support client</div>
+                      <div className="text-xs text-neutral-400">{t('home.cta.floatingStats.support')}</div>
                     </div>
                   </div>
                 </motion.div>
@@ -2063,10 +2063,10 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto"
                 >
                   {[
-                    { value: "100%", label: "Clients satisfaits" },
-                    { value: "50+", label: "Projets livrés" },
-                    { value: "2-4 sem", label: "Délai moyen" },
-                    { value: "24/7", label: "Support disponible" },
+                    { value: "100%", label: t('home.cta.bottomStats.satisfaction') },
+                    { value: "50+", label: t('home.cta.bottomStats.projects') },
+                    { value: "2-4 sem", label: t('home.cta.bottomStats.timeline') },
+                    { value: "24/7", label: t('home.cta.bottomStats.support') },
                   ].map((stat, i) => (
                     <motion.div
                       key={i}

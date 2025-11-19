@@ -322,6 +322,17 @@ export default {
         "secure": "Secure payment",
         "quality": "Quality guarantee",
         "deadline": "Deadlines met"
+      },
+      "floatingStats": {
+        "projects": "Projects delivered",
+        "delivery": "Fast delivery",
+        "support": "Client support"
+      },
+      "bottomStats": {
+        "satisfaction": "Satisfied clients",
+        "projects": "Projects delivered",
+        "timeline": "Average timeline",
+        "support": "Support available"
       }
     },
     "pinnedProjects": {
