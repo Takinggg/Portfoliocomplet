@@ -1113,7 +1113,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/30 bg-mint/10 mb-8"
                 >
                   <Sparkles className="h-4 w-4 text-mint" />
-                  <span className="text-sm text-mint font-medium">Design × Code × Automatisation</span>
+                  <span className="text-sm text-mint font-medium">{t('home.intro.badge')}</span>
                 </motion.div>
 
                 <motion.h2
@@ -1123,9 +1123,9 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   transition={{ delay: 0.1 }}
                   className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1]"
                 >
-                  Je transforme vos idées en{" "}
+                  {t('home.intro.newTitle')}{" "}
                   <span className="text-gradient-mint bg-gradient-to-r from-mint via-cyan-400 to-mint bg-clip-text text-transparent">
-                    systèmes intelligents
+                    {t('home.intro.newHighlight')}
                   </span>
                 </motion.h2>
 
@@ -1136,8 +1136,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   transition={{ delay: 0.2 }}
                   className="text-xl text-neutral-400 mb-8 leading-relaxed"
                 >
-                  Design élégant, code performant et automatisation intelligente. 
-                  Des solutions web qui font la différence pour votre business.
+                  {t('home.intro.newDescription')}
                 </motion.p>
 
                 <motion.button
@@ -1149,7 +1148,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   onClick={() => document.querySelector('#system-visualization')?.scrollIntoView({ behavior: 'smooth' })}
                   className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-mint text-[#0C0C0C] font-semibold text-lg hover:bg-mint/90 transition-all group shadow-lg shadow-mint/20"
                 >
-                  <span>Découvrir comment</span>
+                  <span>{t('home.intro.newCta')}</span>
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
                 </motion.button>
               </div>
@@ -1174,7 +1173,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     <Target className="h-6 w-6 text-mint" />
                   </div>
                   <div className="text-3xl font-bold mb-1 text-gradient-mint">50+</div>
-                  <div className="text-sm text-neutral-500 uppercase tracking-wider">Projets livrés</div>
+                  <div className="text-sm text-neutral-500 uppercase tracking-wider">{t('home.intro.stats.projects')}</div>
                 </motion.div>
 
                 <motion.div
@@ -1189,7 +1188,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     <TrendingUp className="h-6 w-6 text-purple-400" />
                   </div>
                   <div className="text-3xl font-bold mb-1 text-gradient-mint">98%</div>
-                  <div className="text-sm text-neutral-500 uppercase tracking-wider">Satisfaction</div>
+                  <div className="text-sm text-neutral-500 uppercase tracking-wider">{t('home.intro.stats.satisfaction')}</div>
                 </motion.div>
 
                 <motion.div
@@ -1204,7 +1203,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     <Zap className="h-6 w-6 text-cyan-400" />
                   </div>
                   <div className="text-3xl font-bold mb-1 text-gradient-mint">99.9%</div>
-                  <div className="text-sm text-neutral-500 uppercase tracking-wider">Uptime</div>
+                  <div className="text-sm text-neutral-500 uppercase tracking-wider">{t('home.intro.stats.uptime')}</div>
                 </motion.div>
 
                 <motion.div
@@ -1219,7 +1218,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     <Clock className="h-6 w-6 text-green-400" />
                   </div>
                   <div className="text-3xl font-bold mb-1 text-gradient-mint">2h/j</div>
-                  <div className="text-sm text-neutral-500 uppercase tracking-wider">Économisés</div>
+                  <div className="text-sm text-neutral-500 uppercase tracking-wider">{t('home.intro.stats.saved')}</div>
                 </motion.div>
               </motion.div>
             </div>

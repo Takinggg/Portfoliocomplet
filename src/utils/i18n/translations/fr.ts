@@ -164,7 +164,18 @@ export default {
       "title": "Interfaces & Intelligence",
       "subtitle": "Des expériences digitales qui allient esthétique et performance",
       "description": "Du maquettage Figma au développement React, en passant par l'intégration d'IA — je crée des produits digitaux qui font la différence.",
-      "cta": "Découvrir mon approche"
+      "cta": "Découvrir mon approche",
+      "badge": "Design × Code × Automatisation",
+      "newTitle": "Je transforme vos idées en",
+      "newHighlight": "systèmes intelligents",
+      "newDescription": "Design élégant, code performant et automatisation intelligente. Des solutions web qui font la différence pour votre business.",
+      "newCta": "Découvrir comment",
+      "stats": {
+        "projects": "Projets livrés",
+        "satisfaction": "Satisfaction",
+        "uptime": "Uptime",
+        "saved": "Économisés"
+      }
     },
     "ecosystem": {
       "title": "Un écosystème intelligent",

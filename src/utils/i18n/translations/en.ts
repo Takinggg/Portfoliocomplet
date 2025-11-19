@@ -191,7 +191,18 @@ export default {
       "title": "Interfaces & Intelligence",
       "subtitle": "Digital experiences that combine aesthetics and performance",
       "description": "From Figma prototyping to React development, including AI integration — I craft digital products that make a difference.",
-      "cta": "Discover my approach"
+      "cta": "Discover my approach",
+      "badge": "Design × Code × Automation",
+      "newTitle": "I transform your ideas into",
+      "newHighlight": "intelligent systems",
+      "newDescription": "Elegant design, performant code and intelligent automation. Web solutions that make the difference for your business.",
+      "newCta": "Discover how",
+      "stats": {
+        "projects": "Projects delivered",
+        "satisfaction": "Satisfaction",
+        "uptime": "Uptime",
+        "saved": "Time saved"
+      }
     },
     "ecosystem": {
       "title": "An intelligent ecosystem",
