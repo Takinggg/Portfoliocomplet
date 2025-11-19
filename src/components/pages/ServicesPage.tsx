@@ -39,18 +39,36 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
   const { t } = useTranslation();
   const { language } = useLanguage();
 
+  // Translations
+  const text = {
+    hero: {
+      badge: language === 'en' ? 'Design. AI. Automation.' : 'Design. IA. Automatisation.',
+      title1: language === 'en' ? 'Experiences' : 'Des expériences',
+      title2: language === 'en' ? 'that work' : 'qui fonctionnent',
+      subtitle: language === 'en' 
+        ? 'I combine UI/UX design with intelligent systems to create clear, scalable, and time-efficient products.'
+        : 'J\'allie UI/UX design et systèmes intelligents pour créer des produits clairs, évolutifs et économes en temps.',
+      cta1: language === 'en' ? 'Request free audit — 15 min' : 'Demander un audit gratuit — 15 min',
+      cta2: language === 'en' ? 'View my work' : 'Voir mes réalisations',
+    },
+  };
+
   // SEO Meta tags
   useEffect(() => {
-    document.title = "Services — UI/UX Design, Automatisation & IA — Maxence";
+    document.title = language === 'en'
+      ? "Services — UI/UX Design, Automation & AI — Maxence"
+      : "Services — UI/UX Design, Automatisation & IA — Maxence";
     
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "UI/UX design + automatisation : j'aide les startups et freelances à créer des interfaces performantes et des systèmes intelligents. Audit gratuit."
+        language === 'en'
+          ? "UI/UX design + automation: I help startups and freelancers create high-performance interfaces and intelligent systems. Free audit."
+          : "UI/UX design + automatisation : j'aide les startups et freelances à créer des interfaces performantes et des systèmes intelligents. Audit gratuit."
       );
     }
-  }, []);
+  }, [language]);
   
   // Service Packages
   const packages: ServicePackage[] = [
@@ -425,21 +443,21 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/20 bg-mint/5 backdrop-blur-sm mb-8">
               <span className="text-sm text-mint font-medium">
-                Design. IA. Automatisation.
+                {text.hero.badge}
               </span>
             </div>
 
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight leading-[0.95]">
               <span className="block text-white">
-                Des expériences
+                {text.hero.title1}
               </span>
               <span className="block text-gradient-mint-animated">
-                qui fonctionnent
+                {text.hero.title2}
               </span>
             </h1>
 
             <p className="text-xl md:text-2xl text-neutral-400 mb-12 leading-relaxed max-w-3xl mx-auto">
-              J'allie UI/UX design et systèmes intelligents pour créer des
+              {text.hero.subtitle}
               produits clairs, évolutifs et économes en temps.
             </p>
 
@@ -467,7 +485,7 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
                 onClick={() => onNavigate("booking")}
                 className="bg-mint text-black hover:bg-mint/90 h-14 px-10 rounded-full text-lg"
               >
-                Demander un audit gratuit — 15 min
+                {text.hero.cta1}
               </Button>
               <Button
                 size="lg"
@@ -479,7 +497,7 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
                 }}
                 className="border-neutral-800 hover:border-mint/20 hover:bg-neutral-950 h-14 px-10 rounded-full text-lg"
               >
-                Voir mes réalisations
+                {text.hero.cta2}
               </Button>
             </div>
           </motion.div>
