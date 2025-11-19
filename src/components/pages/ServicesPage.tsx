@@ -174,63 +174,62 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
     {
       step: "01",
       icon: Target,
-      title: "Découverte & Objectifs",
-      description:
-        "Kick-off call pour comprendre votre vision, vos utilisateurs et vos contraintes.",
-      deliverables: ["Brief validé", "User personas", "Objectifs mesurables"],
-      duration: "1-2 jours",
+      title: language === 'en' ? 'Discovery & Goals' : 'Découverte & Objectifs',
+      description: language === 'en'
+        ? 'Kick-off call to understand your vision, users, and constraints.'
+        : 'Kick-off call pour comprendre votre vision, vos utilisateurs et vos contraintes.',
+      deliverables: language === 'en'
+        ? ['Validated brief', 'User personas', 'Measurable objectives']
+        : ['Brief validé', 'User personas', 'Objectifs mesurables'],
+      duration: language === 'en' ? '1-2 days' : '1-2 jours',
     },
     {
       step: "02",
       icon: Brain,
-      title: "Audit & Mapping",
-      description:
-        "Analyse de l'existant, identification des pain points et opportunités d'amélioration.",
-      deliverables: [
-        "Rapport d'audit",
-        "User journey map",
-        "Liste des quick-wins",
-      ],
-      duration: "2-3 jours",
+      title: language === 'en' ? 'Audit & Mapping' : 'Audit & Mapping',
+      description: language === 'en'
+        ? 'Analysis of existing situation, identification of pain points and improvement opportunities.'
+        : 'Analyse de l\'existant, identification des pain points et opportunités d\'amélioration.',
+      deliverables: language === 'en'
+        ? ['Audit report', 'User journey map', 'Quick-wins list']
+        : ['Rapport d\'audit', 'User journey map', 'Liste des quick-wins'],
+      duration: language === 'en' ? '2-3 days' : '2-3 jours',
     },
     {
       step: "03",
       icon: Palette,
-      title: "Wireframes & Design System",
-      description:
-        "Création des maquettes, prototypes interactifs et fondations du design system.",
-      deliverables: [
-        "Wireframes",
-        "Prototypes Figma",
-        "Design system v1",
-      ],
-      duration: "3-5 jours",
+      title: language === 'en' ? 'Wireframes & Design System' : 'Wireframes & Design System',
+      description: language === 'en'
+        ? 'Creation of mockups, interactive prototypes, and design system foundations.'
+        : 'Création des maquettes, prototypes interactifs et fondations du design system.',
+      deliverables: language === 'en'
+        ? ['Wireframes', 'Figma prototypes', 'Design system v1']
+        : ['Wireframes', 'Prototypes Figma', 'Design system v1'],
+      duration: language === 'en' ? '3-5 days' : '3-5 jours',
     },
     {
       step: "04",
       icon: Code2,
-      title: "Implémentation & Automatisation",
-      description:
-        "Intégration du design, setup des workflows et connexions API (n8n, GPT, etc.).",
-      deliverables: [
-        "UI intégrée",
-        "Workflows actifs",
-        "Dashboard configuré",
-      ],
-      duration: "5-7 jours",
+      title: language === 'en' ? 'Implementation & Automation' : 'Implémentation & Automatisation',
+      description: language === 'en'
+        ? 'Design integration, workflows setup, and API connections (n8n, GPT, etc.).'
+        : 'Intégration du design, setup des workflows et connexions API (n8n, GPT, etc.).',
+      deliverables: language === 'en'
+        ? ['Integrated UI', 'Active workflows', 'Configured dashboard']
+        : ['UI intégrée', 'Workflows actifs', 'Dashboard configuré'],
+      duration: language === 'en' ? '5-7 days' : '5-7 jours',
     },
     {
       step: "05",
       icon: Award,
-      title: "Mesure & Itération",
-      description:
-        "Suivi des performances, ajustements et support post-livraison.",
-      deliverables: [
-        "Analytics setup",
-        "Rapport de performance",
-        "Recommandations d'évolution",
-      ],
-      duration: "En continu",
+      title: language === 'en' ? 'Measure & Iterate' : 'Mesure & Itération',
+      description: language === 'en'
+        ? 'Performance tracking, adjustments, and post-delivery support.'
+        : 'Suivi des performances, ajustements et support post-livraison.',
+      deliverables: language === 'en'
+        ? ['Analytics setup', 'Performance report', 'Evolution recommendations']
+        : ['Analytics setup', 'Rapport de performance', 'Recommandations d\'évolution'],
+      duration: language === 'en' ? 'Ongoing' : 'En continu',
     },
   ];
 
@@ -238,54 +237,63 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
   const caseStudies = [
     {
       id: "case-ecommerce",
-      title: "Refonte checkout e-commerce",
-      client: "Startup retail",
-      category: "UI/UX + Automatisation",
-      problem:
-        "Taux d'abandon panier à 83%, process d'achat complexe avec 6 étapes, aucun suivi automatisé.",
-      action:
-        "Redesign complet du tunnel en 3 étapes, ajout d'indicateurs de progression, automatisation emails de relance.",
-      result:
-        "Taux d'abandon réduit à 52% (-31 points), +28% de conversions, ROI récupéré en 2 semaines.",
+      title: language === 'en' ? 'E-commerce checkout redesign' : 'Refonte checkout e-commerce',
+      client: language === 'en' ? 'Retail startup' : 'Startup retail',
+      category: language === 'en' ? 'UI/UX + Automation' : 'UI/UX + Automatisation',
+      problem: language === 'en'
+        ? '83% cart abandonment rate, complex 6-step purchase process, no automated follow-up.'
+        : 'Taux d\'abandon panier à 83%, process d\'achat complexe avec 6 étapes, aucun suivi automatisé.',
+      action: language === 'en'
+        ? 'Complete funnel redesign in 3 steps, added progress indicators, automated reminder emails.'
+        : 'Redesign complet du tunnel en 3 étapes, ajout d\'indicateurs de progression, automatisation emails de relance.',
+      result: language === 'en'
+        ? 'Abandonment reduced to 52% (-31 points), +28% conversions, ROI recovered in 2 weeks.'
+        : 'Taux d\'abandon réduit à 52% (-31 points), +28% de conversions, ROI récupéré en 2 semaines.',
       metric: {
         value: "-31%",
-        label: "Abandon panier",
+        label: language === 'en' ? 'Cart abandonment' : 'Abandon panier',
       },
       tags: ["UI/UX", "Conversion", "Email automation"],
     },
     {
       id: "case-freelance",
-      title: "Dashboard freelance automatisé",
-      client: "Freelance designer",
-      category: "Automatisation + Dashboard",
-      problem:
-        "15h/mois perdues sur administration : facturation, suivi clients, reporting.",
-      action:
-        "Dashboard Notion + workflows n8n : génération factures auto, emails de suivi, rapports hebdo.",
-      result:
-        "Économie de 15h/mois, facturation 100% automatisée, satisfaction client accrue grâce au suivi proactif.",
+      title: language === 'en' ? 'Automated freelance dashboard' : 'Dashboard freelance automatisé',
+      client: language === 'en' ? 'Freelance designer' : 'Freelance designer',
+      category: language === 'en' ? 'Automation + Dashboard' : 'Automatisation + Dashboard',
+      problem: language === 'en'
+        ? '15h/month lost on admin: invoicing, client tracking, reporting.'
+        : '15h/mois perdues sur administration : facturation, suivi clients, reporting.',
+      action: language === 'en'
+        ? 'Notion dashboard + n8n workflows: auto invoice generation, follow-up emails, weekly reports.'
+        : 'Dashboard Notion + workflows n8n : génération factures auto, emails de suivi, rapports hebdo.',
+      result: language === 'en'
+        ? '15h/month saved, 100% automated invoicing, improved client satisfaction through proactive tracking.'
+        : 'Économie de 15h/mois, facturation 100% automatisée, satisfaction client accrue grâce au suivi proactif.',
       metric: {
         value: "15h",
-        label: "Économisées/mois",
+        label: language === 'en' ? 'Saved/month' : 'Économisées/mois',
       },
-      tags: ["Notion", "n8n", "Productivité"],
+      tags: language === 'en' ? ['Notion', 'n8n', 'Productivity'] : ['Notion', 'n8n', 'Productivité'],
     },
     {
       id: "case-saas",
-      title: "Onboarding SaaS optimisé",
-      client: "SaaS B2B",
-      category: "UI/UX + IA",
-      problem:
-        "30% des nouveaux utilisateurs abandonnent à l'onboarding, aucune personnalisation.",
-      action:
-        "Redesign onboarding interactif en 4 étapes, intégration GPT pour recommandations personnalisées.",
-      result:
-        "Taux de complétion onboarding 100%, engagement +45%, rétention J30 améliorée de 22%.",
+      title: language === 'en' ? 'Optimized SaaS onboarding' : 'Onboarding SaaS optimisé',
+      client: language === 'en' ? 'B2B SaaS' : 'SaaS B2B',
+      category: language === 'en' ? 'UI/UX + AI' : 'UI/UX + IA',
+      problem: language === 'en'
+        ? '30% of new users abandon during onboarding, no personalization.'
+        : '30% des nouveaux utilisateurs abandonnent à l\'onboarding, aucune personnalisation.',
+      action: language === 'en'
+        ? 'Interactive 4-step onboarding redesign, GPT integration for personalized recommendations.'
+        : 'Redesign onboarding interactif en 4 étapes, intégration GPT pour recommandations personnalisées.',
+      result: language === 'en'
+        ? '100% onboarding completion rate, +45% engagement, 22% improved D30 retention.'
+        : 'Taux de complétion onboarding 100%, engagement +45%, rétention J30 améliorée de 22%.',
       metric: {
         value: "+45%",
-        label: "Engagement",
+        label: language === 'en' ? 'Engagement' : 'Engagement',
       },
-      tags: ["SaaS", "Onboarding", "IA/GPT"],
+      tags: language === 'en' ? ['SaaS', 'Onboarding', 'AI/GPT'] : ['SaaS', 'Onboarding', 'IA/GPT'],
     },
   ];
 
@@ -295,86 +303,81 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       id: "ui-ux-design",
       icon: Palette,
       title: "UI/UX Design",
-      description:
-        "Wireframes, maquettes haute-fidélité, prototypes interactifs et design systems évolutifs.",
-      features: [
-        "User research & personas",
-        "Wireframing & user flows",
-        "Prototypes cliquables (Figma)",
-        "Design system & composants",
-      ],
-      usageExample:
-        "Refonte complète d'une app SaaS : de l'audit UX au design system en 2 semaines.",
-      duration: "5-10 jours",
-      complexity: "modérée" as const,
+      description: language === 'en'
+        ? 'Wireframes, high-fidelity mockups, interactive prototypes, and scalable design systems.'
+        : 'Wireframes, maquettes haute-fidélité, prototypes interactifs et design systems évolutifs.',
+      features: language === 'en'
+        ? ['User research & personas', 'Wireframing & user flows', 'Clickable prototypes (Figma)', 'Design system & components']
+        : ['User research & personas', 'Wireframing & user flows', 'Prototypes cliquables (Figma)', 'Design system & composants'],
+      usageExample: language === 'en'
+        ? 'Complete redesign of a SaaS app: from UX audit to design system in 2 weeks.'
+        : 'Refonte complète d\'une app SaaS : de l\'audit UX au design system en 2 semaines.',
+      duration: language === 'en' ? '5-10 days' : '5-10 jours',
+      complexity: (language === 'en' ? 'moderate' : 'modérée') as const,
     },
     {
       id: "integration-front",
       icon: Code2,
-      title: "Intégration Front-end",
-      description:
-        "Transformation des designs en interfaces fonctionnelles avec React, Framer ou Webflow.",
-      features: [
-        "React/TypeScript",
-        "Framer / Webflow",
-        "Responsive design",
-        "Optimisation performance",
-      ],
-      usageExample:
-        "Intégration d'un design system Figma en composants React réutilisables.",
-      duration: "5-7 jours",
-      complexity: "modérée" as const,
+      title: language === 'en' ? 'Front-end Integration' : 'Intégration Front-end',
+      description: language === 'en'
+        ? 'Transform designs into functional interfaces with React, Framer, or Webflow.'
+        : 'Transformation des designs en interfaces fonctionnelles avec React, Framer ou Webflow.',
+      features: language === 'en'
+        ? ['React/TypeScript', 'Framer / Webflow', 'Responsive design', 'Performance optimization']
+        : ['React/TypeScript', 'Framer / Webflow', 'Responsive design', 'Optimisation performance'],
+      usageExample: language === 'en'
+        ? 'Integration of a Figma design system into reusable React components.'
+        : 'Intégration d\'un design system Figma en composants React réutilisables.',
+      duration: language === 'en' ? '5-7 days' : '5-7 jours',
+      complexity: (language === 'en' ? 'moderate' : 'modérée') as const,
     },
     {
       id: "automation",
       icon: Workflow,
-      title: "Automatisation (n8n, Make, Zapier)",
-      description:
-        "Workflows automatisés pour économiser du temps : emails, CRM, génération de contenus.",
-      features: [
-        "n8n / Make / Zapier",
-        "Intégrations API",
-        "Email automation",
-        "Webhooks & cron jobs",
-      ],
-      usageExample:
-        "Automatisation complète du process de lead capture vers CRM et emails de suivi.",
-      duration: "3-5 jours",
-      complexity: "modérée" as const,
+      title: language === 'en' ? 'Automation (n8n, Make, Zapier)' : 'Automatisation (n8n, Make, Zapier)',
+      description: language === 'en'
+        ? 'Automated workflows to save time: emails, CRM, content generation.'
+        : 'Workflows automatisés pour économiser du temps : emails, CRM, génération de contenus.',
+      features: language === 'en'
+        ? ['n8n / Make / Zapier', 'API integrations', 'Email automation', 'Webhooks & cron jobs']
+        : ['n8n / Make / Zapier', 'Intégrations API', 'Email automation', 'Webhooks & cron jobs'],
+      usageExample: language === 'en'
+        ? 'Complete automation of lead capture to CRM and follow-up emails.'
+        : 'Automatisation complète du process de lead capture vers CRM et emails de suivi.',
+      duration: language === 'en' ? '3-5 days' : '3-5 jours',
+      complexity: (language === 'en' ? 'moderate' : 'modérée') as const,
     },
     {
       id: "ai-integration",
       icon: Bot,
-      title: "IA & Prompts Engineering",
-      description:
-        "Intégration GPT pour génération de contenu, summarization, chatbots et assistants IA.",
-      features: [
-        "OpenAI GPT integration",
-        "Prompt engineering",
-        "Chatbots personnalisés",
-        "Content generation",
-      ],
-      usageExample:
-        "Chatbot GPT intégré pour support client avec réponses contextuelles basées sur la doc.",
-      duration: "4-6 jours",
-      complexity: "avancée" as const,
+      title: language === 'en' ? 'AI & Prompt Engineering' : 'IA & Prompts Engineering',
+      description: language === 'en'
+        ? 'GPT integration for content generation, summarization, chatbots, and AI assistants.'
+        : 'Intégration GPT pour génération de contenu, summarization, chatbots et assistants IA.',
+      features: language === 'en'
+        ? ['OpenAI GPT integration', 'Prompt engineering', 'Custom chatbots', 'Content generation']
+        : ['OpenAI GPT integration', 'Prompt engineering', 'Chatbots personnalisés', 'Content generation'],
+      usageExample: language === 'en'
+        ? 'GPT chatbot integrated for customer support with contextual responses based on documentation.'
+        : 'Chatbot GPT intégré pour support client avec réponses contextuelles basées sur la doc.',
+      duration: language === 'en' ? '4-6 days' : '4-6 jours',
+      complexity: (language === 'en' ? 'advanced' : 'avancée') as const,
     },
     {
       id: "dashboards",
       icon: BarChart3,
-      title: "Dashboards & Reporting",
-      description:
-        "Tableaux de bord personnalisés sur Notion, Airtable ou interfaces custom pour suivre vos KPIs.",
-      features: [
-        "Notion / Airtable",
-        "Dashboards custom (React)",
-        "Visualisation de données",
-        "Rapports automatisés",
-      ],
-      usageExample:
-        "Dashboard Notion synchronisé avec Stripe, Google Analytics et CRM pour suivi business temps réel.",
-      duration: "3-5 jours",
-      complexity: "modérée" as const,
+      title: language === 'en' ? 'Dashboards & Reporting' : 'Dashboards & Reporting',
+      description: language === 'en'
+        ? 'Custom dashboards on Notion, Airtable, or custom interfaces to track your KPIs.'
+        : 'Tableaux de bord personnalisés sur Notion, Airtable ou interfaces custom pour suivre vos KPIs.',
+      features: language === 'en'
+        ? ['Notion / Airtable', 'Custom dashboards (React)', 'Data visualization', 'Automated reports']
+        : ['Notion / Airtable', 'Dashboards custom (React)', 'Visualisation de données', 'Rapports automatisés'],
+      usageExample: language === 'en'
+        ? 'Notion dashboard synced with Stripe, Google Analytics, and CRM for real-time business tracking.'
+        : 'Dashboard Notion synchronisé avec Stripe, Google Analytics et CRM pour suivi business temps réel.',
+      duration: language === 'en' ? '3-5 days' : '3-5 jours',
+      complexity: (language === 'en' ? 'moderate' : 'modérée') as const,
     },
   ];
 
