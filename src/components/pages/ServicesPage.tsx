@@ -18,11 +18,11 @@ import {
   Gauge
 } from "lucide-react";
 import { useTranslation } from "../../utils/i18n/useTranslation";
+import { useLanguage } from "../../utils/i18n/LanguageContext";
 import { ServicePackageCard, ServicePackage } from "../services/ServicePackageCard";
 import { ProcessTimeline } from "../services/ProcessTimeline";
 import { MiniCaseStudies } from "../services/MiniCaseStudies";
 import { ServiceDetailBlocks } from "../services/ServiceDetailBlocks";
-import { TripleEngineDemo } from "../services/TripleEngineDemo";
 import { ServicesFAQ } from "../services/ServicesFAQ";
 import { StickyCTABar } from "../services/StickyCTABar";
 import { ServiceContactForm } from "../services/ServiceContactForm";
@@ -36,6 +36,7 @@ interface ServicesPageProps {
 
 export default function ServicesPage({ onNavigate }: ServicesPageProps) {
   const { t } = useTranslation();
+  const { language } = useLanguage();
 
   // SEO Meta tags
   useEffect(() => {
@@ -268,23 +269,6 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       complexity: "modérée" as const,
     },
     {
-      id: "micro-interactions",
-      icon: Sparkles,
-      title: "Micro-interactions & Motion Design",
-      description:
-        "Animations fluides, transitions élégantes et feedbacks visuels pour améliorer l'expérience.",
-      features: [
-        "Animations Framer Motion",
-        "Transitions CSS/JS",
-        "Hover states & loading states",
-        "Feedbacks utilisateur",
-      ],
-      usageExample:
-        "Ajout de micro-animations sur un site portfolio pour augmenter le temps passé de 40%.",
-      duration: "2-4 jours",
-      complexity: "simple" as const,
-    },
-    {
       id: "integration-front",
       icon: Code2,
       title: "Intégration Front-end",
@@ -354,49 +338,41 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
     },
   ];
 
-  // FAQ
-  const faqs = [
-    {
-      question: "Quels outils utilisez-vous ?",
-      answer:
-        "Pour le design : Figma, Adobe Suite. Pour l'automatisation : n8n, Make, Zapier. Pour l'IA : OpenAI GPT, Anthropic Claude. Pour les dashboards : Notion, Airtable, Supabase. Pour l'intégration : React, TypeScript, Framer, Webflow.",
-    },
-    {
-      question: "Travaillez-vous à l'international ?",
-      answer:
-        "Oui, je travaille en full-remote avec des clients partout dans le monde. Je parle français et anglais, et je m'adapte à votre fuseau horaire pour les calls de synchronisation.",
-    },
-    {
-      question: "Quel est le délai moyen d'un projet ?",
-      answer:
-        "Cela dépend du scope : 3-5 jours pour le pack Starter, 1-2 semaines pour le pack Pro, et 3-4 semaines pour le pack Scale. Je peux m'adapter à des deadlines serrées si nécessaire.",
-    },
-    {
-      question: "Proposez-vous un accompagnement après livraison ?",
-      answer:
-        "Oui, tous les packs incluent un support post-livraison : 7 jours pour Starter, 14 jours pour Pro, et 30 jours pour Scale. Je reste disponible pour répondre à vos questions et faire des ajustements mineurs.",
-    },
-    {
-      question: "Comment se passe la facturation ?",
-      answer:
-        "Je fonctionne en forfait pour les packs ou au devis pour les projets custom. Un acompte de 30-50% est demandé au démarrage, le solde à la livraison. Paiement par virement ou Stripe.",
-    },
-    {
-      question: "Gardez-vous les données confidentielles ?",
-      answer:
-        "Absolument. Je signe un NDA si nécessaire et toutes les données sont traitées de manière confidentielle. Je respecte le RGPD et les bonnes pratiques de sécurité.",
-    },
-    {
-      question: "Puis-je voir des exemples de votre travail ?",
-      answer:
-        "Oui, consultez ma page Projets pour voir des études de cas détaillées. Certains projets ne peuvent pas être montrés publiquement pour des raisons de confidentialité, mais je peux partager des exemples en privé lors d'un call.",
-    },
-    {
-      question: "Quelle est votre stack technique préférée ?",
-      answer:
-        "React + TypeScript + Tailwind CSS pour le front, Supabase ou Firebase pour le backend, n8n pour l'automatisation, et Figma pour le design. Mais je m'adapte à votre stack existante.",
-    },
+  // FAQ - Récupération depuis FAQPage
+  const FAQ_CATEGORIES = [
+    { id: "general", name: "Général", name_en: "General", icon: User, color: "text-blue-400" },
+    { id: "design", name: "Design", name_en: "Design", icon: Palette, color: "text-purple-400" },
+    { id: "automation", name: "Automatisation & IA", name_en: "Automation & AI", icon: Zap, color: "text-yellow-400" },
+    { id: "process", name: "Process client", name_en: "Client Process", icon: Clock, color: "text-green-400" },
+    { id: "pricing", name: "Tarification & facturation", name_en: "Pricing & Invoicing", icon: CheckCircle2, color: "text-emerald-400" },
   ];
+
+  const FAQ_QUESTIONS = [
+    // Général
+    { id: "g1", question: "Qui êtes-vous ?", question_en: "Who are you?", answer: "Je m'appelle Maxence, freelance spécialisé en design, automatisation et IA. J'aide les entreprises à créer des systèmes intelligents et des interfaces performantes.", answer_en: "I'm Maxence, a freelance designer and automation specialist. I help companies build smart systems and efficient interfaces.", categoryId: "general" },
+    { id: "g2", question: "Avec qui travaillez-vous ?", question_en: "Who do you work with?", answer: "Je collabore avec des startups, PME et indépendants qui souhaitent professionnaliser leur image et optimiser leurs process.", answer_en: "I collaborate with startups, SMEs, and independent creators.", categoryId: "general" },
+    { id: "g3", question: "Où êtes-vous basé ?", question_en: "Where are you based?", answer: "Je travaille en full remote, depuis la France.", answer_en: "I work fully remote from France.", categoryId: "general" },
+    { id: "g4", question: "Travaillez-vous à l'international ?", question_en: "Do you work internationally?", answer: "Oui, j'accompagne des clients dans plusieurs pays (Europe, États-Unis, Asie).", answer_en: "Yes, I work with clients from Europe, the U.S., and Asia.", categoryId: "general" },
+    { id: "g5", question: "Quelle est votre langue de travail ?", question_en: "What languages do you work in?", answer: "Je travaille en français et en anglais.", answer_en: "French and English.", categoryId: "general" },
+    // Design
+    { id: "d1", question: "Quels types de design proposez-vous ?", question_en: "What kind of design services do you offer?", answer: "Web design, UI/UX design, maquettes complètes de site, et création de dashboards personnalisés.", answer_en: "Web design, UI/UX design, full site mockups, and custom dashboard creation.", categoryId: "design" },
+    { id: "d2", question: "Utilisez-vous Figma pour vos projets ?", question_en: "Do you use Figma?", answer: "Oui, Figma est mon outil principal. Je l'utilise aussi avec Figma AI pour accélérer la conception.", answer_en: "Yes, Figma (and Figma AI) is my main design tool.", categoryId: "design" },
+    { id: "d3", question: "Pouvez-vous refaire entièrement un site existant ?", question_en: "Can you redesign an existing website?", answer: "Oui, je peux effectuer une refonte complète, que ce soit sur le plan visuel ou structurel.", answer_en: "Absolutely — I can fully redesign and optimize your current site.", categoryId: "design" },
+    // Automatisation
+    { id: "a1", question: "Qu'est-ce que l'automatisation d'entreprise ?", question_en: "What is business automation?", answer: "C'est la mise en place de processus qui se déclenchent automatiquement (envoi d'emails, génération de factures, synchronisation de données, etc.).", answer_en: "It's about creating workflows that run automatically (emails, invoices, data sync, etc.).", categoryId: "automation" },
+    { id: "a2", question: "Quels outils d'automatisation utilisez-vous ?", question_en: "What tools do you use for automation?", answer: "J'utilise principalement n8n, Zapier et des solutions maison codées directement dans vos systèmes.", answer_en: "Mainly n8n, Zapier, and custom-coded automations.", categoryId: "automation" },
+    { id: "a3", question: "Proposez-vous des intégrations IA ?", question_en: "Do you integrate AI?", answer: "Oui, j'intègre des modèles d'IA pour améliorer la productivité : génération de contenu, réponses automatiques, analyse de données, etc.", answer_en: "Yes, I use AI for productivity: content generation, analysis, smart notifications.", categoryId: "automation" },
+    // Process
+    { id: "p1", question: "Quel est le délai moyen d'un projet ?", question_en: "What's the average project timeline?", answer: "Cela dépend du scope : 3-5 jours pour le pack Starter, 1-2 semaines pour le pack Pro, et 3-4 semaines pour le pack Scale.", answer_en: "It depends on scope: 3-5 days for Starter, 1-2 weeks for Pro, 3-4 weeks for Scale.", categoryId: "process" },
+    { id: "p2", question: "Proposez-vous un accompagnement après livraison ?", question_en: "Do you offer post-delivery support?", answer: "Oui, tous les packs incluent un support post-livraison : 7 jours pour Starter, 14 jours pour Pro, et 30 jours pour Scale.", answer_en: "Yes, all packages include support: 7 days for Starter, 14 for Pro, 30 for Scale.", categoryId: "process" },
+    // Pricing
+    { id: "pr1", question: "Comment se passe la facturation ?", question_en: "How does billing work?", answer: "Je fonctionne en forfait pour les packs ou au devis pour les projets custom. Un acompte de 30-50% est demandé au démarrage, le solde à la livraison.", answer_en: "Fixed price for packages or custom quotes. 30-50% deposit upfront, balance on delivery.", categoryId: "pricing" },
+    { id: "pr2", question: "Gardez-vous les données confidentielles ?", question_en: "Do you keep data confidential?", answer: "Absolument. Je signe un NDA si nécessaire et toutes les données sont traitées de manière confidentielle. Je respecte le RGPD.", answer_en: "Absolutely. I sign NDAs and respect GDPR compliance.", categoryId: "pricing" },
+  ];
+
+  const faqs = t.language === 'en' 
+    ? FAQ_QUESTIONS.map(q => ({ question: q.question_en, answer: q.answer_en, category: q.categoryId }))
+    : FAQ_QUESTIONS.map(q => ({ question: q.question, answer: q.answer, category: q.categoryId }));
 
   return (
     <div className="min-h-screen bg-[#0C0C0C] text-white pt-20">
@@ -690,37 +666,11 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
               Ce que je propose
             </h2>
             <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
-              6 services modulaires pour construire votre produit parfait
+              5 services modulaires pour construire votre produit parfait
             </p>
           </motion.div>
 
           <ServiceDetailBlocks services={detailedServices} />
-        </div>
-      </section>
-
-      {/* Triple Engine Demo */}
-      <section className="py-32 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/20 bg-mint/5 backdrop-blur-sm mb-6">
-              <span className="text-sm text-mint font-medium">
-                Démonstration interactive
-              </span>
-            </div>
-            <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              UI × Code × Workflow
-            </h2>
-            <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
-              L'approche hybride qui fait la différence
-            </p>
-          </motion.div>
-
-          <TripleEngineDemo />
         </div>
       </section>
 
