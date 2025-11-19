@@ -15,7 +15,8 @@ import {
   BarChart3,
   Sparkles,
   Boxes,
-  Gauge
+  Gauge,
+  User
 } from "lucide-react";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { useLanguage } from "../../utils/i18n/LanguageContext";
