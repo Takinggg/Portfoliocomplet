@@ -339,36 +339,46 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
     },
   ];
 
-  // FAQ - Récupération depuis FAQPage
+  // FAQ - Utilisation des vraies FAQs de FAQPage
   const FAQ_CATEGORIES = [
-    { id: "general", name: "Général", name_en: "General", icon: User, color: "text-blue-400" },
-    { id: "design", name: "Design", name_en: "Design", icon: Palette, color: "text-purple-400" },
-    { id: "automation", name: "Automatisation & IA", name_en: "Automation & AI", icon: Zap, color: "text-yellow-400" },
-    { id: "process", name: "Process client", name_en: "Client Process", icon: Clock, color: "text-green-400" },
-    { id: "pricing", name: "Tarification & facturation", name_en: "Pricing & Invoicing", icon: CheckCircle2, color: "text-emerald-400" },
+    { id: "general", name: "Général", name_en: "General", icon: User, color: "text-blue-400", order: 1 },
+    { id: "design", name: "Design", name_en: "Design", icon: Palette, color: "text-purple-400", order: 2 },
+    { id: "automation", name: "Automatisation & IA", name_en: "Automation & AI", icon: Zap, color: "text-yellow-400", order: 3 },
+    { id: "process", name: "Process client", name_en: "Client Process", icon: Clock, color: "text-green-400", order: 4 },
+    { id: "pricing", name: "Tarification & facturation", name_en: "Pricing & Invoicing", icon: CheckCircle2, color: "text-emerald-400", order: 5 },
   ];
 
   const FAQ_QUESTIONS = [
-    // Général
-    { id: "g1", question: "Qui êtes-vous ?", question_en: "Who are you?", answer: "Je m'appelle Maxence, freelance spécialisé en design, automatisation et IA. J'aide les entreprises à créer des systèmes intelligents et des interfaces performantes.", answer_en: "I'm Maxence, a freelance designer and automation specialist. I help companies build smart systems and efficient interfaces.", categoryId: "general" },
-    { id: "g2", question: "Avec qui travaillez-vous ?", question_en: "Who do you work with?", answer: "Je collabore avec des startups, PME et indépendants qui souhaitent professionnaliser leur image et optimiser leurs process.", answer_en: "I collaborate with startups, SMEs, and independent creators.", categoryId: "general" },
-    { id: "g3", question: "Où êtes-vous basé ?", question_en: "Where are you based?", answer: "Je travaille en full remote, depuis la France.", answer_en: "I work fully remote from France.", categoryId: "general" },
-    { id: "g4", question: "Travaillez-vous à l'international ?", question_en: "Do you work internationally?", answer: "Oui, j'accompagne des clients dans plusieurs pays (Europe, États-Unis, Asie).", answer_en: "Yes, I work with clients from Europe, the U.S., and Asia.", categoryId: "general" },
-    { id: "g5", question: "Quelle est votre langue de travail ?", question_en: "What languages do you work in?", answer: "Je travaille en français et en anglais.", answer_en: "French and English.", categoryId: "general" },
-    // Design
-    { id: "d1", question: "Quels types de design proposez-vous ?", question_en: "What kind of design services do you offer?", answer: "Web design, UI/UX design, maquettes complètes de site, et création de dashboards personnalisés.", answer_en: "Web design, UI/UX design, full site mockups, and custom dashboard creation.", categoryId: "design" },
-    { id: "d2", question: "Utilisez-vous Figma pour vos projets ?", question_en: "Do you use Figma?", answer: "Oui, Figma est mon outil principal. Je l'utilise aussi avec Figma AI pour accélérer la conception.", answer_en: "Yes, Figma (and Figma AI) is my main design tool.", categoryId: "design" },
-    { id: "d3", question: "Pouvez-vous refaire entièrement un site existant ?", question_en: "Can you redesign an existing website?", answer: "Oui, je peux effectuer une refonte complète, que ce soit sur le plan visuel ou structurel.", answer_en: "Absolutely — I can fully redesign and optimize your current site.", categoryId: "design" },
-    // Automatisation
-    { id: "a1", question: "Qu'est-ce que l'automatisation d'entreprise ?", question_en: "What is business automation?", answer: "C'est la mise en place de processus qui se déclenchent automatiquement (envoi d'emails, génération de factures, synchronisation de données, etc.).", answer_en: "It's about creating workflows that run automatically (emails, invoices, data sync, etc.).", categoryId: "automation" },
-    { id: "a2", question: "Quels outils d'automatisation utilisez-vous ?", question_en: "What tools do you use for automation?", answer: "J'utilise principalement n8n, Zapier et des solutions maison codées directement dans vos systèmes.", answer_en: "Mainly n8n, Zapier, and custom-coded automations.", categoryId: "automation" },
-    { id: "a3", question: "Proposez-vous des intégrations IA ?", question_en: "Do you integrate AI?", answer: "Oui, j'intègre des modèles d'IA pour améliorer la productivité : génération de contenu, réponses automatiques, analyse de données, etc.", answer_en: "Yes, I use AI for productivity: content generation, analysis, smart notifications.", categoryId: "automation" },
-    // Process
-    { id: "p1", question: "Quel est le délai moyen d'un projet ?", question_en: "What's the average project timeline?", answer: "Cela dépend du scope : 3-5 jours pour le pack Starter, 1-2 semaines pour le pack Pro, et 3-4 semaines pour le pack Scale.", answer_en: "It depends on scope: 3-5 days for Starter, 1-2 weeks for Pro, 3-4 weeks for Scale.", categoryId: "process" },
-    { id: "p2", question: "Proposez-vous un accompagnement après livraison ?", question_en: "Do you offer post-delivery support?", answer: "Oui, tous les packs incluent un support post-livraison : 7 jours pour Starter, 14 jours pour Pro, et 30 jours pour Scale.", answer_en: "Yes, all packages include support: 7 days for Starter, 14 for Pro, 30 for Scale.", categoryId: "process" },
-    // Pricing
-    { id: "pr1", question: "Comment se passe la facturation ?", question_en: "How does billing work?", answer: "Je fonctionne en forfait pour les packs ou au devis pour les projets custom. Un acompte de 30-50% est demandé au démarrage, le solde à la livraison.", answer_en: "Fixed price for packages or custom quotes. 30-50% deposit upfront, balance on delivery.", categoryId: "pricing" },
-    { id: "pr2", question: "Gardez-vous les données confidentielles ?", question_en: "Do you keep data confidential?", answer: "Absolument. Je signe un NDA si nécessaire et toutes les données sont traitées de manière confidentielle. Je respecte le RGPD.", answer_en: "Absolutely. I sign NDAs and respect GDPR compliance.", categoryId: "pricing" },
+    // ==================== GÉNÉRAL ====================
+    { id: "general_1", question: "Qui êtes-vous ?", question_en: "Who are you?", answer: "Je m'appelle Maxence, freelance spécialisé en design, automatisation et IA. J'aide les entreprises à créer des systèmes intelligents et des interfaces performantes.", answer_en: "I'm Maxence, a freelance designer and automation specialist. I help companies build smart systems and efficient interfaces.", categoryId: "general", order: 1, isPublished: true },
+    { id: "general_2", question: "Avec qui travaillez-vous ?", question_en: "Who do you work with?", answer: "Je collabore avec des startups, PME et indépendants qui souhaitent professionnaliser leur image et optimiser leurs process.", answer_en: "I collaborate with startups, SMEs, and independent creators.", categoryId: "general", order: 2, isPublished: true },
+    { id: "general_3", question: "Où êtes-vous basé ?", question_en: "Where are you based?", answer: "Je travaille en full remote, depuis la France.", answer_en: "I work fully remote from France.", categoryId: "general", order: 3, isPublished: true },
+    { id: "general_4", question: "Travaillez-vous à l'international ?", question_en: "Do you work internationally?", answer: "Oui, j'accompagne des clients dans plusieurs pays (Europe, États-Unis, Asie).", answer_en: "Yes, I work with clients from Europe, the U.S., and Asia.", categoryId: "general", order: 4, isPublished: true },
+    { id: "general_5", question: "Quelle est votre langue de travail ?", question_en: "What languages do you work in?", answer: "Je travaille en français et en anglais.", answer_en: "French and English.", categoryId: "general", order: 5, isPublished: true },
+    
+    // ==================== DESIGN ====================
+    { id: "design_1", question: "Quels types de design proposez-vous ?", question_en: "What kind of design services do you offer?", answer: "Web design, UI/UX design, maquettes complètes de site, et création de dashboards personnalisés.", answer_en: "Web design, UI/UX design, full site mockups, and custom dashboard creation.", categoryId: "design", order: 1, isPublished: true },
+    { id: "design_2", question: "Utilisez-vous Figma pour vos projets ?", question_en: "Do you use Figma?", answer: "Oui, Figma est mon outil principal. Je l'utilise aussi avec Figma AI pour accélérer la conception.", answer_en: "Yes, Figma (and Figma AI) is my main design tool.", categoryId: "design", order: 2, isPublished: true },
+    { id: "design_3", question: "Pouvez-vous refaire entièrement un site existant ?", question_en: "Can you redesign an existing website?", answer: "Oui, je peux effectuer une refonte complète, que ce soit sur le plan visuel ou structurel.", answer_en: "Absolutely — I can fully redesign and optimize your current site.", categoryId: "design", order: 3, isPublished: true },
+    { id: "design_4", question: "Proposez-vous des identités visuelles complètes ?", question_en: "Do you create full visual identities?", answer: "Oui, je peux concevoir un système visuel complet : couleurs, typographie, logo et composants.", answer_en: "Yes, including colors, typography, logos, and components.", categoryId: "design", order: 4, isPublished: true },
+    { id: "design_5", question: "Offrez-vous des prototypes interactifs ?", question_en: "Do you provide interactive prototypes?", answer: "Oui, chaque projet est livré avec un prototype cliquable pour valider les interactions avant développement.", answer_en: "Yes, every project includes a clickable prototype before development.", categoryId: "design", order: 5, isPublished: true },
+    
+    // ==================== AUTOMATION & AI ====================
+    { id: "automation_1", question: "Qu'est-ce que l'automatisation d'entreprise ?", question_en: "What is business automation?", answer: "C'est la mise en place de processus qui se déclenchent automatiquement (envoi d'emails, génération de factures, synchronisation de données, etc.).", answer_en: "It's about creating workflows that run automatically (emails, invoices, data sync, etc.).", categoryId: "automation", order: 1, isPublished: true },
+    { id: "automation_2", question: "Quels outils d'automatisation utilisez-vous ?", question_en: "What tools do you use for automation?", answer: "J'utilise principalement n8n, Zapier et des solutions maison codées directement dans vos systèmes.", answer_en: "Mainly n8n, Zapier, and custom-coded automations.", categoryId: "automation", order: 2, isPublished: true },
+    { id: "automation_3", question: "Proposez-vous des intégrations IA ?", question_en: "Do you integrate AI?", answer: "Oui, j'intègre des modèles d'IA pour améliorer la productivité : génération de contenu, réponses automatiques, analyse de données, etc.", answer_en: "Yes, I use AI for productivity: content generation, analysis, smart notifications.", categoryId: "automation", order: 3, isPublished: true },
+    { id: "automation_4", question: "Pouvez-vous créer un système entièrement personnalisé sans no-code ?", question_en: "Can you build custom systems from scratch (no no-code)?", answer: "Oui, je code les systèmes à la main si nécessaire, notamment pour les dashboards internes.", answer_en: "Yes, I develop everything directly when necessary.", categoryId: "automation", order: 4, isPublished: true },
+    { id: "automation_5", question: "L'IA remplace-t-elle le design humain ?", question_en: "Does AI replace human design?", answer: "Non, elle l'accélère. L'IA m'aide à prototyper et tester plus vite, mais le design final reste 100 % humain.", answer_en: "No, it speeds it up — design decisions remain human.", categoryId: "automation", order: 5, isPublished: true },
+    
+    // ==================== PROCESS CLIENT ====================
+    { id: "process_1", question: "Comment se déroule un projet typique ?", question_en: "What's your typical workflow?", answer: "Étape 1 : Appel découverte → Étape 2 : Proposition → Étape 3 : Design / Développement → Étape 4 : Livraison & suivi.", answer_en: "Step 1: Discovery call → Step 2: Proposal → Step 3: Design/Build → Step 4: Delivery & follow-up.", categoryId: "process", order: 1, isPublished: true },
+    { id: "process_2", question: "Quelle est la durée typique d'un projet ?", question_en: "How long does a project take?", answer: "Cela dépend du pack : quelques jours pour un Starter, 1-2 semaines pour du Pro, et 3-4 semaines pour un Scale.", answer_en: "It depends: a few days for Starter, 1-2 weeks for Pro, 3-4 weeks for Scale.", categoryId: "process", order: 2, isPublished: true },
+    { id: "process_3", question: "Proposez-vous des révisions ?", question_en: "Do you offer revisions?", answer: "Oui, chaque pack inclut des révisions (1 à 3 itérations selon le niveau).", answer_en: "Yes, each package includes revisions (1-3 rounds depending on the level).", categoryId: "process", order: 3, isPublished: true },
+    
+    // ==================== TARIFICATION ====================
+    { id: "pricing_1", question: "Quels sont vos tarifs ?", question_en: "What are your rates?", answer: "Les tarifs varient selon le projet. Contactez-moi pour un devis personnalisé adapté à vos besoins.", answer_en: "Rates vary by project. Contact me for a custom quote tailored to your needs.", categoryId: "pricing", order: 1, isPublished: true },
+    { id: "pricing_2", question: "Comment se passe le paiement ?", question_en: "How does payment work?", answer: "Paiement en 2 fois : un acompte au démarrage, et le solde à la livraison. Virement bancaire ou Stripe acceptés.", answer_en: "Payment in 2 installments: deposit upfront, balance upon delivery. Bank transfer or Stripe accepted.", categoryId: "pricing", order: 2, isPublished: true },
+    { id: "pricing_3", question: "Offrez-vous une garantie ?", question_en: "Do you offer a guarantee?", answer: "Oui, un support post-livraison est inclus pour corrections et ajustements (7 à 30 jours selon le pack).", answer_en: "Yes, post-delivery support is included for fixes and adjustments (7-30 days depending on package).", categoryId: "pricing", order: 3, isPublished: true },
   ];
 
   const faqs = t.language === 'en' 
@@ -699,87 +709,7 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
         </div>
       </section>
 
-      {/* Pricing & Model explanation */}
-      <section className="py-32 px-6">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/20 bg-mint/5 backdrop-blur-sm mb-6">
-              <span className="text-sm text-mint font-medium">Tarifs</span>
-            </div>
-            <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              Modèle tarifaire transparent
-            </h2>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            <div className="rounded-2xl border border-neutral-900 bg-neutral-950/50 p-8">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-mint/10 border border-mint/20 flex items-center justify-center">
-                      <Boxes className="h-6 w-6 text-mint" />
-                    </div>
-                    <h3 className="text-2xl font-bold">Forfaits fixes</h3>
-                  </div>
-                  <p className="text-neutral-400 leading-relaxed">
-                    Les packs Starter, Pro et Scale ont des prix fixes et des
-                    livrables clairement définis. Vous savez exactement ce que vous
-                    obtenez et combien ça coûte.
-                  </p>
-                </div>
-
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-mint/10 border border-mint/20 flex items-center justify-center">
-                      <Gauge className="h-6 w-6 text-mint" />
-                    </div>
-                    <h3 className="text-2xl font-bold">Devis sur mesure</h3>
-                  </div>
-                  <p className="text-neutral-400 leading-relaxed">
-                    Pour les projets plus complexes ou spécifiques, je propose un
-                    devis personnalisé après un audit gratuit de 15 minutes pour
-                    bien comprendre vos besoins.
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-8 pt-8 border-t border-neutral-800">
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div>
-                    <div className="text-sm text-neutral-500 mb-1">Acompte</div>
-                    <div className="text-xl font-bold text-mint">30-50%</div>
-                    <div className="text-xs text-neutral-500">au démarrage</div>
-                  </div>
-                  <div>
-                    <div className="text-sm text-neutral-500 mb-1">Solde</div>
-                    <div className="text-xl font-bold text-mint">50-70%</div>
-                    <div className="text-xs text-neutral-500">à la livraison</div>
-                  </div>
-                  <div>
-                    <div className="text-sm text-neutral-500 mb-1">Paiement</div>
-                    <div className="text-xl font-bold text-mint">
-                      Virement / Stripe
-                    </div>
-                    <div className="text-xs text-neutral-500">
-                      facture professionnelle
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Contact Form */}
       <section className="py-32 px-6 bg-neutral-950/30 border-t border-neutral-900" id="contact-form">
