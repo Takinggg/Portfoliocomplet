@@ -1097,68 +1097,96 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-mint/5 to-transparent"></div>
         
         <div className="max-w-[1600px] mx-auto relative z-10">
-          {/* 1. INTRO / ACCROCHE */}
+          {/* 1. INTRO / ACCROCHE - VERSION SIMPLIFIÉE */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-32 relative"
+            className="mb-32 relative"
           >
-            {/* Halo lumineux derrière le texte */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-mint/20 rounded-full blur-[120px] -z-10"></div>
-            
-            {/* Titre avec animation mot par mot */}
-            <div className="mb-8 overflow-hidden">
-              <motion.h2 className="text-6xl md:text-7xl lg:text-8xl font-bold">
-                {t('home.intro.title').split(" ").map((word, i) => (
-                  <motion.span
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              {/* Left - Texte impactant */}
+              <div>
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-mint/30 bg-mint/10 mb-8"
+                >
+                  <Sparkles className="h-4 w-4 text-mint" />
+                  <span className="text-sm text-mint font-medium">Design × Code × Automatisation</span>
+                </motion.div>
+
+                <motion.h2
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1]"
+                >
+                  Je transforme vos idées en{" "}
+                  <span className="text-gradient-mint bg-gradient-to-r from-mint via-cyan-400 to-mint bg-clip-text text-transparent">
+                    systèmes intelligents
+                  </span>
+                </motion.h2>
+
+                <motion.p
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="text-xl text-neutral-400 mb-8 leading-relaxed"
+                >
+                  Design élégant, code performant et automatisation intelligente. 
+                  Des solutions web qui font la différence pour votre business.
+                </motion.p>
+
+                <motion.button
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  whileHover={{ scale: 1.05, x: 5 }}
+                  onClick={() => document.querySelector('#system-visualization')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-mint text-[#0C0C0C] font-semibold text-lg hover:bg-mint/90 transition-all group shadow-lg shadow-mint/20"
+                >
+                  <span>Découvrir comment</span>
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
+                </motion.button>
+              </div>
+
+              {/* Right - Stats Cards */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="grid grid-cols-2 gap-4"
+              >
+                {[
+                  { value: "50+", label: "Projets livrés", icon: Target, color: "mint" },
+                  { value: "98%", label: "Satisfaction", icon: TrendingUp, color: "purple" },
+                  { value: "99.9%", label: "Uptime", icon: Zap, color: "cyan" },
+                  { value: "2h/j", label: "Économisés", icon: Clock, color: "green" },
+                ].map((stat, i) => (
+                  <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.2, duration: 0.6 }}
-                    className="inline-block mr-6"
+                    transition={{ delay: 0.3 + i * 0.1 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    className="glass-card border-white/10 p-6 rounded-2xl hover:border-mint/30 transition-all group"
                   >
-                    {word}
-                  </motion.span>
+                    <div className={`w-12 h-12 rounded-xl bg-${stat.color}-500/10 border border-${stat.color}-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                      <stat.icon className={`h-6 w-6 text-${stat.color}-400`} />
+                    </div>
+                    <div className="text-3xl font-bold mb-1 text-gradient-mint">{stat.value}</div>
+                    <div className="text-sm text-neutral-500 uppercase tracking-wider">{stat.label}</div>
+                  </motion.div>
                 ))}
-              </motion.h2>
+              </motion.div>
             </div>
-
-            {/* Sous-titre avec parallax */}
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6 }}
-              className="text-2xl md:text-3xl text-neutral-400 max-w-4xl mx-auto mb-6 leading-relaxed"
-            >
-              {t('home.intro.subtitle')}
-            </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.8 }}
-              className="text-lg text-neutral-500 max-w-3xl mx-auto mb-10"
-            >
-              {t('home.intro.description')}
-            </motion.p>
-
-            {/* CTA Scroll */}
-            <motion.button
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 1 }}
-              whileHover={{ scale: 1.05 }}
-              onClick={() => document.querySelector('#system-visualization')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-mint/30 bg-mint/10 hover:bg-mint/20 text-mint transition-all group"
-            >
-              <span>{t('home.intro.cta')}</span>
-              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </motion.button>
           </motion.div>
 
           {/* 2. VISUALISATION DU SYSTÈME */}
