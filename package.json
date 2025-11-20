@@ -84,6 +84,7 @@
             "@vitejs/plugin-react-swc": "^3.10.2",
             "@vitest/coverage-v8": "^4.0.8",
             "@vitest/ui": "^4.0.8",
+            "autoprefixer": "^10.4.22",
             "jsdom": "^27.1.0",
             "supabase": "^2.58.5",
             "terser": "^5.44.1",
