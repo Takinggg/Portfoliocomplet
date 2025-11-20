@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        mint: '#00FFC2',
+      },
       backgroundSize: {
         '300%': '300%',
       },

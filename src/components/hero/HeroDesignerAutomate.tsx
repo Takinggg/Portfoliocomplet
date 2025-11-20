@@ -190,7 +190,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
 
             {/* 2. Middle Layer - UI Card */}
             <motion.div 
-              className="absolute top-[150px] left-[50px] w-[380px] h-[240px] rounded-xl bg-neutral-900/90 backdrop-blur-xl border border-white/10 shadow-2xl p-6 z-20"
+              className="absolute top-[150px] left-[50px] w-[380px] h-auto min-h-[240px] rounded-xl bg-[#0C0C0C] border border-white/10 shadow-2xl p-6 z-20"
               animate={{ y: [0, 15, 0] }}
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
             >
@@ -206,7 +206,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                 </div>
                 <div className="px-2 py-1 rounded bg-mint/10 text-mint text-xs font-bold">+12.5%</div>
               </div>
-              <div className="h-24 w-full flex items-end gap-2">
+              <div className="h-24 w-full flex items-end gap-2 mb-4">
                 {[40, 70, 45, 90, 65, 85, 100].map((h, i) => (
                   <motion.div 
                     key={i}
@@ -216,6 +216,22 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                     transition={{ duration: 1, delay: 1 + i * 0.1 }}
                   />
                 ))}
+              </div>
+              
+              {/* Additional Info Row */}
+              <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/5">
+                <div className="text-center">
+                  <div className="text-xs text-neutral-500">Users</div>
+                  <div className="text-sm font-bold text-white">12.5k</div>
+                </div>
+                <div className="text-center border-l border-white/5">
+                  <div className="text-xs text-neutral-500">Revenue</div>
+                  <div className="text-sm font-bold text-white">$45k</div>
+                </div>
+                <div className="text-center border-l border-white/5">
+                  <div className="text-xs text-neutral-500">Conv.</div>
+                  <div className="text-sm font-bold text-white">3.2%</div>
+                </div>
               </div>
             </motion.div>
 
