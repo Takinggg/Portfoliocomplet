@@ -232,116 +232,98 @@ export function BlogPage({ onBlogPostClick }: BlogPageProps) {
             </div>
           </motion.div>
 
-          <div className="grid lg:grid-cols-[1fr_300px] gap-8">
-            {/* Main Content */}
-            <div className="space-y-12">
-              {/* Featured Post */}
-              {featuredPost && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <div className="flex items-center gap-2 mb-4">
-                    <Sparkles className="h-5 w-5 text-[#00FFC2]" />
-                    <h2 className="text-xl text-white">{t('blog.sections.featured')}</h2>
-                  </div>
-                  <BlogPostCard
-                    post={featuredPost}
-                    variant="featured"
-                    onClick={() => handlePostClick(featuredPost.slug)}
-                  />
-                </motion.div>
-              )}
+          <div className="space-y-12">
+            {/* Filters */}
+            <BlogFilters
+              searchQuery={searchQuery}
+              onSearch={handleSearchChange}
+              selectedCategory={selectedCategory}
+              onCategoryChange={handleCategoryChange}
+              selectedTags={selectedTags}
+              onTagClick={handleTagClick}
+              availableTags={allTags}
+            />
 
-              {/* Recent Posts */}
-              {recentPosts.length > 0 && (
-                <div>
-                  <h2 className="text-xl text-white mb-6">{t('blog.sections.recent')}</h2>
-                  <div className="grid md:grid-cols-3 gap-6">
-                    {recentPosts.map((post, index) => (
-                      <BlogPostCard
-                        key={`${post.id}-${post.slug}-${index}`}
-                        post={post}
-                        variant="compact"
-                        onClick={() => handlePostClick(post.slug)}
-                      />
-                    ))}
-                  </div>
+            {/* Featured Post */}
+            {featuredPost && !searchQuery && !selectedCategory && selectedTags.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <div className="flex items-center gap-2 mb-6">
+                  <Sparkles className="h-5 w-5 text-[#00FFC2]" />
+                  <h2 className="text-2xl text-white font-bold">{t('blog.sections.featured')}</h2>
                 </div>
-              )}
+                <BlogPostCard
+                  post={featuredPost}
+                  variant="featured"
+                  onClick={() => handlePostClick(featuredPost.slug)}
+                />
+              </motion.div>
+            )}
 
-              {/* All Posts */}
-              {regularPosts.length > 0 && (
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl text-white">
-                      {t('blog.sections.all')}
-                      <Badge className="ml-3 bg-white/5 text-white/60 border-white/10">
-                        {filteredPosts.length}
-                      </Badge>
-                    </h2>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {regularPosts.map((post, index) => (
-                      <BlogPostCard
-                        key={`${post.id}-${post.slug}-${index}`}
-                        post={post}
-                        onClick={() => handlePostClick(post.slug)}
-                      />
-                    ))}
-                  </div>
+            {/* All Posts Grid */}
+            {filteredPosts.length > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-2xl text-white font-bold">
+                    {searchQuery || selectedCategory || selectedTags.length > 0 
+                      ? t('blog.sections.all') 
+                      : t('blog.sections.recent')}
+                    <Badge className="ml-3 bg-white/5 text-white/60 border-white/10">
+                      {filteredPosts.length}
+                    </Badge>
+                  </h2>
                 </div>
-              )}
+                
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {(searchQuery || selectedCategory || selectedTags.length > 0 ? filteredPosts : filteredPosts.slice(1)).map((post, index) => (
+                    <BlogPostCard
+                      key={`${post.id}-${post.slug}-${index}`}
+                      post={post}
+                      variant="default"
+                      onClick={() => handlePostClick(post.slug)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
 
-              {filteredPosts.length === 0 && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="space-y-8 py-10"
-                >
-                  {/* Empty State Message */}
-                  <div className="text-center">
-                    <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <FileText className="h-10 w-10 text-white/40" />
+            {filteredPosts.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="space-y-8 py-20"
+              >
+                {/* Empty State Message */}
+                <div className="text-center">
+                  <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <FileText className="h-12 w-12 text-white/40" />
+                  </div>
+                  <h3 className="text-2xl text-white mb-3">
+                    {posts.length === 0 ? t('blog.empty.noArticles') : t('blog.empty.noResults')}
+                  </h3>
+                  <p className="text-white/60 mb-8 text-lg">
+                    {posts.length === 0 ? t('blog.empty.initialize') : t('blog.empty.tryAgain')}
+                  </p>
+                  {posts.length > 0 && (
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                      <Button
+                        onClick={() => {
+                          setSearchQuery("");
+                          setSelectedCategory(null);
+                          setSelectedTags([]);
+                        }}
+                        className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90 px-8 py-6 text-lg"
+                      >
+                        {t('blog.filters.clearAll')}
+                      </Button>
                     </div>
-                    <h3 className="text-xl text-white mb-2">
-                      {posts.length === 0 ? t('blog.empty.noArticles') : t('blog.empty.noResults')}
-                    </h3>
-                    <p className="text-white/60 mb-6">
-                      {posts.length === 0 ? t('blog.empty.initialize') : t('blog.empty.tryAgain')}
-                    </p>
-                    {posts.length > 0 && (
-                      <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Button
-                          onClick={() => {
-                            setSearchQuery("");
-                            setSelectedCategory(null);
-                            setSelectedTags([]);
-                          }}
-                          className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
-                        >
-                          {t('blog.filters.clearAll')}
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-            </div>
-
-            {/* Sidebar */}
-            <aside className="lg:sticky lg:top-24 lg:h-fit">
-              <BlogFilters
-                searchQuery={searchQuery}
-                onSearch={handleSearchChange}
-                selectedCategory={selectedCategory}
-                onCategoryChange={handleCategoryChange}
-                selectedTags={selectedTags}
-                onTagClick={handleTagClick}
-                availableTags={allTags}
-              />
-            </aside>
+                  )}
+                </div>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>

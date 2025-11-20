@@ -372,7 +372,7 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
                 <BlogPostCard
                   key={relatedPost.id}
                   post={relatedPost}
-                  variant="compact"
+                  variant="default"
                   onClick={() => onBlogPostClick?.(relatedPost.slug)}
                 />
               ))}

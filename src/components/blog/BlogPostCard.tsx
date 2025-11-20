@@ -256,12 +256,12 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
           )}
           
           {/* Title */}
-          <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-[#00FFC2] transition-colors leading-tight">
+          <h3 className="text-2xl font-bold text-white mb-3 line-clamp-2 group-hover:text-[#00FFC2] transition-colors leading-tight">
             {post.title}
           </h3>
           
           {/* Excerpt */}
-          <p className="text-white/70 text-sm mb-4 line-clamp-3 flex-1 leading-relaxed">
+          <p className="text-white/80 text-base mb-6 line-clamp-3 flex-1 leading-relaxed">
             {post.excerpt}
           </p>
           

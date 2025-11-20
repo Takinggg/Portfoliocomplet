@@ -37,12 +37,12 @@ export function BlogFilters({
   const displayedTags = showAllTags ? availableTags : availableTags.slice(0, 8);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 lg:space-y-0 lg:flex lg:items-start lg:gap-8 bg-white/5 border border-white/10 rounded-2xl p-6 mb-12">
       {/* Search */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative"
+        className="relative flex-1 min-w-[250px]"
       >
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
         <Input
@@ -50,7 +50,7 @@ export function BlogFilters({
           placeholder={t("blog.filters.searchPlaceholder")}
           value={searchQuery}
           onChange={(e) => onSearch(e.target.value)}
-          className="pl-12 pr-10 bg-white/5 border-white/10 text-white placeholder:text-white/40 h-12 focus:border-[#00FFC2]/50 transition-all"
+          className="pl-12 pr-10 bg-[#0C0C0C] border-white/10 text-white placeholder:text-white/40 h-12 focus:border-[#00FFC2]/50 transition-all w-full"
         />
         {searchQuery && (
           <button
@@ -62,65 +62,49 @@ export function BlogFilters({
         )}
       </motion.div>
 
-      {/* Categories */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-      >
-        <div className="flex items-center gap-2 mb-3">
-          <Filter className="h-4 w-4 text-white/60" />
-          <h3 className="text-sm text-white/60">{t("blog.filters.categories")}</h3>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Badge
-            onClick={() => onCategoryChange(null)}
-            className={`cursor-pointer transition-all ${
-              selectedCategory === null
-                ? "bg-[#00FFC2] text-[#0C0C0C] border-[#00FFC2]"
-                : "bg-white/5 text-white/60 border-white/10 hover:bg-white/10"
-            }`}
-          >
-            {t("blog.filters.all")}
-          </Badge>
-          {categories.map((cat) => (
-            <Badge
-              key={cat.value}
-              onClick={() => onCategoryChange(cat.value)}
-              className="cursor-pointer transition-all"
-              style={{
-                backgroundColor: selectedCategory === cat.value ? cat.color : "rgba(255,255,255,0.05)",
-                color: selectedCategory === cat.value ? "#0C0C0C" : "rgba(255,255,255,0.6)",
-                borderColor: selectedCategory === cat.value ? cat.color : "rgba(255,255,255,0.1)",
-              }}
-            >
-              {cat.label}
-            </Badge>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Tags */}
-      {availableTags.length > 0 && (
+      <div className="flex-1 space-y-4 lg:space-y-0 lg:flex lg:flex-col lg:gap-4">
+        {/* Categories */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.1 }}
         >
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm text-white/60">{t("blog.filters.popularTags")}</h3>
-            {availableTags.length > 8 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowAllTags(!showAllTags)}
-                className="text-[#00FFC2] text-xs h-auto p-0 hover:text-[#00FFC2]/80"
-              >
-                {showAllTags ? t("blog.filters.showLess") : `+${availableTags.length - 8} ${t("blog.filters.tags")}`}
-              </Button>
-            )}
-          </div>
           <div className="flex flex-wrap gap-2">
+            <Badge
+              onClick={() => onCategoryChange(null)}
+              className={`cursor-pointer transition-all px-4 py-2 text-sm ${
+                selectedCategory === null
+                  ? "bg-[#00FFC2] text-[#0C0C0C] border-[#00FFC2]"
+                  : "bg-[#0C0C0C] text-white/60 border-white/10 hover:bg-white/10"
+              }`}
+            >
+              {t("blog.filters.all")}
+            </Badge>
+            {categories.map((cat) => (
+              <Badge
+                key={cat.value}
+                onClick={() => onCategoryChange(cat.value)}
+                className="cursor-pointer transition-all px-4 py-2 text-sm"
+                style={{
+                  backgroundColor: selectedCategory === cat.value ? cat.color : "#0C0C0C",
+                  color: selectedCategory === cat.value ? "#0C0C0C" : "rgba(255,255,255,0.6)",
+                  borderColor: selectedCategory === cat.value ? cat.color : "rgba(255,255,255,0.1)",
+                }}
+              >
+                {cat.label}
+              </Badge>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Tags */}
+        {availableTags.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex flex-wrap gap-2"
+          >
             <AnimatePresence>
               {displayedTags.map((tag, index) => (
                 <motion.div
@@ -135,7 +119,7 @@ export function BlogFilters({
                     className={`cursor-pointer transition-all ${
                       selectedTags.includes(tag)
                         ? "bg-[#00FFC2]/20 text-[#00FFC2] border-[#00FFC2]/40"
-                        : "bg-white/5 text-white/50 border-white/10 hover:bg-white/10 hover:text-white/70"
+                        : "bg-[#0C0C0C] text-white/50 border-white/10 hover:bg-white/10 hover:text-white/70"
                     }`}
                   >
                     {tag}
@@ -143,67 +127,19 @@ export function BlogFilters({
                 </motion.div>
               ))}
             </AnimatePresence>
-          </div>
-        </motion.div>
-      )}
-
-      {/* Active Filters */}
-      {(selectedCategory || selectedTags.length > 0 || searchQuery) && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="pt-4 border-t border-white/10"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-white/40">{t("blog.filters.activeFilters")}</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                onSearch("");
-                onCategoryChange(null);
-                selectedTags.forEach(tag => onTagClick(tag));
-              }}
-              className="text-white/40 text-xs h-auto p-0 hover:text-white/60"
-            >
-              {t("blog.filters.clearAll")}
-            </Button>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {searchQuery && (
-              <Badge className="bg-[#00FFC2]/20 text-[#00FFC2] border-[#00FFC2]/40">
-                {t("blog.filters.search")}: "{searchQuery}"
-                <X
-                  className="h-3 w-3 ml-1 cursor-pointer"
-                  onClick={() => onSearch("")}
-                />
-              </Badge>
-            )}
-            {selectedCategory && (
-              <Badge className="bg-[#00FFC2]/20 text-[#00FFC2] border-[#00FFC2]/40">
-                {categories.find(c => c.value === selectedCategory)?.label}
-                <X
-                  className="h-3 w-3 ml-1 cursor-pointer"
-                  onClick={() => onCategoryChange(null)}
-                />
-              </Badge>
-            )}
-            {selectedTags.map((tag) => (
-              <Badge
-                key={tag}
-                className="bg-[#00FFC2]/20 text-[#00FFC2] border-[#00FFC2]/40"
+            {availableTags.length > 8 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAllTags(!showAllTags)}
+                className="text-[#00FFC2] text-xs h-auto p-0 hover:text-[#00FFC2]/80 ml-2"
               >
-                {tag}
-                <X
-                  className="h-3 w-3 ml-1 cursor-pointer"
-                  onClick={() => onTagClick(tag)}
-                />
-              </Badge>
-            ))}
-          </div>
-        </motion.div>
-      )}
+                {showAllTags ? t("blog.filters.showLess") : `+${availableTags.length - 8}`}
+              </Button>
+            )}
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 }
