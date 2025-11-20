@@ -1334,8 +1334,9 @@ export default {
       "language": "Langue",
       "featured": "À la une",
       "published": "Publié"
-    },
-    "aboutPage": {
+    }
+  },
+  "aboutPage": {
       "hero": {
         "available": "Disponible pour nouveaux projets",
         "title": {
@@ -1415,5 +1416,4 @@ export default {
         "button": "Travaillons ensemble"
       }
     }
-  }
 } as const;
