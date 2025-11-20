@@ -3,7 +3,6 @@ import { Menu, X, Globe, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "../../utils/i18n/useTranslation";
-import { GlobalSearch } from "../GlobalSearch";
 import { useNavigate, useLocation } from "react-router-dom";
 
 type Page =
@@ -276,11 +275,6 @@ export default function Navigation({
 
           {/* CTA */}
           <div className="flex items-center gap-3">
-            {/* Global Search */}
-            <GlobalSearch
-              onNavigate={(page) => onNavigate(page as Page)}
-            />
-
             {/* Language Switcher */}
             <div className="hidden sm:flex items-center gap-1 bg-white/5 rounded-lg p-1 border border-white/10">
               <button
@@ -420,16 +414,6 @@ export default function Navigation({
               className="lg:hidden overflow-hidden"
             >
               <div className="py-6 border-t border-neutral-900">
-                {/* Mobile Search */}
-                <div className="px-4 mb-4">
-                  <GlobalSearch
-                    onNavigate={(page) => {
-                      onNavigate(page as Page);
-                      setMobileMenuOpen(false);
-                    }}
-                  />
-                </div>
-
                 <div className="space-y-1">
                   {menuStructure.map((menu, menuIndex) => (
                     <div key={menuIndex}>
