@@ -36,41 +36,6 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
       className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-transparent"
       onMouseMove={handleMouseMove}
     >
-      {/* Dynamic Background - Overlay on top of parent background */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Grid Pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.15]" 
-          style={{ 
-            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)', 
-            backgroundSize: '50px 50px' 
-          }} 
-        />
-        
-        {/* Radial Gradient Spotlight */}
-        <div className="absolute inset-0 bg-gradient-radial from-transparent via-[#0C0C0C]/80 to-[#0C0C0C]" />
-        
-        {/* Animated Orbs */}
-        <motion.div
-          className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full bg-mint/5 blur-[120px]"
-          animate={{
-            x: mousePosition.x * -2,
-            y: mousePosition.y * -2,
-            scale: [1, 1.1, 1],
-          }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        />
-        <motion.div
-          className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-purple-500/5 blur-[120px]"
-          animate={{
-            x: mousePosition.x * 2,
-            y: mousePosition.y * 2,
-            scale: [1, 1.2, 1],
-          }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        />
-      </div>
-
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pt-20 pb-12 grid lg:grid-cols-2 gap-16 items-center">
         
         {/* LEFT COLUMN: Content */}
@@ -190,7 +155,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
 
             {/* 2. Middle Layer - UI Card */}
             <motion.div 
-              className="absolute top-[150px] left-[50px] w-[380px] h-auto min-h-[240px] p-6 z-20"
+              className="absolute top-[150px] left-[50px] w-[380px] h-auto min-h-[240px] rounded-xl bg-[#0C0C0C] border border-white/10 shadow-2xl p-6 z-20"
               animate={{ y: [0, 15, 0] }}
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
             >
@@ -219,16 +184,16 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
               </div>
               
               {/* Additional Info Row */}
-              <div className="grid grid-cols-3 gap-2 pt-4">
+              <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/5">
                 <div className="text-center">
                   <div className="text-xs text-neutral-500">Users</div>
                   <div className="text-sm font-bold text-white">12.5k</div>
                 </div>
-                <div className="text-center">
+                <div className="text-center border-l border-white/5">
                   <div className="text-xs text-neutral-500">Revenue</div>
                   <div className="text-sm font-bold text-white">$45k</div>
                 </div>
-                <div className="text-center">
+                <div className="text-center border-l border-white/5">
                   <div className="text-xs text-neutral-500">Conv.</div>
                   <div className="text-sm font-bold text-white">3.2%</div>
                 </div>
