@@ -3,10 +3,10 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { motion } from "motion/react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
+import { ProjectFilters } from "../projects/ProjectFilters";
+import { ProjectCard } from "../ProjectCard";
 import { 
   ArrowRight, 
-  Search, 
-  ArrowUpRight,
   Workflow,
   Sparkles,
   BarChart3,
@@ -20,7 +20,6 @@ import {
   Palette,
   Briefcase
 } from "lucide-react";
-import { Input } from "../ui/input";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { GridSkeleton, ProjectCardSkeleton, PageHeaderSkeleton } from "../ui/loading-skeletons";
@@ -32,15 +31,6 @@ type Page = "contact" | "booking";
 interface ProjectsPageProps {
   onNavigate: (page: Page) => void;
   onProjectClick?: (projectId: string) => void;
-}
-
-// Project Icon Illustration
-function ProjectIcon({ icon: Icon, color }: { icon: any; color: string }) {
-  return (
-    <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br ${color} rounded-2xl`}>
-      <Icon className="h-16 w-16 text-mint" />
-    </div>
-  );
 }
 
 // Animated Stats Card
@@ -203,18 +193,6 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
     [projects]
   );
 
-  const filters = useMemo(() => [
-    { id: "all", label: t('projects.filters.all') },
-    { id: "web", label: t('projects.filters.web') },
-    { id: "mobile", label: t('projects.filters.mobile') },
-    { id: "design", label: t('projects.filters.design') },
-    { id: "consulting", label: t('projects.filters.consulting') },
-    { id: "automation", label: t('projects.filters.automation') },
-    { id: "ai", label: t('projects.filters.ai') },
-    { id: "dashboard", label: t('projects.filters.dashboard') },
-    { id: "other", label: t('projects.filters.other') },
-  ], [t]);
-
   // Get icon for category (memoized)
   const getCategoryIcon = useCallback((category: string) => {
     const icons: Record<string, any> = {
@@ -336,45 +314,16 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
         </div>
       </section>
 
-      {/* Filters - Sticky */}
-      <section className="sticky top-20 z-40 border-y border-neutral-900 bg-[#0C0C0C]/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-            {/* Filter buttons */}
-            <div className="flex flex-wrap gap-2">
-              {filters.map((filter) => (
-                <Button
-                  key={filter.id}
-                  variant={activeFilter === filter.id ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => handleFilterChange(filter.id)}
-                  className={activeFilter === filter.id 
-                    ? "bg-mint text-black hover:bg-mint/90 rounded-lg" 
-                    : "border-neutral-800 text-neutral-400 hover:bg-neutral-950 hover:text-white rounded-lg"
-                  }
-                >
-                  {filter.label}
-                </Button>
-              ))}
-            </div>
-
-            {/* Search */}
-            <div className="relative w-full lg:w-80">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500" />
-              <Input
-                placeholder={t('projects.search')}
-                value={searchQuery}
-                onChange={handleSearchChange}
-                className="pl-11 bg-neutral-950 border-neutral-800 text-white placeholder:text-neutral-500 focus:border-mint/30 rounded-lg"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Projects Grid */}
-      <section className="py-24 px-6">
+      <section className="py-12 px-6">
         <div className="max-w-7xl mx-auto">
+          <ProjectFilters
+            activeFilter={activeFilter}
+            onCategoryChange={handleFilterChange}
+            searchQuery={searchQuery}
+            onSearch={(query) => setSearchQuery(query)}
+          />
+
           {loading ? (
             <div className="text-center py-20">
               <p className="text-neutral-500 text-lg">{t('common.loading')}</p>
@@ -384,121 +333,15 @@ export default function ProjectsPage({ onNavigate, onProjectClick }: ProjectsPag
               <p className="text-neutral-500 text-lg">{t('projects.empty')}</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProjects.map((project, index) => {
-                const ProjectIconComponent = project.icon || getCategoryIcon(project.category || 'other');
-                const projectYear = project.year || new Date(project.startDate || project.createdAt).getFullYear();
-                const projectTitle = project.title || project.name;
-                const projectSubtitle = project.subtitle || project.clientName || t('projects.card.completedProject');
-                const projectDescription = project.description || '';
-                
-                return (
-                  <motion.div
-                    key={project.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="group cursor-pointer"
-                    onClick={() => handleProjectClick(project)}
-                  >
-                    <div className="relative h-full rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-900 hover:border-mint/20 transition-all duration-300">
-                      {/* Image or Icon Visual */}
-                      <div className="aspect-[4/3] bg-neutral-900/50 border-b border-neutral-800 relative overflow-hidden">
-                        {project.imageUrl ? (
-                          <>
-                            <ImageWithFallback
-                              src={project.imageUrl} 
-                              alt={projectTitle}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                              loading="lazy"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent" />
-                          </>
-                        ) : (
-                          <>
-                            <div className="absolute inset-0 bg-gradient-to-br from-mint/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <div className="w-full h-full p-8 flex items-center justify-center">
-                              <motion.div
-                                whileHover={{ scale: 1.05, rotate: 5 }}
-                                className="relative z-10 w-24 h-24 rounded-2xl bg-gradient-to-br from-mint/20 to-mint/5 border border-mint/30 flex items-center justify-center"
-                              >
-                                <ProjectIconComponent className="h-12 w-12 text-mint" />
-                              </motion.div>
-                            </div>
-                          </>
-                        )}
-
-                        {/* Year Badge */}
-                        <div className="absolute top-4 left-4">
-                          <Badge className="bg-neutral-900/80 border-neutral-800 text-neutral-400 backdrop-blur-sm">
-                            {projectYear}
-                          </Badge>
-                        </div>
-
-                        {/* Status Badge */}
-                        {project.status && (
-                          <div className="absolute top-4 right-4">
-                            <div className="px-3 py-1.5 rounded-lg bg-mint/10 border border-mint/20 backdrop-blur-sm">
-                              <div className="text-xs font-bold text-mint capitalize">
-                                {project.status === 'completed' && 'Terminé'}
-                                {project.status === 'in_progress' && 'En cours'}
-                                {project.status === 'planning' && 'Planification'}
-                                {project.status === 'review' && 'Révision'}
-                                {project.status === 'on_hold' && 'En pause'}
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      
-                      {/* Content */}
-                      <div className="p-6">
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {project.category && (
-                            <Badge variant="secondary" className="text-xs bg-neutral-900 border-neutral-800 text-neutral-400">
-                              {project.category === 'web' && 'Développement Web'}
-                              {project.category === 'mobile' && 'Application Mobile'}
-                              {project.category === 'design' && 'Design UI/UX'}
-                              {project.category === 'consulting' && 'Consulting'}
-                              {project.category === 'other' && 'Autre'}
-                              {project.category === 'automation' && 'Automatisation'}
-                              {project.category === 'ai' && 'Intelligence Artificielle'}
-                              {project.category === 'dashboard' && 'Dashboard'}
-                            </Badge>
-                          )}
-                          {project.tags?.map((tag: string, idx: number) => (
-                            <Badge key={idx} variant="secondary" className="text-xs bg-neutral-900 border-neutral-800 text-neutral-400">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                        
-                        <h3 className="text-xl font-bold mb-2 group-hover:text-mint transition-colors">
-                          {projectTitle}
-                        </h3>
-                        
-                        <p className="text-sm text-neutral-400 mb-4 leading-relaxed line-clamp-2">
-                          {projectSubtitle}
-                        </p>
-                        
-                        <div className="flex items-center justify-between pt-4 border-t border-neutral-900">
-                          <div>
-                            <div className="text-xs text-neutral-500">
-                              {project.budget ? `${project.budget.toLocaleString()}€` : project.metric || 'Budget'}
-                            </div>
-                            <div className="text-sm font-medium text-mint">
-                              {project.impact || t('projects.viewProject')}
-                            </div>
-                          </div>
-                          <ArrowUpRight className="h-5 w-5 text-neutral-600 group-hover:text-mint group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProjects.map((project, index) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  index={index}
+                  onProjectClick={() => handleProjectClick(project)}
+                />
+              ))}
             </div>
           )}
         </div>

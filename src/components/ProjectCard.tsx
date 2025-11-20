@@ -99,11 +99,11 @@ export function ProjectCard({ project, index, onProjectClick }: ProjectCardProps
       
       {/* Project Content */}
       <div className="p-6 flex flex-col h-full">
-        <h3 className="text-xl font-bold mb-3 group-hover:text-mint transition-colors line-clamp-2">
+        <h3 className="text-2xl font-bold mb-3 group-hover:text-mint transition-colors line-clamp-2 leading-tight">
           {title}
         </h3>
         
-        <p className="text-neutral-400 mb-4 line-clamp-2 text-sm leading-relaxed">
+        <p className="text-white/80 mb-6 line-clamp-2 text-base leading-relaxed">
           {description || t('projects.card.completedProject')}
         </p>
         
