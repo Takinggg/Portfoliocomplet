@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Sparkles, ArrowRight, Code2, Palette, Zap, Workflow, Target, TrendingUp } from "lucide-react";
+import { Sparkles, ArrowRight, Code2, Palette, Zap, Workflow, Target, TrendingUp, Clock } from "lucide-react";
 import { Button } from "../ui/button";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 
@@ -120,6 +120,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
             <StatItem icon={<Target className="h-5 w-5" />} label={t('home.hero.stats.projects')} value="50+" />
             <StatItem icon={<TrendingUp className="h-5 w-5" />} label={t('home.hero.stats.satisfaction')} value="98%" />
             <StatItem icon={<Zap className="h-5 w-5" />} label={t('home.hero.stats.uptime')} value="99.9%" />
+            <StatItem icon={<Clock className="h-5 w-5" />} label={t('home.intro.stats.saved')} value="2h/j" />
           </motion.div>
         </div>
       </motion.div>
