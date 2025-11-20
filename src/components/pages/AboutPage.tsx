@@ -52,48 +52,51 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
   const skills = [
     {
       icon: Palette,
-      title: "UI/UX Design",
-      description: "Conception d'interfaces intuitives et esthétiques, Design Systems, Prototypage (Figma)."
+      title: t('aboutPage.skills.items.uiux.title'),
+      description: t('aboutPage.skills.items.uiux.description')
     },
     {
       icon: Code2,
-      title: "Full Stack Dev",
-      description: "Développement d'applications robustes et scalables (React, Node.js, Next.js, Supabase)."
+      title: t('aboutPage.skills.items.fullstack.title'),
+      description: t('aboutPage.skills.items.fullstack.description')
     },
     {
       icon: Brain,
-      title: "Intelligence Artificielle",
-      description: "Intégration de LLMs, APIs IA et création d'agents intelligents pour booster la productivité."
+      title: t('aboutPage.skills.items.ai.title'),
+      description: t('aboutPage.skills.items.ai.description')
     },
     {
       icon: Workflow,
-      title: "Automatisation",
-      description: "Optimisation de workflows et processus métier (n8n, Zapier, Scripts custom)."
+      title: t('aboutPage.skills.items.automation.title'),
+      description: t('aboutPage.skills.items.automation.description')
     }
   ];
 
   const values = [
     {
       icon: Target,
-      title: "Centré Utilisateur",
-      description: "Chaque décision est guidée par l'expérience finale pour garantir impact et satisfaction."
+      title: t('aboutPage.values.items.userCentric.title'),
+      description: t('aboutPage.values.items.userCentric.description')
     },
     {
       icon: Zap,
-      title: "Efficacité",
-      description: "Livrer vite et bien. Une approche pragmatique orientée résultats."
+      title: t('aboutPage.values.items.efficiency.title'),
+      description: t('aboutPage.values.items.efficiency.description')
     },
     {
       icon: Search,
-      title: "Curiosité",
-      description: "Une veille technologique constante pour proposer les solutions les plus innovantes."
+      title: t('aboutPage.values.items.curiosity.title'),
+      description: t('aboutPage.values.items.curiosity.description')
     },
     {
       icon: Eye,
-      title: "Transparence",
-      description: "Communication fluide et honnête tout au long du projet."
+      title: t('aboutPage.values.items.transparency.title'),
+      description: t('aboutPage.values.items.transparency.description')
     }
   ];
+
+  const introP1 = t('aboutPage.intro.p1');
+  const introParts = introP1.split('{name}');
 
   return (
     <div className="min-h-screen bg-[#0C0C0C] text-white pt-20">
@@ -112,19 +115,19 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-mint"></span>
               </span>
-              <span className="text-sm text-mint font-medium">Disponible pour nouveaux projets</span>
+              <span className="text-sm text-mint font-medium">{t('aboutPage.hero.available')}</span>
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              Designer. <br />
-              Développeur. <br />
+              {t('aboutPage.hero.title.designer')} <br />
+              {t('aboutPage.hero.title.developer')} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-mint to-white">
-                Créateur de solutions.
+                {t('aboutPage.hero.title.creator')}
               </span>
             </h1>
 
             <p className="text-xl text-neutral-400 mb-8 leading-relaxed max-w-xl">
-              Je conçois des expériences digitales performantes, élégantes et intelligentes pour propulser votre business.
+              {t('aboutPage.hero.description')}
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -134,7 +137,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                 className="bg-mint text-black hover:bg-mint/90 h-14 px-8 rounded-xl text-base font-bold"
               >
                 <Mail className="mr-2 h-5 w-5" />
-                Me contacter
+                {t('aboutPage.hero.cta.contact')}
               </Button>
               <Button 
                 size="lg" 
@@ -142,7 +145,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                 className="border-neutral-800 hover:bg-neutral-900 h-14 px-8 rounded-xl text-base"
               >
                 <Download className="mr-2 h-5 w-5" />
-                Télécharger CV
+                {t('aboutPage.hero.cta.downloadCv')}
               </Button>
             </div>
           </motion.div>
@@ -160,7 +163,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                   <div className="w-32 h-32 mx-auto bg-neutral-800 rounded-full mb-4 flex items-center justify-center border border-neutral-700">
                     <span className="text-4xl font-bold text-neutral-600">MF</span>
                   </div>
-                  <p className="text-neutral-500 text-sm">Photo de Maxence Foulon</p>
+                  <p className="text-neutral-500 text-sm">{t('aboutPage.hero.photoAlt')}</p>
                 </div>
               </div>
               
@@ -176,7 +179,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
             >
               <div className="flex items-center gap-4 mb-2">
                 <div className="text-3xl font-bold text-mint">3+</div>
-                <div className="text-sm text-neutral-400 leading-tight">Années<br/>d'expérience</div>
+                <div className="text-sm text-neutral-400 leading-tight whitespace-pre-line">{t('aboutPage.hero.experience')}</div>
               </div>
               <div className="h-1 w-full bg-neutral-800 rounded-full overflow-hidden">
                 <div className="h-full bg-mint w-3/4 rounded-full" />
@@ -194,16 +197,18 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-8">À propos de moi</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-8">{t('aboutPage.intro.title')}</h2>
             <div className="text-lg md:text-xl text-neutral-400 leading-relaxed space-y-6 text-justify md:text-center">
               <p>
-                Je suis <span className="text-white font-semibold">Maxence Foulon</span>, UI/UX Designer et développeur full stack spécialisé en intelligence artificielle. À 22 ans, j'ai déjà accompagné de nombreuses startups et entreprises dans la transformation de leurs idées en produits digitaux concrets.
+                {introParts[0]}
+                <span className="text-white font-semibold">Maxence Foulon</span>
+                {introParts[1]}
               </p>
               <p>
-                Mon approche est hybride : je combine la sensibilité esthétique du design avec la rigueur technique du développement. Cela me permet de créer des interfaces qui ne sont pas seulement belles, mais aussi fonctionnelles, rapides et techniquement irréprochables.
+                {t('aboutPage.intro.p2')}
               </p>
               <p>
-                Passionné par l'automatisation et l'IA, je cherche constamment à optimiser les processus pour permettre à mes clients de se concentrer sur ce qui compte vraiment : leur croissance.
+                {t('aboutPage.intro.p3')}
               </p>
             </div>
           </motion.div>
@@ -219,8 +224,8 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Mes Expertises</h2>
-            <p className="text-neutral-400">Une palette de compétences complète pour vos projets digitaux</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('aboutPage.skills.title')}</h2>
+            <p className="text-neutral-400">{t('aboutPage.skills.subtitle')}</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -255,9 +260,9 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Ma Vision & Valeurs</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">{t('aboutPage.values.title')}</h2>
               <p className="text-neutral-400 text-lg mb-8">
-                Je ne me contente pas de livrer du code ou des maquettes. Je m'engage à apporter de la valeur ajoutée à chaque étape du projet.
+                {t('aboutPage.values.subtitle')}
               </p>
               
               <div className="grid sm:grid-cols-2 gap-6">
@@ -287,11 +292,11 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
               <div className="relative bg-neutral-900 border border-neutral-800 rounded-3xl p-8 md:p-12">
                 <div className="text-6xl font-serif text-mint/20 absolute top-6 left-6">"</div>
                 <blockquote className="text-xl md:text-2xl font-medium leading-relaxed text-center relative z-10">
-                  La technologie n'est qu'un outil. Le véritable objectif est de créer des solutions qui simplifient la vie et amplifient le potentiel humain.
+                  {t('aboutPage.values.quote')}
                 </blockquote>
                 <div className="mt-8 text-center">
                   <div className="font-bold text-white">Maxence Foulon</div>
-                  <div className="text-sm text-mint">Founder & Lead Developer</div>
+                  <div className="text-sm text-mint">{t('aboutPage.values.role')}</div>
                 </div>
               </div>
             </motion.div>
@@ -309,8 +314,8 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">À la une</h2>
-              <p className="text-neutral-400">Sélection de mes derniers travaux et articles</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('aboutPage.featured.title')}</h2>
+              <p className="text-neutral-400">{t('aboutPage.featured.subtitle')}</p>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-8">
@@ -334,7 +339,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                       </div>
                     )}
                     <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-xs font-medium text-white">
-                      Étude de cas
+                      {t('aboutPage.featured.caseStudyBadge')}
                     </div>
                   </div>
                   <h3 className="text-xl font-bold mb-2 group-hover:text-mint transition-colors">{study.title}</h3>
@@ -362,7 +367,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                       </div>
                     )}
                     <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-xs font-medium text-white">
-                      Article
+                      {t('aboutPage.featured.blogBadge')}
                     </div>
                   </div>
                   <h3 className="text-xl font-bold mb-2 group-hover:text-mint transition-colors">{blog.title_fr}</h3>
@@ -383,17 +388,17 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Prêt à lancer votre projet ?
+              {t('aboutPage.cta.title')}
             </h2>
             <p className="text-xl text-neutral-400 mb-10 max-w-2xl mx-auto">
-              Discutons de vos besoins et voyons comment nous pouvons collaborer pour atteindre vos objectifs.
+              {t('aboutPage.cta.subtitle')}
             </p>
             <Button 
               size="lg" 
               onClick={() => onNavigate("contact")}
               className="bg-mint text-black hover:bg-mint/90 h-16 px-12 rounded-full text-lg font-bold shadow-lg shadow-mint/20 hover:shadow-mint/40 transition-all"
             >
-              Travaillons ensemble
+              {t('aboutPage.cta.button')}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </motion.div>

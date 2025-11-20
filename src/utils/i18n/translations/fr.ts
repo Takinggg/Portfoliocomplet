@@ -1334,6 +1334,86 @@ export default {
       "language": "Langue",
       "featured": "À la une",
       "published": "Publié"
+    },
+    "aboutPage": {
+      "hero": {
+        "available": "Disponible pour nouveaux projets",
+        "title": {
+          "designer": "Designer.",
+          "developer": "Développeur.",
+          "creator": "Créateur de solutions."
+        },
+        "description": "Je conçois des expériences digitales performantes, élégantes et intelligentes pour propulser votre business.",
+        "cta": {
+          "contact": "Me contacter",
+          "downloadCv": "Télécharger CV"
+        },
+        "photoAlt": "Photo de Maxence Foulon",
+        "experience": "Années\nd'expérience"
+      },
+      "intro": {
+        "title": "À propos de moi",
+        "p1": "Je suis {name}, UI/UX Designer et développeur full stack spécialisé en intelligence artificielle. À 22 ans, j'ai déjà accompagné de nombreuses startups et entreprises dans la transformation de leurs idées en produits digitaux concrets.",
+        "p2": "Mon approche est hybride : je combine la sensibilité esthétique du design avec la rigueur technique du développement. Cela me permet de créer des interfaces qui ne sont pas seulement belles, mais aussi fonctionnelles, rapides et techniquement irréprochables.",
+        "p3": "Passionné par l'automatisation et l'IA, je cherche constamment à optimiser les processus pour permettre à mes clients de se concentrer sur ce qui compte vraiment : leur croissance."
+      },
+      "skills": {
+        "title": "Mes Expertises",
+        "subtitle": "Une palette de compétences complète pour vos projets digitaux",
+        "items": {
+          "uiux": {
+            "title": "UI/UX Design",
+            "description": "Conception d'interfaces intuitives et esthétiques, Design Systems, Prototypage (Figma)."
+          },
+          "fullstack": {
+            "title": "Full Stack Dev",
+            "description": "Développement d'applications robustes et scalables (React, Node.js, Next.js, Supabase)."
+          },
+          "ai": {
+            "title": "Intelligence Artificielle",
+            "description": "Intégration de LLMs, APIs IA et création d'agents intelligents pour booster la productivité."
+          },
+          "automation": {
+            "title": "Automatisation",
+            "description": "Optimisation de workflows et processus métier (n8n, Zapier, Scripts custom)."
+          }
+        }
+      },
+      "values": {
+        "title": "Ma Vision & Valeurs",
+        "subtitle": "Je ne me contente pas de livrer du code ou des maquettes. Je m'engage à apporter de la valeur ajoutée à chaque étape du projet.",
+        "items": {
+          "userCentric": {
+            "title": "Centré Utilisateur",
+            "description": "Chaque décision est guidée par l'expérience finale pour garantir impact et satisfaction."
+          },
+          "efficiency": {
+            "title": "Efficacité",
+            "description": "Livrer vite et bien. Une approche pragmatique orientée résultats."
+          },
+          "curiosity": {
+            "title": "Curiosité",
+            "description": "Une veille technologique constante pour proposer les solutions les plus innovantes."
+          },
+          "transparency": {
+            "title": "Transparence",
+            "description": "Communication fluide et honnête tout au long du projet."
+          }
+        },
+        "quote": "La technologie n'est qu'un outil. Le véritable objectif est de créer des solutions qui simplifient la vie et amplifient le potentiel humain.",
+        "role": "Founder & Lead Developer"
+      },
+      "featured": {
+        "title": "À la une",
+        "subtitle": "Sélection de mes derniers travaux et articles",
+        "caseStudyBadge": "Étude de cas",
+        "blogBadge": "Article"
+      },
+      "cta": {
+        "title": "Prêt à lancer votre projet ?",
+        "subtitle": "Discutons de vos besoins et voyons comment nous pouvons collaborer pour atteindre vos objectifs.",
+        "button": "Travaillons ensemble"
+      }
     }
   }
 } as const;

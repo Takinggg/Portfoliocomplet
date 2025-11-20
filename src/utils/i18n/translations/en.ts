@@ -1362,5 +1362,85 @@ export default {
       "featured": "Featured",
       "published": "Published"
     }
+  },
+  "aboutPage": {
+    "hero": {
+      "available": "Available for new projects",
+      "title": {
+        "designer": "Designer.",
+        "developer": "Developer.",
+        "creator": "Solution Creator."
+      },
+      "description": "I design high-performance, elegant, and intelligent digital experiences to propel your business.",
+      "cta": {
+        "contact": "Contact me",
+        "downloadCv": "Download CV"
+      },
+      "photoAlt": "Photo of Maxence Foulon",
+      "experience": "Years\nof experience"
+    },
+    "intro": {
+      "title": "About me",
+      "p1": "I am {name}, UI/UX Designer and Full Stack Developer specializing in Artificial Intelligence. At 22, I have already accompanied numerous startups and companies in transforming their ideas into concrete digital products.",
+      "p2": "My approach is hybrid: I combine the aesthetic sensitivity of design with the technical rigor of development. This allows me to create interfaces that are not only beautiful but also functional, fast, and technically flawless.",
+      "p3": "Passionate about automation and AI, I constantly seek to optimize processes to allow my clients to focus on what truly matters: their growth."
+    },
+    "skills": {
+      "title": "My Expertise",
+      "subtitle": "A complete skill set for your digital projects",
+      "items": {
+        "uiux": {
+          "title": "UI/UX Design",
+          "description": "Designing intuitive and aesthetic interfaces, Design Systems, Prototyping (Figma)."
+        },
+        "fullstack": {
+          "title": "Full Stack Dev",
+          "description": "Developing robust and scalable applications (React, Node.js, Next.js, Supabase)."
+        },
+        "ai": {
+          "title": "Artificial Intelligence",
+          "description": "Integrating LLMs, AI APIs, and creating intelligent agents to boost productivity."
+        },
+        "automation": {
+          "title": "Automation",
+          "description": "Optimizing workflows and business processes (n8n, Zapier, Custom Scripts)."
+        }
+      }
+    },
+    "values": {
+      "title": "My Vision & Values",
+      "subtitle": "I don't just deliver code or mockups. I am committed to adding value at every stage of the project.",
+      "items": {
+        "userCentric": {
+          "title": "User Centric",
+          "description": "Every decision is guided by the final experience to ensure impact and satisfaction."
+        },
+        "efficiency": {
+          "title": "Efficiency",
+          "description": "Deliver fast and well. A pragmatic, results-oriented approach."
+        },
+        "curiosity": {
+          "title": "Curiosity",
+          "description": "Constant technology watch to offer the most innovative solutions."
+        },
+        "transparency": {
+          "title": "Transparency",
+          "description": "Fluid and honest communication throughout the project."
+        }
+      },
+      "quote": "Technology is just a tool. The real goal is to create solutions that simplify life and amplify human potential.",
+      "role": "Founder & Lead Developer"
+    },
+    "featured": {
+      "title": "Featured",
+      "subtitle": "Selection of my latest work and articles",
+      "caseStudyBadge": "Case Study",
+      "blogBadge": "Article"
+    },
+    "cta": {
+      "title": "Ready to launch your project?",
+      "subtitle": "Let's discuss your needs and see how we can collaborate to achieve your goals.",
+      "button": "Let's work together"
+    }
   }
 } as const;
