@@ -215,9 +215,9 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
               </h1>
 
               {project.description && (
-                <p className="text-xl md:text-2xl text-neutral-400 mb-8 leading-relaxed">
+                <div className="text-lg md:text-xl text-neutral-300 mb-8 leading-relaxed whitespace-pre-line">
                   {project.description}
-                </p>
+                </div>
               )}
 
               {/* Meta Info */}
