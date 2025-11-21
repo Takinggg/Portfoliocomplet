@@ -1423,118 +1423,126 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.15 }}
-                  className="relative group cursor-pointer"
+                  className="relative group"
                 >
+                  {/* Background glow effect */}
+                  <div className={`absolute -inset-4 bg-gradient-to-br ${cas.gradient} opacity-0 group-hover:opacity-70 blur-3xl transition-opacity duration-700 rounded-3xl`} />
+                  
                   <motion.div 
-                    whileHover={{ y: -12 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="relative h-full rounded-3xl border border-neutral-800 bg-gradient-to-br from-neutral-950 to-neutral-900/50 hover:border-mint/40 backdrop-blur-xl overflow-hidden transition-colors duration-300"
+                    whileHover={{ scale: 1.02, y: -8 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className="relative h-full rounded-2xl border border-white/5 bg-black/40 backdrop-blur-xl overflow-hidden group-hover:border-mint/20 transition-all duration-300"
                   >
-                    {/* Animated gradient overlay */}
-                    <motion.div 
-                      className={`absolute inset-0 bg-gradient-to-br ${cas.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                    />
-                    
-                    {/* Content wrapper */}
-                    <div className="relative p-8 space-y-6">
-                      {/* Header avec badge de type */}
-                      <div className="flex items-center justify-between">
-                        <div className={`p-4 rounded-2xl bg-gradient-to-br ${cas.iconBg} border border-neutral-800 group-hover:border-mint/30 transition-all shadow-lg`}>
-                          <cas.icon className={`h-7 w-7 ${cas.iconColor}`} />
+                    {/* Diagonal split design */}
+                    <div className="absolute inset-0">
+                      <div className="absolute inset-0 bg-gradient-to-br from-neutral-950 via-neutral-900/80 to-black" />
+                      <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 400 600" fill="none">
+                        <path d="M0 0 L400 0 L400 400 L0 600 Z" fill="url(#grad1)" />
+                        <defs>
+                          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#00FFC2" stopOpacity="0.05" />
+                            <stop offset="100%" stopColor="#00FFC2" stopOpacity="0" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    </div>
+
+                    <div className="relative p-6 flex flex-col h-full">
+                      {/* Header compact */}
+                      <div className="flex items-center justify-between mb-6">
+                        <div className={`p-3 rounded-xl bg-gradient-to-br ${cas.iconBg} shadow-lg shadow-black/50`}>
+                          <cas.icon className={`h-6 w-6 ${cas.iconColor}`} />
                         </div>
-                        <div className="px-4 py-2 rounded-full bg-neutral-900/80 border border-neutral-800 backdrop-blur-sm">
-                          <span className="text-xs font-semibold text-neutral-400">{cas.type}</span>
+                        <div className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur">
+                          <span className="text-[10px] font-bold text-white/70 uppercase tracking-widest">{cas.type}</span>
                         </div>
                       </div>
 
-                      {/* AVANT - Problème */}
-                      <div className="p-5 rounded-xl bg-neutral-900/50 border border-red-500/20 relative">
-                        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-red-500/50 to-transparent"></div>
-                        <div className="flex items-start gap-3">
-                          <div className="mt-0.5 p-2 rounded-lg bg-red-500/10 border border-red-500/20 shrink-0">
-                            <TrendingDown className="h-4 w-4 text-red-400" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="text-[10px] font-bold text-red-400 uppercase tracking-wider mb-2">
-                              {t('home.results.before')}
+                      {/* Split View: Before/After côte à côte */}
+                      <div className="grid grid-cols-2 gap-3 mb-6 flex-1">
+                        {/* Before */}
+                        <div className="relative p-4 rounded-xl bg-black/40 border border-red-500/10 group/before">
+                          <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent rounded-xl opacity-0 group-hover/before:opacity-100 transition-opacity" />
+                          <div className="relative space-y-2">
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
+                                <TrendingDown className="h-3 w-3 text-red-400" />
+                              </div>
+                              <span className="text-[9px] font-black text-red-400 uppercase tracking-wider">
+                                {t('home.results.before')}
+                              </span>
                             </div>
-                            <p className="text-sm text-neutral-300 leading-relaxed">{cas.before}</p>
+                            <p className="text-xs text-neutral-400 leading-relaxed font-medium">{cas.before}</p>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Flèche de transformation */}
-                      <div className="flex justify-center">
-                        <motion.div
-                          animate={{ y: [0, 5, 0] }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                          className="p-2.5 rounded-full bg-gradient-to-b from-mint/20 to-mint/5 border border-mint/30"
-                        >
-                          <ArrowRight className="h-4 w-4 text-mint rotate-90" />
-                        </motion.div>
-                      </div>
-
-                      {/* APRÈS - Solution */}
-                      <div className="p-5 rounded-xl bg-neutral-900/50 border border-mint/20 relative">
-                        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-mint/50 to-transparent"></div>
-                        <div className="flex items-start gap-3">
-                          <div className="mt-0.5 p-2 rounded-lg bg-mint/10 border border-mint/20 shrink-0">
-                            <Zap className="h-4 w-4 text-mint" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="text-[10px] font-bold text-mint uppercase tracking-wider mb-2">
-                              {t('home.results.after')}
+                        {/* After */}
+                        <div className="relative p-4 rounded-xl bg-black/40 border border-mint/10 group/after">
+                          <div className="absolute inset-0 bg-gradient-to-br from-mint/5 to-transparent rounded-xl opacity-0 group-hover/after:opacity-100 transition-opacity" />
+                          <div className="relative space-y-2">
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 rounded-lg bg-mint/10 flex items-center justify-center">
+                                <Zap className="h-3 w-3 text-mint" />
+                              </div>
+                              <span className="text-[9px] font-black text-mint uppercase tracking-wider">
+                                {t('home.results.after')}
+                              </span>
                             </div>
-                            <p className="text-sm text-white leading-relaxed font-medium">{cas.after}</p>
+                            <p className="text-xs text-white leading-relaxed font-semibold">{cas.after}</p>
                           </div>
                         </div>
                       </div>
 
-                      {/* Résultat massif */}
-                      <div className="relative mt-8">
-                        <div className="absolute inset-0 bg-gradient-to-r from-mint/10 via-mint/20 to-mint/10 blur-2xl"></div>
-                        <div className="relative text-center p-8 rounded-2xl bg-gradient-to-br from-mint/10 via-mint/5 to-transparent border-2 border-mint/30 backdrop-blur-sm">
+                      {/* Divider animé */}
+                      <div className="relative h-px mb-6">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-mint/30 to-transparent" />
+                        <motion.div 
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-mint to-transparent"
+                          animate={{ x: ['-100%', '100%'] }}
+                          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                        />
+                      </div>
+
+                      {/* Résultat en grand - Design épuré */}
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-mint/5 blur-2xl rounded-2xl" />
+                        <div className="relative text-center py-6 px-4 rounded-2xl border border-mint/20 bg-gradient-to-b from-mint/5 to-transparent">
                           <motion.div
-                            initial={{ scale: 0.9 }}
-                            whileInView={{ scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ type: "spring", stiffness: 200 }}
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ type: "spring", stiffness: 400 }}
+                            className="space-y-1"
                           >
-                            <div className="text-5xl lg:text-6xl font-black text-mint mb-2 tracking-tight">
+                            <div className="text-6xl font-black bg-gradient-to-br from-mint via-white to-mint bg-clip-text text-transparent tracking-tighter">
                               {cas.result}
                             </div>
-                            <div className="text-xs font-bold text-neutral-300 uppercase tracking-wider">
+                            <div className="text-[10px] font-bold text-mint/80 uppercase tracking-[0.2em]">
                               {cas.resultLabel}
                             </div>
                           </motion.div>
-                          
-                          {/* Checkmark badge */}
-                          <div className="absolute -top-3 -right-3">
-                            <motion.div
-                              animate={{ rotate: [0, 10, 0] }}
-                              transition={{ duration: 3, repeat: Infinity }}
-                              className="w-9 h-9 rounded-full bg-mint flex items-center justify-center shadow-lg shadow-mint/50"
-                            >
-                              <CheckCircle className="h-5 w-5 text-black" />
-                            </motion.div>
-                          </div>
                         </div>
+
+                        {/* Floating badge */}
+                        <motion.div 
+                          className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-mint shadow-lg shadow-mint/50 flex items-center justify-center"
+                          animate={{ 
+                            rotate: [0, 360],
+                            scale: [1, 1.1, 1]
+                          }}
+                          transition={{ 
+                            rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+                            scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                          }}
+                        >
+                          <CheckCircle className="h-4 w-4 text-black" strokeWidth={3} />
+                        </motion.div>
                       </div>
                     </div>
-                  </motion.div>
 
-                  {/* Enhanced glow on hover */}
-                  <motion.div 
-                    className="absolute inset-0 bg-mint/5 rounded-3xl blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"
-                    animate={{
-                      scale: [1, 1.05, 1],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  />
+                    {/* Hover effect border glow */}
+                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                      <div className="absolute inset-0 rounded-2xl border border-mint/40 shadow-[0_0_40px_rgba(0,255,194,0.2)]" />
+                    </div>
+                  </motion.div>
                 </motion.div>
               ))}
             </div>
