@@ -1426,121 +1426,124 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   className="relative group"
                 >
                   {/* Background glow effect */}
-                  <div className={`absolute -inset-4 bg-gradient-to-br ${cas.gradient} opacity-0 group-hover:opacity-70 blur-3xl transition-opacity duration-700 rounded-3xl`} />
+                  <div className={`absolute -inset-6 bg-gradient-to-br ${cas.gradient} opacity-0 group-hover:opacity-60 blur-3xl transition-all duration-700`} />
                   
                   <motion.div 
-                    whileHover={{ scale: 1.02, y: -8 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    className="relative h-full rounded-2xl border border-white/5 bg-black/40 backdrop-blur-xl overflow-hidden group-hover:border-mint/20 transition-all duration-300"
+                    whileHover={{ y: -8 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    className="relative rounded-3xl border border-white/5 bg-gradient-to-b from-neutral-950/90 to-black/90 backdrop-blur-xl overflow-hidden group-hover:border-mint/30 transition-all duration-500"
                   >
-                    {/* Diagonal split design */}
-                    <div className="absolute inset-0">
-                      <div className="absolute inset-0 bg-gradient-to-br from-neutral-950 via-neutral-900/80 to-black" />
-                      <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 400 600" fill="none">
-                        <path d="M0 0 L400 0 L400 400 L0 600 Z" fill="url(#grad1)" />
-                        <defs>
-                          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#00FFC2" stopOpacity="0.05" />
-                            <stop offset="100%" stopColor="#00FFC2" stopOpacity="0" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                    </div>
-
-                    <div className="relative p-6 flex flex-col h-full">
-                      {/* Header compact */}
-                      <div className="flex items-center justify-between mb-6">
-                        <div className={`p-3 rounded-xl bg-gradient-to-br ${cas.iconBg} shadow-lg shadow-black/50`}>
-                          <cas.icon className={`h-6 w-6 ${cas.iconColor}`} />
-                        </div>
-                        <div className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur">
-                          <span className="text-[10px] font-bold text-white/70 uppercase tracking-widest">{cas.type}</span>
-                        </div>
-                      </div>
-
-                      {/* Split View: Before/After côte à côte */}
-                      <div className="grid grid-cols-2 gap-3 mb-6 flex-1">
-                        {/* Before */}
-                        <div className="relative p-4 rounded-xl bg-black/40 border border-red-500/10 group/before">
-                          <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent rounded-xl opacity-0 group-hover/before:opacity-100 transition-opacity" />
-                          <div className="relative space-y-2">
-                            <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                <TrendingDown className="h-3 w-3 text-red-400" />
-                              </div>
-                              <span className="text-[9px] font-black text-red-400 uppercase tracking-wider">
-                                {t('home.results.before')}
-                              </span>
-                            </div>
-                            <p className="text-xs text-neutral-400 leading-relaxed font-medium">{cas.before}</p>
-                          </div>
-                        </div>
-
-                        {/* After */}
-                        <div className="relative p-4 rounded-xl bg-black/40 border border-mint/10 group/after">
-                          <div className="absolute inset-0 bg-gradient-to-br from-mint/5 to-transparent rounded-xl opacity-0 group-hover/after:opacity-100 transition-opacity" />
-                          <div className="relative space-y-2">
-                            <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 rounded-lg bg-mint/10 flex items-center justify-center">
-                                <Zap className="h-3 w-3 text-mint" />
-                              </div>
-                              <span className="text-[9px] font-black text-mint uppercase tracking-wider">
-                                {t('home.results.after')}
-                              </span>
-                            </div>
-                            <p className="text-xs text-white leading-relaxed font-semibold">{cas.after}</p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Divider animé */}
-                      <div className="relative h-px mb-6">
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-mint/30 to-transparent" />
+                    {/* Top section - Type & Icon */}
+                    <div className="relative p-8 pb-6 border-b border-white/5">
+                      <div className="flex items-start justify-between mb-6">
                         <motion.div 
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-mint to-transparent"
-                          animate={{ x: ['-100%', '100%'] }}
-                          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                        />
-                      </div>
-
-                      {/* Résultat en grand - Design épuré */}
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-mint/5 blur-2xl rounded-2xl" />
-                        <div className="relative text-center py-6 px-4 rounded-2xl border border-mint/20 bg-gradient-to-b from-mint/5 to-transparent">
-                          <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ type: "spring", stiffness: 400 }}
-                            className="space-y-1"
-                          >
-                            <div className="text-6xl font-black bg-gradient-to-br from-mint via-white to-mint bg-clip-text text-transparent tracking-tighter">
-                              {cas.result}
-                            </div>
-                            <div className="text-[10px] font-bold text-mint/80 uppercase tracking-[0.2em]">
-                              {cas.resultLabel}
-                            </div>
-                          </motion.div>
-                        </div>
-
-                        {/* Floating badge */}
-                        <motion.div 
-                          className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-mint shadow-lg shadow-mint/50 flex items-center justify-center"
-                          animate={{ 
-                            rotate: [0, 360],
-                            scale: [1, 1.1, 1]
-                          }}
-                          transition={{ 
-                            rotate: { duration: 8, repeat: Infinity, ease: "linear" },
-                            scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-                          }}
+                          className={`p-5 rounded-2xl bg-gradient-to-br ${cas.iconBg} shadow-2xl relative overflow-hidden`}
+                          whileHover={{ scale: 1.05, rotate: 5 }}
+                          transition={{ type: "spring", stiffness: 400 }}
                         >
-                          <CheckCircle className="h-4 w-4 text-black" strokeWidth={3} />
+                          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <cas.icon className={`h-8 w-8 ${cas.iconColor} relative z-10`} />
+                        </motion.div>
+                        <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                          <span className="text-xs font-bold text-white/60 uppercase tracking-[0.15em]">{cas.type}</span>
+                        </div>
+                      </div>
+
+                      {/* Résultat en GROS en haut */}
+                      <div className="text-center mb-4">
+                        <motion.div
+                          initial={{ scale: 0.8, opacity: 0 }}
+                          whileInView={{ scale: 1, opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ type: "spring", stiffness: 200, delay: i * 0.15 + 0.2 }}
+                        >
+                          <div className="text-7xl lg:text-8xl font-black bg-gradient-to-br from-mint via-white to-mint bg-clip-text text-transparent tracking-tighter leading-none mb-3">
+                            {cas.result}
+                          </div>
+                          <div className="text-sm font-bold text-mint/80 uppercase tracking-[0.25em]">
+                            {cas.resultLabel}
+                          </div>
                         </motion.div>
                       </div>
                     </div>
 
-                    {/* Hover effect border glow */}
-                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                      <div className="absolute inset-0 rounded-2xl border border-mint/40 shadow-[0_0_40px_rgba(0,255,194,0.2)]" />
+                    {/* Bottom section - Before/After en liste */}
+                    <div className="p-8 space-y-4">
+                      {/* Before */}
+                      <motion.div 
+                        className="relative group/item"
+                        whileHover={{ x: 4 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <div className="flex gap-4 p-4 rounded-xl bg-gradient-to-r from-red-500/5 to-transparent border border-red-500/10 group-hover/item:border-red-500/20 transition-colors">
+                          <div className="shrink-0 w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                            <TrendingDown className="h-5 w-5 text-red-400" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[10px] font-black text-red-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                              {t('home.results.before')}
+                              <div className="h-px flex-1 bg-gradient-to-r from-red-500/30 to-transparent" />
+                            </div>
+                            <p className="text-sm text-neutral-400 leading-relaxed">{cas.before}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+
+                      {/* Arrow indicator */}
+                      <div className="flex justify-center">
+                        <motion.div
+                          animate={{ y: [0, 6, 0] }}
+                          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                          className="w-8 h-8 rounded-full bg-mint/10 border border-mint/30 flex items-center justify-center"
+                        >
+                          <ArrowRight className="h-4 w-4 text-mint rotate-90" />
+                        </motion.div>
+                      </div>
+
+                      {/* After */}
+                      <motion.div 
+                        className="relative group/item"
+                        whileHover={{ x: 4 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <div className="flex gap-4 p-4 rounded-xl bg-gradient-to-r from-mint/5 to-transparent border border-mint/10 group-hover/item:border-mint/20 transition-colors">
+                          <div className="shrink-0 w-10 h-10 rounded-lg bg-mint/10 border border-mint/20 flex items-center justify-center">
+                            <Zap className="h-5 w-5 text-mint" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[10px] font-black text-mint uppercase tracking-widest mb-2 flex items-center gap-2">
+                              {t('home.results.after')}
+                              <div className="h-px flex-1 bg-gradient-to-r from-mint/30 to-transparent" />
+                            </div>
+                            <p className="text-sm text-white leading-relaxed font-medium">{cas.after}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </div>
+
+                    {/* Success badge floating */}
+                    <motion.div 
+                      className="absolute top-6 right-6 w-12 h-12 rounded-full bg-mint shadow-[0_0_30px_rgba(0,255,194,0.5)] flex items-center justify-center z-20"
+                      animate={{ 
+                        rotate: 360,
+                        scale: [1, 1.1, 1]
+                      }}
+                      transition={{ 
+                        rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+                        scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                      }}
+                    >
+                      <CheckCircle className="h-6 w-6 text-black" strokeWidth={2.5} />
+                    </motion.div>
+
+                    {/* Decorative corner accent */}
+                    <div className="absolute bottom-0 left-0 w-32 h-32 opacity-20">
+                      <div className={`absolute inset-0 bg-gradient-to-tr ${cas.gradient} blur-2xl`} />
+                    </div>
+
+                    {/* Hover border glow */}
+                    <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                      <div className="absolute inset-0 rounded-3xl shadow-[inset_0_0_60px_rgba(0,255,194,0.1)]" />
                     </div>
                   </motion.div>
                 </motion.div>
