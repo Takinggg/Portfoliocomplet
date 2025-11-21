@@ -2665,14 +2665,14 @@ function ContactSection({ onNavigate }: HomePageProps) {
             whileHover={{ scale: 1.03, y: -8 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => onNavigate("booking")}
-            className="relative p-10 rounded-3xl bg-neutral-950/50 border-2 border-neutral-800 hover:border-mint/40 backdrop-blur-xl cursor-pointer group transition-all overflow-hidden"
+            className="relative p-10 rounded-3xl bg-neutral-950/50 border-2 border-neutral-800 hover:border-mint/40 backdrop-blur-xl cursor-pointer group transition-all overflow-hidden isolate"
           >
             {/* Animated gradient on hover */}
-            <div className="absolute inset-0 bg-gradient-to-br from-mint/5 via-mint/10 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-mint/5 via-mint/10 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity -z-10"></div>
             
             {/* Animated glow effect */}
             <motion.div
-              className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-mint/20 rounded-3xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity"
+              className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-mint/20 rounded-3xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity -z-10"
               animate={{ rotate: -360 }}
               transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
             />
