@@ -1434,7 +1434,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     className="relative rounded-3xl border border-white/5 bg-gradient-to-b from-neutral-950/90 to-black/90 backdrop-blur-xl overflow-hidden group-hover:border-mint/30 transition-all duration-500"
                   >
                     {/* Top section - Type & Icon */}
-                    <div className="relative p-8 pb-6 border-b border-white/5">
+                    <div className="relative p-8 pb-6 border-b border-white/5 z-20">
                       <div className="flex items-start justify-between mb-8">
                         <motion.div 
                           className={`p-5 rounded-2xl bg-gradient-to-br ${cas.iconBg} shadow-2xl relative overflow-hidden z-10`}
@@ -1444,7 +1444,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                           <cas.icon className={`h-8 w-8 ${cas.iconColor} relative z-10`} />
                         </motion.div>
-                        <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm z-10">
+                        <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm z-20 relative">
                           <span className="text-xs font-bold text-white/60 uppercase tracking-[0.15em]">{cas.type}</span>
                         </div>
                       </div>
@@ -1523,7 +1523,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
 
                     {/* Success badge floating - repositionné */}
                     <motion.div 
-                      className="absolute top-4 right-4 w-12 h-12 rounded-full bg-mint shadow-[0_0_30px_rgba(0,255,194,0.5)] flex items-center justify-center z-30"
+                      className="absolute top-4 right-4 w-12 h-12 rounded-full bg-mint shadow-[0_0_30px_rgba(0,255,194,0.5)] flex items-center justify-center z-10"
                       animate={{ 
                         rotate: 360,
                         scale: [1, 1.1, 1]
