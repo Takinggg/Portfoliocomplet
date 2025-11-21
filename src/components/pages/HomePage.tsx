@@ -1426,7 +1426,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   className="relative group"
                 >
                   {/* Background glow effect */}
-                  <div className={`absolute -inset-6 bg-gradient-to-br ${cas.gradient} opacity-0 group-hover:opacity-60 blur-3xl transition-all duration-700`} />
+                  <div className={`absolute -inset-6 bg-gradient-to-br ${cas.gradient} opacity-0 group-hover:opacity-60 blur-3xl transition-all duration-700 -z-10`} />
                   
                   <motion.div 
                     whileHover={{ y: -8 }}
@@ -1435,22 +1435,22 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   >
                     {/* Top section - Type & Icon */}
                     <div className="relative p-8 pb-6 border-b border-white/5">
-                      <div className="flex items-start justify-between mb-6">
+                      <div className="flex items-start justify-between mb-8">
                         <motion.div 
-                          className={`p-5 rounded-2xl bg-gradient-to-br ${cas.iconBg} shadow-2xl relative overflow-hidden`}
+                          className={`p-5 rounded-2xl bg-gradient-to-br ${cas.iconBg} shadow-2xl relative overflow-hidden z-10`}
                           whileHover={{ scale: 1.05, rotate: 5 }}
                           transition={{ type: "spring", stiffness: 400 }}
                         >
                           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                           <cas.icon className={`h-8 w-8 ${cas.iconColor} relative z-10`} />
                         </motion.div>
-                        <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm z-10">
                           <span className="text-xs font-bold text-white/60 uppercase tracking-[0.15em]">{cas.type}</span>
                         </div>
                       </div>
 
                       {/* Résultat en GROS en haut */}
-                      <div className="text-center mb-4">
+                      <div className="text-center mb-4 relative z-10">
                         <motion.div
                           initial={{ scale: 0.8, opacity: 0 }}
                           whileInView={{ scale: 1, opacity: 1 }}
@@ -1468,7 +1468,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     </div>
 
                     {/* Bottom section - Before/After en liste */}
-                    <div className="p-8 space-y-4">
+                    <div className="relative p-8 space-y-4 z-10">
                       {/* Before */}
                       <motion.div 
                         className="relative group/item"
@@ -1490,7 +1490,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                       </motion.div>
 
                       {/* Arrow indicator */}
-                      <div className="flex justify-center">
+                      <div className="flex justify-center py-2">
                         <motion.div
                           animate={{ y: [0, 6, 0] }}
                           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -1521,9 +1521,9 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                       </motion.div>
                     </div>
 
-                    {/* Success badge floating */}
+                    {/* Success badge floating - repositionné */}
                     <motion.div 
-                      className="absolute top-6 right-6 w-12 h-12 rounded-full bg-mint shadow-[0_0_30px_rgba(0,255,194,0.5)] flex items-center justify-center z-20"
+                      className="absolute top-4 right-4 w-12 h-12 rounded-full bg-mint shadow-[0_0_30px_rgba(0,255,194,0.5)] flex items-center justify-center z-30"
                       animate={{ 
                         rotate: 360,
                         scale: [1, 1.1, 1]
@@ -1537,7 +1537,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     </motion.div>
 
                     {/* Decorative corner accent */}
-                    <div className="absolute bottom-0 left-0 w-32 h-32 opacity-20">
+                    <div className="absolute bottom-0 left-0 w-32 h-32 opacity-20 pointer-events-none">
                       <div className={`absolute inset-0 bg-gradient-to-tr ${cas.gradient} blur-2xl`} />
                     </div>
 
