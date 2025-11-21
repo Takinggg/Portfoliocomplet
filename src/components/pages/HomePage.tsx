@@ -2807,16 +2807,6 @@ function ContactSection({ onNavigate }: HomePageProps) {
 
                 {/* Icon with animated ring */}
                 <div className="relative mb-6">
-                  {/* Pulsing rings */}
-                  <motion.div
-                    className="absolute inset-0 w-16 h-16 rounded-xl border-2 border-mint/30"
-                    animate={{ 
-                      scale: [1, 1.2, 1],
-                      opacity: [0.5, 0, 0.5]
-                    }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                  />
-                  
                   <div className="relative w-16 h-16 rounded-xl bg-mint/10 border-2 border-mint/30 flex items-center justify-center group-hover:bg-mint/20 transition-colors">
                     <item.icon className="h-8 w-8 text-mint" />
                   </div>
