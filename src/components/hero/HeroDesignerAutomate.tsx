@@ -19,15 +19,23 @@ interface HeroDesignerAutomateProps {
 export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) {
   const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
-  // Mouse follow effect for the background
+  // Use motion values for better performance (no re-renders)
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  // Smooth spring animation for mouse movement
+  const smoothMouseX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+  const smoothMouseY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+  
+  // Mouse follow effect optimized with motion values
   const handleMouseMove = (e: React.MouseEvent) => {
     const { clientX, clientY } = e;
     const { innerWidth, innerHeight } = window;
-    const x = (clientX / innerWidth - 0.5) * 20;
-    const y = (clientY / innerHeight - 0.5) * 20;
-    setMousePosition({ x, y });
+    const x = (clientX / innerWidth - 0.5) * 5; // Reduced intensity
+    const y = (clientY / innerHeight - 0.5) * 5;
+    mouseX.set(x);
+    mouseY.set(y);
   };
 
   return (
@@ -117,22 +125,22 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-          className="relative hidden lg:block h-[600px] w-full perspective-1000"
+          className="relative hidden lg:block h-[600px] w-full"
         >
           {/* Floating Elements Container */}
           <motion.div 
-            className="relative w-full h-full transform-style-3d"
-            animate={{ 
-              rotateY: mousePosition.x * 5,
-              rotateX: mousePosition.y * -5
+            className="relative w-full h-full will-change-transform"
+            style={{ 
+              rotateY: smoothMouseX,
+              rotateX: smoothMouseY,
+              transformStyle: "preserve-3d"
             }}
-            transition={{ type: "spring", stiffness: 50, damping: 20 }}
           >
             {/* 1. Back Layer - Code Editor */}
             <motion.div 
-              className="absolute top-10 right-10 w-[400px] h-[300px] rounded-xl bg-[#1E1E1E] border border-white/10 shadow-2xl p-4 z-10"
+              className="absolute top-10 right-10 w-[400px] h-[300px] rounded-xl bg-[#1E1E1E] border border-white/10 shadow-2xl p-4 z-10 will-change-transform"
               animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }}
             >
               <div className="flex gap-2 mb-4">
                 <div className="w-3 h-3 rounded-full bg-red-500/50" />
@@ -155,9 +163,9 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
 
             {/* 2. Middle Layer - UI Card */}
             <motion.div 
-              className="absolute top-[150px] left-[50px] w-[380px] h-auto min-h-[240px] rounded-xl bg-[#0C0C0C] border border-white/10 shadow-2xl p-6 z-20"
+              className="absolute top-[150px] left-[50px] w-[380px] h-auto min-h-[240px] rounded-xl bg-[#0C0C0C] border border-white/10 shadow-2xl p-6 z-20 will-change-transform"
               animate={{ y: [0, 15, 0] }}
-              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1, repeatType: "reverse" }}
             >
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
@@ -175,10 +183,10 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
                 {[40, 70, 45, 90, 65, 85, 100].map((h, i) => (
                   <motion.div 
                     key={i}
-                    className="flex-1 bg-gradient-to-t from-mint/10 to-mint rounded-t-sm"
+                    className="flex-1 bg-gradient-to-t from-mint/10 to-mint rounded-t-sm will-change-transform"
                     initial={{ height: 0 }}
                     animate={{ height: `${h}%` }}
-                    transition={{ duration: 1, delay: 1 + i * 0.1 }}
+                    transition={{ duration: 1, delay: 1 + i * 0.1, ease: "easeOut" }}
                   />
                 ))}
               </div>
@@ -202,9 +210,9 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
 
             {/* 3. Front Layer - Automation Node */}
             <motion.div 
-              className="absolute bottom-[50px] right-[80px] w-[280px] h-[100px] rounded-xl bg-white/5 backdrop-blur-md border border-mint/30 shadow-2xl p-4 z-30 flex items-center gap-4"
+              className="absolute bottom-[50px] right-[80px] w-[280px] h-[100px] rounded-xl bg-white/5 backdrop-blur-md border border-mint/30 shadow-2xl p-4 z-30 flex items-center gap-4 will-change-transform"
               animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5, repeatType: "reverse" }}
             >
               <div className="w-12 h-12 rounded-lg bg-mint flex items-center justify-center shadow-lg shadow-mint/20">
                 <Zap className="h-6 w-6 text-black" />
@@ -245,13 +253,22 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
 
       {/* Bottom Tech Stack Marquee */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0C0C0C] via-[#0C0C0C]/80 to-transparent flex items-end pb-6 overflow-hidden pointer-events-none">
-        <div className="flex gap-16 animate-scroll w-max pl-16">
+        <motion.div 
+          className="flex gap-16 w-max pl-16"
+          animate={{ x: [0, -1000] }}
+          transition={{ 
+            duration: 30, 
+            repeat: Infinity, 
+            ease: "linear",
+            repeatType: "loop"
+          }}
+        >
           {[...[ReactIcon, TSIcon, TailwindIcon, SupabaseIcon, FigmaIcon, StripeIcon, NodeIcon], ...[ReactIcon, TSIcon, TailwindIcon, SupabaseIcon, FigmaIcon, StripeIcon, NodeIcon], ...[ReactIcon, TSIcon, TailwindIcon, SupabaseIcon, FigmaIcon, StripeIcon, NodeIcon]].map((Icon, i) => (
             <div key={i} className="text-neutral-600 hover:text-mint transition-colors duration-300">
               <Icon className="h-8 w-8 opacity-50" />
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
