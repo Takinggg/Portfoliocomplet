@@ -1384,37 +1384,37 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
             <div className="grid lg:grid-cols-3 gap-8">
               {[
                 {
-                  type: t('home.results.cases.ecommerce.type') || 'E-commerce',
+                  type: t('home.results.cases.ecommerce.type'),
                   icon: Rocket,
-                  problem: t('home.results.cases.ecommerce.problem') || 'Gestion manuelle des commandes et suivi client chronophage',
-                  solution: t('home.results.cases.ecommerce.solution') || 'Automatisation des commandes, CRM et emails',
-                  result: t('home.results.cases.ecommerce.result') || '+40%',
-                  resultLabel: t('home.results.cases.ecommerce.resultLabel') || 'de productivité',
-                  flow: t('home.results.cases.ecommerce.flow') || ["Commande", "CRM", "Email", "Facturation"],
+                  before: t('home.results.cases.ecommerce.before'),
+                  after: t('home.results.cases.ecommerce.after'),
+                  result: t('home.results.cases.ecommerce.result'),
+                  resultLabel: t('home.results.cases.ecommerce.resultLabel'),
                   gradient: "from-cyan-500/10 via-mint/10 to-cyan-500/10",
-                  iconBg: "from-cyan-500/20 to-mint/10"
+                  iconBg: "from-cyan-500/20 to-mint/10",
+                  iconColor: "text-cyan-400"
                 },
                 {
-                  type: t('home.results.cases.freelance.type') || 'Freelance / Coach',
+                  type: t('home.results.cases.freelance.type'),
                   icon: Users,
-                  problem: t('home.results.cases.freelance.problem') || 'Perte de temps dans la gestion administrative quotidienne',
-                  solution: t('home.results.cases.freelance.solution') || 'Formulaire → CRM → Facturation automatique',
-                  result: t('home.results.cases.freelance.result') || '2h/jour',
-                  resultLabel: t('home.results.cases.freelance.resultLabel') || 'économisées',
-                  flow: t('home.results.cases.freelance.flow') || ["Lead", "Qualification", "Devis", "Paiement"],
+                  before: t('home.results.cases.freelance.before'),
+                  after: t('home.results.cases.freelance.after'),
+                  result: t('home.results.cases.freelance.result'),
+                  resultLabel: t('home.results.cases.freelance.resultLabel'),
                   gradient: "from-violet-500/10 via-purple-500/10 to-violet-500/10",
-                  iconBg: "from-violet-500/20 to-purple-500/10"
+                  iconBg: "from-violet-500/20 to-purple-500/10",
+                  iconColor: "text-violet-400"
                 },
                 {
-                  type: t('home.results.cases.saas.type') || 'Start-up SaaS',
+                  type: t('home.results.cases.saas.type'),
                   icon: Target,
-                  problem: t('home.results.cases.saas.problem') || 'Données éparpillées, pas de vision globale de la croissance',
-                  solution: t('home.results.cases.saas.solution') || 'Onboarding + tracking + dashboards automatiques',
-                  result: t('home.results.cases.saas.result') || 'x2',
-                  resultLabel: t('home.results.cases.saas.resultLabel') || 'croissance',
-                  flow: t('home.results.cases.saas.flow') || ["Sign-up", "Onboard", "Track", "Analytics"],
+                  before: t('home.results.cases.saas.before'),
+                  after: t('home.results.cases.saas.after'),
+                  result: t('home.results.cases.saas.result'),
+                  resultLabel: t('home.results.cases.saas.resultLabel'),
                   gradient: "from-emerald-500/10 via-mint/10 to-emerald-500/10",
-                  iconBg: "from-emerald-500/20 to-mint/10"
+                  iconBg: "from-emerald-500/20 to-mint/10",
+                  iconColor: "text-emerald-400"
                 },
               ].map((cas, i) => (
                 <motion.div
@@ -1428,7 +1428,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                   <motion.div 
                     whileHover={{ y: -12 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="relative h-full rounded-3xl border border-neutral-900 bg-gradient-to-br from-neutral-950 to-neutral-900/50 hover:border-mint/40 backdrop-blur-xl overflow-hidden"
+                    className="relative h-full rounded-3xl border border-neutral-800 bg-gradient-to-br from-neutral-950 to-neutral-900/50 hover:border-mint/40 backdrop-blur-xl overflow-hidden transition-colors duration-300"
                   >
                     {/* Animated gradient overlay */}
                     <motion.div 
@@ -1436,86 +1436,86 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                     />
                     
                     {/* Content wrapper */}
-                    <div className="relative p-8">
+                    <div className="relative p-8 space-y-6">
                       {/* Header avec badge de type */}
-                      <div className="flex items-center justify-between mb-8">
+                      <div className="flex items-center justify-between">
                         <div className={`p-4 rounded-2xl bg-gradient-to-br ${cas.iconBg} border border-neutral-800 group-hover:border-mint/30 transition-all shadow-lg`}>
-                          <cas.icon className="h-8 w-8 text-mint" />
+                          <cas.icon className={`h-7 w-7 ${cas.iconColor}`} />
                         </div>
                         <div className="px-4 py-2 rounded-full bg-neutral-900/80 border border-neutral-800 backdrop-blur-sm">
-                          <span className="text-xs font-medium text-neutral-400">{cas.type}</span>
+                          <span className="text-xs font-semibold text-neutral-400">{cas.type}</span>
                         </div>
                       </div>
 
                       {/* AVANT - Problème */}
-                      <div className="mb-6 p-6 rounded-2xl bg-neutral-900/40 border border-red-500/20 relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-500/50 to-transparent"></div>
-                        <div className="flex items-start gap-3 mb-3">
-                          <div className="mt-0.5 p-1.5 rounded-lg bg-red-500/10 border border-red-500/20">
+                      <div className="p-5 rounded-xl bg-neutral-900/50 border border-red-500/20 relative">
+                        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-red-500/50 to-transparent"></div>
+                        <div className="flex items-start gap-3">
+                          <div className="mt-0.5 p-2 rounded-lg bg-red-500/10 border border-red-500/20 shrink-0">
                             <TrendingDown className="h-4 w-4 text-red-400" />
                           </div>
-                          <div className="flex-1">
-                            <div className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">
-                              {language === 'en' ? 'Before' : 'Avant'}
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[10px] font-bold text-red-400 uppercase tracking-wider mb-2">
+                              {t('home.results.before')}
                             </div>
-                            <p className="text-sm text-neutral-300 leading-relaxed">{cas.problem}</p>
+                            <p className="text-sm text-neutral-300 leading-relaxed">{cas.before}</p>
                           </div>
                         </div>
                       </div>
 
                       {/* Flèche de transformation */}
-                      <div className="flex justify-center my-6">
+                      <div className="flex justify-center">
                         <motion.div
                           animate={{ y: [0, 5, 0] }}
                           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                          className="p-2 rounded-full bg-gradient-to-b from-mint/20 to-mint/5 border border-mint/30"
+                          className="p-2.5 rounded-full bg-gradient-to-b from-mint/20 to-mint/5 border border-mint/30"
                         >
-                          <ArrowRight className="h-5 w-5 text-mint rotate-90" />
+                          <ArrowRight className="h-4 w-4 text-mint rotate-90" />
                         </motion.div>
                       </div>
 
                       {/* APRÈS - Solution */}
-                      <div className="mb-8 p-6 rounded-2xl bg-neutral-900/40 border border-mint/20 relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-mint/50 to-transparent"></div>
-                        <div className="flex items-start gap-3 mb-3">
-                          <div className="mt-0.5 p-1.5 rounded-lg bg-mint/10 border border-mint/20">
+                      <div className="p-5 rounded-xl bg-neutral-900/50 border border-mint/20 relative">
+                        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-mint/50 to-transparent"></div>
+                        <div className="flex items-start gap-3">
+                          <div className="mt-0.5 p-2 rounded-lg bg-mint/10 border border-mint/20 shrink-0">
                             <Zap className="h-4 w-4 text-mint" />
                           </div>
-                          <div className="flex-1">
-                            <div className="text-xs font-bold text-mint uppercase tracking-wider mb-2">
-                              {language === 'en' ? 'After' : 'Après'}
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[10px] font-bold text-mint uppercase tracking-wider mb-2">
+                              {t('home.results.after')}
                             </div>
-                            <p className="text-sm text-white leading-relaxed font-medium">{cas.solution}</p>
+                            <p className="text-sm text-white leading-relaxed font-medium">{cas.after}</p>
                           </div>
                         </div>
                       </div>
 
                       {/* Résultat massif */}
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-mint/20 via-mint/30 to-mint/20 blur-xl"></div>
+                      <div className="relative mt-8">
+                        <div className="absolute inset-0 bg-gradient-to-r from-mint/10 via-mint/20 to-mint/10 blur-2xl"></div>
                         <div className="relative text-center p-8 rounded-2xl bg-gradient-to-br from-mint/10 via-mint/5 to-transparent border-2 border-mint/30 backdrop-blur-sm">
                           <motion.div
                             initial={{ scale: 0.9 }}
                             whileInView={{ scale: 1 }}
+                            viewport={{ once: true }}
                             transition={{ type: "spring", stiffness: 200 }}
-                            className="mb-2"
                           >
-                            <div className="text-6xl font-black text-mint mb-3 tracking-tight">
+                            <div className="text-5xl lg:text-6xl font-black text-mint mb-2 tracking-tight">
                               {cas.result}
                             </div>
-                            <div className="text-sm font-medium text-neutral-300 uppercase tracking-wider">
+                            <div className="text-xs font-bold text-neutral-300 uppercase tracking-wider">
                               {cas.resultLabel}
                             </div>
                           </motion.div>
                           
                           {/* Checkmark badge */}
-                          <div className="absolute -top-4 -right-4">
+                          <div className="absolute -top-3 -right-3">
                             <motion.div
                               animate={{ rotate: [0, 10, 0] }}
                               transition={{ duration: 3, repeat: Infinity }}
-                              className="w-10 h-10 rounded-full bg-mint flex items-center justify-center shadow-lg shadow-mint/50"
+                              className="w-9 h-9 rounded-full bg-mint flex items-center justify-center shadow-lg shadow-mint/50"
                             >
-                              <CheckCircle className="h-6 w-6 text-black" />
+                              <CheckCircle className="h-5 w-5 text-black" />
                             </motion.div>
                           </div>
                         </div>

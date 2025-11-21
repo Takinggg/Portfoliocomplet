@@ -214,32 +214,29 @@ export default {
     "results": {
       "title": "Résultats concrets",
       "subtitle": "Des systèmes qui ont transformé des activités réelles",
-      "problem": "Problème",
-      "solution": "Solution",
+      "before": "Avant",
+      "after": "Après",
       "cases": {
         "ecommerce": {
           "type": "E-commerce",
-          "problem": "Gestion manuelle des commandes et suivi client chronophage",
-          "solution": "Automatisation des commandes, CRM et emails",
+          "before": "Gestion manuelle et suivi chronophage",
+          "after": "Automatisation complète : CRM, commandes et emails",
           "result": "+40%",
-          "resultLabel": "de productivité",
-          "flow": ["Commande", "CRM", "Email", "Facturation"]
+          "resultLabel": "de productivité"
         },
         "freelance": {
           "type": "Freelance / Coach",
-          "problem": "Perte de temps dans la gestion administrative quotidienne",
-          "solution": "Formulaire → CRM → Facturation automatique",
+          "before": "Administration quotidienne inefficace",
+          "after": "Pipeline automatisé de bout en bout",
           "result": "2h/jour",
-          "resultLabel": "économisées",
-          "flow": ["Lead", "Qualification", "Devis", "Paiement"]
+          "resultLabel": "économisées"
         },
         "saas": {
           "type": "Start-up SaaS",
-          "problem": "Données éparpillées, pas de vision globale de la croissance",
-          "solution": "Onboarding + tracking + dashboards automatiques",
+          "before": "Données dispersées, croissance opaque",
+          "after": "Dashboard unifié avec métriques temps réel",
           "result": "x2",
-          "resultLabel": "croissance",
-          "flow": ["Sign-up", "Onboard", "Track", "Analytics"]
+          "resultLabel": "croissance"
         }
       }
     },

@@ -241,32 +241,29 @@ export default {
     "results": {
       "title": "Concrete results",
       "subtitle": "Systems that transformed real businesses",
-      "problem": "Problem",
-      "solution": "Solution",
+      "before": "Before",
+      "after": "After",
       "cases": {
         "ecommerce": {
           "type": "E-commerce",
-          "problem": "Manual order management and time-consuming customer tracking",
-          "solution": "Order automation, CRM and emails",
+          "before": "Manual management and time-consuming tracking",
+          "after": "Complete automation: CRM, orders and emails",
           "result": "+40%",
-          "resultLabel": "productivity",
-          "flow": ["Order", "CRM", "Email", "Billing"]
+          "resultLabel": "productivity"
         },
         "freelance": {
           "type": "Freelance / Coach",
-          "problem": "Time wasted on daily administrative tasks",
-          "solution": "Form → CRM → Automatic billing",
+          "before": "Inefficient daily administration",
+          "after": "End-to-end automated pipeline",
           "result": "2h/day",
-          "resultLabel": "saved",
-          "flow": ["Lead", "Qualification", "Quote", "Payment"]
+          "resultLabel": "saved"
         },
         "saas": {
           "type": "SaaS Start-up",
-          "problem": "Scattered data, no global growth vision",
-          "solution": "Onboarding + tracking + automatic dashboards",
+          "before": "Scattered data, opaque growth",
+          "after": "Unified dashboard with real-time metrics",
           "result": "x2",
-          "resultLabel": "growth",
-          "flow": ["Sign-up", "Onboard", "Track", "Analytics"]
+          "resultLabel": "growth"
         }
       }
     },
