@@ -2739,21 +2739,9 @@ function ContactSection({ onNavigate }: HomePageProps) {
           transition={{ delay: 0.8 }}
           className="relative mb-20"
         >
-          {/* Icône flottante gauche */}
-          <motion.div
-            className="hidden lg:block absolute -left-20 top-1/4 w-20 h-20 rounded-2xl bg-mint/10 border-2 border-mint/30 flex items-center justify-center backdrop-blur-sm shadow-lg shadow-mint/20"
-            animate={{ 
-              y: [0, -20, 0],
-              rotate: [0, 5, 0]
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Phone className="h-10 w-10 text-mint" />
-          </motion.div>
-
           {/* Icône flottante droite */}
           <motion.div
-            className="hidden lg:block absolute -right-20 top-1/4 w-20 h-20 rounded-2xl bg-cyan-500/10 border-2 border-cyan-500/30 flex items-center justify-center backdrop-blur-sm shadow-lg shadow-cyan-500/20"
+            className="hidden lg:block absolute -right-20 top-1/2 -translate-y-1/2 w-20 h-20 rounded-2xl bg-cyan-500/10 border-2 border-cyan-500/30 flex items-center justify-center backdrop-blur-sm shadow-lg shadow-cyan-500/20"
             animate={{ 
               y: [0, 20, 0],
               rotate: [0, -5, 0]
