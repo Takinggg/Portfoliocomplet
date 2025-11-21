@@ -2680,11 +2680,6 @@ function ContactSection({ onNavigate }: HomePageProps) {
             <div className="relative z-10">
               {/* Icon with animated ring */}
               <div className="relative w-20 h-20 mb-6">
-                <motion.div
-                  className="absolute inset-0 rounded-2xl border-2 border-mint/30"
-                  animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                />
                 <div className="w-full h-full rounded-2xl bg-mint/10 border-2 border-mint/30 flex items-center justify-center group-hover:bg-mint/20 transition-colors">
                   <Calendar className="h-9 w-9 text-mint" />
                 </div>
