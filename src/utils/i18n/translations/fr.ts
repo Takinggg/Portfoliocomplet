@@ -1066,6 +1066,18 @@ export default {
       "single": "abonné",
       "plural": "abonnés"
     },
+    "popup": {
+      "badge": "Newsletter exclusive",
+      "title": "Restez à jour avec mes derniers projets",
+      "description": "Recevez mes conseils en développement web, études de cas détaillées et nouveaux articles directement dans votre boîte mail. Un email par mois maximum.",
+      "benefits": [
+        "📚 Études de cas détaillées",
+        "💡 Conseils techniques exclusifs",
+        "🎯 Tendances web & design",
+        "🚀 Nouveaux projets en avant-première"
+      ],
+      "close": "Fermer"
+    },
     "cta": {
       "compact": {
         "title": "Newsletter",

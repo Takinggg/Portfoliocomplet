@@ -1069,18 +1069,16 @@ export default {
       "footnote": "By subscribing, you agree to receive our emails. Unsubscribe anytime."
     },
     "popup": {
-      "title": "Get My Best Tips",
-      "subtitle": "Join 500+ professionals receiving my weekly newsletter",
-      "features": [
-        "Exclusive design & development tips",
-        "Free resources and tools",
-        "Detailed case studies",
-        "Unsubscribe in 1 click"
+      "badge": "Exclusive newsletter",
+      "title": "Stay up to date with my latest projects",
+      "description": "Receive my web development tips, detailed case studies and new articles directly in your mailbox. One email per month max.",
+      "benefits": [
+        "📚 Detailed case studies",
+        "💡 Exclusive technical tips",
+        "🎯 Web & design trends",
+        "🚀 New projects preview"
       ],
-      "placeholder": "Your email",
-      "button": "Get the Tips",
-      "noThanks": "No thanks",
-      "privacy": "Your data is protected. No spam."
+      "close": "Close"
     },
     "confirm": {
       "title": "Subscription Confirmed!",

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { X, Mail, Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
 import { NewsletterForm } from "./NewsletterForm";
+import { useTranslation } from "../../utils/i18n/useTranslation";
 
 const POPUP_DELAY = 15000; // 15 secondes
 const SCROLL_THRESHOLD = 0.5; // 50% de scroll
@@ -10,6 +11,7 @@ const POPUP_COOLDOWN_KEY = "newsletter_popup_closed";
 const POPUP_COOLDOWN_DAYS = 7; // Ne plus montrer pendant 7 jours si fermé
 
 export function NewsletterPopup() {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const [hasScrolledEnough, setHasScrolledEnough] = useState(false);
 
@@ -85,14 +87,14 @@ export function NewsletterPopup() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-lg mx-4"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-2rem)] max-w-lg"
           >
             <div className="relative bg-[#0C0C0C] border border-[#00FFC2]/30 rounded-2xl p-8 shadow-2xl">
               {/* Close button */}
               <button
                 onClick={handleClose}
                 className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
-                aria-label="Fermer"
+                aria-label={t('newsletter.popup.close')}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -105,28 +107,22 @@ export function NewsletterPopup() {
                 {/* Icon */}
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00FFC2]/10 border border-[#00FFC2]/20 mb-6">
                   <Sparkles className="h-4 w-4 text-[#00FFC2]" />
-                  <span className="text-sm text-[#00FFC2]">Newsletter exclusive</span>
+                  <span className="text-sm text-[#00FFC2]">{t('newsletter.popup.badge')}</span>
                 </div>
 
                 {/* Title */}
                 <h3 className="text-white mb-3">
-                  Restez à jour avec mes derniers projets
+                  {t('newsletter.popup.title')}
                 </h3>
 
                 {/* Description */}
                 <p className="text-white/60 mb-6">
-                  Recevez mes conseils en développement web, études de cas détaillées et
-                  nouveaux articles directement dans votre boîte mail. Un email par mois maximum.
+                  {t('newsletter.popup.description')}
                 </p>
 
                 {/* Benefits */}
                 <div className="space-y-2 mb-6">
-                  {[
-                    "📚 Études de cas détaillées",
-                    "💡 Conseils techniques exclusifs",
-                    "🎯 Tendances web & design",
-                    "🚀 Nouveaux projets en avant-première",
-                  ].map((benefit, index) => (
+                  {t('newsletter.popup.benefits').map((benefit, index) => (
                     <motion.div
                       key={benefit}
                       initial={{ opacity: 0, x: -20 }}
