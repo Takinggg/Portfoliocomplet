@@ -1521,19 +1521,19 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                       </motion.div>
                     </div>
 
-                    {/* Success badge floating - repositionné */}
+                    {/* Success badge floating - repositionné en bas à droite */}
                     <motion.div 
-                      className="absolute top-4 right-4 w-12 h-12 rounded-full bg-mint shadow-[0_0_30px_rgba(0,255,194,0.5)] flex items-center justify-center z-10"
+                      className="absolute bottom-8 right-8 w-14 h-14 rounded-full bg-mint shadow-[0_0_40px_rgba(0,255,194,0.6)] flex items-center justify-center z-20"
                       animate={{ 
                         rotate: 360,
-                        scale: [1, 1.1, 1]
+                        scale: [1, 1.15, 1]
                       }}
                       transition={{ 
                         rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                        scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                        scale: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
                       }}
                     >
-                      <CheckCircle className="h-6 w-6 text-black" strokeWidth={2.5} />
+                      <CheckCircle className="h-7 w-7 text-black" strokeWidth={3} />
                     </motion.div>
 
                     {/* Decorative corner accent */}
