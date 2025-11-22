@@ -1038,20 +1038,6 @@ export default {
       "successDescription": "Vous recevrez nos prochaines actualités et conseils exclusifs.",
       "footnote": "En vous abonnant, vous acceptez de recevoir nos emails. Désinscription possible à tout moment."
     },
-    "popup": {
-      "title": "Recevez mes meilleurs conseils",
-      "subtitle": "Rejoignez 500+ professionnels qui reçoivent ma newsletter hebdomadaire",
-      "features": [
-        "Conseils exclusifs en design & développement",
-        "Ressources et outils gratuits",
-        "Études de cas détaillées",
-        "Désabonnement en 1 clic"
-      ],
-      "placeholder": "Votre email",
-      "button": "Recevoir les conseils",
-      "noThanks": "Non merci",
-      "privacy": "Vos données sont protégées. Pas de spam."
-    },
     "confirm": {
       "title": "Inscription confirmée !",
       "subtitle": "Bienvenue dans la communauté",

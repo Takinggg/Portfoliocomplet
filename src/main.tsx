@@ -1,13 +1,25 @@
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import "./styles/globals.css";
 
-  import { createRoot } from "react-dom/client";
-  import App from "./App.tsx";
-  import "./index.css";
-  import "./styles/globals.css";
+async function bootstrap() {
+  const { initSafeStorage } = await import("./utils/safeStorage");
+  initSafeStorage();
 
-  // Load cache debug utility in development
   if (import.meta.env.DEV) {
-    import('./utils/cacheDebug');
+    import("./utils/cacheDebug");
   }
 
-  createRoot(document.getElementById("root")!).render(<App />);
-  
+  const { default: App } = await import("./App.tsx");
+  const rootElement = document.getElementById("root");
+
+  if (!rootElement) {
+    throw new Error("Failed to locate #root element");
+  }
+
+  createRoot(rootElement).render(<App />);
+}
+
+bootstrap().catch((error) => {
+  console.error("Failed to bootstrap application", error);
+});
