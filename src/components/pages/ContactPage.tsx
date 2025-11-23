@@ -19,12 +19,39 @@ import { toast } from "sonner";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { useAnalytics, usePageTracking } from "../../utils/hooks/useAnalytics";
+import { CONTACT_BOOKING_PREFILL_KEY } from "../../utils/constants/formStorage";
 
 type Page = "booking";
 
 interface ContactPageProps {
   onNavigate: (page: Page) => void;
 }
+
+type BookingPrefillPayload = {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  interests: string[];
+};
+
+const persistBookingPrefill = (payload: BookingPrefillPayload) => {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(CONTACT_BOOKING_PREFILL_KEY, JSON.stringify(payload));
+  } catch (error) {
+    console.error("Failed to persist booking prefill", error);
+  }
+};
+
+const clearBookingPrefill = () => {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(CONTACT_BOOKING_PREFILL_KEY);
+  } catch (error) {
+    console.error("Failed to clear booking prefill", error);
+  }
+};
 
 export default function ContactPage({ onNavigate }: ContactPageProps) {
   const { t } = useTranslation();
@@ -78,6 +105,17 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
 
       if (response.ok) {
         toast.success(t("contact.form.success"));
+        if (formData.wantsAppointment) {
+          persistBookingPrefill({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            message: formData.message,
+            interests: selectedReasons,
+          });
+        } else {
+          clearBookingPrefill();
+        }
         
         // ðŸŽ¯ Track successful contact conversion
         analytics.trackContactConversion('Contact Form');
@@ -404,18 +442,18 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
                     </div>
 
                     {/* Checkbox */}
-                    <div className="flex items-center space-x-3 p-4 rounded-lg bg-mint/5 border border-mint/20">
+                    <div className="flex items-center gap-4 p-4 rounded-2xl border border-[#CCFF00]/30 bg-[#111400] shadow-[0_0_30px_rgba(204,255,0,0.08)]">
                       <Checkbox
                         id="wantsAppointment"
                         checked={formData.wantsAppointment}
                         onCheckedChange={(checked) => 
                           setFormData({ ...formData, wantsAppointment: checked as boolean })
                         }
-                        className="border-mint/30 data-[state=checked]:bg-mint data-[state=checked]:border-mint"
+                        className="w-5 h-5 rounded-lg border-2 border-[#CCFF00]/40 bg-black/50 text-[#CCFF00] transition-colors duration-200 data-[state=checked]:bg-[#CCFF00] data-[state=checked]:border-[#CCFF00] data-[state=checked]:text-[#050505] data-[state=checked]:shadow-[0_0_18px_rgba(204,255,0,0.45)]"
                       />
                       <Label
                         htmlFor="wantsAppointment"
-                        className="text-sm text-white cursor-pointer flex-1"
+                        className="text-sm md:text-base text-white cursor-pointer flex-1 leading-snug"
                       >
                         {t("contact.form.appointmentCheckbox")}
                       </Label>

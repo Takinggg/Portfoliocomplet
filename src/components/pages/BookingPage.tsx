@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { useLanguage } from "../../utils/i18n/LanguageContext";
+import { CONTACT_BOOKING_PREFILL_KEY } from "../../utils/constants/formStorage";
 
 // Generate available time slots (every 15 minutes from 9:00 to 18:00)
 const generateDaySlots = () => {
@@ -60,6 +61,32 @@ export default function BookingPage() {
     phone: "",
     notes: ""
   });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(CONTACT_BOOKING_PREFILL_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as {
+        name?: string;
+        email?: string;
+        phone?: string;
+        message?: string;
+        interests?: string[];
+      };
+      setBookingData((prev) => ({
+        ...prev,
+        name: parsed.name ?? prev.name,
+        email: parsed.email ?? prev.email,
+        phone: parsed.phone ?? prev.phone,
+        notes: parsed.message
+          ? `${parsed.message}${parsed.interests?.length ? `\n\nIntérêts évoqués : ${parsed.interests.join(", ")}` : ""}`
+          : prev.notes,
+      }));
+    } catch (error) {
+      console.error("Failed to load booking prefill", error);
+    }
+  }, []);
 
   const bookingFlow = (t as any)?.booking?.flow ?? {};
   const calendarTexts = bookingFlow.calendar ?? {};
@@ -237,6 +264,13 @@ export default function BookingPage() {
       }
 
       toast.success(t("booking.flow.toast.success"));
+      if (typeof window !== "undefined") {
+        try {
+          window.localStorage.removeItem(CONTACT_BOOKING_PREFILL_KEY);
+        } catch (storageError) {
+          console.error("Failed to clear booking prefill after booking", storageError);
+        }
+      }
       setStep(3);
     } catch (error) {
       console.error("Error creating booking:", error);
