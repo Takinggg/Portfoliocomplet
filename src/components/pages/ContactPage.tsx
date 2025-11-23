@@ -79,7 +79,7 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
       if (response.ok) {
         toast.success(t("contact.form.success"));
         
-        // 🎯 Track successful contact conversion
+        // ðŸŽ¯ Track successful contact conversion
         analytics.trackContactConversion('Contact Form');
         analytics.trackFormSubmit('Contact Form');
         
@@ -130,7 +130,7 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
       console.error("Error submitting contact form:", error);
       toast.error(t("contact.form.error"));
       
-      // 🎯 Track form error
+      // ðŸŽ¯ Track form error
       analytics.trackFormError('Contact Form', 'Submission Failed');
       analytics.trackError('ContactFormSubmission', error instanceof Error ? error.message : 'Unknown error');
     } finally {
@@ -178,8 +178,8 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0" style={{
             backgroundImage: `
-              linear-gradient(rgba(0, 255, 194, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 255, 194, 0.03) 1px, transparent 1px)
+              linear-gradient(rgba(204, 255, 0, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(204, 255, 0, 0.03) 1px, transparent 1px)
             `,
             backgroundSize: '80px 80px',
           }}></div>
@@ -213,7 +213,7 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
               <span className="text-sm text-mint font-medium">{t("contact.hero.badge")}</span>
             </div>
             
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight leading-[0.95]">
+            <h1 className="font-display font-bold heading-hero mb-8 tracking-tight leading-[0.9]">
               <span className="block text-white">{t("contact.hero.titleLine1")}</span>
               <span className="block text-gradient-mint-animated">{t("contact.hero.titleLine2")}</span>
             </h1>
@@ -381,20 +381,20 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
                               className={`
                                 flex items-center gap-3 p-3 rounded-lg transition-all cursor-pointer text-left
                                 ${isSelected 
-                                  ? 'bg-[#00FFC2]/10 border-2 border-[#00FFC2]' 
-                                  : 'bg-neutral-900/50 border border-neutral-800 hover:border-[#00FFC2]/20'
+                                  ? 'bg-[#CCFF00]/10 border-2 border-[#CCFF00]' 
+                                  : 'bg-neutral-900/50 border border-neutral-800 hover:border-[#CCFF00]/20'
                                 }
                               `}
                             >
                               <div className={`
                                 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0
-                                ${isSelected ? 'border-[#00FFC2] bg-[#00FFC2]' : 'border-neutral-600'}
+                                ${isSelected ? 'border-[#CCFF00] bg-[#CCFF00]' : 'border-neutral-600'}
                               `}>
                                 {isSelected && (
                                   <CheckCircle2 className="h-3 w-3 text-black" />
                                 )}
                               </div>
-                              <span className={`text-sm ${isSelected ? 'text-[#00FFC2]' : 'text-neutral-400'}`}>
+                              <span className={`text-sm ${isSelected ? 'text-[#CCFF00]' : 'text-neutral-400'}`}>
                                 {reason}
                               </span>
                             </button>
@@ -455,19 +455,19 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Questions fréquentes
+              Questions fr\u00E9quentes
             </h2>
           </motion.div>
 
           <div className="space-y-6">
             {[
               {
-                q: "Quel est votre délai de réponse ?",
-                a: "Je réponds généralement sous 24h ouvrées. Pour les urgences, n'hésitez pas à le préciser dans votre message."
+                q: "Quel est votre d\u00E9lai de r\u00E9ponse ?",
+                a: "Je r\u00E9ponds g\u00E9n\u00E9ralement sous 24h ouvr\u00E9es. Pour les urgences, n'h\u00E9sitez pas \u00E0 le pr\u00E9ciser dans votre message."
               },
               {
                 q: "L'audit gratuit, c'est quoi exactement ?",
-                a: "Un appel de 30 minutes pour analyser vos processus actuels et identifier les opportunités d'automatisation avec estimation du ROI."
+                a: "Un appel de 30 minutes pour analyser vos processus actuels et identifier les opportunit\u00E9s d'automatisation avec estimation du ROI."
               },
               {
                 q: "Combien de temps dure un projet type ?",
@@ -475,7 +475,7 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
               },
               {
                 q: "Travaillez-vous avec des clients internationaux ?",
-                a: "Oui, je travaille avec des clients dans toute la francophonie et propose des appels en français ou en anglais."
+                a: "Oui, je travaille avec des clients dans toute la francophonie et propose des appels en fran\u00E7ais ou en anglais."
               },
             ].map((faq, index) => (
               <motion.div
