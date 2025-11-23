@@ -79,7 +79,7 @@ export function QuickDiagnosticButton() {
 
   const getStatusIcon = () => {
     const color = getStatusColor();
-    if (color === "green") return <CheckCircle2 className="w-5 h-5 text-[#00FFC2]" />;
+    if (color === "green") return <CheckCircle2 className="w-5 h-5 text-[#CCFF00]" />;
     if (color === "yellow") return <AlertCircle className="w-5 h-5 text-yellow-500" />;
     if (color === "red") return <XCircle className="w-5 h-5 text-red-500" />;
     return <Activity className="w-5 h-5 text-gray-400" />;
@@ -89,7 +89,7 @@ export function QuickDiagnosticButton() {
     if (typeof (window as any).serverDiagnostic === "function") {
       (window as any).serverDiagnostic();
     } else {
-      console.log("💡 Pour ouvrir le diagnostic complet, utilisez: serverDiagnostic()");
+      console.log("ðŸ’¡ Pour ouvrir le diagnostic complet, utilisez: serverDiagnostic()");
     }
   };
 
@@ -99,20 +99,20 @@ export function QuickDiagnosticButton() {
         <div className="flex items-center gap-3">
           {getStatusIcon()}
           <div>
-            <h3 className="text-sm font-medium text-[#F4F4F4]">État du serveur</h3>
+            <h3 className="text-sm font-medium text-[#F4F4F4]">Ã‰tat du serveur</h3>
             {lastResult ? (
               <div className="flex items-center gap-2 mt-1">
-                <Badge className="bg-[#00FFC2] text-black text-xs px-2 py-0">
+                <Badge className="bg-[#CCFF00] text-black text-xs px-2 py-0">
                   {lastResult.success} OK
                 </Badge>
                 {lastResult.warning > 0 && (
                   <Badge className="bg-yellow-500 text-black text-xs px-2 py-0">
-                    {lastResult.warning} ⚠️
+                    {lastResult.warning} âš ï¸
                   </Badge>
                 )}
                 {lastResult.error > 0 && (
                   <Badge variant="destructive" className="text-xs px-2 py-0">
-                    {lastResult.error} ❌
+                    {lastResult.error} âŒ
                   </Badge>
                 )}
                 <span className="text-xs text-gray-400">
@@ -145,9 +145,9 @@ export function QuickDiagnosticButton() {
               variant="ghost"
               size="sm"
               onClick={openFullDiagnostic}
-              className="text-[#00FFC2] hover:text-[#00FFC2] hover:bg-[#00FFC2]/10"
+              className="text-[#CCFF00] hover:text-[#CCFF00] hover:bg-[#CCFF00]/10"
             >
-              Détails
+              DÃ©tails
             </Button>
           )}
         </div>

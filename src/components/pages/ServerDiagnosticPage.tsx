@@ -39,7 +39,7 @@ export function ServerDiagnosticPage({ onBack }: ServerDiagnosticPageProps) {
                 Diagnostic Serveur
               </h1>
               <p className="text-lg text-white/60">
-                Vérification complète de l'état du backend et de toutes les routes API
+                VÃ©rification complÃ¨te de l'Ã©tat du backend et de toutes les routes API
               </p>
             </div>
 
@@ -52,7 +52,7 @@ export function ServerDiagnosticPage({ onBack }: ServerDiagnosticPageProps) {
               className="bg-white/5 border-white/10 text-white hover:bg-white/10"
             >
               <FileText className="h-4 w-4 mr-2" />
-              Guide de dépannage
+              Guide de dÃ©pannage
             </Button>
           </div>
         </div>
@@ -65,10 +65,10 @@ export function ServerDiagnosticPage({ onBack }: ServerDiagnosticPageProps) {
             </div>
             <div className="flex-1">
               <h3 className="text-sm text-blue-200 mb-1">
-                🚀 Migration Complète vers Supabase
+                ðŸš€ Migration ComplÃ¨te vers Supabase
               </h3>
               <p className="text-xs text-blue-200/80">
-                Suivez l'assistant de migration ci-dessous pour synchroniser TOUTES vos données
+                Suivez l'assistant de migration ci-dessous pour synchroniser TOUTES vos donnÃ©es
                 (Blog, Case Studies, FAQ, etc.) avec Supabase en quelques clics.
               </p>
             </div>
@@ -89,9 +89,9 @@ export function ServerDiagnosticPage({ onBack }: ServerDiagnosticPageProps) {
 
         <div className="my-8 border-t border-white/10" />
         
-        <h2 className="text-xl text-white mb-4">⚙️ Outils Avancés</h2>
+        <h2 className="text-xl text-white mb-4">âš™ï¸ Outils AvancÃ©s</h2>
 
-        {/* Déploiement du serveur complet */}
+        {/* DÃ©ploiement du serveur complet */}
         <div className="mb-6">
           <CopyServerCodeButton />
         </div>
@@ -99,26 +99,26 @@ export function ServerDiagnosticPage({ onBack }: ServerDiagnosticPageProps) {
         {/* Bouton de refresh serveur */}
         <div className="mb-6">
           <Card className="bg-white/5 border-white/10 p-6">
-            <h3 className="text-lg text-white mb-4">🔄 Rafraîchir la détection serveur</h3>
+            <h3 className="text-lg text-white mb-4">ðŸ”„ RafraÃ®chir la dÃ©tection serveur</h3>
             <p className="text-sm text-white/60 mb-4">
-              Après avoir déployé le serveur complet, cliquez ici pour forcer une nouvelle vérification
+              AprÃ¨s avoir dÃ©ployÃ© le serveur complet, cliquez ici pour forcer une nouvelle vÃ©rification
               et activer le mode serveur.
             </p>
             <RefreshServerStatusButton />
           </Card>
         </div>
 
-        {/* Initialisation COMPLÈTE des données */}
+        {/* Initialisation COMPLÃˆTE des donnÃ©es */}
         <div className="mb-6">
           <SeedAllDataButton />
         </div>
 
-        {/* Initialisation données serveur (legacy - projets uniquement) */}
+        {/* Initialisation donnÃ©es serveur (legacy - projets uniquement) */}
         <div className="mb-6">
           <InitServerDataButton />
         </div>
 
-        {/* Debugger en temps réel */}
+        {/* Debugger en temps rÃ©el */}
         <div className="mb-6">
           <ServerStatusDebugger />
         </div>
@@ -149,11 +149,11 @@ export function ServerDiagnosticPage({ onBack }: ServerDiagnosticPageProps) {
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-colors"
             >
-              <ExternalLink className="h-5 w-5 text-[#00FFC2]" />
+              <ExternalLink className="h-5 w-5 text-[#CCFF00]" />
               <div>
                 <div className="text-sm text-white">Logs Edge Functions</div>
                 <div className="text-xs text-white/60">
-                  Voir les logs en temps réel du serveur
+                  Voir les logs en temps rÃ©el du serveur
                 </div>
               </div>
             </a>
@@ -164,11 +164,11 @@ export function ServerDiagnosticPage({ onBack }: ServerDiagnosticPageProps) {
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-colors"
             >
-              <ExternalLink className="h-5 w-5 text-[#00FFC2]" />
+              <ExternalLink className="h-5 w-5 text-[#CCFF00]" />
               <div>
                 <div className="text-sm text-white">Secrets Supabase</div>
                 <div className="text-xs text-white/60">
-                  Gérer les variables d'environnement
+                  GÃ©rer les variables d'environnement
                 </div>
               </div>
             </a>
@@ -179,11 +179,11 @@ export function ServerDiagnosticPage({ onBack }: ServerDiagnosticPageProps) {
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-colors"
             >
-              <ExternalLink className="h-5 w-5 text-[#00FFC2]" />
+              <ExternalLink className="h-5 w-5 text-[#CCFF00]" />
               <div>
                 <div className="text-sm text-white">SQL Editor</div>
                 <div className="text-xs text-white/60">
-                  Vérifier la table kv_store_04919ac5
+                  VÃ©rifier la table kv_store_04919ac5
                 </div>
               </div>
             </a>
@@ -194,11 +194,11 @@ export function ServerDiagnosticPage({ onBack }: ServerDiagnosticPageProps) {
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-colors"
             >
-              <ExternalLink className="h-5 w-5 text-[#00FFC2]" />
+              <ExternalLink className="h-5 w-5 text-[#CCFF00]" />
               <div>
                 <div className="text-sm text-white">Functions Dashboard</div>
                 <div className="text-xs text-white/60">
-                  Gérer les Edge Functions
+                  GÃ©rer les Edge Functions
                 </div>
               </div>
             </a>
@@ -211,29 +211,29 @@ export function ServerDiagnosticPage({ onBack }: ServerDiagnosticPageProps) {
           
           <div className="space-y-3">
             <div className="p-3 bg-black/30 rounded-lg">
-              <div className="text-xs text-white/60 mb-1">Voir les logs en temps réel</div>
-              <code className="text-xs text-[#00FFC2]">
+              <div className="text-xs text-white/60 mb-1">Voir les logs en temps rÃ©el</div>
+              <code className="text-xs text-[#CCFF00]">
                 supabase functions logs server --tail
               </code>
             </div>
 
             <div className="p-3 bg-black/30 rounded-lg">
-              <div className="text-xs text-white/60 mb-1">Redéployer le serveur</div>
-              <code className="text-xs text-[#00FFC2]">
+              <div className="text-xs text-white/60 mb-1">RedÃ©ployer le serveur</div>
+              <code className="text-xs text-[#CCFF00]">
                 supabase functions deploy server --no-verify-jwt
               </code>
             </div>
 
             <div className="p-3 bg-black/30 rounded-lg">
               <div className="text-xs text-white/60 mb-1">Lister les fonctions</div>
-              <code className="text-xs text-[#00FFC2]">
+              <code className="text-xs text-[#CCFF00]">
                 supabase functions list
               </code>
             </div>
 
             <div className="p-3 bg-black/30 rounded-lg">
-              <div className="text-xs text-white/60 mb-1">Vérifier les secrets</div>
-              <code className="text-xs text-[#00FFC2]">
+              <div className="text-xs text-white/60 mb-1">VÃ©rifier les secrets</div>
+              <code className="text-xs text-[#CCFF00]">
                 supabase secrets list
               </code>
             </div>

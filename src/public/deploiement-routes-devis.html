@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🚀 Déploiement Routes Devis</title>
+  <title>ðŸš€ DÃ©ploiement Routes Devis</title>
   <style>
     * {
       margin: 0;
@@ -27,10 +27,10 @@
     .header {
       text-align: center;
       padding: 40px 20px;
-      background: linear-gradient(135deg, #00FFC2 0%, #00cc9a 100%);
+      background: linear-gradient(135deg, #CCFF00 0%, #C6FF1A 100%);
       border-radius: 20px;
       margin-bottom: 40px;
-      box-shadow: 0 10px 40px rgba(0, 255, 194, 0.3);
+      box-shadow: 0 10px 40px rgba(204, 255, 0, 0.3);
     }
 
     .header h1 {
@@ -67,7 +67,7 @@
 
     .card {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(0, 255, 194, 0.2);
+      border: 1px solid rgba(204, 255, 0, 0.2);
       border-radius: 15px;
       padding: 30px;
       margin-bottom: 30px;
@@ -75,7 +75,7 @@
     }
 
     .card h2 {
-      color: #00FFC2;
+      color: #CCFF00;
       margin-bottom: 20px;
       font-size: 1.8em;
       display: flex;
@@ -84,8 +84,8 @@
     }
 
     .step {
-      background: rgba(0, 255, 194, 0.1);
-      border-left: 4px solid #00FFC2;
+      background: rgba(204, 255, 0, 0.1);
+      border-left: 4px solid #CCFF00;
       padding: 20px;
       margin: 20px 0;
       border-radius: 10px;
@@ -93,7 +93,7 @@
 
     .step-number {
       display: inline-block;
-      background: #00FFC2;
+      background: #CCFF00;
       color: #0C0C0C;
       width: 40px;
       height: 40px;
@@ -107,7 +107,7 @@
 
     .step h3 {
       display: inline-block;
-      color: #00FFC2;
+      color: #CCFF00;
       margin-bottom: 10px;
       font-size: 1.3em;
     }
@@ -125,13 +125,13 @@
 
     .code-block {
       background: #1a1a1a;
-      border: 1px solid #00FFC2;
+      border: 1px solid #CCFF00;
       padding: 15px;
       border-radius: 8px;
       margin: 15px 0;
       overflow-x: auto;
       font-family: 'Courier New', monospace;
-      color: #00FFC2;
+      color: #CCFF00;
     }
 
     .success-box {
@@ -154,7 +154,7 @@
 
     .button {
       display: inline-block;
-      background: #00FFC2;
+      background: #CCFF00;
       color: #0C0C0C;
       padding: 15px 30px;
       border-radius: 30px;
@@ -167,7 +167,7 @@
 
     .button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 5px 20px rgba(0, 255, 194, 0.4);
+      box-shadow: 0 5px 20px rgba(204, 255, 0, 0.4);
     }
 
     .checklist {
@@ -186,19 +186,19 @@
     }
 
     .checklist li:hover {
-      background: rgba(0, 255, 194, 0.1);
-      border-left-color: #00FFC2;
+      background: rgba(204, 255, 0, 0.1);
+      border-left-color: #CCFF00;
     }
 
     .checklist li::before {
-      content: '☐';
+      content: 'â˜';
       margin-right: 15px;
       font-size: 1.5em;
-      color: #00FFC2;
+      color: #CCFF00;
     }
 
     .checklist li.checked::before {
-      content: '✅';
+      content: 'âœ…';
     }
 
     .routes-list {
@@ -213,7 +213,7 @@
       padding: 15px;
       background: rgba(255, 255, 255, 0.05);
       border-radius: 8px;
-      border-left: 3px solid #00FFC2;
+      border-left: 3px solid #CCFF00;
     }
 
     .route-method {
@@ -233,7 +233,7 @@
     .footer {
       text-align: center;
       padding: 40px 20px;
-      border-top: 1px solid rgba(0, 255, 194, 0.2);
+      border-top: 1px solid rgba(204, 255, 0, 0.2);
       margin-top: 60px;
       color: #888;
     }
@@ -249,29 +249,29 @@
   <div class="container">
     <!-- Header -->
     <div class="header">
-      <h1>🚀 Déploiement Routes Devis</h1>
-      <p>Guide visuel pour activer les fonctionnalités de création de devis</p>
+      <h1>ðŸš€ DÃ©ploiement Routes Devis</h1>
+      <p>Guide visuel pour activer les fonctionnalitÃ©s de crÃ©ation de devis</p>
     </div>
 
     <!-- Alert Box -->
     <div class="alert">
-      <h2>⚠️ ACTION REQUISE IMMÉDIATEMENT</h2>
-      <p style="font-size: 1.1em;">Les routes pour les devis ont été ajoutées au code mais <strong>DOIVENT ÊTRE DÉPLOYÉES</strong> sur Supabase pour fonctionner ! Sans ce déploiement, vous aurez une erreur 404 lors de la création de devis.</p>
+      <h2>âš ï¸ ACTION REQUISE IMMÃ‰DIATEMENT</h2>
+      <p style="font-size: 1.1em;">Les routes pour les devis ont Ã©tÃ© ajoutÃ©es au code mais <strong>DOIVENT ÃŠTRE DÃ‰PLOYÃ‰ES</strong> sur Supabase pour fonctionner ! Sans ce dÃ©ploiement, vous aurez une erreur 404 lors de la crÃ©ation de devis.</p>
     </div>
 
-    <!-- Routes ajoutées -->
+    <!-- Routes ajoutÃ©es -->
     <div class="card">
-      <h2>📋 Routes Ajoutées</h2>
+      <h2>ðŸ“‹ Routes AjoutÃ©es</h2>
       <div class="routes-list">
         <div class="route-item">
           <span class="route-method get">GET</span>
           <code>/make-server-04919ac5/quotes</code>
-          <p style="margin-top: 8px; color: #aaa;">Récupérer tous les devis</p>
+          <p style="margin-top: 8px; color: #aaa;">RÃ©cupÃ©rer tous les devis</p>
         </div>
         <div class="route-item">
           <span class="route-method post">POST</span>
           <code>/make-server-04919ac5/quotes</code>
-          <p style="margin-top: 8px; color: #aaa;">Créer un nouveau devis</p>
+          <p style="margin-top: 8px; color: #aaa;">CrÃ©er un nouveau devis</p>
         </div>
         <div class="route-item">
           <span class="route-method put">PUT</span>
@@ -286,7 +286,7 @@
         <div class="route-item">
           <span class="route-method post">POST</span>
           <code>/make-server-04919ac5/quotes/:id/convert</code>
-          <p style="margin-top: 8px; color: #aaa;">Convertir un devis accepté en facture</p>
+          <p style="margin-top: 8px; color: #aaa;">Convertir un devis acceptÃ© en facture</p>
         </div>
         <div class="route-item">
           <span class="route-method post">POST</span>
@@ -296,40 +296,40 @@
       </div>
     </div>
 
-    <!-- Étapes de déploiement -->
+    <!-- Ã‰tapes de dÃ©ploiement -->
     <div class="card">
-      <h2>🎯 Étapes de Déploiement</h2>
+      <h2>ðŸŽ¯ Ã‰tapes de DÃ©ploiement</h2>
 
       <div class="step">
         <span class="step-number">1</span>
         <h3>Ouvrir Supabase Dashboard</h3>
         <ol>
-          <li>Allez sur : <a href="https://supabase.com/dashboard" target="_blank" style="color: #00FFC2;">https://supabase.com/dashboard</a></li>
-          <li>Connectez-vous à votre compte</li>
-          <li>Sélectionnez votre projet <strong>ptcxeqtjlxittxayffgu</strong></li>
+          <li>Allez sur : <a href="https://supabase.com/dashboard" target="_blank" style="color: #CCFF00;">https://supabase.com/dashboard</a></li>
+          <li>Connectez-vous Ã  votre compte</li>
+          <li>SÃ©lectionnez votre projet <strong>ptcxeqtjlxittxayffgu</strong></li>
         </ol>
         <div style="text-align: center; margin-top: 20px;">
           <a href="https://supabase.com/dashboard" target="_blank" class="button">
-            🌐 Ouvrir Supabase Dashboard
+            ðŸŒ Ouvrir Supabase Dashboard
           </a>
         </div>
       </div>
 
       <div class="step">
         <span class="step-number">2</span>
-        <h3>Accéder aux Edge Functions</h3>
+        <h3>AccÃ©der aux Edge Functions</h3>
         <ol>
-          <li>Dans le menu latéral gauche, cliquez sur <strong>"Edge Functions"</strong></li>
+          <li>Dans le menu latÃ©ral gauche, cliquez sur <strong>"Edge Functions"</strong></li>
           <li>Vous verrez la fonction <strong>"make-server-04919ac5"</strong></li>
         </ol>
       </div>
 
       <div class="step">
         <span class="step-number">3</span>
-        <h3>Ouvrir l'éditeur</h3>
+        <h3>Ouvrir l'Ã©diteur</h3>
         <ol>
           <li>Cliquez sur le nom de la fonction <strong>"make-server-04919ac5"</strong></li>
-          <li>Vous verrez le code actuel déployé</li>
+          <li>Vous verrez le code actuel dÃ©ployÃ©</li>
         </ol>
       </div>
 
@@ -337,8 +337,8 @@
         <span class="step-number">4</span>
         <h3>Copier le nouveau code</h3>
         <ol>
-          <li>Ouvrez le fichier <code>/supabase/functions/server/index.tsx</code> dans votre éditeur local</li>
-          <li>Sélectionnez <strong>TOUT LE CONTENU</strong> du fichier (Ctrl+A ou Cmd+A)</li>
+          <li>Ouvrez le fichier <code>/supabase/functions/server/index.tsx</code> dans votre Ã©diteur local</li>
+          <li>SÃ©lectionnez <strong>TOUT LE CONTENU</strong> du fichier (Ctrl+A ou Cmd+A)</li>
           <li>Copiez tout (Ctrl+C ou Cmd+C)</li>
         </ol>
       </div>
@@ -347,53 +347,53 @@
         <span class="step-number">5</span>
         <h3>Remplacer le code</h3>
         <ol>
-          <li>Dans l'éditeur Supabase, <strong>sélectionnez tout le code existant</strong></li>
+          <li>Dans l'Ã©diteur Supabase, <strong>sÃ©lectionnez tout le code existant</strong></li>
           <li><strong>Supprimez-le</strong></li>
-          <li><strong>Collez le nouveau code</strong> copié de votre fichier local</li>
+          <li><strong>Collez le nouveau code</strong> copiÃ© de votre fichier local</li>
         </ol>
       </div>
 
       <div class="step">
         <span class="step-number">6</span>
-        <h3>Déployer</h3>
+        <h3>DÃ©ployer</h3>
         <ol>
-          <li>Cliquez sur le bouton <strong>"Deploy"</strong> (en haut à droite)</li>
-          <li>Attendez que le déploiement se termine (quelques secondes)</li>
-          <li>Vous devriez voir un message de succès ✅</li>
+          <li>Cliquez sur le bouton <strong>"Deploy"</strong> (en haut Ã  droite)</li>
+          <li>Attendez que le dÃ©ploiement se termine (quelques secondes)</li>
+          <li>Vous devriez voir un message de succÃ¨s âœ…</li>
         </ol>
       </div>
     </div>
 
-    <!-- Vérification -->
+    <!-- VÃ©rification -->
     <div class="card">
-      <h2>✅ Vérification</h2>
+      <h2>âœ… VÃ©rification</h2>
 
-      <div style="background: rgba(0, 255, 194, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
-        <h3 style="color: #00FFC2; margin-bottom: 15px;">Tester que ça fonctionne</h3>
+      <div style="background: rgba(204, 255, 0, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
+        <h3 style="color: #CCFF00; margin-bottom: 15px;">Tester que Ã§a fonctionne</h3>
         <ol>
           <li><strong>Rechargez votre application web</strong></li>
           <li>Allez dans le <strong>Dashboard CRM</strong></li>
           <li>Cliquez sur l'onglet <strong>"Devis"</strong></li>
           <li>Cliquez sur <strong>"Nouveau devis"</strong></li>
-          <li>Remplissez le formulaire en 3 étapes</li>
-          <li>Cliquez sur <strong>"Créer le devis"</strong></li>
+          <li>Remplissez le formulaire en 3 Ã©tapes</li>
+          <li>Cliquez sur <strong>"CrÃ©er le devis"</strong></li>
         </ol>
       </div>
 
       <div class="success-box">
-        <strong>✅ Résultat attendu</strong><br>
-        Le devis devrait se créer sans erreur 404<br>
-        Un toast de succès devrait apparaître<br>
+        <strong>âœ… RÃ©sultat attendu</strong><br>
+        Le devis devrait se crÃ©er sans erreur 404<br>
+        Un toast de succÃ¨s devrait apparaÃ®tre<br>
         Le dialogue devrait se fermer<br>
-        La liste des devis devrait se mettre à jour automatiquement
+        La liste des devis devrait se mettre Ã  jour automatiquement
       </div>
 
       <div class="error-box">
-        <strong>❌ Si vous avez encore une erreur 404</strong>
+        <strong>âŒ Si vous avez encore une erreur 404</strong>
         <ul style="margin-top: 15px; text-align: left;">
-          <li>Vérifiez que vous avez bien déployé le code sur Supabase</li>
-          <li>Vérifiez l'URL dans la console du navigateur (F12)</li>
-          <li>Attendez quelques secondes et réessayez (le déploiement peut prendre un moment)</li>
+          <li>VÃ©rifiez que vous avez bien dÃ©ployÃ© le code sur Supabase</li>
+          <li>VÃ©rifiez l'URL dans la console du navigateur (F12)</li>
+          <li>Attendez quelques secondes et rÃ©essayez (le dÃ©ploiement peut prendre un moment)</li>
           <li>Videz le cache du navigateur (Ctrl+Shift+R ou Cmd+Shift+R)</li>
         </ul>
       </div>
@@ -401,22 +401,22 @@
 
     <!-- Checklist -->
     <div class="card">
-      <h2>📝 Checklist de Déploiement</h2>
+      <h2>ðŸ“ Checklist de DÃ©ploiement</h2>
       <ul class="checklist" id="checklist">
-        <li onclick="toggleCheck(this)">Code copié depuis /supabase/functions/server/index.tsx</li>
-        <li onclick="toggleCheck(this)">Code collé dans l'éditeur Supabase</li>
-        <li onclick="toggleCheck(this)">Bouton "Deploy" cliqué</li>
-        <li onclick="toggleCheck(this)">Message de succès reçu</li>
-        <li onclick="toggleCheck(this)">Application web rechargée</li>
-        <li onclick="toggleCheck(this)">Test de création d'un devis effectué</li>
-        <li onclick="toggleCheck(this)">Aucune erreur 404 ✅</li>
+        <li onclick="toggleCheck(this)">Code copiÃ© depuis /supabase/functions/server/index.tsx</li>
+        <li onclick="toggleCheck(this)">Code collÃ© dans l'Ã©diteur Supabase</li>
+        <li onclick="toggleCheck(this)">Bouton "Deploy" cliquÃ©</li>
+        <li onclick="toggleCheck(this)">Message de succÃ¨s reÃ§u</li>
+        <li onclick="toggleCheck(this)">Application web rechargÃ©e</li>
+        <li onclick="toggleCheck(this)">Test de crÃ©ation d'un devis effectuÃ©</li>
+        <li onclick="toggleCheck(this)">Aucune erreur 404 âœ…</li>
       </ul>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-      <p><strong>🎉 Une fois déployé, le système de devis sera pleinement fonctionnel !</strong></p>
-      <p style="margin-top: 20px;">Date de création : 10 novembre 2024 | Version : 1.0.0</p>
+      <p><strong>ðŸŽ‰ Une fois dÃ©ployÃ©, le systÃ¨me de devis sera pleinement fonctionnel !</strong></p>
+      <p style="margin-top: 20px;">Date de crÃ©ation : 10 novembre 2024 | Version : 1.0.0</p>
     </div>
   </div>
 
@@ -437,7 +437,7 @@
       }
       
       if (allChecked) {
-        alert('🎉 Félicitations ! Vous avez complété toutes les étapes de déploiement !\n\nVous pouvez maintenant créer vos premiers devis professionnels !');
+        alert('ðŸŽ‰ FÃ©licitations ! Vous avez complÃ©tÃ© toutes les Ã©tapes de dÃ©ploiement !\n\nVous pouvez maintenant crÃ©er vos premiers devis professionnels !');
       }
     }
   </script>

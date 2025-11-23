@@ -99,7 +99,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
       try {
         await onRefresh();
         setLastRefresh(new Date());
-        toast.success("Données actualisées avec succès !");
+        toast.success("DonnÃ©es actualisÃ©es avec succÃ¨s !");
       } catch (error) {
         toast.error("Erreur lors de l'actualisation");
         console.error("Refresh error:", error);
@@ -113,7 +113,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
     const now = new Date();
     const diff = Math.floor((now.getTime() - lastRefresh.getTime()) / 1000);
     
-    if (diff < 60) return "À l'instant";
+    if (diff < 60) return "Ã€ l'instant";
     if (diff < 3600) return `Il y a ${Math.floor(diff / 60)} min`;
     if (diff < 86400) return `Il y a ${Math.floor(diff / 3600)}h`;
     return lastRefresh.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
@@ -182,9 +182,9 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
     };
   }, [leads, clients, projects, invoices]);
 
-  // Données pour le graphique d'évolution mensuelle
+  // DonnÃ©es pour le graphique d'Ã©volution mensuelle
   const monthlyData = useMemo(() => {
-    const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+    const months = ['Jan', 'FÃ©v', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'AoÃ»t', 'Sep', 'Oct', 'Nov', 'DÃ©c'];
     const currentYear = new Date().getFullYear();
     
     const data = months.map((month, index) => {
@@ -216,7 +216,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
     return data;
   }, [leads, clients]);
 
-  // Répartition des leads par source
+  // RÃ©partition des leads par source
   const leadsBySource = useMemo(() => {
     const sources = leads.reduce((acc, lead) => {
       const source = lead.source || 'Inconnu';
@@ -230,12 +230,12 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
     }));
   }, [leads]);
 
-  // Répartition des statuts de leads
+  // RÃ©partition des statuts de leads
   const leadsByStatus = useMemo(() => {
     const statusMap: Record<string, string> = {
       new: 'Nouveau',
-      contacted: 'Contacté',
-      qualified: 'Qualifié',
+      contacted: 'ContactÃ©',
+      qualified: 'QualifiÃ©',
       converted: 'Converti',
       lost: 'Perdu',
     };
@@ -256,10 +256,10 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
   const invoicesByStatus = useMemo(() => {
     const statusMap: Record<string, string> = {
       draft: 'Brouillon',
-      sent: 'Envoyée',
-      paid: 'Payée',
+      sent: 'EnvoyÃ©e',
+      paid: 'PayÃ©e',
       overdue: 'En retard',
-      cancelled: 'Annulée',
+      cancelled: 'AnnulÃ©e',
     };
 
     const statuses = invoices.reduce((acc, invoice) => {
@@ -274,7 +274,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
     }));
   }, [invoices]);
 
-  const COLORS = ['#00FFC2', '#00D9A6', '#00B38A', '#008D6E', '#006752'];
+  const COLORS = ['#CCFF00', '#DAFF40', '#00B38A', '#008D6E', '#006752'];
 
   const KPICard = ({ 
     title, 
@@ -282,7 +282,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
     subtitle, 
     growth, 
     icon: Icon,
-    color = "#00FFC2" 
+    color = "#CCFF00" 
   }: { 
     title: string; 
     value: string | number; 
@@ -313,14 +313,14 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
               {growth !== undefined && (
                 <div className="flex items-center gap-1 mt-2">
                   {growth >= 0 ? (
-                    <TrendingUp className="h-4 w-4 text-[#00FFC2]" />
+                    <TrendingUp className="h-4 w-4 text-[#CCFF00]" />
                   ) : (
                     <TrendingDown className="h-4 w-4 text-red-400" />
                   )}
-                  <span className={growth >= 0 ? "text-[#00FFC2] text-sm" : "text-red-400 text-sm"}>
+                  <span className={growth >= 0 ? "text-[#CCFF00] text-sm" : "text-red-400 text-sm"}>
                     {growth >= 0 ? '+' : ''}{growth.toFixed(1)}%
                   </span>
-                  <span className="text-white/40 text-xs ml-1">vs 30j précédents</span>
+                  <span className="text-white/40 text-xs ml-1">vs 30j prÃ©cÃ©dents</span>
                 </div>
               )}
             </div>
@@ -349,14 +349,14 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
           <p className="text-sm text-white/60">
             {isRefreshing ? (
               <span className="flex items-center gap-2">
-                <span className="inline-block w-1.5 h-1.5 bg-[#00FFC2] rounded-full animate-pulse" />
-                Actualisation des données en cours...
+                <span className="inline-block w-1.5 h-1.5 bg-[#CCFF00] rounded-full animate-pulse" />
+                Actualisation des donnÃ©es en cours...
               </span>
             ) : (
               <span className="flex items-center gap-2">
-                Vue d'ensemble de votre activité
-                <span className="text-white/40">•</span>
-                <span className="text-[#00FFC2]/80">Mis à jour {formatLastRefresh()}</span>
+                Vue d'ensemble de votre activitÃ©
+                <span className="text-white/40">â€¢</span>
+                <span className="text-[#CCFF00]/80">Mis Ã  jour {formatLastRefresh()}</span>
               </span>
             )}
           </p>
@@ -368,7 +368,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
           <Button
             onClick={handleRefresh}
             disabled={isRefreshing || loading}
-            className="bg-white/5 border border-white/10 text-white hover:bg-[#00FFC2]/10 hover:border-[#00FFC2]/40 hover:text-[#00FFC2] transition-all w-full sm:w-auto group"
+            className="bg-white/5 border border-white/10 text-white hover:bg-[#CCFF00]/10 hover:border-[#CCFF00]/40 hover:text-[#CCFF00] transition-all w-full sm:w-auto group"
             variant="outline"
           >
             <RefreshCw className={`h-4 w-4 mr-2 transition-transform group-hover:rotate-180 duration-500 ${isRefreshing || loading ? 'animate-spin' : ''}`} />
@@ -388,7 +388,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
           subtitle={`${kpis.leads.recent} ce mois-ci`}
           growth={kpis.leads.growth}
           icon={Users}
-          color="#00FFC2"
+          color="#CCFF00"
         />
         <KPICard
           title="Clients Actifs"
@@ -396,12 +396,12 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
           subtitle={`${kpis.clients.recent} nouveaux ce mois`}
           growth={kpis.clients.growth}
           icon={Target}
-          color="#00D9A6"
+          color="#DAFF40"
         />
         <KPICard
           title="Revenus Totaux"
-          value={`${kpis.revenue.total.toLocaleString('fr-FR')} €`}
-          subtitle={`${kpis.revenue.recent.toLocaleString('fr-FR')} € ce mois`}
+          value={`${kpis.revenue.total.toLocaleString('fr-FR')} â‚¬`}
+          subtitle={`${kpis.revenue.recent.toLocaleString('fr-FR')} â‚¬ ce mois`}
           growth={kpis.revenue.growth}
           icon={DollarSign}
           color="#00B38A"
@@ -450,7 +450,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-white/60 mb-1">Montant en Attente</p>
-                <p className="text-2xl text-white">{kpis.pendingInvoices.amount.toLocaleString('fr-FR')} €</p>
+                <p className="text-2xl text-white">{kpis.pendingInvoices.amount.toLocaleString('fr-FR')} â‚¬</p>
               </div>
               <div className="w-10 h-10 bg-orange-500/10 rounded-lg flex items-center justify-center">
                 <DollarSign className="h-5 w-5 text-orange-400" />
@@ -462,12 +462,12 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
 
       {/* Graphiques principaux */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Évolution mensuelle */}
+        {/* Ã‰volution mensuelle */}
         <Card className="bg-white/5 border-white/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
-              <Activity className="h-5 w-5 text-[#00FFC2]" />
-              Évolution Mensuelle (2025)
+              <Activity className="h-5 w-5 text-[#CCFF00]" />
+              Ã‰volution Mensuelle (2025)
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -475,12 +475,12 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
               <AreaChart data={monthlyData}>
                 <defs>
                   <linearGradient id="colorLeads" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00FFC2" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#00FFC2" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#CCFF00" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#CCFF00" stopOpacity={0}/>
                   </linearGradient>
                   <linearGradient id="colorClients" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00D9A6" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#00D9A6" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#DAFF40" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#DAFF40" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
@@ -498,7 +498,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
                 <Area
                   type="monotone"
                   dataKey="leads"
-                  stroke="#00FFC2"
+                  stroke="#CCFF00"
                   fillOpacity={1}
                   fill="url(#colorLeads)"
                   name="Leads"
@@ -506,7 +506,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
                 <Area
                   type="monotone"
                   dataKey="clients"
-                  stroke="#00D9A6"
+                  stroke="#DAFF40"
                   fillOpacity={1}
                   fill="url(#colorClients)"
                   name="Clients"
@@ -520,8 +520,8 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
         <Card className="bg-white/5 border-white/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-[#00FFC2]" />
-              Revenus Mensuels (€)
+              <DollarSign className="h-5 w-5 text-[#CCFF00]" />
+              Revenus Mensuels (â‚¬)
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -538,7 +538,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
                     color: '#fff',
                   }}
                 />
-                <Bar dataKey="revenue" fill="#00FFC2" radius={[8, 8, 0, 0]} name="Revenus" />
+                <Bar dataKey="revenue" fill="#CCFF00" radius={[8, 8, 0, 0]} name="Revenus" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -582,7 +582,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
               </ResponsiveContainer>
             ) : (
               <div className="h-[250px] flex items-center justify-center text-white/40">
-                Aucune donnée
+                Aucune donnÃ©e
               </div>
             )}
           </CardContent>
@@ -623,7 +623,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
               </ResponsiveContainer>
             ) : (
               <div className="h-[250px] flex items-center justify-center text-white/40">
-                Aucune donnée
+                Aucune donnÃ©e
               </div>
             )}
           </CardContent>
@@ -664,7 +664,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
               </ResponsiveContainer>
             ) : (
               <div className="h-[250px] flex items-center justify-center text-white/40">
-                Aucune donnée
+                Aucune donnÃ©e
               </div>
             )}
           </CardContent>
@@ -675,7 +675,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
       <Card className="bg-white/5 border-white/10">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <Target className="h-5 w-5 text-[#00FFC2]" />
+            <Target className="h-5 w-5 text-[#CCFF00]" />
             Top 5 Clients par Revenus
           </CardTitle>
         </CardHeader>
@@ -693,8 +693,8 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
                   className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-[#00FFC2]/10 rounded-full flex items-center justify-center">
-                      <span className="text-[#00FFC2]">{index + 1}</span>
+                    <div className="w-8 h-8 bg-[#CCFF00]/10 rounded-full flex items-center justify-center">
+                      <span className="text-[#CCFF00]">{index + 1}</span>
                     </div>
                     <div>
                       <p className="text-white">{client.name}</p>
@@ -702,7 +702,7 @@ export function AnalyticsTab({ leads, clients, projects, invoices, quotes, onRef
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-[#00FFC2]">{(client.revenue || 0).toLocaleString('fr-FR')} €</p>
+                    <p className="text-[#CCFF00]">{(client.revenue || 0).toLocaleString('fr-FR')} â‚¬</p>
                     <Badge className="bg-white/5 text-white/60 border-0 mt-1">
                       {client.status}
                     </Badge>

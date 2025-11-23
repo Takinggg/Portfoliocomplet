@@ -36,7 +36,7 @@ export function ServerStatusAlert() {
         const data = await response.json();
         if (data.success) {
           setServerStatus('online');
-          console.log('✅ Server is online:', data.version);
+          console.log('âœ… Server is online:', data.version);
         } else {
           setServerStatus('offline');
         }
@@ -55,19 +55,19 @@ export function ServerStatusAlert() {
 
   if (serverStatus === 'online') {
     return (
-      <Alert className="fixed top-4 right-4 w-auto max-w-md z-50 bg-[#00FFC2]/10 border-[#00FFC2]/30">
-        <CheckCircle2 className="h-4 w-4 text-[#00FFC2]" />
-        <AlertTitle className="text-[#00FFC2]">Serveur connecté</AlertTitle>
-        <AlertDescription className="text-[#00FFC2]/80">
-          Toutes les fonctionnalités sont disponibles.
+      <Alert className="fixed top-4 right-4 w-auto max-w-md z-50 bg-[#CCFF00]/10 border-[#CCFF00]/30">
+        <CheckCircle2 className="h-4 w-4 text-[#CCFF00]" />
+        <AlertTitle className="text-[#CCFF00]">Serveur connectÃ©</AlertTitle>
+        <AlertDescription className="text-[#CCFF00]/80">
+          Toutes les fonctionnalitÃ©s sont disponibles.
         </AlertDescription>
         <Button
           variant="ghost"
           size="sm"
-          className="absolute top-2 right-2 h-6 w-6 p-0 text-[#00FFC2]/60 hover:text-[#00FFC2]"
+          className="absolute top-2 right-2 h-6 w-6 p-0 text-[#CCFF00]/60 hover:text-[#CCFF00]"
           onClick={() => setShowAlert(false)}
         >
-          ✕
+          âœ•
         </Button>
       </Alert>
     );
@@ -76,14 +76,14 @@ export function ServerStatusAlert() {
   return (
     <Alert className="fixed top-4 right-4 w-auto max-w-md z-50 bg-red-500/10 border-red-500/30 shadow-lg">
       <AlertTriangle className="h-4 w-4 text-red-500" />
-      <AlertTitle className="text-red-500">⚠️ Serveur non déployé</AlertTitle>
+      <AlertTitle className="text-red-500">âš ï¸ Serveur non dÃ©ployÃ©</AlertTitle>
       <AlertDescription className="text-red-400 space-y-2">
         <p className="text-sm">
-          Le serveur Edge Function doit être déployé pour que l'application fonctionne.
+          Le serveur Edge Function doit Ãªtre dÃ©ployÃ© pour que l'application fonctionne.
         </p>
         <div className="text-xs bg-black/30 p-2 rounded border border-red-500/20 font-mono">
           <div>1. Ouvrir la console (F12)</div>
-          <div>2. Exécuter: <span className="text-[#00FFC2]">deployServer()</span></div>
+          <div>2. ExÃ©cuter: <span className="text-[#CCFF00]">deployServer()</span></div>
           <div>3. Suivre les instructions</div>
         </div>
         <div className="flex flex-wrap gap-2 mt-2">
@@ -103,12 +103,12 @@ export function ServerStatusAlert() {
             size="sm"
             className="border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50"
             onClick={() => {
-              console.log('%c📋 Guide de déploiement', 'font-size: 16px; font-weight: bold; color: #00FFC2;');
-              console.log('Exécutez: deployServer()');
+              console.log('%cðŸ“‹ Guide de dÃ©ploiement', 'font-size: 16px; font-weight: bold; color: #CCFF00;');
+              console.log('ExÃ©cutez: deployServer()');
               checkServerStatus();
             }}
           >
-            Réessayer
+            RÃ©essayer
           </Button>
           <Button
             variant="ghost"

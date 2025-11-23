@@ -27,20 +27,20 @@ interface RichTextEditorProps {
   placeholder?: string;
 }
 
-export function RichTextEditor({ content, onChange, placeholder = "Commencez à écrire votre article..." }: RichTextEditorProps) {
+export function RichTextEditor({ content, onChange, placeholder = "Commencez Ã  Ã©crire votre article..." }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: {
           levels: [1, 2, 3],
         },
-        // Désactiver les extensions que nous configurons séparément
+        // DÃ©sactiver les extensions que nous configurons sÃ©parÃ©ment
         link: false,
       }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: 'text-[#00FFC2] underline hover:text-[#00D9A6]',
+          class: 'text-[#CCFF00] underline hover:text-[#DAFF40]',
         },
       }),
       Placeholder.configure({
@@ -94,7 +94,7 @@ export function RichTextEditor({ content, onChange, placeholder = "Commencez à 
       onClick={onClick}
       className={`h-8 w-8 p-0 ${
         isActive 
-          ? 'bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30' 
+          ? 'bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30' 
           : 'text-white/60 hover:text-white hover:bg-white/10'
       }`}
       title={title}
@@ -124,7 +124,7 @@ export function RichTextEditor({ content, onChange, placeholder = "Commencez à 
             onClick={() => editor.chain().focus().toggleStrike().run()}
             isActive={editor.isActive('strike')}
             icon={Strikethrough}
-            title="Barré"
+            title="BarrÃ©"
           />
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleCode().run()}
@@ -164,13 +164,13 @@ export function RichTextEditor({ content, onChange, placeholder = "Commencez à 
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             isActive={editor.isActive('bulletList')}
             icon={List}
-            title="Liste à puces"
+            title="Liste Ã  puces"
           />
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             isActive={editor.isActive('orderedList')}
             icon={ListOrdered}
-            title="Liste numérotée"
+            title="Liste numÃ©rotÃ©e"
           />
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
@@ -202,7 +202,7 @@ export function RichTextEditor({ content, onChange, placeholder = "Commencez à 
           <ToolbarButton
             onClick={() => editor.chain().focus().redo().run()}
             icon={Redo}
-            title="Rétablir (Ctrl+Y)"
+            title="RÃ©tablir (Ctrl+Y)"
           />
         </div>
       </div>

@@ -8,15 +8,18 @@ import { useTranslation } from "../../utils/i18n/useTranslation";
 const POPUP_DELAY = 15000; // 15 secondes
 const SCROLL_THRESHOLD = 0.5; // 50% de scroll
 const POPUP_COOLDOWN_KEY = "newsletter_popup_closed";
-const POPUP_COOLDOWN_DAYS = 7; // Ne plus montrer pendant 7 jours si fermé
+const POPUP_COOLDOWN_DAYS = 7; // Ne plus montrer pendant 7 jours si fermÃ©
 
 export function NewsletterPopup() {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const [hasScrolledEnough, setHasScrolledEnough] = useState(false);
+  const popupBenefits = Array.isArray((t as any)?.newsletter?.popup?.benefits)
+    ? (t as any).newsletter.popup.benefits
+    : [];
 
   useEffect(() => {
-    // Vérifier si le popup a été fermé récemment
+    // VÃ©rifier si le popup a Ã©tÃ© fermÃ© rÃ©cemment
     const lastClosed = localStorage.getItem(POPUP_COOLDOWN_KEY);
     if (lastClosed) {
       const daysSinceClosed = (Date.now() - parseInt(lastClosed)) / (1000 * 60 * 60 * 24);
@@ -25,13 +28,13 @@ export function NewsletterPopup() {
       }
     }
 
-    // Vérifier si déjà abonné
+    // VÃ©rifier si dÃ©jÃ  abonnÃ©
     const isSubscribed = localStorage.getItem("newsletter_subscribed");
     if (isSubscribed === "true") {
       return;
     }
 
-    // Timer pour afficher après X secondes
+    // Timer pour afficher aprÃ¨s X secondes
     const timer = setTimeout(() => {
       if (hasScrolledEnough) {
         setIsVisible(true);
@@ -89,7 +92,7 @@ export function NewsletterPopup() {
             transition={{ type: "spring", duration: 0.5 }}
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-2rem)] max-w-lg"
           >
-            <div className="relative bg-[#0C0C0C] border border-[#00FFC2]/30 rounded-2xl p-8 shadow-2xl">
+            <div className="relative bg-[#0C0C0C] border border-[#CCFF00]/30 rounded-2xl p-8 shadow-2xl">
               {/* Close button */}
               <button
                 onClick={handleClose}
@@ -100,14 +103,14 @@ export function NewsletterPopup() {
               </button>
 
               {/* Gradient background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#00FFC2]/10 to-transparent rounded-2xl pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#CCFF00]/10 to-transparent rounded-2xl pointer-events-none" />
 
               {/* Content */}
               <div className="relative">
                 {/* Icon */}
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00FFC2]/10 border border-[#00FFC2]/20 mb-6">
-                  <Sparkles className="h-4 w-4 text-[#00FFC2]" />
-                  <span className="text-sm text-[#00FFC2]">{t('newsletter.popup.badge')}</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#CCFF00]/10 border border-[#CCFF00]/20 mb-6">
+                  <Sparkles className="h-4 w-4 text-[#CCFF00]" />
+                  <span className="text-sm text-[#CCFF00]">{t('newsletter.popup.badge')}</span>
                 </div>
 
                 {/* Title */}
@@ -122,7 +125,7 @@ export function NewsletterPopup() {
 
                 {/* Benefits */}
                 <div className="space-y-2 mb-6">
-                  {t('newsletter.popup.benefits').map((benefit, index) => (
+                  {popupBenefits.map((benefit: string, index: number) => (
                     <motion.div
                       key={benefit}
                       initial={{ opacity: 0, x: -20 }}
@@ -130,7 +133,7 @@ export function NewsletterPopup() {
                       transition={{ delay: index * 0.1 }}
                       className="flex items-center gap-2 text-sm text-white/70"
                     >
-                      <div className="w-1 h-1 rounded-full bg-[#00FFC2]" />
+                      <div className="w-1 h-1 rounded-full bg-[#CCFF00]" />
                       {benefit}
                     </motion.div>
                   ))}

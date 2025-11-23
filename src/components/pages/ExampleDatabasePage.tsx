@@ -1,13 +1,13 @@
 /**
- * PAGE D'EXEMPLE - Intégration Database Bilingue
+ * PAGE D'EXEMPLE - IntÃ©gration Database Bilingue
  * 
- * Cette page démontre:
- * ✅ Intégration complète avec Supabase via unifiedDataService
- * ✅ Bilinguisme complet (Français/Anglais)
- * ✅ Opérations CRUD (Create, Read, Update, Delete)
- * ✅ UI moderne avec animations
- * ✅ Gestion des états de chargement et erreurs
- * ✅ Synchronisation temps réel avec la database
+ * Cette page dÃ©montre:
+ * âœ… IntÃ©gration complÃ¨te avec Supabase via unifiedDataService
+ * âœ… Bilinguisme complet (FranÃ§ais/Anglais)
+ * âœ… OpÃ©rations CRUD (Create, Read, Update, Delete)
+ * âœ… UI moderne avec animations
+ * âœ… Gestion des Ã©tats de chargement et erreurs
+ * âœ… Synchronisation temps rÃ©el avec la database
  */
 
 import React, { useState, useEffect } from "react";
@@ -43,51 +43,51 @@ interface ExampleTask {
 
 const EXAMPLE_TRANSLATIONS = {
   fr: {
-    pageTitle: "Exemple d'Intégration Database",
-    pageSubtitle: "Démonstration complète de l'intégration Supabase avec bilinguisme",
-    addTask: "Ajouter une tâche",
-    editTask: "Modifier la tâche",
-    deleteTask: "Supprimer la tâche",
-    deleteConfirm: "Êtes-vous sûr de vouloir supprimer cette tâche ?",
+    pageTitle: "Exemple d'IntÃ©gration Database",
+    pageSubtitle: "DÃ©monstration complÃ¨te de l'intÃ©gration Supabase avec bilinguisme",
+    addTask: "Ajouter une tÃ¢che",
+    editTask: "Modifier la tÃ¢che",
+    deleteTask: "Supprimer la tÃ¢che",
+    deleteConfirm: "ÃŠtes-vous sÃ»r de vouloir supprimer cette tÃ¢che ?",
     cancel: "Annuler",
     save: "Enregistrer",
     delete: "Supprimer",
     loading: "Chargement...",
-    noTasks: "Aucune tâche pour le moment",
-    noTasksDesc: "Créez votre première tâche pour commencer",
-    titleFr: "Titre (Français)",
+    noTasks: "Aucune tÃ¢che pour le moment",
+    noTasksDesc: "CrÃ©ez votre premiÃ¨re tÃ¢che pour commencer",
+    titleFr: "Titre (FranÃ§ais)",
     titleEn: "Titre (Anglais)",
-    descriptionFr: "Description (Français)",
+    descriptionFr: "Description (FranÃ§ais)",
     descriptionEn: "Description (Anglais)",
     status: "Statut",
-    priority: "Priorité",
-    dueDate: "Date d'échéance",
+    priority: "PrioritÃ©",
+    dueDate: "Date d'Ã©chÃ©ance",
     tags: "Tags",
-    tagsPlaceholder: "Séparés par des virgules",
-    statusTodo: "À faire",
+    tagsPlaceholder: "SÃ©parÃ©s par des virgules",
+    statusTodo: "Ã€ faire",
     statusInProgress: "En cours",
-    statusDone: "Terminé",
+    statusDone: "TerminÃ©",
     priorityLow: "Faible",
     priorityMedium: "Moyenne",
     priorityHigh: "Haute",
     connectionStatus: "Connexion Database",
-    connected: "Connecté à Supabase",
-    disconnected: "Déconnecté",
+    connected: "ConnectÃ© Ã  Supabase",
+    disconnected: "DÃ©connectÃ©",
     reconnect: "Reconnecter",
-    created: "Créée",
-    updated: "Mise à jour",
-    errorLoading: "Erreur lors du chargement des tâches",
+    created: "CrÃ©Ã©e",
+    updated: "Mise Ã  jour",
+    errorLoading: "Erreur lors du chargement des tÃ¢ches",
     errorSaving: "Erreur lors de l'enregistrement",
     errorDeleting: "Erreur lors de la suppression",
-    successCreated: "Tâche créée avec succès",
-    successUpdated: "Tâche mise à jour avec succès",
-    successDeleted: "Tâche supprimée avec succès",
-    taskCount: "tâches",
-    features: "Fonctionnalités démontrées",
-    feature1: "Opérations CRUD complètes",
-    feature2: "Synchronisation Supabase temps réel",
+    successCreated: "TÃ¢che crÃ©Ã©e avec succÃ¨s",
+    successUpdated: "TÃ¢che mise Ã  jour avec succÃ¨s",
+    successDeleted: "TÃ¢che supprimÃ©e avec succÃ¨s",
+    taskCount: "tÃ¢ches",
+    features: "FonctionnalitÃ©s dÃ©montrÃ©es",
+    feature1: "OpÃ©rations CRUD complÃ¨tes",
+    feature2: "Synchronisation Supabase temps rÃ©el",
     feature3: "Interface bilingue (FR/EN)",
-    feature4: "Gestion d'états et erreurs",
+    feature4: "Gestion d'Ã©tats et erreurs",
     feature5: "UI moderne avec animations",
     feature6: "Validation de formulaires"
   },
@@ -221,7 +221,7 @@ export default function ExampleDatabasePage() {
 
   const handleSaveTask = async () => {
     if (!tasksKey || !session?.access_token) {
-      toast.error("Vous devez être connecté pour enregistrer des tâches.");
+      toast.error("Vous devez Ãªtre connectÃ© pour enregistrer des tÃ¢ches.");
       return;
     }
     try {
@@ -261,7 +261,7 @@ export default function ExampleDatabasePage() {
   const handleDeleteTask = async () => {
     if (!taskToDelete) return;
     if (!tasksKey || !session?.access_token) {
-      toast.error("Vous devez être connecté pour supprimer des tâches.");
+      toast.error("Vous devez Ãªtre connectÃ© pour supprimer des tÃ¢ches.");
       return;
     }
 
@@ -321,7 +321,7 @@ export default function ExampleDatabasePage() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "done":
-        return <CheckCircle2 className="w-5 h-5 text-[#00FFC2]" />;
+        return <CheckCircle2 className="w-5 h-5 text-[#CCFF00]" />;
       case "in_progress":
         return <Circle className="w-5 h-5 text-blue-500" />;
       default:
@@ -347,7 +347,7 @@ export default function ExampleDatabasePage() {
           <Alert className="mb-6 border-red-500/30 bg-red-500/5">
             <AlertDescription className="text-red-100">
               {language === "fr"
-                ? "Connectez-vous pour créer et synchroniser vos tâches d'exemple."
+                ? "Connectez-vous pour crÃ©er et synchroniser vos tÃ¢ches d'exemple."
                 : "Sign in to create and sync your example tasks."}
             </AlertDescription>
           </Alert>
@@ -359,16 +359,16 @@ export default function ExampleDatabasePage() {
           className="mb-12"
         >
           <div className="flex items-center gap-3 mb-4">
-            <Database className="w-8 h-8 text-[#00FFC2]" />
-            <h1 className="text-[#00FFC2]">{t.pageTitle}</h1>
+            <Database className="w-8 h-8 text-[#CCFF00]" />
+            <h1 className="text-[#CCFF00]">{t.pageTitle}</h1>
           </div>
           <p className="text-gray-400 mb-6">{t.pageSubtitle}</p>
 
           {/* Connection Status */}
-          <Alert className="mb-6 border-[#00FFC2]/20 bg-[#00FFC2]/5">
+          <Alert className="mb-6 border-[#CCFF00]/20 bg-[#CCFF00]/5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${isConnected ? "bg-[#00FFC2]" : "bg-red-500"} animate-pulse`} />
+                <div className={`w-2 h-2 rounded-full ${isConnected ? "bg-[#CCFF00]" : "bg-red-500"} animate-pulse`} />
                 <AlertDescription className="text-[#F4F4F4]">
                   {t.connectionStatus}: {isConnected ? t.connected : t.disconnected}
                 </AlertDescription>
@@ -380,7 +380,7 @@ export default function ExampleDatabasePage() {
                   checkConnection();
                   loadTasks();
                 }}
-                className="text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                className="text-[#CCFF00] hover:bg-[#CCFF00]/10"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
                 {t.reconnect}
@@ -390,11 +390,11 @@ export default function ExampleDatabasePage() {
 
           {/* Features */}
           <Card className="bg-[#1A1A1A] border-gray-800 p-6 mb-6">
-            <h3 className="mb-4 text-[#00FFC2]">{t.features}</h3>
+            <h3 className="mb-4 text-[#CCFF00]">{t.features}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[t.feature1, t.feature2, t.feature3, t.feature4, t.feature5, t.feature6].map((feature, i) => (
                 <div key={i} className="flex items-center gap-2 text-gray-400">
-                  <CheckCircle2 className="w-4 h-4 text-[#00FFC2]" />
+                  <CheckCircle2 className="w-4 h-4 text-[#CCFF00]" />
                   <span>{feature}</span>
                 </div>
               ))}
@@ -402,26 +402,26 @@ export default function ExampleDatabasePage() {
           </Card>
 
           {/* Seed Data CTA */}
-          <Alert className="mb-6 border-[#00FFC2]/20 bg-[#1A1A1A]">
+          <Alert className="mb-6 border-[#CCFF00]/20 bg-[#1A1A1A]">
             <AlertDescription className="text-[#F4F4F4]">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="mb-1">
                     {language === "fr" 
-                      ? "🌱 Besoin de projets de test pour votre portfolio ?" 
-                      : "🌱 Need test projects for your portfolio?"}
+                      ? "ðŸŒ± Besoin de projets de test pour votre portfolio ?" 
+                      : "ðŸŒ± Need test projects for your portfolio?"}
                   </p>
                   <p className="text-sm text-gray-400">
                     {language === "fr" 
-                      ? "Créez 6 projets professionnels bilingues en quelques clics" 
+                      ? "CrÃ©ez 6 projets professionnels bilingues en quelques clics" 
                       : "Create 6 professional bilingual projects in a few clicks"}
                   </p>
                 </div>
                 <Button
                   onClick={() => window.location.href = `/${language}/seed-data`}
-                  className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+                  className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
                 >
-                  {language === "fr" ? "Créer des projets" : "Create projects"}
+                  {language === "fr" ? "CrÃ©er des projets" : "Create projects"}
                 </Button>
               </div>
             </AlertDescription>
@@ -434,7 +434,7 @@ export default function ExampleDatabasePage() {
             </div>
             <Button
               onClick={openAddDialog}
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+              className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
             >
               <Plus className="w-4 h-4 mr-2" />
               {t.addTask}
@@ -466,7 +466,7 @@ export default function ExampleDatabasePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <Card className="bg-[#1A1A1A] border-gray-800 p-6 hover:border-[#00FFC2]/30 transition-colors">
+                <Card className="bg-[#1A1A1A] border-gray-800 p-6 hover:border-[#CCFF00]/30 transition-colors">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-4 flex-1">
                       {getStatusIcon(task.status)}
@@ -496,7 +496,7 @@ export default function ExampleDatabasePage() {
                         {task.tags.length > 0 && (
                           <div className="flex flex-wrap gap-2">
                             {task.tags.map((tag, i) => (
-                              <Badge key={i} variant="outline" className="border-[#00FFC2]/30 text-[#00FFC2]">
+                              <Badge key={i} variant="outline" className="border-[#CCFF00]/30 text-[#CCFF00]">
                                 <Tag className="w-3 h-3 mr-1" />
                                 {tag}
                               </Badge>
@@ -510,7 +510,7 @@ export default function ExampleDatabasePage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => openEditDialog(task)}
-                        className="text-gray-400 hover:text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                        className="text-gray-400 hover:text-[#CCFF00] hover:bg-[#CCFF00]/10"
                       >
                         <Edit2 className="w-4 h-4" />
                       </Button>
@@ -534,12 +534,12 @@ export default function ExampleDatabasePage() {
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="bg-[#1A1A1A] border-gray-800 text-[#F4F4F4] max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-[#00FFC2]">
+              <DialogTitle className="text-[#CCFF00]">
                 {editingTask ? t.editTask : t.addTask}
               </DialogTitle>
               <DialogDescription className="text-gray-400">
                 {language === "fr" 
-                  ? "Remplissez les champs dans les deux langues pour une meilleure expérience bilingue"
+                  ? "Remplissez les champs dans les deux langues pour une meilleure expÃ©rience bilingue"
                   : "Fill in the fields in both languages for a better bilingual experience"
                 }
               </DialogDescription>
@@ -553,7 +553,7 @@ export default function ExampleDatabasePage() {
                     value={formData.title_fr}
                     onChange={(e) => setFormData({ ...formData, title_fr: e.target.value })}
                     className="bg-[#0C0C0C] border-gray-700"
-                    placeholder="Ex: Développer le site web"
+                    placeholder="Ex: DÃ©velopper le site web"
                   />
                 </div>
                 <div>
@@ -650,7 +650,7 @@ export default function ExampleDatabasePage() {
               <Button
                 onClick={handleSaveTask}
                 disabled={!formData.title_fr || !formData.title_en}
-                className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
               >
                 {t.save}
               </Button>

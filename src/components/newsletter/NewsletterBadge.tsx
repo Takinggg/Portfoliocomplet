@@ -66,14 +66,14 @@ export function NewsletterBadge({ className = "", showTrend = false }: Newslette
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00FFC2]/10 border border-[#00FFC2]/20 ${className}`}
+      className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#CCFF00]/10 border border-[#CCFF00]/20 ${className}`}
     >
-      <Users className="h-4 w-4 text-[#00FFC2]" />
-      <span className="text-sm text-[#00FFC2]">
+      <Users className="h-4 w-4 text-[#CCFF00]" />
+      <span className="text-sm text-[#CCFF00]">
         {count.toLocaleString(language === 'en' ? 'en-US' : 'fr-FR')} {count === 1 ? badgeTexts.single : badgeTexts.plural}
       </span>
       {showTrend && count > 0 && (
-        <TrendingUp className="h-3 w-3 text-[#00FFC2] opacity-60" />
+        <TrendingUp className="h-3 w-3 text-[#CCFF00] opacity-60" />
       )}
     </motion.div>
   );

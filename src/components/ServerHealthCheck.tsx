@@ -42,7 +42,7 @@ export function ServerHealthCheck() {
       const { checkServerAvailability } = await import("../utils/serverService");
       const isAvailable = await checkServerAvailability();
       
-      console.log(`🔍 Server check result: ${isAvailable ? 'Available' : 'Unavailable'}`);
+      console.log(`ðŸ” Server check result: ${isAvailable ? 'Available' : 'Unavailable'}`);
 
       setStatus(prev => ({
         ...prev,
@@ -59,7 +59,7 @@ export function ServerHealthCheck() {
         }
       }));
     } catch (error) {
-      console.log("⚠️ Server unavailable, using local mode:", error);
+      console.log("âš ï¸ Server unavailable, using local mode:", error);
       setStatus(prev => ({
         ...prev,
         server: "unhealthy",
@@ -80,7 +80,7 @@ export function ServerHealthCheck() {
       const { fetchBlogPosts } = await import("../utils/blogService");
       const { posts, mode } = await fetchBlogPosts("fr");
       
-      console.log(`✅ Blog check: ${posts.length} posts in ${mode} mode`);
+      console.log(`âœ… Blog check: ${posts.length} posts in ${mode} mode`);
 
       setStatus(prev => ({
         ...prev,
@@ -99,7 +99,7 @@ export function ServerHealthCheck() {
         }
       }));
     } catch (error) {
-      console.log("⚠️ Blog check - using local mode:", error);
+      console.log("âš ï¸ Blog check - using local mode:", error);
       setStatus(prev => ({
         ...prev,
         blog: "healthy",
@@ -129,7 +129,7 @@ export function ServerHealthCheck() {
 
   const getStatusBadge = (state: "healthy" | "unhealthy" | "checking") => {
     if (state === "checking") {
-      return <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">Vérification...</Badge>;
+      return <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">VÃ©rification...</Badge>;
     }
     if (state === "healthy") {
       return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">OK</Badge>;
@@ -141,8 +141,8 @@ export function ServerHealthCheck() {
     <Card className="bg-white/5 border-white/10 p-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Server className="h-5 w-5 text-[#00FFC2]" />
-          <h3 className="text-lg text-white">État du Serveur</h3>
+          <Server className="h-5 w-5 text-[#CCFF00]" />
+          <h3 className="text-lg text-white">Ã‰tat du Serveur</h3>
         </div>
         <Button
           variant="outline"
@@ -163,7 +163,7 @@ export function ServerHealthCheck() {
             {getStatusIcon(status.server)}
             <div>
               <p className="text-sm text-white">Serveur Backend</p>
-              <p className="text-xs text-white/60">{status.message || "Vérification en cours..."}</p>
+              <p className="text-xs text-white/60">{status.message || "VÃ©rification en cours..."}</p>
             </div>
           </div>
           {getStatusBadge(status.server)}
@@ -177,8 +177,8 @@ export function ServerHealthCheck() {
               <p className="text-sm text-white">Route Blog Posts</p>
               <p className="text-xs text-white/60">
                 {status.blogPostsCount !== undefined 
-                  ? `${status.blogPostsCount} articles trouvés`
-                  : "Vérification en cours..."}
+                  ? `${status.blogPostsCount} articles trouvÃ©s`
+                  : "VÃ©rification en cours..."}
               </p>
             </div>
           </div>
@@ -193,7 +193,7 @@ export function ServerHealthCheck() {
               <p className="font-medium mb-1">Aucun article de blog</p>
               <p className="text-yellow-200/80">
                 Le serveur fonctionne mais aucun article n'est disponible. 
-                Utilisez le bouton "Initialiser Blog" pour créer des articles de démonstration.
+                Utilisez le bouton "Initialiser Blog" pour crÃ©er des articles de dÃ©monstration.
               </p>
             </div>
           </div>
@@ -208,7 +208,7 @@ export function ServerHealthCheck() {
               onClick={() => setExpanded(!expanded)}
               className="text-white/60 hover:text-white text-xs"
             >
-              {expanded ? "Masquer" : "Voir"} les détails techniques
+              {expanded ? "Masquer" : "Voir"} les dÃ©tails techniques
             </Button>
 
             {expanded && details && (
@@ -225,7 +225,7 @@ export function ServerHealthCheck() {
       {/* Environment Info */}
       <div className="mt-4 pt-4 border-t border-white/10">
         <p className="text-xs text-white/40">
-          Project ID: {projectId ? `${projectId.substring(0, 8)}...` : "Non configuré"}
+          Project ID: {projectId ? `${projectId.substring(0, 8)}...` : "Non configurÃ©"}
         </p>
         <p className="text-xs text-white/40">
           Server URL: {`https://${projectId}.supabase.co/functions/v1/make-server-04919ac5`}

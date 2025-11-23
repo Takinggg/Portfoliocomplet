@@ -75,9 +75,9 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
   const [discountType, setDiscountType] = useState<"percentage" | "fixed">("percentage");
   const [notes, setNotes] = useState("");
   const [includeConditions, setIncludeConditions] = useState(true);
-  const [paymentTerms, setPaymentTerms] = useState("30% à la signature, solde à la livraison");
-  const [deliveryDelay, setDeliveryDelay] = useState("4 à 6 semaines");
-  const [revisions, setRevisions] = useState("2 cycles de révisions");
+  const [paymentTerms, setPaymentTerms] = useState("30% Ã  la signature, solde Ã  la livraison");
+  const [deliveryDelay, setDeliveryDelay] = useState("4 Ã  6 semaines");
+  const [revisions, setRevisions] = useState("2 cycles de rÃ©visions");
 
   useEffect(() => {
     if (selectedClientId) {
@@ -86,11 +86,11 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
     }
   }, [selectedClientId, clients]);
 
-  // Pré-remplir le formulaire quand on édite un devis
+  // PrÃ©-remplir le formulaire quand on Ã©dite un devis
   useEffect(() => {
-    console.log('🔍 QuoteDialog useEffect:', { open, quote, quoteData: quote });
+    console.log('ðŸ” QuoteDialog useEffect:', { open, quote, quoteData: quote });
     if (open && quote) {
-      console.log('✏️ Mode édition - pré-remplissage du formulaire', quote);
+      console.log('âœï¸ Mode Ã©dition - prÃ©-remplissage du formulaire', quote);
       setSelectedClientId(quote.clientId || "");
       setStatus(quote.status || "draft");
       setValidUntil(quote.validUntil || "");
@@ -100,13 +100,13 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
       setDiscountType(quote.metadata?.discount?.type || quote.discountType || "percentage");
       setNotes(quote.metadata?.notes || quote.notes || "");
       setIncludeConditions(quote.includeConditions ?? true);
-      setPaymentTerms(quote.metadata?.paymentTerms || quote.paymentTerms || "30% à la signature, solde à la livraison");
-      setDeliveryDelay(quote.metadata?.deliveryDelay || quote.deliveryDelay || "4 à 6 semaines");
-      setRevisions(quote.metadata?.revisions || quote.revisions || "2 cycles de révisions");
+      setPaymentTerms(quote.metadata?.paymentTerms || quote.paymentTerms || "30% Ã  la signature, solde Ã  la livraison");
+      setDeliveryDelay(quote.metadata?.deliveryDelay || quote.deliveryDelay || "4 Ã  6 semaines");
+      setRevisions(quote.metadata?.revisions || quote.revisions || "2 cycles de rÃ©visions");
       setStep(1);
     } else if (open && !quote) {
-      console.log('➕ Mode création - formulaire vide');
-      // Réinitialiser le formulaire pour un nouveau devis
+      console.log('âž• Mode crÃ©ation - formulaire vide');
+      // RÃ©initialiser le formulaire pour un nouveau devis
       setSelectedClientId("");
       setSelectedClient(null);
       setStatus("draft");
@@ -116,9 +116,9 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
       setDiscountType("percentage");
       setNotes("");
       setIncludeConditions(true);
-      setPaymentTerms("30% à la signature, solde à la livraison");
-      setDeliveryDelay("4 à 6 semaines");
-      setRevisions("2 cycles de révisions");
+      setPaymentTerms("30% Ã  la signature, solde Ã  la livraison");
+      setDeliveryDelay("4 Ã  6 semaines");
+      setRevisions("2 cycles de rÃ©visions");
       setStep(1);
     }
   }, [open, quote]);
@@ -199,14 +199,14 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
   const buildDescription = () => {
     return items
       .filter(item => item.description.trim())
-      .map(item => `${item.description} (${item.quantity} × ${item.unitPrice.toLocaleString('fr-FR')} €)`)
+      .map(item => `${item.description} (${item.quantity} Ã— ${item.unitPrice.toLocaleString('fr-FR')} â‚¬)`)
       .join('\n');
   };
 
   const handleNext = () => {
     if (step === 1) {
       if (!selectedClientId) {
-        toast.error("Veuillez sélectionner un client");
+        toast.error("Veuillez sÃ©lectionner un client");
         return;
       }
       setStep(2);
@@ -265,17 +265,17 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
         }
       };
 
-      // Utiliser onSave si fourni (mode édition), sinon créer via API
+      // Utiliser onSave si fourni (mode Ã©dition), sinon crÃ©er via API
       if (onSave) {
         await onSave(quoteData);
-        toast.success("Devis modifié avec succès !");
+        toast.success("Devis modifiÃ© avec succÃ¨s !");
         resetForm();
         onSuccess();
         onOpenChange(false);
       } else {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
-          toast.error("Session expirée");
+          toast.error("Session expirÃ©e");
           return;
         }
 
@@ -292,18 +292,18 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
         );
 
         if (response.ok) {
-          toast.success("Devis créé avec succès !");
+          toast.success("Devis crÃ©Ã© avec succÃ¨s !");
           resetForm();
           onSuccess();
           onOpenChange(false);
         } else {
           const error = await response.json();
-          toast.error(error.error || "Erreur lors de la création du devis");
+          toast.error(error.error || "Erreur lors de la crÃ©ation du devis");
         }
       }
     } catch (error) {
       console.error("Error creating quote:", error);
-      toast.error("Erreur lors de la création du devis");
+      toast.error("Erreur lors de la crÃ©ation du devis");
     } finally {
       setCreating(false);
     }
@@ -318,9 +318,9 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
     setDiscountType("percentage");
     setNotes("");
     setIncludeConditions(true);
-    setPaymentTerms("30% à la signature, solde à la livraison");
-    setDeliveryDelay("4 à 6 semaines");
-    setRevisions("2 cycles de révisions");
+    setPaymentTerms("30% Ã  la signature, solde Ã  la livraison");
+    setDeliveryDelay("4 Ã  6 semaines");
+    setRevisions("2 cycles de rÃ©visions");
   };
 
   return (
@@ -328,20 +328,20 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
       if (!isOpen) resetForm();
       onOpenChange(isOpen);
     }}>
-      <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20 text-white max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 text-white max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#00FFC2]/10 flex items-center justify-center">
-              <FileText className="w-5 h-5 text-[#00FFC2]" />
+            <div className="w-10 h-10 rounded-full bg-[#CCFF00]/10 flex items-center justify-center">
+              <FileText className="w-5 h-5 text-[#CCFF00]" />
             </div>
             <div>
               <DialogTitle className="text-2xl">
-                {quote ? "Modifier le devis" : "Créer un nouveau devis"}
+                {quote ? "Modifier le devis" : "CrÃ©er un nouveau devis"}
               </DialogTitle>
               <DialogDescription className="text-gray-400">
-                Étape {step} sur 3 : {
-                  step === 1 ? "Sélection du client" :
-                  step === 2 ? "Détails des prestations" :
+                Ã‰tape {step} sur 3 : {
+                  step === 1 ? "SÃ©lection du client" :
+                  step === 2 ? "DÃ©tails des prestations" :
                   "Conditions et finalisation"
                 }
               </DialogDescription>
@@ -355,7 +355,7 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
             <div
               key={s}
               className={`h-1 flex-1 rounded-full transition-colors ${
-                s <= step ? "bg-[#00FFC2]" : "bg-white/10"
+                s <= step ? "bg-[#CCFF00]" : "bg-white/10"
               }`}
             />
           ))}
@@ -372,13 +372,13 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
               className="space-y-4"
             >
               {/* Smart Client Selector */}
-              <div className="p-4 rounded-xl border border-[#00FFC2]/30 bg-gradient-to-br from-[#00FFC2]/5 to-transparent">
+              <div className="p-4 rounded-xl border border-[#CCFF00]/30 bg-gradient-to-br from-[#CCFF00]/5 to-transparent">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#00FFC2]/10 flex items-center justify-center">
-                    <Sparkles className="w-4 h-4 text-[#00FFC2]" />
+                  <div className="w-8 h-8 rounded-lg bg-[#CCFF00]/10 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-[#CCFF00]" />
                   </div>
                   <div>
-                    <Label className="text-white font-medium text-base">Sélection intelligente du client</Label>
+                    <Label className="text-white font-medium text-base">SÃ©lection intelligente du client</Label>
                     <p className="text-xs text-gray-400">Les informations seront automatiquement remplies</p>
                   </div>
                 </div>
@@ -393,7 +393,7 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                       <SelectTrigger className="bg-white/5 border-white/10 h-11 text-base text-white">
                         <SelectValue placeholder="Choisir un client..." />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+                      <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
                         {clients.map((client) => (
                           <SelectItem key={client.id} value={client.id} className="text-white hover:bg-white/10">
                             <div className="flex items-center gap-2">
@@ -419,7 +419,7 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                       onClick={resetClientSelection}
                       className="w-full border-white/20 hover:bg-white/5 text-gray-300"
                     >
-                      Réinitialiser la sélection
+                      RÃ©initialiser la sÃ©lection
                     </Button>
                   )}
                 </div>
@@ -430,31 +430,31 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
-                  <Card className="bg-white/5 border-[#00FFC2]/20">
+                  <Card className="bg-white/5 border-[#CCFF00]/20">
                     <CardHeader>
-                      <CardTitle className="text-sm text-[#00FFC2] flex items-center gap-2">
+                      <CardTitle className="text-sm text-[#CCFF00] flex items-center gap-2">
                         <CheckCircle className="w-4 h-4" />
-                        Informations du client sélectionné
+                        Informations du client sÃ©lectionnÃ©
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-2">
                       <div className="flex items-center gap-2 text-sm">
-                        <User className="w-4 h-4 text-[#00FFC2]" />
+                        <User className="w-4 h-4 text-[#CCFF00]" />
                         <span className="text-gray-300">{selectedClient.name}</span>
                       </div>
                       {selectedClient.company && (
                         <div className="flex items-center gap-2 text-sm">
-                          <Building className="w-4 h-4 text-[#00FFC2]" />
+                          <Building className="w-4 h-4 text-[#CCFF00]" />
                           <span className="text-gray-300">{selectedClient.company}</span>
                         </div>
                       )}
                       <div className="flex items-center gap-2 text-sm">
-                        <Mail className="w-4 h-4 text-[#00FFC2]" />
+                        <Mail className="w-4 h-4 text-[#CCFF00]" />
                         <span className="text-gray-300">{selectedClient.email}</span>
                       </div>
                       {selectedClient.address && (
                         <div className="flex items-center gap-2 text-sm">
-                          <MapPin className="w-4 h-4 text-[#00FFC2]" />
+                          <MapPin className="w-4 h-4 text-[#CCFF00]" />
                           <span className="text-gray-300">
                             {selectedClient.address}
                             {selectedClient.city && `, ${selectedClient.city}`}
@@ -470,7 +470,7 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
               <div>
                 <Label className="text-gray-300 flex items-center gap-2 mb-2">
                   <Calendar className="w-4 h-4" />
-                  Date de validité du devis *
+                  Date de validitÃ© du devis *
                 </Label>
                 <Input
                   type="date"
@@ -480,7 +480,7 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                   min={new Date().toISOString().split('T')[0]}
                 />
                 <p className="text-xs text-gray-400 mt-1">
-                  Le devis sera valable jusqu'à cette date
+                  Le devis sera valable jusqu'Ã  cette date
                 </p>
               </div>
             </motion.div>
@@ -498,13 +498,13 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
               {/* Header */}
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-[#00FFC2]" />
+                  <FileText className="w-5 h-5 text-[#CCFF00]" />
                   Prestations
                 </h3>
                 <Button
                   onClick={addItem}
                   size="sm"
-                  className="bg-[#00FFC2] hover:bg-[#00FFC2]/90 text-black font-medium"
+                  className="bg-[#CCFF00] hover:bg-[#CCFF00]/90 text-black font-medium"
                 >
                   <Plus className="w-4 h-4 mr-1" />
                   Ajouter
@@ -539,15 +539,15 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                         <Textarea
                           value={item.description}
                           onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                          placeholder="Ex: Développement site web vitrine"
+                          placeholder="Ex: DÃ©veloppement site web vitrine"
                           className="bg-black/30 border-white/10 text-sm h-20 resize-none"
                         />
                       </div>
 
-                      {/* Quantité / Prix / Total */}
+                      {/* QuantitÃ© / Prix / Total */}
                       <div className="grid grid-cols-3 gap-3">
                         <div key={`quantity-${item.id}`}>
-                          <Label className="text-xs text-gray-400 mb-1.5 block">Quantité</Label>
+                          <Label className="text-xs text-gray-400 mb-1.5 block">QuantitÃ©</Label>
                           <Input
                             type="number"
                             min="1"
@@ -558,7 +558,7 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                         </div>
 
                         <div key={`price-${item.id}`}>
-                          <Label className="text-xs text-gray-400 mb-1.5 block">Prix unitaire (€)</Label>
+                          <Label className="text-xs text-gray-400 mb-1.5 block">Prix unitaire (â‚¬)</Label>
                           <Input
                             type="number"
                             min="0"
@@ -571,8 +571,8 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
 
                         <div key={`total-${item.id}`}>
                           <Label className="text-xs text-gray-400 mb-1.5 block">Total</Label>
-                          <div className="bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-md h-10 flex items-center justify-center text-[#00FFC2] font-semibold text-sm">
-                            {item.total.toLocaleString('fr-FR')} €
+                          <div className="bg-[#CCFF00]/10 border border-[#CCFF00]/30 rounded-md h-10 flex items-center justify-center text-[#CCFF00] font-semibold text-sm">
+                            {item.total.toLocaleString('fr-FR')} â‚¬
                           </div>
                         </div>
                       </div>
@@ -587,28 +587,28 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
               <Card className="bg-white/5 border-white/10">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <Calculator className="w-4 h-4 text-[#00FFC2]" />
-                    Réduction
+                    <Calculator className="w-4 h-4 text-[#CCFF00]" />
+                    RÃ©duction
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div>
-                      <Label className="text-xs text-gray-400 mb-1.5 block">Type de réduction</Label>
+                      <Label className="text-xs text-gray-400 mb-1.5 block">Type de rÃ©duction</Label>
                       <Select value={discountType} onValueChange={(value: any) => setDiscountType(value)}>
                         <SelectTrigger className="bg-black/30 border-white/10 h-10 text-white">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="percentage">Pourcentage (%)</SelectItem>
-                          <SelectItem value="fixed">Montant fixe (€)</SelectItem>
+                          <SelectItem value="fixed">Montant fixe (â‚¬)</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     <div>
                       <Label className="text-xs text-gray-400 mb-1.5 block">
-                        Montant {discountType === "percentage" ? "(%)" : "(€)"}
+                        Montant {discountType === "percentage" ? "(%)" : "(â‚¬)"}
                       </Label>
                       <Input
                         type="number"
@@ -622,9 +622,9 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                     </div>
 
                     <div>
-                      <Label className="text-xs text-gray-400 mb-1.5 block">Réduction appliquée</Label>
+                      <Label className="text-xs text-gray-400 mb-1.5 block">RÃ©duction appliquÃ©e</Label>
                       <div className="bg-orange-500/10 border border-orange-500/30 rounded-md h-10 flex items-center justify-center text-orange-400 font-semibold text-sm">
-                        - {calculateDiscount().toLocaleString('fr-FR')} €
+                        - {calculateDiscount().toLocaleString('fr-FR')} â‚¬
                       </div>
                     </div>
                   </div>
@@ -632,20 +632,20 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
               </Card>
 
               {/* Totals */}
-              <Card className="bg-gradient-to-br from-[#00FFC2]/10 to-[#00FFC2]/5 border-[#00FFC2]/30">
+              <Card className="bg-gradient-to-br from-[#CCFF00]/10 to-[#CCFF00]/5 border-[#CCFF00]/30">
                 <CardContent className="p-5 space-y-3">
                   <div className="flex justify-between text-base">
                     <span className="text-gray-300">Sous-total HT</span>
                     <span className="font-semibold text-white">
-                      {calculateSubtotal().toLocaleString('fr-FR')} €
+                      {calculateSubtotal().toLocaleString('fr-FR')} â‚¬
                     </span>
                   </div>
                   
                   {discount > 0 && (
                     <div className="flex justify-between text-base">
-                      <span className="text-gray-300">Réduction</span>
+                      <span className="text-gray-300">RÃ©duction</span>
                       <span className="font-semibold text-orange-400">
-                        - {calculateDiscount().toLocaleString('fr-FR')} €
+                        - {calculateDiscount().toLocaleString('fr-FR')} â‚¬
                       </span>
                     </div>
                   )}
@@ -659,8 +659,8 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                   
                   <div className="flex justify-between items-center pt-2">
                     <span className="text-lg font-bold text-white">Total TTC</span>
-                    <span className="text-3xl font-bold text-[#00FFC2]">
-                      {calculateTotal().toLocaleString('fr-FR')} €
+                    <span className="text-3xl font-bold text-[#CCFF00]">
+                      {calculateTotal().toLocaleString('fr-FR')} â‚¬
                     </span>
                   </div>
                 </CardContent>
@@ -685,22 +685,22 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="draft">📝 Brouillon</SelectItem>
-                      <SelectItem value="sent">📤 Envoyé</SelectItem>
-                      <SelectItem value="pending">⏳ En attente</SelectItem>
-                      <SelectItem value="accepted">✅ Accepté</SelectItem>
-                      <SelectItem value="rejected">❌ Refusé</SelectItem>
+                      <SelectItem value="draft">ðŸ“ Brouillon</SelectItem>
+                      <SelectItem value="sent">ðŸ“¤ EnvoyÃ©</SelectItem>
+                      <SelectItem value="pending">â³ En attente</SelectItem>
+                      <SelectItem value="accepted">âœ… AcceptÃ©</SelectItem>
+                      <SelectItem value="rejected">âŒ RefusÃ©</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               )}
               
               <div>
-                <Label className="text-gray-300 mb-2 block">Notes / Informations supplémentaires</Label>
+                <Label className="text-gray-300 mb-2 block">Notes / Informations supplÃ©mentaires</Label>
                 <Textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Ajoutez des informations complémentaires pour le client..."
+                  placeholder="Ajoutez des informations complÃ©mentaires pour le client..."
                   className="bg-white/5 border-white/10 text-base text-white"
                   rows={3}
                 />
@@ -708,8 +708,8 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
 
               <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10">
                 <div className="flex items-center gap-2">
-                  <Info className="w-4 h-4 text-[#00FFC2]" />
-                  <span className="text-sm text-gray-300">Inclure les conditions générales</span>
+                  <Info className="w-4 h-4 text-[#CCFF00]" />
+                  <span className="text-sm text-gray-300">Inclure les conditions gÃ©nÃ©rales</span>
                 </div>
                 <Switch
                   checked={includeConditions}
@@ -730,7 +730,7 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                     </CardHeader>
                     <CardContent className="space-y-3">
                       <div>
-                        <Label className="text-xs text-gray-400">Modalités de paiement</Label>
+                        <Label className="text-xs text-gray-400">ModalitÃ©s de paiement</Label>
                         <Input
                           value={paymentTerms}
                           onChange={(e) => setPaymentTerms(e.target.value)}
@@ -739,7 +739,7 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                       </div>
 
                       <div>
-                        <Label className="text-xs text-gray-400">Délai de livraison</Label>
+                        <Label className="text-xs text-gray-400">DÃ©lai de livraison</Label>
                         <Input
                           value={deliveryDelay}
                           onChange={(e) => setDeliveryDelay(e.target.value)}
@@ -748,7 +748,7 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                       </div>
 
                       <div>
-                        <Label className="text-xs text-gray-400">Révisions incluses</Label>
+                        <Label className="text-xs text-gray-400">RÃ©visions incluses</Label>
                         <Input
                           value={revisions}
                           onChange={(e) => setRevisions(e.target.value)}
@@ -761,11 +761,11 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
               )}
 
               {/* Final Summary */}
-              <Card className="bg-black/60 border-[#00FFC2]/30">
+              <Card className="bg-black/60 border-[#CCFF00]/30">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-base flex items-center gap-2 text-white">
-                    <Sparkles className="w-5 h-5 text-[#00FFC2]" />
-                    Récapitulatif du devis
+                    <Sparkles className="w-5 h-5 text-[#CCFF00]" />
+                    RÃ©capitulatif du devis
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-base">
@@ -788,8 +788,8 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
                   <Separator className="bg-white/20 my-2" />
                   <div className="flex justify-between text-xl pt-2">
                     <span className="font-bold text-white">Montant total TTC</span>
-                    <span className="font-bold text-[#00FFC2] text-2xl">
-                      {calculateTotal().toLocaleString('fr-FR')} €
+                    <span className="font-bold text-[#CCFF00] text-2xl">
+                      {calculateTotal().toLocaleString('fr-FR')} â‚¬
                     </span>
                   </div>
                 </CardContent>
@@ -807,14 +807,14 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
               className="flex-1 bg-white/5 border-white/10"
               disabled={creating}
             >
-              Précédent
+              PrÃ©cÃ©dent
             </Button>
           )}
           
           {step < 3 ? (
             <Button
               onClick={handleNext}
-              className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+              className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
             >
               Suivant
               <ChevronRight className="w-4 h-4 ml-2" />
@@ -823,9 +823,9 @@ export function QuoteCreationDialog({ open, onOpenChange, onSuccess, clients, qu
             <Button
               onClick={handleCreate}
               disabled={creating}
-              className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+              className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
             >
-              {creating ? "Création en cours..." : "Créer le devis"}
+              {creating ? "CrÃ©ation en cours..." : "CrÃ©er le devis"}
               <Sparkles className="w-4 h-4 ml-2" />
             </Button>
           )}

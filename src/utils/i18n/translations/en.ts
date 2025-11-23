@@ -1075,6 +1075,7 @@ export default {
         "🎯 Web & design trends",
         "🚀 New projects preview"
       ],
+      "cta": "Subscribe",
       "close": "Close"
     },
     "confirm": {

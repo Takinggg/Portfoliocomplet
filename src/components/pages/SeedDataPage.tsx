@@ -1,11 +1,11 @@
 /**
- * PAGE D'ADMINISTRATION - Seeding de Données de Test
+ * PAGE D'ADMINISTRATION - Seeding de DonnÃ©es de Test
  * 
  * Cette page permet de:
- * ✅ Créer des projets de test bilingues
- * ✅ Voir les projets existants
- * ✅ Supprimer tous les projets
- * ✅ Vérifier la connexion Supabase
+ * âœ… CrÃ©er des projets de test bilingues
+ * âœ… Voir les projets existants
+ * âœ… Supprimer tous les projets
+ * âœ… VÃ©rifier la connexion Supabase
  */
 
 import React, { useState, useEffect } from "react";
@@ -44,7 +44,7 @@ export default function SeedDataPage() {
   const [accessToken, setAccessToken] = useState("");
   const [autoDetected, setAutoDetected] = useState(false);
 
-  // ✅ Auto-detect token from session
+  // âœ… Auto-detect token from session
   useEffect(() => {
     const loadSessionToken = async () => {
       const supabase = createClient();
@@ -53,9 +53,9 @@ export default function SeedDataPage() {
       if (session?.access_token) {
         setAccessToken(session.access_token);
         setAutoDetected(true);
-        console.log("✅ Token auto-détecté depuis la session");
+        console.log("âœ… Token auto-dÃ©tectÃ© depuis la session");
       } else {
-        console.log("⚠️ Aucune session active - connexion requise");
+        console.log("âš ï¸ Aucune session active - connexion requise");
       }
     };
     
@@ -84,18 +84,18 @@ export default function SeedDataPage() {
 
   const handleSeedProjects = async () => {
     if (!accessToken) {
-      toast.error(isFr ? "Session expirée. Veuillez vous reconnecter au Dashboard." : "Session expired. Please log in to Dashboard.");
+      toast.error(isFr ? "Session expirÃ©e. Veuillez vous reconnecter au Dashboard." : "Session expired. Please log in to Dashboard.");
       return;
     }
 
     setSeeding(true);
     try {
-      console.log("🌱 Début du seeding des projets...");
+      console.log("ðŸŒ± DÃ©but du seeding des projets...");
       await seedTestProjects(accessToken);
-      toast.success(isFr ? "✅ 6 projets créés avec succès !" : "✅ 6 projects created successfully!");
+      toast.success(isFr ? "âœ… 6 projets crÃ©Ã©s avec succÃ¨s !" : "âœ… 6 projects created successfully!");
       await loadProjects();
     } catch (error: any) {
-      console.error("❌ Error seeding projects:", error);
+      console.error("âŒ Error seeding projects:", error);
       toast.error(isFr ? `Erreur: ${error.message}` : `Error: ${error.message}`);
     } finally {
       setSeeding(false);
@@ -104,24 +104,24 @@ export default function SeedDataPage() {
 
   const handleClearProjects = async () => {
     if (!accessToken) {
-      toast.error(isFr ? "Session expirée. Veuillez vous reconnecter au Dashboard." : "Session expired. Please log in to Dashboard.");
+      toast.error(isFr ? "Session expirÃ©e. Veuillez vous reconnecter au Dashboard." : "Session expired. Please log in to Dashboard.");
       return;
     }
 
     if (!confirm(isFr 
-      ? "⚠️ ATTENTION: Cela va supprimer TOUS les projets. Continuer ?" 
-      : "⚠️ WARNING: This will delete ALL projects. Continue?")) {
+      ? "âš ï¸ ATTENTION: Cela va supprimer TOUS les projets. Continuer ?" 
+      : "âš ï¸ WARNING: This will delete ALL projects. Continue?")) {
       return;
     }
 
     setClearing(true);
     try {
-      console.log("🗑️ Suppression de tous les projets...");
+      console.log("ðŸ—‘ï¸ Suppression de tous les projets...");
       await clearTestProjects(accessToken);
-      toast.success(isFr ? "✅ Tous les projets ont été supprimés" : "✅ All projects deleted");
+      toast.success(isFr ? "âœ… Tous les projets ont Ã©tÃ© supprimÃ©s" : "âœ… All projects deleted");
       await loadProjects();
     } catch (error: any) {
-      console.error("❌ Error clearing projects:", error);
+      console.error("âŒ Error clearing projects:", error);
       toast.error(isFr ? `Erreur: ${error.message}` : `Error: ${error.message}`);
     } finally {
       setClearing(false);
@@ -129,34 +129,34 @@ export default function SeedDataPage() {
   };
 
   const t = {
-    title: isFr ? "Gestion des Données de Test" : "Test Data Management",
+    title: isFr ? "Gestion des DonnÃ©es de Test" : "Test Data Management",
     subtitle: isFr 
-      ? "Créez et gérez des projets de test pour votre portfolio bilingue"
+      ? "CrÃ©ez et gÃ©rez des projets de test pour votre portfolio bilingue"
       : "Create and manage test projects for your bilingual portfolio",
     connectionStatus: isFr ? "Statut de connexion" : "Connection status",
-    connected: isFr ? "Connecté à Supabase" : "Connected to Supabase",
-    disconnected: isFr ? "Déconnecté" : "Disconnected",
+    connected: isFr ? "ConnectÃ© Ã  Supabase" : "Connected to Supabase",
+    disconnected: isFr ? "DÃ©connectÃ©" : "Disconnected",
     reconnect: isFr ? "Reconnecter" : "Reconnect",
     sessionStatus: isFr ? "Statut de session" : "Session status",
-    sessionActive: isFr ? "Session active détectée" : "Active session detected",
+    sessionActive: isFr ? "Session active dÃ©tectÃ©e" : "Active session detected",
     sessionInactive: isFr ? "Aucune session - Connexion requise" : "No session - Login required",
     goToDashboard: isFr ? "Se connecter au Dashboard" : "Go to Dashboard",
     currentProjects: isFr ? "Projets actuels" : "Current projects",
     projectCount: (count: number) => isFr ? `${count} projet(s)` : `${count} project(s)`,
     testProjects: isFr ? "Projets de test disponibles" : "Available test projects",
     testProjectsDesc: isFr 
-      ? "Ces 6 projets professionnels bilingues seront créés dans votre database Supabase"
+      ? "Ces 6 projets professionnels bilingues seront crÃ©Ã©s dans votre database Supabase"
       : "These 6 professional bilingual projects will be created in your Supabase database",
-    seedButton: isFr ? "🚀 Créer 6 projets professionnels" : "🚀 Create 6 professional projects",
+    seedButton: isFr ? "ðŸš€ CrÃ©er 6 projets professionnels" : "ðŸš€ Create 6 professional projects",
     seedButtonDesc: isFr ? "Projets bilingues complets avec images" : "Complete bilingual projects with images",
-    clearButton: isFr ? "🗑️ Supprimer tous les projets" : "🗑️ Delete all projects",
-    clearButtonDesc: isFr ? "Action irréversible" : "Irreversible action",
+    clearButton: isFr ? "ðŸ—‘ï¸ Supprimer tous les projets" : "ðŸ—‘ï¸ Delete all projects",
+    clearButtonDesc: isFr ? "Action irrÃ©versible" : "Irreversible action",
     refreshButton: isFr ? "Actualiser" : "Refresh",
     loading: isFr ? "Chargement..." : "Loading...",
-    seeding: isFr ? "Création en cours..." : "Creating...",
+    seeding: isFr ? "CrÃ©ation en cours..." : "Creating...",
     clearing: isFr ? "Suppression en cours..." : "Deleting...",
     noProjects: isFr ? "Aucun projet pour le moment" : "No projects yet",
-    viewDetails: isFr ? "Voir les détails" : "View details"
+    viewDetails: isFr ? "Voir les dÃ©tails" : "View details"
   };
 
   return (
@@ -169,16 +169,16 @@ export default function SeedDataPage() {
           className="mb-12"
         >
           <div className="flex items-center gap-3 mb-4">
-            <Database className="w-8 h-8 text-[#00FFC2]" />
-            <h1 className="text-[#00FFC2]">{t.title}</h1>
+            <Database className="w-8 h-8 text-[#CCFF00]" />
+            <h1 className="text-[#CCFF00]">{t.title}</h1>
           </div>
           <p className="text-gray-400 mb-6">{t.subtitle}</p>
 
           {/* Connection Status */}
-          <Alert className={`mb-6 ${isConnected ? 'border-[#00FFC2]/20 bg-[#00FFC2]/5' : 'border-red-500/20 bg-red-500/5'}`}>
+          <Alert className={`mb-6 ${isConnected ? 'border-[#CCFF00]/20 bg-[#CCFF00]/5' : 'border-red-500/20 bg-red-500/5'}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${isConnected ? "bg-[#00FFC2]" : "bg-red-500"} animate-pulse`} />
+                <div className={`w-2 h-2 rounded-full ${isConnected ? "bg-[#CCFF00]" : "bg-red-500"} animate-pulse`} />
                 <AlertDescription className="text-[#F4F4F4]">
                   {t.connectionStatus}: {isConnected ? t.connected : t.disconnected}
                 </AlertDescription>
@@ -190,7 +190,7 @@ export default function SeedDataPage() {
                   checkConnection();
                   loadProjects();
                 }}
-                className="text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                className="text-[#CCFF00] hover:bg-[#CCFF00]/10"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
                 {t.reconnect}
@@ -199,11 +199,11 @@ export default function SeedDataPage() {
           </Alert>
 
           {/* Session Status */}
-          <Alert className={`mb-6 ${autoDetected ? 'border-[#00FFC2]/20 bg-[#00FFC2]/5' : 'border-yellow-500/20 bg-yellow-500/5'}`}>
+          <Alert className={`mb-6 ${autoDetected ? 'border-[#CCFF00]/20 bg-[#CCFF00]/5' : 'border-yellow-500/20 bg-yellow-500/5'}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 {autoDetected ? (
-                  <CheckCircle2 className="w-5 h-5 text-[#00FFC2]" />
+                  <CheckCircle2 className="w-5 h-5 text-[#CCFF00]" />
                 ) : (
                   <AlertCircle className="w-5 h-5 text-yellow-500" />
                 )}
@@ -216,7 +216,7 @@ export default function SeedDataPage() {
                   variant="ghost"
                   size="sm"
                   onClick={() => window.location.href = "/dashboard"}
-                  className="text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                  className="text-[#CCFF00] hover:bg-[#CCFF00]/10"
                 >
                   {t.goToDashboard}
                 </Button>
@@ -231,7 +231,7 @@ export default function SeedDataPage() {
             {/* Actions */}
             <Card className="bg-[#1A1A1A] border-gray-800 p-6 mb-6">
               <h3 className="mb-4 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[#00FFC2]" />
+                <Sparkles className="w-5 h-5 text-[#CCFF00]" />
                 {isFr ? "Actions rapides" : "Quick actions"}
               </h3>
               <div className="space-y-4">
@@ -239,7 +239,7 @@ export default function SeedDataPage() {
                   <Button
                     onClick={handleSeedProjects}
                     disabled={seeding || !accessToken || !isConnected}
-                    className="w-full bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90 mb-2"
+                    className="w-full bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90 mb-2"
                   >
                     {seeding ? (
                       <>
@@ -283,14 +283,14 @@ export default function SeedDataPage() {
             {/* Test Projects Preview */}
             <Card className="bg-[#1A1A1A] border-gray-800 p-6">
               <h3 className="mb-4 flex items-center gap-2">
-                <Package className="w-5 h-5 text-[#00FFC2]" />
+                <Package className="w-5 h-5 text-[#CCFF00]" />
                 {t.testProjects}
               </h3>
               <p className="text-gray-400 text-sm mb-4">{t.testProjectsDesc}</p>
               <div className="space-y-2">
                 {TEST_PROJECTS.map((project, idx) => (
                   <div key={idx} className="flex items-center gap-2 text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-[#00FFC2]" />
+                    <CheckCircle2 className="w-4 h-4 text-[#CCFF00]" />
                     <span className="text-gray-300">
                       {isFr ? project.name_fr : project.name_en}
                     </span>
@@ -305,10 +305,10 @@ export default function SeedDataPage() {
             <Card className="bg-[#1A1A1A] border-gray-800 p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="flex items-center gap-2">
-                  <Eye className="w-5 h-5 text-[#00FFC2]" />
+                  <Eye className="w-5 h-5 text-[#CCFF00]" />
                   {t.currentProjects}
                 </h3>
-                <Badge variant="outline" className="border-[#00FFC2]/30 text-[#00FFC2]">
+                <Badge variant="outline" className="border-[#CCFF00]/30 text-[#CCFF00]">
                   {t.projectCount(projects.length)}
                 </Badge>
               </div>
@@ -330,7 +330,7 @@ export default function SeedDataPage() {
                       key={project.id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="bg-[#0C0C0C] border border-gray-800 rounded-lg p-4 hover:border-[#00FFC2]/30 transition-colors"
+                      className="bg-[#0C0C0C] border border-gray-800 rounded-lg p-4 hover:border-[#CCFF00]/30 transition-colors"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
@@ -341,7 +341,7 @@ export default function SeedDataPage() {
                             {isFr ? project.description_fr : project.description_en}
                           </p>
                           <div className="flex flex-wrap gap-2">
-                            <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/20">
+                            <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-[#CCFF00]/20">
                               {project.status}
                             </Badge>
                             {project.category_fr && (

@@ -29,8 +29,8 @@ export function BlogFilters({
   const { t } = useTranslation();
 
   const categories = [
-    { value: "development", label: t("blog.filters.development"), color: "#00FFC2" },
-    { value: "design", label: t("blog.filters.design"), color: "#00D9A6" },
+    { value: "development", label: t("blog.filters.development"), color: "#CCFF00" },
+    { value: "design", label: t("blog.filters.design"), color: "#DAFF40" },
     { value: "business", label: t("blog.filters.business"), color: "#00B38A" },
   ];
 
@@ -50,7 +50,7 @@ export function BlogFilters({
           placeholder={t("blog.filters.searchPlaceholder")}
           value={searchQuery}
           onChange={(e) => onSearch(e.target.value)}
-          className="pl-12 pr-10 bg-[#0C0C0C] border-white/10 text-white placeholder:text-white/40 h-12 focus:border-[#00FFC2]/50 transition-all w-full"
+          className="pl-12 pr-10 bg-[#0C0C0C] border-white/10 text-white placeholder:text-white/40 h-12 focus:border-[#CCFF00]/50 transition-all w-full"
         />
         {searchQuery && (
           <button
@@ -74,7 +74,7 @@ export function BlogFilters({
               onClick={() => onCategoryChange(null)}
               className={`cursor-pointer transition-all px-4 py-2 text-sm ${
                 selectedCategory === null
-                  ? "bg-[#00FFC2] text-[#0C0C0C] border-[#00FFC2]"
+                  ? "bg-[#CCFF00] text-[#0C0C0C] border-[#CCFF00]"
                   : "bg-[#0C0C0C] text-white/60 border-white/10 hover:bg-white/10"
               }`}
             >
@@ -118,7 +118,7 @@ export function BlogFilters({
                     onClick={() => onTagClick(tag)}
                     className={`cursor-pointer transition-all ${
                       selectedTags.includes(tag)
-                        ? "bg-[#00FFC2]/20 text-[#00FFC2] border-[#00FFC2]/40"
+                        ? "bg-[#CCFF00]/20 text-[#CCFF00] border-[#CCFF00]/40"
                         : "bg-[#0C0C0C] text-white/50 border-white/10 hover:bg-white/10 hover:text-white/70"
                     }`}
                   >
@@ -132,7 +132,7 @@ export function BlogFilters({
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowAllTags(!showAllTags)}
-                className="text-[#00FFC2] text-xs h-auto p-0 hover:text-[#00FFC2]/80 ml-2"
+                className="text-[#CCFF00] text-xs h-auto p-0 hover:text-[#CCFF00]/80 ml-2"
               >
                 {showAllTags ? t("blog.filters.showLess") : `+${availableTags.length - 8}`}
               </Button>

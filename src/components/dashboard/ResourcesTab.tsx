@@ -107,7 +107,7 @@ export function ResourcesTab() {
       const { fetchResources } = await import("../../utils/dataService");
       const { resources: loadedResources, mode } = await fetchResources();
       
-      console.log(`✅ Resources loaded in ${mode} mode:`, loadedResources.length);
+      console.log(`âœ… Resources loaded in ${mode} mode:`, loadedResources.length);
       setResources(loadedResources);
     } catch (error) {
       console.error("Error fetching resources:", error);
@@ -121,14 +121,14 @@ export function ResourcesTab() {
     // Validate file type
     const allowedTypes = ['application/pdf', 'text/html'];
     if (!allowedTypes.includes(file.type)) {
-      toast.error("Seuls les fichiers PDF et HTML sont acceptés");
+      toast.error("Seuls les fichiers PDF et HTML sont acceptÃ©s");
       return;
     }
 
     // Validate file size (max 10MB)
     const maxSize = 10 * 1024 * 1024; // 10MB
     if (file.size > maxSize) {
-      toast.error("Le fichier ne doit pas dépasser 10 MB");
+      toast.error("Le fichier ne doit pas dÃ©passer 10 MB");
       return;
     }
 
@@ -137,7 +137,7 @@ export function ResourcesTab() {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -172,7 +172,7 @@ export function ResourcesTab() {
         setUploadedFileName_en(file.name);
       }
       
-      toast.success(`Fichier ${lang.toUpperCase()} "${file.name}" uploadé avec succès`);
+      toast.success(`Fichier ${lang.toUpperCase()} "${file.name}" uploadÃ© avec succÃ¨s`);
     } catch (error: any) {
       console.error("Error uploading file:", error);
       toast.error(`Erreur lors de l'upload: ${error.message || "Erreur inconnue"}`);
@@ -188,7 +188,7 @@ export function ResourcesTab() {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -221,7 +221,7 @@ export function ResourcesTab() {
       const data = await response.json();
 
       if (data.success) {
-        toast.success(editingResource ? "Ressource mise à jour" : "Ressource créée");
+        toast.success(editingResource ? "Ressource mise Ã  jour" : "Ressource crÃ©Ã©e");
         setIsDialogOpen(false);
         setEditingResource(null);
         resetForm();
@@ -242,7 +242,7 @@ export function ResourcesTab() {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -257,7 +257,7 @@ export function ResourcesTab() {
       const data = await response.json();
 
       if (data.success) {
-        toast.success("Ressource supprimée");
+        toast.success("Ressource supprimÃ©e");
         setDeleteDialogOpen(false);
         setResourceToDelete(null);
         fetchResources();
@@ -336,25 +336,25 @@ export function ResourcesTab() {
         <div>
           <h1 className="text-3xl tracking-tight">Ressources Gratuites</h1>
           <p className="text-white/60 mt-1">
-            Gérez vos ressources avec gated content
+            GÃ©rez vos ressources avec gated content
           </p>
         </div>
         <div className="flex gap-2">
           <Button
             onClick={async () => {
               try {
-                toast.info("🌱 Chargement des ressources professionnelles...");
+                toast.info("ðŸŒ± Chargement des ressources professionnelles...");
                 const { seedProfessionalResources } = await import("../../utils/seedProfessionalResources");
                 await seedProfessionalResources();
-                toast.success("✅ Ressources professionnelles chargées avec succès !");
+                toast.success("âœ… Ressources professionnelles chargÃ©es avec succÃ¨s !");
                 fetchResources();
               } catch (error) {
                 console.error("Error seeding resources:", error);
-                toast.error("❌ Erreur lors du chargement des ressources");
+                toast.error("âŒ Erreur lors du chargement des ressources");
               }
             }}
             variant="outline"
-            className="border-[#00FFC2]/30 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+            className="border-[#CCFF00]/30 text-[#CCFF00] hover:bg-[#CCFF00]/10"
           >
             <Download className="mr-2 h-4 w-4" />
             Charger Ressources Pro
@@ -365,7 +365,7 @@ export function ResourcesTab() {
               setEditingResource(null);
               setIsDialogOpen(true);
             }}
-            className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+            className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
           >
             <Plus className="mr-2 h-4 w-4" />
             Nouvelle ressource
@@ -375,30 +375,30 @@ export function ResourcesTab() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-black/40 border-[#00FFC2]/10">
+        <Card className="bg-black/40 border-[#CCFF00]/10">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm text-white/60">Total</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{stats.total}</div>
-            <p className="text-xs text-white/40 mt-1">{stats.published} publiées</p>
+            <p className="text-xs text-white/40 mt-1">{stats.published} publiÃ©es</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-black/40 border-[#00FFC2]/10">
+        <Card className="bg-black/40 border-[#CCFF00]/10">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-white/60">Téléchargements</CardTitle>
+            <CardTitle className="text-sm text-white/60">TÃ©lÃ©chargements</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">
-              <Download className="h-4 w-4 text-[#00FFC2] mr-2" />
+              <Download className="h-4 w-4 text-[#CCFF00] mr-2" />
               <div className="text-2xl font-bold text-white">{stats.totalDownloads}</div>
             </div>
           </CardContent>
         </Card>
 
         {stats.byCategory.slice(0, 2).map((cat) => (
-          <Card key={cat.category} className="bg-black/40 border-[#00FFC2]/10">
+          <Card key={cat.category} className="bg-black/40 border-[#CCFF00]/10">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm text-white/60">{cat.label}</CardTitle>
             </CardHeader>
@@ -412,11 +412,11 @@ export function ResourcesTab() {
       {/* Filters */}
       <div className="flex items-center gap-4">
         <Select value={filterCategory} onValueChange={setFilterCategory}>
-          <SelectTrigger className="w-[200px] bg-black/40 border-[#00FFC2]/20 text-white">
-            <SelectValue placeholder="Catégorie" />
+          <SelectTrigger className="w-[200px] bg-black/40 border-[#CCFF00]/20 text-white">
+            <SelectValue placeholder="CatÃ©gorie" />
           </SelectTrigger>
-          <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
-            <SelectItem value="all" className="text-white focus:bg-white/10 focus:text-white">Toutes les catégories</SelectItem>
+          <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
+            <SelectItem value="all" className="text-white focus:bg-white/10 focus:text-white">Toutes les catÃ©gories</SelectItem>
             {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
               <SelectItem key={key} value={key} className="text-white focus:bg-white/10 focus:text-white">{label}</SelectItem>
             ))}
@@ -425,12 +425,12 @@ export function ResourcesTab() {
       </div>
 
       {/* Resources List */}
-      <Card className="bg-black/40 border-[#00FFC2]/10">
+      <Card className="bg-black/40 border-[#CCFF00]/10">
         <Table>
           <TableHeader>
-            <TableRow className="border-[#00FFC2]/10">
+            <TableRow className="border-[#CCFF00]/10">
               <TableHead className="text-white/60">Titre</TableHead>
-              <TableHead className="text-white/60 w-[110px]">Catégorie</TableHead>
+              <TableHead className="text-white/60 w-[110px]">CatÃ©gorie</TableHead>
               <TableHead className="text-white/60 w-[70px] text-center hidden sm:table-cell">
                 <Download className="h-3.5 w-3.5 inline" />
               </TableHead>
@@ -450,14 +450,14 @@ export function ResourcesTab() {
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-12">
                   <div className="space-y-4">
-                    <FileText className="h-12 w-12 text-[#00FFC2]/40 mx-auto" />
+                    <FileText className="h-12 w-12 text-[#CCFF00]/40 mx-auto" />
                     <div>
-                      <p className="text-white mb-2">Aucune ressource créée</p>
+                      <p className="text-white mb-2">Aucune ressource crÃ©Ã©e</p>
                       <p className="text-white/40 text-sm mb-4">
-                        Créez votre première ressource ou utilisez la commande de seeding
+                        CrÃ©ez votre premiÃ¨re ressource ou utilisez la commande de seeding
                       </p>
-                      <div className="inline-block bg-black/60 border border-[#00FFC2]/20 rounded px-4 py-2">
-                        <code className="text-xs text-[#00FFC2]">
+                      <div className="inline-block bg-black/60 border border-[#CCFF00]/20 rounded px-4 py-2">
+                        <code className="text-xs text-[#CCFF00]">
                           await seedRealResources()
                         </code>
                       </div>
@@ -468,18 +468,18 @@ export function ResourcesTab() {
             ) : filteredResources.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center text-white/40 py-8">
-                  Aucune ressource trouvée pour ce filtre
+                  Aucune ressource trouvÃ©e pour ce filtre
                 </TableCell>
               </TableRow>
             ) : (
               filteredResources.map((resource) => (
-                <TableRow key={resource.id} className="border-[#00FFC2]/10">
+                <TableRow key={resource.id} className="border-[#CCFF00]/10">
                   <TableCell className="text-white max-w-[200px] sm:max-w-none">
                     <div className="font-medium line-clamp-2 text-sm">
                       {resource.title_fr || resource.title}
                       {resource.title_en && (
                         <Badge className="ml-2 bg-blue-500/20 text-blue-400 border-blue-500/40 text-xs">
-                          🌍 EN
+                          ðŸŒ EN
                         </Badge>
                       )}
                     </div>
@@ -494,9 +494,9 @@ export function ResourcesTab() {
                   </TableCell>
                   <TableCell>
                     {resource.isPublished ? (
-                      <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/20 text-xs">
+                      <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-[#CCFF00]/20 text-xs">
                         <Eye className="h-3 w-3 sm:mr-1" />
-                        <span className="hidden sm:inline">Publié</span>
+                        <span className="hidden sm:inline">PubliÃ©</span>
                       </Badge>
                     ) : (
                       <Badge className="bg-white/5 text-white/40 border-white/10 text-xs">
@@ -542,13 +542,13 @@ export function ResourcesTab() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20 max-w-2xl">
+        <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-white">
               {editingResource ? "Modifier la ressource" : "Nouvelle ressource"}
             </DialogTitle>
             <DialogDescription className="text-white/60">
-              Créez une ressource gratuite avec gated content
+              CrÃ©ez une ressource gratuite avec gated content
             </DialogDescription>
           </DialogHeader>
 
@@ -557,15 +557,15 @@ export function ResourcesTab() {
               {/* Common Fields */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-white">Catégorie</Label>
+                  <Label className="text-white">CatÃ©gorie</Label>
                   <Select
                     value={formData.category}
                     onValueChange={(value) => setFormData({ ...formData, category: value as Resource["category"] })}
                   >
-                    <SelectTrigger className="bg-black/40 border-[#00FFC2]/20 text-white">
+                    <SelectTrigger className="bg-black/40 border-[#CCFF00]/20 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+                    <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
                       {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
                         <SelectItem key={key} value={key} className="text-white focus:bg-white/10 focus:text-white">{label}</SelectItem>
                       ))}
@@ -574,12 +574,12 @@ export function ResourcesTab() {
                 </div>
 
                 <div>
-                  <Label className="text-white">Tags (séparés par virgule)</Label>
+                  <Label className="text-white">Tags (sÃ©parÃ©s par virgule)</Label>
                   <Input
                     value={formData.tags}
                     onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                     placeholder="design, ux, guide"
-                    className="bg-black/40 border-[#00FFC2]/20 text-white placeholder:text-white/40"
+                    className="bg-black/40 border-[#CCFF00]/20 text-white placeholder:text-white/40"
                   />
                 </div>
               </div>
@@ -587,45 +587,45 @@ export function ResourcesTab() {
               {/* Multilingual Content */}
               <div className="border-t border-white/10 pt-4">
                 <p className="text-white/60 text-sm mb-4">
-                  🌍 Contenu multilingue - Remplissez le français (obligatoire) et l'anglais (optionnel)
+                  ðŸŒ Contenu multilingue - Remplissez le franÃ§ais (obligatoire) et l'anglais (optionnel)
                 </p>
 
                 <Tabs value={editorLang} onValueChange={(v) => setEditorLang(v as "fr" | "en")} className="w-full">
                   <TabsList className="grid w-full grid-cols-2 bg-white/5 mb-4">
                     <TabsTrigger 
                       value="fr" 
-                      className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                      className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      🇫🇷 Français {!formData.title_fr && <span className="ml-1 text-red-400">*</span>}
+                      ðŸ‡«ðŸ‡· FranÃ§ais {!formData.title_fr && <span className="ml-1 text-red-400">*</span>}
                     </TabsTrigger>
                     <TabsTrigger 
                       value="en" 
-                      className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                      className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      🇬🇧 English
+                      ðŸ‡¬ðŸ‡§ English
                     </TabsTrigger>
                   </TabsList>
 
                   {/* French Content */}
                   <TabsContent value="fr" className="space-y-4">
                     <div>
-                      <Label className="text-white">Titre (Français) *</Label>
+                      <Label className="text-white">Titre (FranÃ§ais) *</Label>
                       <Input
                         value={formData.title_fr}
                         onChange={(e) => setFormData({ ...formData, title_fr: e.target.value })}
                         placeholder="Guide ultime du design web"
-                        className="bg-black/40 border-[#00FFC2]/20 text-white placeholder:text-white/40"
+                        className="bg-black/40 border-[#CCFF00]/20 text-white placeholder:text-white/40"
                         required
                       />
                     </div>
 
                     <div>
-                      <Label className="text-white">Description (Français) *</Label>
+                      <Label className="text-white">Description (FranÃ§ais) *</Label>
                       <Textarea
                         value={formData.description_fr}
                         onChange={(e) => setFormData({ ...formData, description_fr: e.target.value })}
-                        placeholder="Décrivez votre ressource en français..."
-                        className="bg-black/40 border-[#00FFC2]/20 text-white placeholder:text-white/40"
+                        placeholder="DÃ©crivez votre ressource en franÃ§ais..."
+                        className="bg-black/40 border-[#CCFF00]/20 text-white placeholder:text-white/40"
                         rows={3}
                         required
                       />
@@ -633,7 +633,7 @@ export function ResourcesTab() {
 
                     {/* French File Upload */}
                     <div>
-                      <Label className="text-white">Fichier PDF ou HTML (Français) *</Label>
+                      <Label className="text-white">Fichier PDF ou HTML (FranÃ§ais) *</Label>
                       <div className="space-y-2">
                         <div className="flex gap-2 items-center">
                           <div className="flex-1">
@@ -644,7 +644,7 @@ export function ResourcesTab() {
                                 const file = e.target.files?.[0];
                                 if (file) handleFileUpload(file, "fr");
                               }}
-                              className="bg-black/40 border-[#00FFC2]/20 text-white file:text-white"
+                              className="bg-black/40 border-[#CCFF00]/20 text-white file:text-white"
                               disabled={uploading}
                             />
                           </div>
@@ -653,8 +653,8 @@ export function ResourcesTab() {
                               type="button"
                               variant="outline"
                               onClick={() => window.open(formData.fileUrl_fr, "_blank")}
-                              className="shrink-0 border-[#00FFC2]/20 hover:bg-[#00FFC2]/10 text-white"
-                              title="Prévisualiser le fichier français"
+                              className="shrink-0 border-[#CCFF00]/20 hover:bg-[#CCFF00]/10 text-white"
+                              title="PrÃ©visualiser le fichier franÃ§ais"
                             >
                               <Eye className="h-4 w-4" />
                             </Button>
@@ -663,16 +663,16 @@ export function ResourcesTab() {
                         
                         {uploadedFileName_fr && !uploading && (
                           <div className="flex items-center gap-2 text-white/60 text-sm">
-                            <FileText className="h-4 w-4 text-[#00FFC2]" />
+                            <FileText className="h-4 w-4 text-[#CCFF00]" />
                             <span>{uploadedFileName_fr}</span>
-                            <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/20 text-xs">
-                              🇫🇷 Uploadé
+                            <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-[#CCFF00]/20 text-xs">
+                              ðŸ‡«ðŸ‡· UploadÃ©
                             </Badge>
                           </div>
                         )}
                         
                         <p className="text-xs text-white/40">
-                          Formats acceptés : PDF, HTML • Taille max : 10 MB
+                          Formats acceptÃ©s : PDF, HTML â€¢ Taille max : 10 MB
                         </p>
                       </div>
                     </div>
@@ -686,7 +686,7 @@ export function ResourcesTab() {
                         value={formData.title_en}
                         onChange={(e) => setFormData({ ...formData, title_en: e.target.value })}
                         placeholder="Ultimate Web Design Guide"
-                        className="bg-black/40 border-[#00FFC2]/20 text-white placeholder:text-white/40"
+                        className="bg-black/40 border-[#CCFF00]/20 text-white placeholder:text-white/40"
                       />
                     </div>
 
@@ -696,7 +696,7 @@ export function ResourcesTab() {
                         value={formData.description_en}
                         onChange={(e) => setFormData({ ...formData, description_en: e.target.value })}
                         placeholder="Describe your resource in English..."
-                        className="bg-black/40 border-[#00FFC2]/20 text-white placeholder:text-white/40"
+                        className="bg-black/40 border-[#CCFF00]/20 text-white placeholder:text-white/40"
                         rows={3}
                       />
                     </div>
@@ -714,7 +714,7 @@ export function ResourcesTab() {
                                 const file = e.target.files?.[0];
                                 if (file) handleFileUpload(file, "en");
                               }}
-                              className="bg-black/40 border-[#00FFC2]/20 text-white file:text-white"
+                              className="bg-black/40 border-[#CCFF00]/20 text-white file:text-white"
                               disabled={uploading}
                             />
                           </div>
@@ -723,7 +723,7 @@ export function ResourcesTab() {
                               type="button"
                               variant="outline"
                               onClick={() => window.open(formData.fileUrl_en, "_blank")}
-                              className="shrink-0 border-[#00FFC2]/20 hover:bg-[#00FFC2]/10 text-white"
+                              className="shrink-0 border-[#CCFF00]/20 hover:bg-[#CCFF00]/10 text-white"
                               title="Preview English file"
                             >
                               <Eye className="h-4 w-4" />
@@ -736,13 +736,13 @@ export function ResourcesTab() {
                             <FileText className="h-4 w-4 text-blue-400" />
                             <span>{uploadedFileName_en}</span>
                             <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-xs">
-                              🇬🇧 Uploaded
+                              ðŸ‡¬ðŸ‡§ Uploaded
                             </Badge>
                           </div>
                         )}
                         
                         <p className="text-xs text-white/40">
-                          Accepted formats: PDF, HTML • Max size: 10 MB
+                          Accepted formats: PDF, HTML â€¢ Max size: 10 MB
                         </p>
                       </div>
                     </div>
@@ -753,8 +753,8 @@ export function ResourcesTab() {
               {/* Upload indicator (shown outside tabs when uploading) */}
               {uploading && (
                 <div className="border-t border-white/10 pt-4">
-                  <div className="flex items-center gap-2 text-[#00FFC2]">
-                    <div className="h-4 w-4 border-2 border-[#00FFC2] border-t-transparent rounded-full animate-spin" />
+                  <div className="flex items-center gap-2 text-[#CCFF00]">
+                    <div className="h-4 w-4 border-2 border-[#CCFF00] border-t-transparent rounded-full animate-spin" />
                     <p className="text-sm">Upload en cours...</p>
                   </div>
                 </div>
@@ -766,7 +766,7 @@ export function ResourcesTab() {
                   value={formData.coverImage}
                   onChange={(e) => setFormData({ ...formData, coverImage: e.target.value })}
                   placeholder="https://..."
-                  className="bg-black/40 border-[#00FFC2]/20 text-white placeholder:text-white/40"
+                  className="bg-black/40 border-[#CCFF00]/20 text-white placeholder:text-white/40"
                 />
               </div>
 
@@ -776,10 +776,10 @@ export function ResourcesTab() {
                   id="isPublished"
                   checked={formData.isPublished}
                   onChange={(e) => setFormData({ ...formData, isPublished: e.target.checked })}
-                  className="rounded border-[#00FFC2]/20 bg-black/40"
+                  className="rounded border-[#CCFF00]/20 bg-black/40"
                 />
                 <Label htmlFor="isPublished" className="cursor-pointer text-white">
-                  Publier immédiatement
+                  Publier immÃ©diatement
                 </Label>
               </div>
             </div>
@@ -793,16 +793,16 @@ export function ResourcesTab() {
                   setEditingResource(null);
                   resetForm();
                 }}
-                className="border-[#00FFC2]/20 text-white hover:bg-white/5"
+                className="border-[#CCFF00]/20 text-white hover:bg-white/5"
               >
                 Annuler
               </Button>
               <Button
                 type="submit"
-                className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
                 disabled={!formData.title_fr || !formData.fileUrl_fr || uploading}
               >
-                {editingResource ? "Mettre à jour" : "Créer"}
+                {editingResource ? "Mettre Ã  jour" : "CrÃ©er"}
               </Button>
             </div>
           </form>
@@ -815,7 +815,7 @@ export function ResourcesTab() {
         onOpenChange={setDeleteDialogOpen}
         onConfirm={handleDelete}
         title={`Supprimer "${resourceToDelete?.title}"?`}
-        description="Cette action est irréversible. La ressource sera définitivement supprimée."
+        description="Cette action est irrÃ©versible. La ressource sera dÃ©finitivement supprimÃ©e."
       />
     </div>
   );

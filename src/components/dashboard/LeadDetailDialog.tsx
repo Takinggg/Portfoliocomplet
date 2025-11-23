@@ -58,7 +58,7 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -75,15 +75,15 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
       );
 
       if (response.ok) {
-        toast.success("Lead mis à jour avec succès");
+        toast.success("Lead mis Ã  jour avec succÃ¨s");
         setIsEditing(false);
         onRefresh();
       } else {
-        toast.error("Erreur lors de la mise à jour");
+        toast.error("Erreur lors de la mise Ã  jour");
       }
     } catch (error) {
       console.error("Error updating lead:", error);
-      toast.error("Erreur lors de la mise à jour");
+      toast.error("Erreur lors de la mise Ã  jour");
     } finally {
       setIsSaving(false);
     }
@@ -100,7 +100,7 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
   // Convert lead to client
   const handleConvertToClient = async () => {
     if (lead.convertedToClient) {
-      toast.info("Ce lead a déjà été converti en client");
+      toast.info("Ce lead a dÃ©jÃ  Ã©tÃ© converti en client");
       return;
     }
 
@@ -109,7 +109,7 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -127,7 +127,7 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
       const data = await response.json();
 
       if (response.ok && data.success) {
-        toast.success("Lead converti en client avec succès !");
+        toast.success("Lead converti en client avec succÃ¨s !");
         onOpenChange(false);
         onRefresh();
       } else {
@@ -144,13 +144,13 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20 text-white max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 text-white max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader className="border-b border-white/10 pb-4">
             <div className="flex items-start justify-between">
               <div>
-                <DialogTitle className="text-2xl">Détails du lead</DialogTitle>
+                <DialogTitle className="text-2xl">DÃ©tails du lead</DialogTitle>
                 <DialogDescription className="text-white/60 mt-1">
-                  {isEditing ? "Modifiez les informations du lead" : "Consultez les informations complètes de ce lead"}
+                  {isEditing ? "Modifiez les informations du lead" : "Consultez les informations complÃ¨tes de ce lead"}
                 </DialogDescription>
               </div>
               <div className="flex gap-2">
@@ -179,7 +179,7 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
                     )}
                     <Button
                       size="sm"
-                      className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                      className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
                       onClick={() => setIsEditing(true)}
                     >
                       <Edit className="h-4 w-4 mr-2" />
@@ -208,7 +208,7 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
                     </Button>
                     <Button
                       size="sm"
-                      className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                      className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
                       onClick={handleSave}
                       disabled={isSaving}
                     >
@@ -254,10 +254,10 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="h-7 w-7 p-0 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                        className="h-7 w-7 p-0 text-[#CCFF00] hover:bg-[#CCFF00]/10"
                         onClick={async () => {
                           const { copyToClipboard } = await import("../../utils/clipboardHelper");
-                          await copyToClipboard(lead.email, "Email copié");
+                          await copyToClipboard(lead.email, "Email copiÃ©");
                         }}
                       >
                         <Mail className="h-3 w-3" />
@@ -268,13 +268,13 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
 
                 {(lead.phone || isEditing) && (
                   <div className="md:col-span-2">
-                    <Label className="text-white/60 text-xs uppercase tracking-wide">Téléphone</Label>
+                    <Label className="text-white/60 text-xs uppercase tracking-wide">TÃ©lÃ©phone</Label>
                     {isEditing ? (
                       <Input
                         value={editedLead.phone}
                         onChange={(e) => setEditedLead({ ...editedLead, phone: e.target.value })}
                         className="mt-2 bg-white/5 border-white/10 text-white"
-                        placeholder="Numéro de téléphone"
+                        placeholder="NumÃ©ro de tÃ©lÃ©phone"
                       />
                     ) : (
                       <div className="flex items-center gap-2 mt-2">
@@ -283,10 +283,10 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="h-7 w-7 p-0 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                            className="h-7 w-7 p-0 text-[#CCFF00] hover:bg-[#CCFF00]/10"
                             onClick={async () => {
                               const { copyToClipboard } = await import("../../utils/clipboardHelper");
-                              await copyToClipboard(lead.phone || "", "Téléphone copié");
+                              await copyToClipboard(lead.phone || "", "TÃ©lÃ©phone copiÃ©");
                             }}
                           >
                             <Phone className="h-3 w-3" />
@@ -321,10 +321,10 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
               <>
                 {lead.interests && lead.interests.length > 0 && (
                   <div className="bg-white/5 border border-white/10 rounded-lg p-6">
-                    <Label className="text-white/60 text-xs uppercase tracking-wide mb-3 block">Intérêts</Label>
+                    <Label className="text-white/60 text-xs uppercase tracking-wide mb-3 block">IntÃ©rÃªts</Label>
                     <div className="flex flex-wrap gap-2">
                       {lead.interests.map((interest, idx) => (
-                        <Badge key={idx} className="bg-[#00FFC2]/10 text-[#00FFC2] border-0 px-3 py-1">
+                        <Badge key={idx} className="bg-[#CCFF00]/10 text-[#CCFF00] border-0 px-3 py-1">
                           {interest}
                         </Badge>
                       ))}
@@ -337,13 +337,13 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
             {/* Interests Editor in Edit Mode */}
             {isEditing && (
               <div className="bg-white/5 border border-white/10 rounded-lg p-6">
-                <Label className="text-white/60 text-xs uppercase tracking-wide mb-3 block">Intérêts</Label>
+                <Label className="text-white/60 text-xs uppercase tracking-wide mb-3 block">IntÃ©rÃªts</Label>
                 <div className="grid md:grid-cols-2 gap-3">
                   {[
                     "Audit d'automatisation gratuit",
                     "Projet d'automatisation CRM",
                     "Design UI/UX / Redesign UI/UX",
-                    "Intégration IA (chatbot, GPT)",
+                    "IntÃ©gration IA (chatbot, GPT)",
                     "Formation sur les outils no-code",
                     "Autre demande"
                   ].map((reason, index) => {
@@ -368,17 +368,17 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
                         className={`
                           flex items-center gap-3 p-3 rounded-lg transition-all text-left
                           ${isSelected 
-                            ? 'bg-[#00FFC2]/10 border-2 border-[#00FFC2]' 
-                            : 'bg-neutral-900/50 border border-neutral-800 hover:border-[#00FFC2]/20'
+                            ? 'bg-[#CCFF00]/10 border-2 border-[#CCFF00]' 
+                            : 'bg-neutral-900/50 border border-neutral-800 hover:border-[#CCFF00]/20'
                           }
                         `}
                       >
                         <div className={`
                           w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0
-                          ${isSelected ? 'border-[#00FFC2]' : 'border-neutral-600'}
+                          ${isSelected ? 'border-[#CCFF00]' : 'border-neutral-600'}
                         `}>
                           {isSelected && (
-                            <div className="w-2.5 h-2.5 rounded-full bg-[#00FFC2]" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-[#CCFF00]" />
                           )}
                         </div>
                         <span className={`text-sm ${isSelected ? 'text-white font-medium' : 'text-neutral-400'}`}>
@@ -395,12 +395,12 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
               <>
 
                 {lead.wantsAppointment && (
-                  <div className="bg-[#00FFC2]/10 border border-[#00FFC2]/20 rounded-lg p-4">
-                    <div className="flex items-center gap-3 text-[#00FFC2]">
-                      <div className="h-10 w-10 rounded-full bg-[#00FFC2]/20 flex items-center justify-center">
+                  <div className="bg-[#CCFF00]/10 border border-[#CCFF00]/20 rounded-lg p-4">
+                    <div className="flex items-center gap-3 text-[#CCFF00]">
+                      <div className="h-10 w-10 rounded-full bg-[#CCFF00]/20 flex items-center justify-center">
                         <Calendar className="h-5 w-5" />
                       </div>
-                      <p className="font-medium">Souhaite un appel découverte</p>
+                      <p className="font-medium">Souhaite un appel dÃ©couverte</p>
                     </div>
                   </div>
                 )}
@@ -425,7 +425,7 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
 
                 <div className="flex items-center justify-between text-sm text-white/40 pt-4 border-t border-white/10">
                   <span>Source: <span className="text-white/60">{lead.source}</span></span>
-                  <span>Créé le <span className="text-white/60">{new Date(lead.createdAt).toLocaleDateString('fr-FR')}</span></span>
+                  <span>CrÃ©Ã© le <span className="text-white/60">{new Date(lead.createdAt).toLocaleDateString('fr-FR')}</span></span>
                 </div>
               </>
             )}
@@ -435,11 +435,11 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
 
       {/* Email Dialog */}
       <Dialog open={emailDialogOpen} onOpenChange={setEmailDialogOpen}>
-        <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20 text-white">
+        <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 text-white">
           <DialogHeader>
-            <DialogTitle>Envoyer un email à {lead.name}</DialogTitle>
+            <DialogTitle>Envoyer un email Ã  {lead.name}</DialogTitle>
             <DialogDescription className="text-white/60">
-              Cela ouvrira votre client email par défaut
+              Cela ouvrira votre client email par dÃ©faut
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
@@ -468,7 +468,7 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onRefresh }: LeadDe
                 Annuler
               </Button>
               <Button
-                className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
                 onClick={handleSendEmail}
               >
                 <Send className="h-4 w-4 mr-2" />

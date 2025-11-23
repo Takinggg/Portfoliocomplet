@@ -1,6 +1,6 @@
 /**
  * Sync Dashboard Page - Page de gestion de la synchronisation Supabase
- * Permet de synchroniser toutes les données et gérer le mode production
+ * Permet de synchroniser toutes les donnÃ©es et gÃ©rer le mode production
  */
 
 import { useState, useEffect } from "react";
@@ -57,21 +57,21 @@ export default function SyncDashboardPage() {
     { 
       category: "Case Studies", 
       icon: BookOpen, 
-      description: "Études de cas détaillées",
+      description: "Ã‰tudes de cas dÃ©taillÃ©es",
       count: 0,
       synced: false 
     },
     { 
       category: "FAQs", 
       icon: HelpCircle, 
-      description: "Questions fréquentes",
+      description: "Questions frÃ©quentes",
       count: 0,
       synced: false 
     },
     { 
       category: "Testimonials", 
       icon: MessageSquare, 
-      description: "Témoignages clients",
+      description: "TÃ©moignages clients",
       count: 0,
       synced: false 
     },
@@ -105,36 +105,36 @@ export default function SyncDashboardPage() {
         {/* Header */}
         <div className="text-center space-y-4">
           <Badge 
-            className="bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/30"
+            className="bg-[#CCFF00]/10 text-[#CCFF00] border-[#CCFF00]/30"
           >
             <Database className="w-3 h-3 mr-1" />
             Synchronisation Supabase
           </Badge>
           
           <h1 className="text-5xl text-[#F4F4F4]">
-            Gestion des Données
+            Gestion des DonnÃ©es
           </h1>
           
           <p className="text-xl text-[#F4F4F4]/70 max-w-2xl mx-auto">
-            Synchronisez toutes vos données avec Supabase pour une expérience
-            100% production sans dépendances locales.
+            Synchronisez toutes vos donnÃ©es avec Supabase pour une expÃ©rience
+            100% production sans dÃ©pendances locales.
           </p>
         </div>
 
         {/* Status Cards */}
         <div className="grid md:grid-cols-3 gap-6">
           {/* Server Status */}
-          <Card className="bg-[#0C0C0C] border-[#00FFC2]/20 p-6">
+          <Card className="bg-[#0C0C0C] border-[#CCFF00]/20 p-6">
             <div className="flex items-center justify-between mb-4">
-              <Server className="w-8 h-8 text-[#00FFC2]" />
+              <Server className="w-8 h-8 text-[#CCFF00]" />
               <Badge 
                 className={
                   serverMode === "server"
-                    ? "bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/30"
+                    ? "bg-[#CCFF00]/10 text-[#CCFF00] border-[#CCFF00]/30"
                     : "bg-orange-500/10 text-orange-500 border-orange-500/30"
                 }
               >
-                {serverMode === "server" ? "Connecté" : "Mode Local"}
+                {serverMode === "server" ? "ConnectÃ©" : "Mode Local"}
               </Badge>
             </div>
             <h3 className="text-lg text-[#F4F4F4] mb-2">
@@ -142,7 +142,7 @@ export default function SyncDashboardPage() {
             </h3>
             <p className="text-sm text-[#F4F4F4]/60">
               {serverMode === "server" 
-                ? "Serveur Supabase opérationnel"
+                ? "Serveur Supabase opÃ©rationnel"
                 : "En attente de connexion"
               }
             </p>
@@ -154,36 +154,36 @@ export default function SyncDashboardPage() {
           </Card>
 
           {/* Data Count */}
-          <Card className="bg-[#0C0C0C] border-[#00FFC2]/20 p-6">
+          <Card className="bg-[#0C0C0C] border-[#CCFF00]/20 p-6">
             <div className="flex items-center justify-between mb-4">
-              <HardDrive className="w-8 h-8 text-[#00FFC2]" />
+              <HardDrive className="w-8 h-8 text-[#CCFF00]" />
               <div className="text-right">
                 <div className="text-2xl text-[#F4F4F4]">
                   {totalItems}
                 </div>
                 <div className="text-xs text-[#F4F4F4]/60">
-                  éléments
+                  Ã©lÃ©ments
                 </div>
               </div>
             </div>
             <h3 className="text-lg text-[#F4F4F4] mb-2">
-              Données Totales
+              DonnÃ©es Totales
             </h3>
             <p className="text-sm text-[#F4F4F4]/60">
-              Contenus synchronisés
+              Contenus synchronisÃ©s
             </p>
           </Card>
 
           {/* Sync Status */}
-          <Card className="bg-[#0C0C0C] border-[#00FFC2]/20 p-6">
+          <Card className="bg-[#0C0C0C] border-[#CCFF00]/20 p-6">
             <div className="flex items-center justify-between mb-4">
-              <Database className="w-8 h-8 text-[#00FFC2]" />
+              <Database className="w-8 h-8 text-[#CCFF00]" />
               <div className="text-right">
                 <div className="text-2xl text-[#F4F4F4]">
                   {syncedItems}/{dataStatus.length}
                 </div>
                 <div className="text-xs text-[#F4F4F4]/60">
-                  catégories
+                  catÃ©gories
                 </div>
               </div>
             </div>
@@ -191,7 +191,7 @@ export default function SyncDashboardPage() {
               Synchronisation
             </h3>
             <p className="text-sm text-[#F4F4F4]/60">
-              État de la migration
+              Ã‰tat de la migration
             </p>
           </Card>
         </div>
@@ -201,20 +201,20 @@ export default function SyncDashboardPage() {
           <Alert className="bg-orange-500/10 border-orange-500/30">
             <AlertTriangle className="h-5 w-5 text-orange-500" />
             <AlertTitle className="text-[#F4F4F4]">
-              ⚠️ Mode Local Actif
+              âš ï¸ Mode Local Actif
             </AlertTitle>
             <AlertDescription className="text-[#F4F4F4]/70">
-              L'application utilise actuellement des données locales. Synchronisez
+              L'application utilise actuellement des donnÃ©es locales. Synchronisez
               avec Supabase pour activer le mode production.
             </AlertDescription>
           </Alert>
         )}
 
         {/* Data Categories Status */}
-        <Card className="bg-[#0C0C0C] border-[#00FFC2]/20 p-6">
+        <Card className="bg-[#0C0C0C] border-[#CCFF00]/20 p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl text-[#F4F4F4]">
-              Catégories de Données
+              CatÃ©gories de DonnÃ©es
             </h2>
             <Button
               onClick={refreshStatus}
@@ -237,12 +237,12 @@ export default function SyncDashboardPage() {
                 >
                   <div className={`p-3 rounded-lg ${
                     item.synced 
-                      ? "bg-[#00FFC2]/10" 
+                      ? "bg-[#CCFF00]/10" 
                       : "bg-[#F4F4F4]/5"
                   }`}>
                     <Icon className={`w-5 h-5 ${
                       item.synced 
-                        ? "text-[#00FFC2]" 
+                        ? "text-[#CCFF00]" 
                         : "text-[#F4F4F4]/40"
                     }`} />
                   </div>
@@ -252,7 +252,7 @@ export default function SyncDashboardPage() {
                         {item.category}
                       </span>
                       {item.synced ? (
-                        <CheckCircle2 className="w-4 h-4 text-[#00FFC2]" />
+                        <CheckCircle2 className="w-4 h-4 text-[#CCFF00]" />
                       ) : (
                         <XCircle className="w-4 h-4 text-[#F4F4F4]/30" />
                       )}
@@ -283,45 +283,45 @@ export default function SyncDashboardPage() {
         {/* Info Cards */}
         <div className="grid md:grid-cols-2 gap-6">
           {/* Production Mode Info */}
-          <Card className="bg-[#0C0C0C] border-[#00FFC2]/20 p-6">
+          <Card className="bg-[#0C0C0C] border-[#CCFF00]/20 p-6">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-[#00FFC2]/10 rounded-lg">
-                <Settings className="w-6 h-6 text-[#00FFC2]" />
+              <div className="p-3 bg-[#CCFF00]/10 rounded-lg">
+                <Settings className="w-6 h-6 text-[#CCFF00]" />
               </div>
               <div>
                 <h3 className="text-lg text-[#F4F4F4] mb-2">
                   Mode Production
                 </h3>
                 <p className="text-sm text-[#F4F4F4]/70 mb-3">
-                  Le système est configuré pour fonctionner en mode production.
-                  Toutes les requêtes utilisent exclusivement le serveur Supabase.
+                  Le systÃ¨me est configurÃ© pour fonctionner en mode production.
+                  Toutes les requÃªtes utilisent exclusivement le serveur Supabase.
                 </p>
                 <ul className="text-sm text-[#F4F4F4]/60 space-y-1">
-                  <li>✓ Pas de fallback localStorage</li>
-                  <li>✓ Erreurs visibles en console</li>
-                  <li>✓ Performance optimale</li>
-                  <li>✓ Données centralisées</li>
+                  <li>âœ“ Pas de fallback localStorage</li>
+                  <li>âœ“ Erreurs visibles en console</li>
+                  <li>âœ“ Performance optimale</li>
+                  <li>âœ“ DonnÃ©es centralisÃ©es</li>
                 </ul>
               </div>
             </div>
           </Card>
 
           {/* Next Steps */}
-          <Card className="bg-[#0C0C0C] border-[#00FFC2]/20 p-6">
+          <Card className="bg-[#0C0C0C] border-[#CCFF00]/20 p-6">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-[#00FFC2]/10 rounded-lg">
-                <CheckCircle2 className="w-6 h-6 text-[#00FFC2]" />
+              <div className="p-3 bg-[#CCFF00]/10 rounded-lg">
+                <CheckCircle2 className="w-6 h-6 text-[#CCFF00]" />
               </div>
               <div>
                 <h3 className="text-lg text-[#F4F4F4] mb-2">
-                  Prochaines Étapes
+                  Prochaines Ã‰tapes
                 </h3>
                 <ol className="text-sm text-[#F4F4F4]/70 space-y-2 list-decimal list-inside">
-                  <li>Valider le déploiement du serveur</li>
-                  <li>Synchroniser toutes les données</li>
-                  <li>Vérifier les endpoints dans la console</li>
+                  <li>Valider le dÃ©ploiement du serveur</li>
+                  <li>Synchroniser toutes les donnÃ©es</li>
+                  <li>VÃ©rifier les endpoints dans la console</li>
                   <li>Recharger l'application</li>
-                  <li>Tester toutes les fonctionnalités</li>
+                  <li>Tester toutes les fonctionnalitÃ©s</li>
                 </ol>
               </div>
             </div>

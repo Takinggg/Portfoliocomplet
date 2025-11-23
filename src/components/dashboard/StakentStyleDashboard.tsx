@@ -94,12 +94,12 @@ export function StakentStyleDashboard() {
       setLoading(true);
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        console.log("❌ No session found");
+        console.log("âŒ No session found");
         setLoading(false);
         return;
       }
 
-      console.log("✅ Session found, fetching data...");
+      console.log("âœ… Session found, fetching data...");
 
       // Fetch from backend API endpoints
       const [leadsRes, clientsRes, quotesRes, invoicesRes] = await Promise.all([
@@ -122,7 +122,7 @@ export function StakentStyleDashboard() {
       const quotesData = quotesRes.ok ? (await quotesRes.json()).quotes || [] : [];
       const invoicesData = invoicesRes.ok ? (await invoicesRes.json()).invoices || [] : [];
 
-      console.log("📊 Data fetched:", { 
+      console.log("ðŸ“Š Data fetched:", { 
         leads: leadsData.length, 
         clients: clientsData.length, 
         quotes: quotesData.length,
@@ -154,13 +154,13 @@ export function StakentStyleDashboard() {
         },
         {
           id: "demo-lead-3",
-          name: "Client RDV Confirmé",
+          name: "Client RDV ConfirmÃ©",
           email: "rdv@example.com",
           phone: "+33698765432",
           company: "Confirmed Corp",
           status: "qualified",
           appointment_requested: true,
-          appointment_confirmed: true, // RDV Confirmé
+          appointment_confirmed: true, // RDV ConfirmÃ©
           created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
         },
         {
@@ -232,7 +232,7 @@ export function StakentStyleDashboard() {
           id: l.id,
           name: l.name || "Lead sans nom",
           company: l.company || l.subject,
-          value: 2500, // Valeur estimée pour un lead
+          value: 2500, // Valeur estimÃ©e pour un lead
           status: l.status || "new",
           progress: calculateProgress(l.created_at, "lead"),
           type: "lead" as const,
@@ -338,7 +338,7 @@ export function StakentStyleDashboard() {
         ? ((conversionRate - lastMonthConversionRate) / lastMonthConversionRate * 100)
         : conversionRate > 0 ? 100 : 0;
 
-      console.log("📈 Stats calculated:", {
+      console.log("ðŸ“ˆ Stats calculated:", {
         totalRevenue,
         revenueChange: revenueChange.toFixed(1),
         activeDeals: activeDealsCount,
@@ -401,7 +401,7 @@ export function StakentStyleDashboard() {
       );
 
       if (response.ok) {
-        alert(`✅ Lead "${selectedDeal.name}" converti en client avec succès !`);
+        alert(`âœ… Lead "${selectedDeal.name}" converti en client avec succÃ¨s !`);
         fetchData(); // Refresh data
       } else {
         const error = await response.text();
@@ -442,21 +442,21 @@ export function StakentStyleDashboard() {
       );
 
       if (response.ok) {
-        alert(`✅ Devis créé pour "${selectedDeal.name}" !`);
+        alert(`âœ… Devis crÃ©Ã© pour "${selectedDeal.name}" !`);
         fetchData(); // Refresh data
       } else {
         const error = await response.text();
-        alert("Erreur lors de la création du devis: " + error);
+        alert("Erreur lors de la crÃ©ation du devis: " + error);
       }
     } catch (error) {
       console.error("Error creating quote:", error);
-      alert("Erreur lors de la création du devis");
+      alert("Erreur lors de la crÃ©ation du devis");
     }
   };
 
   const sendEmail = async () => {
     if (!selectedDeal?.email) return;
-    alert(`Email envoyé à ${selectedDeal.email} !`);
+    alert(`Email envoyÃ© Ã  ${selectedDeal.email} !`);
   };
 
   const handleCreateLead = async (e: React.FormEvent) => {
@@ -480,16 +480,16 @@ export function StakentStyleDashboard() {
       );
 
       if (response.ok) {
-        alert(`✅ Lead "${newLead.name}" créé avec succès !`);
+        alert(`âœ… Lead "${newLead.name}" crÃ©Ã© avec succÃ¨s !`);
         setShowNewLeadModal(false);
         setNewLead({ name: "", email: "", phone: "", company: "", message: "" });
         fetchData();
       } else {
-        alert("Erreur lors de la création du lead");
+        alert("Erreur lors de la crÃ©ation du lead");
       }
     } catch (error) {
       console.error("Error creating lead:", error);
-      alert("Erreur lors de la création");
+      alert("Erreur lors de la crÃ©ation");
     } finally {
       setSubmitting(false);
     }
@@ -520,17 +520,17 @@ export function StakentStyleDashboard() {
       );
 
       if (response.ok) {
-        alert(`✅ Client "${newClient.name}" créé avec succès !`);
+        alert(`âœ… Client "${newClient.name}" crÃ©Ã© avec succÃ¨s !`);
         setShowNewClientModal(false);
         setNewClient({ name: "", email: "", phone: "", company: "", address: "" });
         setSelectedLeadId(""); // Reset selection
         fetchData();
       } else {
-        alert("Erreur lors de la création du client");
+        alert("Erreur lors de la crÃ©ation du client");
       }
     } catch (error) {
       console.error("Error creating client:", error);
-      alert("Erreur lors de la création");
+      alert("Erreur lors de la crÃ©ation");
     } finally {
       setSubmitting(false);
     }
@@ -562,17 +562,17 @@ export function StakentStyleDashboard() {
       );
 
       if (response.ok) {
-        alert(`✅ Devis pour "${newQuote.client_name}" créé avec succès !`);
+        alert(`âœ… Devis pour "${newQuote.client_name}" crÃ©Ã© avec succÃ¨s !`);
         setShowNewQuoteModal(false);
         setNewQuote({ client_name: "", client_email: "", client_phone: "", client_company: "", total: 0 });
         setSelectedClientId(""); // Reset selection
         fetchData();
       } else {
-        alert("Erreur lors de la création du devis");
+        alert("Erreur lors de la crÃ©ation du devis");
       }
     } catch (error) {
       console.error("Error creating quote:", error);
-      alert("Erreur lors de la création");
+      alert("Erreur lors de la crÃ©ation");
     } finally {
       setSubmitting(false);
     }
@@ -587,7 +587,7 @@ export function StakentStyleDashboard() {
             ? "M 0 15 Q 15 10, 30 8 T 60 5"
             : "M 0 5 Q 15 8, 30 10 T 60 15"
           }
-          stroke={isPositive ? "#00FFC2" : "#ff4444"}
+          stroke={isPositive ? "#CCFF00" : "#ff4444"}
           strokeWidth="2"
           fill="none"
           opacity="0.6"
@@ -612,15 +612,15 @@ export function StakentStyleDashboard() {
       className="relative overflow-hidden rounded-2xl p-6 border border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-xl"
     >
       <div className="flex items-start justify-between mb-4">
-        <div className="p-3 rounded-xl bg-[#00FFC2]/10">
-          <Icon className="w-5 h-5 text-[#00FFC2]" />
+        <div className="p-3 rounded-xl bg-[#CCFF00]/10">
+          <Icon className="w-5 h-5 text-[#CCFF00]" />
         </div>
         <MiniSparkline trend={change} />
       </div>
       <h3 className="text-sm text-white/60 mb-1">{title}</h3>
       <div className="flex items-end gap-3">
         <p className="text-3xl font-bold text-white">{value}</p>
-        <div className={`flex items-center gap-1 text-sm ${change > 0 ? 'text-[#00FFC2]' : 'text-red-400'}`}>
+        <div className={`flex items-center gap-1 text-sm ${change > 0 ? 'text-[#CCFF00]' : 'text-red-400'}`}>
           {change > 0 ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />}
           {Math.abs(change)}%
         </div>
@@ -636,12 +636,12 @@ export function StakentStyleDashboard() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Dashboard</h1>
-          <p className="text-white/60">Bienvenue 👋 Voici votre aperçu</p>
+          <p className="text-white/60">Bienvenue ðŸ‘‹ Voici votre aperÃ§u</p>
         </div>
 
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00FFC2]"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#CCFF00]"></div>
           </div>
         ) : (
           <>
@@ -649,7 +649,7 @@ export function StakentStyleDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
               <StatCard
                 title="Revenue Total"
-                value={`${stats.totalRevenue.toLocaleString()}€`}
+                value={`${stats.totalRevenue.toLocaleString()}â‚¬`}
                 change={stats.revenueChange}
                 icon={DollarSign}
               />
@@ -679,7 +679,7 @@ export function StakentStyleDashboard() {
               <div className="xl:col-span-1 space-y-4">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-bold text-white">Active Leads</h2>
-                  <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-0">
+                  <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-0">
                     {activeDeals.filter(d => d.type === "lead").length}
                   </Badge>
                 </div>
@@ -693,7 +693,7 @@ export function StakentStyleDashboard() {
                     className={`
                       text-xs transition-all
                       ${leadFilter === "all"
-                        ? "bg-[#00FFC2] text-black border-[#00FFC2] hover:bg-[#00FFC2]/90"
+                        ? "bg-[#CCFF00] text-black border-[#CCFF00] hover:bg-[#CCFF00]/90"
                         : "bg-white/5 text-white/70 border-white/10 hover:bg-white/10"
                       }
                     `}
@@ -712,7 +712,7 @@ export function StakentStyleDashboard() {
                       }
                     `}
                   >
-                    📅 Prise RDV
+                    ðŸ“… Prise RDV
                   </Button>
                   <Button
                     variant="outline"
@@ -726,7 +726,7 @@ export function StakentStyleDashboard() {
                       }
                     `}
                   >
-                    💬 Contact
+                    ðŸ’¬ Contact
                   </Button>
                   <Button
                     variant="outline"
@@ -740,7 +740,7 @@ export function StakentStyleDashboard() {
                       }
                     `}
                   >
-                    ✅ RDV Confirmé
+                    âœ… RDV ConfirmÃ©
                   </Button>
                 </div>
 
@@ -756,10 +756,10 @@ export function StakentStyleDashboard() {
                       {leadFilter === "all" ? "Aucun lead actif" : 
                        leadFilter === "rdv-booking" ? "Aucune prise de RDV" :
                        leadFilter === "contact" ? "Aucun contact simple" :
-                       "Aucun RDV confirmé"}
+                       "Aucun RDV confirmÃ©"}
                     </p>
                     <p className="text-sm text-white/40 mt-2">
-                      {leadFilter === "all" ? "Créez votre premier lead !" : "Changez de filtre pour voir d'autres leads"}
+                      {leadFilter === "all" ? "CrÃ©ez votre premier lead !" : "Changez de filtre pour voir d'autres leads"}
                     </p>
                   </div>
                 ) : (
@@ -778,7 +778,7 @@ export function StakentStyleDashboard() {
                         className={`
                           p-4 rounded-xl cursor-pointer transition-all relative
                           ${selectedDeal?.id === deal.id 
-                            ? 'bg-[#00FFC2]/10 border border-[#00FFC2]/30' 
+                            ? 'bg-[#CCFF00]/10 border border-[#CCFF00]/30' 
                             : 'bg-white/5 border border-white/10 hover:bg-white/10'
                           }
                         `}
@@ -787,13 +787,13 @@ export function StakentStyleDashboard() {
                         {deal.type === "lead" && deal.leadCategory && (
                           <div className="absolute top-2 right-2">
                             {deal.leadCategory === "rdv-booking" && (
-                              <span className="text-lg" title="Prise de RDV">📅</span>
+                              <span className="text-lg" title="Prise de RDV">ðŸ“…</span>
                             )}
                             {deal.leadCategory === "contact" && (
-                              <span className="text-lg" title="Contact simple">💬</span>
+                              <span className="text-lg" title="Contact simple">ðŸ’¬</span>
                             )}
                             {deal.leadCategory === "rdv-confirmed" && (
-                              <span className="text-lg" title="RDV Confirmé">✅</span>
+                              <span className="text-lg" title="RDV ConfirmÃ©">âœ…</span>
                             )}
                           </div>
                         )}
@@ -807,8 +807,8 @@ export function StakentStyleDashboard() {
                           </div>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="font-bold text-[#00FFC2]">
-                            {deal.value.toLocaleString()}€
+                          <span className="font-bold text-[#CCFF00]">
+                            {deal.value.toLocaleString()}â‚¬
                           </span>
                           <span className="text-xs text-white/60">
                             {Math.round(deal.progress)}%
@@ -819,7 +819,7 @@ export function StakentStyleDashboard() {
                           <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${deal.progress}%` }}
-                            className="h-full bg-[#00FFC2]"
+                            className="h-full bg-[#CCFF00]"
                           />
                         </div>
                       </motion.div>
@@ -842,7 +842,7 @@ export function StakentStyleDashboard() {
                   <div>
                     <div className="flex items-center gap-3 mb-2">
                       <h2 className="text-3xl font-bold text-white">{selectedDeal.name}</h2>
-                      <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-0">
+                      <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-0">
                         {selectedDeal.type}
                       </Badge>
                     </div>
@@ -854,9 +854,9 @@ export function StakentStyleDashboard() {
                     )}
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-white/60 mb-1">Valeur Estimée</p>
-                    <p className="text-4xl font-bold text-[#00FFC2]">
-                      {selectedDeal.value.toLocaleString()}€
+                    <p className="text-sm text-white/60 mb-1">Valeur EstimÃ©e</p>
+                    <p className="text-4xl font-bold text-[#CCFF00]">
+                      {selectedDeal.value.toLocaleString()}â‚¬
                     </p>
                   </div>
                 </div>
@@ -865,8 +865,8 @@ export function StakentStyleDashboard() {
                 <div className="grid grid-cols-2 gap-4 mb-8 p-6 rounded-xl bg-white/5">
                   {selectedDeal.email && (
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-[#00FFC2]/10">
-                        <Mail className="w-4 h-4 text-[#00FFC2]" />
+                      <div className="p-2 rounded-lg bg-[#CCFF00]/10">
+                        <Mail className="w-4 h-4 text-[#CCFF00]" />
                       </div>
                       <div>
                         <p className="text-xs text-white/60">Email</p>
@@ -876,29 +876,29 @@ export function StakentStyleDashboard() {
                   )}
                   {selectedDeal.phone && (
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-[#00FFC2]/10">
-                        <Phone className="w-4 h-4 text-[#00FFC2]" />
+                      <div className="p-2 rounded-lg bg-[#CCFF00]/10">
+                        <Phone className="w-4 h-4 text-[#CCFF00]" />
                       </div>
                       <div>
-                        <p className="text-xs text-white/60">Téléphone</p>
+                        <p className="text-xs text-white/60">TÃ©lÃ©phone</p>
                         <p className="text-sm text-white">{selectedDeal.phone || "N/A"}</p>
                       </div>
                     </div>
                   )}
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-[#00FFC2]/10">
-                      <Calendar className="w-4 h-4 text-[#00FFC2]" />
+                    <div className="p-2 rounded-lg bg-[#CCFF00]/10">
+                      <Calendar className="w-4 h-4 text-[#CCFF00]" />
                     </div>
                     <div>
-                      <p className="text-xs text-white/60">Date de création</p>
+                      <p className="text-xs text-white/60">Date de crÃ©ation</p>
                       <p className="text-sm text-white">
                         {new Date(selectedDeal.created_at).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-[#00FFC2]/10">
-                      <Activity className="w-4 h-4 text-[#00FFC2]" />
+                    <div className="p-2 rounded-lg bg-[#CCFF00]/10">
+                      <Activity className="w-4 h-4 text-[#CCFF00]" />
                     </div>
                     <div>
                       <p className="text-xs text-white/60">Progression</p>
@@ -933,7 +933,7 @@ export function StakentStyleDashboard() {
                   {selectedDeal.type === "lead" && (
                     <Button 
                       onClick={convertLeadToClient}
-                      className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 font-semibold"
+                      className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90 font-semibold"
                     >
                       <Users className="w-4 h-4 mr-2" />
                       Convertir en Client
@@ -942,16 +942,16 @@ export function StakentStyleDashboard() {
                   {selectedDeal.type === "client" && (
                     <Button 
                       onClick={createQuoteForClient}
-                      className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 font-semibold"
+                      className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90 font-semibold"
                     >
                       <FileText className="w-4 h-4 mr-2" />
-                      Créer un Devis
+                      CrÃ©er un Devis
                     </Button>
                   )}
                   {selectedDeal.type === "quote" && (
                     <Button 
                       onClick={sendEmail}
-                      className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 font-semibold"
+                      className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90 font-semibold"
                     >
                       <Mail className="w-4 h-4 mr-2" />
                       Envoyer le Devis
@@ -969,7 +969,7 @@ export function StakentStyleDashboard() {
               </motion.div>
             ) : (
               <div className="flex items-center justify-center h-full rounded-2xl border border-white/10 bg-white/5">
-                <p className="text-white/60">Sélectionnez un deal pour voir les détails</p>
+                <p className="text-white/60">SÃ©lectionnez un deal pour voir les dÃ©tails</p>
               </div>
             )}
           </div>
@@ -1006,7 +1006,7 @@ export function StakentStyleDashboard() {
               </div>
               <div className="text-left">
                 <p className="font-semibold">Nouveau Client</p>
-                <p className="text-xs text-white/60">Créer un client</p>
+                <p className="text-xs text-white/60">CrÃ©er un client</p>
               </div>
             </Button>
           </motion.div>
@@ -1020,7 +1020,7 @@ export function StakentStyleDashboard() {
               </div>
               <div className="text-left">
                 <p className="font-semibold">Nouveau Devis</p>
-                <p className="text-xs text-white/60">Créer une proposition</p>
+                <p className="text-xs text-white/60">CrÃ©er une proposition</p>
               </div>
             </Button>
           </motion.div>
@@ -1045,14 +1045,14 @@ export function StakentStyleDashboard() {
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 rounded-xl bg-white/10">
-              <Zap className="w-6 h-6 text-[#00FFC2]" />
+              <Zap className="w-6 h-6 text-[#CCFF00]" />
             </div>
             <div>
               <h3 className="font-bold text-white">Premium CRM</h3>
-              <p className="text-xs text-white/60">Débloquez toutes les fonctionnalités</p>
+              <p className="text-xs text-white/60">DÃ©bloquez toutes les fonctionnalitÃ©s</p>
             </div>
           </div>
-          <Button className="w-full bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 font-semibold">
+          <Button className="w-full bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90 font-semibold">
             Activer Premium
           </Button>
         </motion.div>
@@ -1066,9 +1066,9 @@ export function StakentStyleDashboard() {
         <Dialog open={showNewLeadModal} onOpenChange={setShowNewLeadModal}>
           <DialogContent className="bg-[#0C0C0C] border border-white/10 text-white">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-[#00FFC2]">Nouveau Lead</DialogTitle>
+              <DialogTitle className="text-2xl font-bold text-[#CCFF00]">Nouveau Lead</DialogTitle>
               <DialogDescription className="text-white/60">
-                Ajoutez un nouveau prospect à votre pipeline
+                Ajoutez un nouveau prospect Ã  votre pipeline
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleCreateLead} className="space-y-4 mt-4">
@@ -1094,7 +1094,7 @@ export function StakentStyleDashboard() {
                 />
               </div>
               <div>
-                <Label htmlFor="lead-phone" className="text-white/80">Téléphone</Label>
+                <Label htmlFor="lead-phone" className="text-white/80">TÃ©lÃ©phone</Label>
                 <Input
                   id="lead-phone"
                   value={newLead.phone}
@@ -1133,9 +1133,9 @@ export function StakentStyleDashboard() {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 font-semibold"
+                  className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90 font-semibold"
                 >
-                  {submitting ? "Création..." : "Créer Lead"}
+                  {submitting ? "CrÃ©ation..." : "CrÃ©er Lead"}
                 </Button>
               </div>
             </form>
@@ -1148,9 +1148,9 @@ export function StakentStyleDashboard() {
         <Dialog open={showNewClientModal} onOpenChange={setShowNewClientModal}>
           <DialogContent className="bg-[#0C0C0C] border border-white/10 text-white max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-[#00FFC2]">Nouveau Client</DialogTitle>
+              <DialogTitle className="text-2xl font-bold text-[#CCFF00]">Nouveau Client</DialogTitle>
               <DialogDescription className="text-white/60">
-                Créez un client depuis zéro ou sélectionnez un lead existant
+                CrÃ©ez un client depuis zÃ©ro ou sÃ©lectionnez un lead existant
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleCreateClient} className="space-y-4 mt-4">
@@ -1158,7 +1158,7 @@ export function StakentStyleDashboard() {
               {availableLeads.length > 0 && (
                 <div className="p-4 rounded-xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20">
                   <div className="flex items-center gap-2 mb-3">
-                    <Sparkles className="w-5 h-5 text-[#00FFC2]" />
+                    <Sparkles className="w-5 h-5 text-[#CCFF00]" />
                     <Label className="text-white font-semibold">Convertir depuis un Lead</Label>
                   </div>
                   <Select
@@ -1179,7 +1179,7 @@ export function StakentStyleDashboard() {
                     }}
                   >
                     <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                      <SelectValue placeholder="Sélectionner un lead (optionnel)" />
+                      <SelectValue placeholder="SÃ©lectionner un lead (optionnel)" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#1a1a1a] border-white/10">
                       {availableLeads.map((lead) => (
@@ -1205,7 +1205,7 @@ export function StakentStyleDashboard() {
                       }}
                       className="mt-2 text-xs text-white/60 hover:text-white"
                     >
-                      Réinitialiser
+                      RÃ©initialiser
                     </Button>
                   )}
                 </div>
@@ -1244,7 +1244,7 @@ export function StakentStyleDashboard() {
                 />
               </div>
               <div>
-                <Label htmlFor="client-phone" className="text-white/80">Téléphone</Label>
+                <Label htmlFor="client-phone" className="text-white/80">TÃ©lÃ©phone</Label>
                 <Input
                   id="client-phone"
                   value={newClient.phone}
@@ -1277,9 +1277,9 @@ export function StakentStyleDashboard() {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 font-semibold"
+                  className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90 font-semibold"
                 >
-                  {submitting ? "Création..." : selectedLeadId ? "Convertir en Client" : "Créer Client"}
+                  {submitting ? "CrÃ©ation..." : selectedLeadId ? "Convertir en Client" : "CrÃ©er Client"}
                 </Button>
               </div>
             </form>
@@ -1292,9 +1292,9 @@ export function StakentStyleDashboard() {
         <Dialog open={showNewQuoteModal} onOpenChange={setShowNewQuoteModal}>
           <DialogContent className="bg-[#0C0C0C] border border-white/10 text-white max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-[#00FFC2]">Nouveau Devis</DialogTitle>
+              <DialogTitle className="text-2xl font-bold text-[#CCFF00]">Nouveau Devis</DialogTitle>
               <DialogDescription className="text-white/60">
-                Créez un devis pour un client existant ou nouveau
+                CrÃ©ez un devis pour un client existant ou nouveau
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleCreateQuote} className="space-y-4 mt-4">
@@ -1302,8 +1302,8 @@ export function StakentStyleDashboard() {
               {availableClients.length > 0 && (
                 <div className="p-4 rounded-xl bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20">
                   <div className="flex items-center gap-2 mb-3">
-                    <Sparkles className="w-5 h-5 text-[#00FFC2]" />
-                    <Label className="text-white font-semibold">Sélectionner un Client</Label>
+                    <Sparkles className="w-5 h-5 text-[#CCFF00]" />
+                    <Label className="text-white font-semibold">SÃ©lectionner un Client</Label>
                   </div>
                   <Select
                     value={selectedClientId}
@@ -1323,7 +1323,7 @@ export function StakentStyleDashboard() {
                     }}
                   >
                     <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                      <SelectValue placeholder="Sélectionner un client (optionnel)" />
+                      <SelectValue placeholder="SÃ©lectionner un client (optionnel)" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#1a1a1a] border-white/10">
                       {availableClients.map((client) => (
@@ -1349,7 +1349,7 @@ export function StakentStyleDashboard() {
                       }}
                       className="mt-2 text-xs text-white/60 hover:text-white"
                     >
-                      Réinitialiser
+                      RÃ©initialiser
                     </Button>
                   )}
                 </div>
@@ -1388,7 +1388,7 @@ export function StakentStyleDashboard() {
                 />
               </div>
               <div>
-                <Label htmlFor="quote-phone" className="text-white/80">Téléphone</Label>
+                <Label htmlFor="quote-phone" className="text-white/80">TÃ©lÃ©phone</Label>
                 <Input
                   id="quote-phone"
                   value={newQuote.client_phone}
@@ -1397,7 +1397,7 @@ export function StakentStyleDashboard() {
                 />
               </div>
               <div>
-                <Label htmlFor="quote-total" className="text-white/80">Montant (€)</Label>
+                <Label htmlFor="quote-total" className="text-white/80">Montant (â‚¬)</Label>
                 <Input
                   id="quote-total"
                   type="number"
@@ -1423,9 +1423,9 @@ export function StakentStyleDashboard() {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 font-semibold"
+                  className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90 font-semibold"
                 >
-                  {submitting ? "Création..." : "Créer Devis"}
+                  {submitting ? "CrÃ©ation..." : "CrÃ©er Devis"}
                 </Button>
               </div>
             </form>

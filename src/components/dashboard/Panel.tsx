@@ -30,7 +30,7 @@ export function Panel({
 	const variantStyles = {
 		default: "border-white/10 bg-white/5 backdrop-blur-sm",
 		elevated: "border-white/15 bg-white/8 backdrop-blur-md shadow-lg",
-		accent: "border-[#00FFC2]/20 bg-[#00FFC2]/5 backdrop-blur-sm",
+		accent: "border-[#CCFF00]/20 bg-[#CCFF00]/5 backdrop-blur-sm",
 		ghost: "border-white/5 bg-transparent backdrop-blur-sm"
 	};
 
@@ -46,7 +46,7 @@ export function Panel({
 							{title && (
 								<div className="flex items-center gap-3 mb-1">
 									{icon && (
-										<div className="w-8 h-8 rounded-lg bg-[#00FFC2]/10 flex items-center justify-center text-[#00FFC2]">
+										<div className="w-8 h-8 rounded-lg bg-[#CCFF00]/10 flex items-center justify-center text-[#CCFF00]">
 											{icon}
 										</div>
 									)}

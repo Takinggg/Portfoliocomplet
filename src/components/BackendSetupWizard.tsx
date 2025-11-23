@@ -36,7 +36,7 @@ export function BackendSetupWizard() {
   useEffect(() => {
     checkServer();
     
-    // Auto-ouvrir si le serveur n'est pas disponible et que c'est la première visite
+    // Auto-ouvrir si le serveur n'est pas disponible et que c'est la premiÃ¨re visite
     const hasSeenWizard = localStorage.getItem("hasSeenBackendWizard");
     if (!hasSeenWizard) {
       setTimeout(() => {
@@ -58,13 +58,13 @@ export function BackendSetupWizard() {
 
   const copyToClipboard = async (text: string) => {
     const { copyToClipboard: copy } = await import("../utils/clipboardHelper");
-    await copy(text, "Copié !");
+    await copy(text, "CopiÃ© !");
   };
 
   const markAsComplete = () => {
     localStorage.setItem("hasSeenBackendWizard", "true");
     setIsOpen(false);
-    toast.success("Configuration terminée !", {
+    toast.success("Configuration terminÃ©e !", {
       description: "Vous pouvez toujours rouvrir ce guide depuis le dashboard",
     });
   };
@@ -80,23 +80,23 @@ export function BackendSetupWizard() {
     },
     {
       id: "login",
-      title: "Se connecter à Supabase",
-      description: "Connectez-vous à votre compte Supabase",
+      title: "Se connecter Ã  Supabase",
+      description: "Connectez-vous Ã  votre compte Supabase",
       icon: Server,
       completed: false,
       command: "supabase login",
     },
     {
       id: "deploy",
-      title: "Déployer le serveur",
-      description: "Déployez la fonction Edge sur Supabase",
+      title: "DÃ©ployer le serveur",
+      description: "DÃ©ployez la fonction Edge sur Supabase",
       icon: Rocket,
       completed: false,
       command: "./deploy-server.sh",
     },
     {
       id: "verify",
-      title: "Vérifier le déploiement",
+      title: "VÃ©rifier le dÃ©ploiement",
       description: "Testez que le serveur fonctionne correctement",
       icon: CheckCircle,
       completed: serverStatus === "available",
@@ -117,7 +117,7 @@ export function BackendSetupWizard() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-24 right-6 bg-[#00FFC2] text-[#0C0C0C] px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2 z-40"
+          className="fixed bottom-24 right-6 bg-[#CCFF00] text-[#0C0C0C] px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2 z-40"
         >
           <Server className="h-4 w-4" />
           <span className="text-sm font-medium">Configurer le backend</span>
@@ -149,11 +149,11 @@ export function BackendSetupWizard() {
                 <div className="flex items-start justify-between mb-6">
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <Server className="h-6 w-6 text-[#00FFC2]" />
+                      <Server className="h-6 w-6 text-[#CCFF00]" />
                       <h2 className="text-2xl text-white">Configuration du Backend</h2>
                     </div>
                     <p className="text-white/60 text-sm">
-                      Suivez ces étapes pour connecter votre blog au backend Supabase
+                      Suivez ces Ã©tapes pour connecter votre blog au backend Supabase
                     </p>
                   </div>
                   <button
@@ -176,10 +176,10 @@ export function BackendSetupWizard() {
                     }
                   >
                     {serverStatus === "available"
-                      ? "✅ Serveur connecté"
+                      ? "âœ… Serveur connectÃ©"
                       : serverStatus === "checking"
-                      ? "🔍 Vérification..."
-                      : "⚠️ Serveur non disponible (mode local actif)"}
+                      ? "ðŸ” VÃ©rification..."
+                      : "âš ï¸ Serveur non disponible (mode local actif)"}
                   </Badge>
                 </div>
 
@@ -198,7 +198,7 @@ export function BackendSetupWizard() {
                         transition={{ delay: index * 0.1 }}
                         className={`p-4 rounded-lg border transition-all ${
                           isActive
-                            ? "bg-[#00FFC2]/5 border-[#00FFC2]/30"
+                            ? "bg-[#CCFF00]/5 border-[#CCFF00]/30"
                             : isCompleted
                             ? "bg-green-500/5 border-green-500/30"
                             : "bg-white/5 border-white/10"
@@ -211,7 +211,7 @@ export function BackendSetupWizard() {
                               isCompleted
                                 ? "bg-green-500/20"
                                 : isActive
-                                ? "bg-[#00FFC2]/20"
+                                ? "bg-[#CCFF00]/20"
                                 : "bg-white/5"
                             }`}
                           >
@@ -220,7 +220,7 @@ export function BackendSetupWizard() {
                             ) : (
                               <Icon
                                 className={`h-5 w-5 ${
-                                  isActive ? "text-[#00FFC2]" : "text-white/40"
+                                  isActive ? "text-[#CCFF00]" : "text-white/40"
                                 }`}
                               />
                             )}
@@ -229,7 +229,7 @@ export function BackendSetupWizard() {
                           {/* Content */}
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="text-white/40 text-sm">Étape {index + 1}</span>
+                              <span className="text-white/40 text-sm">Ã‰tape {index + 1}</span>
                               <h3 className="text-white">{step.title}</h3>
                             </div>
                             <p className="text-white/60 text-sm mb-3">{step.description}</p>
@@ -238,7 +238,7 @@ export function BackendSetupWizard() {
                             {step.command && (
                               <div className="bg-black/50 border border-white/10 rounded-lg p-3 font-mono text-sm mb-2">
                                 <div className="flex items-center justify-between">
-                                  <code className="text-[#00FFC2]">{step.command}</code>
+                                  <code className="text-[#CCFF00]">{step.command}</code>
                                   <button
                                     onClick={() => copyToClipboard(step.command!)}
                                     className="text-white/40 hover:text-white/60 transition-colors"
@@ -255,7 +255,7 @@ export function BackendSetupWizard() {
                                 href={step.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 text-[#00FFC2] text-sm hover:underline"
+                                className="inline-flex items-center gap-2 text-[#CCFF00] text-sm hover:underline"
                               >
                                 Ouvrir dans le navigateur
                                 <ExternalLink className="h-3 w-3" />
@@ -267,9 +267,9 @@ export function BackendSetupWizard() {
                               <Button
                                 size="sm"
                                 onClick={step.action}
-                                className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90 mt-2"
+                                className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90 mt-2"
                               >
-                                Vérifier
+                                VÃ©rifier
                               </Button>
                             )}
                           </div>
@@ -292,10 +292,10 @@ export function BackendSetupWizard() {
                     {serverStatus === "available" && (
                       <Button
                         onClick={markAsComplete}
-                        className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+                        className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
                       >
                         <CheckCircle className="h-4 w-4 mr-2" />
-                        Terminé
+                        TerminÃ©
                       </Button>
                     )}
                   </div>

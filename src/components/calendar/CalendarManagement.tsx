@@ -109,8 +109,8 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
 
   // Debug: Log leads
   useEffect(() => {
-    console.log("📊 CalendarManagement - Leads reçus:", leads);
-    console.log("📊 CalendarManagement - Bookings reçus:", bookings);
+    console.log("ðŸ“Š CalendarManagement - Leads reÃ§us:", leads);
+    console.log("ðŸ“Š CalendarManagement - Bookings reÃ§us:", bookings);
   }, [leads, bookings]);
 
   // Fetch events and availabilities
@@ -197,18 +197,18 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       );
 
       if (response.ok) {
-        toast.success("Statut mis à jour");
+        toast.success("Statut mis Ã  jour");
         onRefresh();
       }
     } catch (error) {
       console.error("Error updating CalendarBooking:", error);
-      toast.error("Erreur lors de la mise à jour");
+      toast.error("Erreur lors de la mise Ã  jour");
     }
   };
 
   // Delete CalendarBooking
   const deleteBooking = async (bookingId: string) => {
-    if (!confirm("Êtes-vous sûr de vouloir supprimer ce rendez-vous ?")) return;
+    if (!confirm("ÃŠtes-vous sÃ»r de vouloir supprimer ce rendez-vous ?")) return;
 
     try {
       const response = await fetch(
@@ -220,7 +220,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       );
 
       if (response.ok) {
-        toast.success("Rendez-vous supprimé");
+        toast.success("Rendez-vous supprimÃ©");
         onRefresh();
       }
     } catch (error) {
@@ -250,13 +250,13 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       );
 
       if (response.ok) {
-        toast.success(isBlocked ? "Journée bloquée" : "Disponibilité ajoutée");
+        toast.success(isBlocked ? "JournÃ©e bloquÃ©e" : "DisponibilitÃ© ajoutÃ©e");
         fetchAvailabilities();
         setShowAvailabilityDialog(false);
       }
     } catch (error) {
       console.error("Error creating availability:", error);
-      toast.error("Erreur lors de la création");
+      toast.error("Erreur lors de la crÃ©ation");
     }
   };
 
@@ -276,13 +276,13 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       );
 
       if (response.ok) {
-        toast.success("Événement créé");
+        toast.success("Ã‰vÃ©nement crÃ©Ã©");
         fetchEvents();
         setShowEventDialog(false);
       }
     } catch (error) {
       console.error("Error creating event:", error);
-      toast.error("Erreur lors de la création");
+      toast.error("Erreur lors de la crÃ©ation");
     }
   };
 
@@ -317,9 +317,9 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
   const getStatusLabel = (status: CalendarBooking["status"]) => {
     const labels = {
       pending: "En attente",
-      confirmed: "Confirmé",
-      completed: "Terminé",
-      cancelled: "Annulé"
+      confirmed: "ConfirmÃ©",
+      completed: "TerminÃ©",
+      cancelled: "AnnulÃ©"
     };
     return labels[status];
   };
@@ -327,7 +327,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
   const getStatusColor = (status: CalendarBooking["status"]) => {
     const colors = {
       pending: "bg-yellow-500/10 text-yellow-400",
-      confirmed: "bg-[#00FFC2]/10 text-[#00FFC2]",
+      confirmed: "bg-[#CCFF00]/10 text-[#CCFF00]",
       completed: "bg-green-500/10 text-green-400",
       cancelled: "bg-red-500/10 text-red-400"
     };
@@ -346,16 +346,16 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
         <div>
           <h2 className="text-2xl mb-1">Calendrier & Rendez-vous</h2>
           <p className="text-white/60 text-sm">
-            {upcomingBookings.length} rendez-vous à venir
+            {upcomingBookings.length} rendez-vous Ã  venir
           </p>
         </div>
         <div className="flex gap-2">
           <Button
             onClick={() => setShowEventDialog(true)}
-            className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+            className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Nouvel événement
+            Nouvel Ã©vÃ©nement
           </Button>
           <Button
             onClick={() => setShowAvailabilityDialog(true)}
@@ -363,7 +363,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
             className="bg-white/5 border-white/10 text-white hover:bg-white/10"
           >
             <Settings className="h-4 w-4 mr-2" />
-            Disponibilités
+            DisponibilitÃ©s
           </Button>
         </div>
       </div>
@@ -384,19 +384,19 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
             color: "#FFB800"
           },
           {
-            label: "Confirmés",
+            label: "ConfirmÃ©s",
             value: bookings.filter(b => b.status === "confirmed").length,
             icon: Check,
-            color: "#00FFC2"
+            color: "#CCFF00"
           },
           {
-            label: "Terminés",
+            label: "TerminÃ©s",
             value: bookings.filter(b => b.status === "completed").length,
             icon: CalendarDays,
             color: "#4CAF50"
           },
           {
-            label: "Annulés",
+            label: "AnnulÃ©s",
             value: bookings.filter(b => b.status === "cancelled").length,
             icon: X,
             color: "#FF6B6B"
@@ -410,7 +410,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
             >
-              <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
+              <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -433,8 +433,8 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
 
       <div className="grid lg:grid-cols-4 gap-6">
         {/* Calendar */}
-        <Card className="lg:col-span-2 bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
-          <CardHeader className="border-b border-[#00FFC2]/10">
+        <Card className="lg:col-span-2 bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
+          <CardHeader className="border-b border-[#CCFF00]/10">
             <div className="flex items-center justify-between mb-3">
               <CardTitle>Calendrier</CardTitle>
               <div className="flex items-center gap-2">
@@ -476,14 +476,14 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
           <CardContent className="pt-6">
             {/* Legend */}
             <div className="flex items-center gap-4 mb-4 pb-3 border-b border-white/5">
-              <p className="text-xs text-white/40">Légende:</p>
+              <p className="text-xs text-white/40">LÃ©gende:</p>
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-purple-500" />
                 <span className="text-xs text-white/60">Leads</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-[#00FFC2]" />
-                <span className="text-xs text-white/60">RDV confirmés</span>
+                <div className="w-2 h-2 rounded-full bg-[#CCFF00]" />
+                <span className="text-xs text-white/60">RDV confirmÃ©s</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-yellow-500" />
@@ -542,7 +542,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                           : 'text-white hover:bg-white/10 cursor-pointer'
                         }
                         ${isSelected 
-                          ? 'bg-[#00FFC2]/20 border-2 border-[#00FFC2]' 
+                          ? 'bg-[#CCFF00]/20 border-2 border-[#CCFF00]' 
                           : 'border border-white/5'
                         }
                         ${isToday && !isSelected ? 'border-2 border-white/30' : ''}
@@ -563,7 +563,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                             if ('time' in event && 'duration' in event) {
                               // CalendarBooking
                               color = event.status === 'confirmed' 
-                                ? 'bg-[#00FFC2]' 
+                                ? 'bg-[#CCFF00]' 
                                 : event.status === 'pending'
                                 ? 'bg-yellow-500'
                                 : event.status === 'completed'
@@ -607,7 +607,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                 className="mt-6 pt-6 border-t border-white/10"
               >
                 <h4 className="text-sm text-white/60 mb-3">
-                  Événements du {selectedDate.toLocaleDateString('fr-FR', { 
+                  Ã‰vÃ©nements du {selectedDate.toLocaleDateString('fr-FR', { 
                     weekday: 'long', 
                     day: 'numeric', 
                     month: 'long' 
@@ -616,7 +616,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {getEventsForDate(selectedDate).length === 0 ? (
                     <p className="text-sm text-white/40 text-center py-4">
-                      Aucun événement ce jour
+                      Aucun Ã©vÃ©nement ce jour
                     </p>
                   ) : (
                     getEventsForDate(selectedDate).map((event, idx) => (
@@ -633,7 +633,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                             setSelectedBooking(event as CalendarBooking);
                           }
                         }}
-                        className={`p-3 bg-white/5 rounded-lg border border-white/5 hover:border-[#00FFC2]/30 transition-all ${
+                        className={`p-3 bg-white/5 rounded-lg border border-white/5 hover:border-[#CCFF00]/30 transition-all ${
                           ('message' in event || 'time' in event) ? 'cursor-pointer' : ''
                         }`}
                       >
@@ -642,7 +642,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                           <div className="flex items-center justify-between">
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
-                                <CalendarIcon className="h-3 w-3 text-[#00FFC2]" />
+                                <CalendarIcon className="h-3 w-3 text-[#CCFF00]" />
                                 <p className="text-sm font-medium">{event.name}</p>
                               </div>
                               <p className="text-xs text-white/60">{event.time} - {event.duration}min</p>
@@ -673,7 +673,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-6 px-2 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                                className="h-6 px-2 text-[#CCFF00] hover:bg-[#CCFF00]/10"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   setSelectedLead(event as Lead);
@@ -691,7 +691,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                               </Badge>
                               {event.wantsAppointment && (
                                 <Badge className="bg-orange-500/10 text-orange-400 text-xs">
-                                  RDV demandé
+                                  RDV demandÃ©
                                 </Badge>
                               )}
                             </div>
@@ -707,8 +707,8 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
         </Card>
 
         {/* Recent Leads */}
-        <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
-          <CardHeader className="border-b border-[#00FFC2]/10">
+        <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
+          <CardHeader className="border-b border-[#CCFF00]/10">
             <CardTitle className="flex items-center justify-between">
               <span>Nouveaux Leads</span>
               <Badge className="bg-purple-500/10 text-purple-400 border-0">
@@ -755,7 +755,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 w-7 p-0 text-[#00FFC2] hover:bg-[#00FFC2]/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="h-7 w-7 p-0 text-[#CCFF00] hover:bg-[#CCFF00]/10 opacity-0 group-hover:opacity-100 transition-opacity"
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedLead(lead);
@@ -776,11 +776,11 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                             ? 'bg-purple-500/10 text-purple-400' 
                             : 'bg-blue-500/10 text-blue-400'
                         }`}>
-                          {lead.status === 'new' ? 'Nouveau' : 'Contacté'}
+                          {lead.status === 'new' ? 'Nouveau' : 'ContactÃ©'}
                         </Badge>
                         {lead.wantsAppointment && (
                           <Badge className="bg-orange-500/10 text-orange-400 text-xs">
-                            RDV demandé
+                            RDV demandÃ©
                           </Badge>
                         )}
                         {lead.interests && lead.interests.length > 0 && (
@@ -806,11 +806,11 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
         </Card>
 
         {/* Upcoming Bookings */}
-        <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
-          <CardHeader className="border-b border-[#00FFC2]/10">
+        <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
+          <CardHeader className="border-b border-[#CCFF00]/10">
             <CardTitle className="flex items-center justify-between">
               <span>Prochains RDV</span>
-              <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-0">
+              <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-0">
                 {upcomingBookings.length}
               </Badge>
             </CardTitle>
@@ -822,7 +822,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
               ) : upcomingBookings.length === 0 ? (
                 <div className="text-center text-white/40 py-8">
                   <CalendarIcon className="h-12 w-12 mx-auto mb-3 opacity-20" />
-                  <p className="text-sm">Aucun rendez-vous à venir</p>
+                  <p className="text-sm">Aucun rendez-vous Ã  venir</p>
                 </div>
               ) : (
                 upcomingBookings.map((CalendarBooking, index) => (
@@ -831,7 +831,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="p-4 bg-white/5 rounded-xl border border-white/5 hover:border-[#00FFC2]/30 transition-all group"
+                    className="p-4 bg-white/5 rounded-xl border border-white/5 hover:border-[#CCFF00]/30 transition-all group"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
@@ -845,9 +845,9 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                         <div className="flex items-center gap-2 text-xs text-white/60">
                           <Clock className="h-3 w-3" />
                           <span>{new Date(CalendarBooking.date).toLocaleDateString('fr-FR')}</span>
-                          <span>•</span>
+                          <span>â€¢</span>
                           <span>{CalendarBooking.time}</span>
-                          <span>•</span>
+                          <span>â€¢</span>
                           <span>{CalendarBooking.duration}min</span>
                         </div>
                       </div>
@@ -859,7 +859,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                         <Button
                           size="sm"
                           onClick={() => updateBookingStatus(CalendarBooking.id, "confirmed")}
-                          className="flex-1 bg-[#00FFC2]/10 text-[#00FFC2] hover:bg-[#00FFC2]/20 h-8 text-xs"
+                          className="flex-1 bg-[#CCFF00]/10 text-[#CCFF00] hover:bg-[#CCFF00]/20 h-8 text-xs"
                         >
                           <Check className="h-3 w-3 mr-1" />
                           Confirmer
@@ -904,8 +904,8 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       </div>
 
       {/* All Leads List */}
-      <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
-        <CardHeader className="border-b border-[#00FFC2]/10">
+      <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
+        <CardHeader className="border-b border-[#CCFF00]/10">
           <CardTitle className="flex items-center justify-between">
             <span>Tous les Leads</span>
             <Badge className="bg-purple-500/10 text-purple-400 border-0">
@@ -934,11 +934,11 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
             ) : !leads || leads.length === 0 ? (
               <div className="col-span-full text-center text-white/40 py-12">
                 <Mail className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                <p>Aucun lead trouvé</p>
+                <p>Aucun lead trouvÃ©</p>
               </div>
             ) : (
               (leads || [])
-                .filter(lead => !lead.wantsAppointment) // Exclure les leads avec RDV demandé
+                .filter(lead => !lead.wantsAppointment) // Exclure les leads avec RDV demandÃ©
                 .filter(lead => 
                   searchQuery === "" ||
                   lead.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -970,7 +970,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-8 w-8 p-0 text-[#00FFC2] hover:bg-[#00FFC2]/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="h-8 w-8 p-0 text-[#CCFF00] hover:bg-[#CCFF00]/10 opacity-0 group-hover:opacity-100 transition-opacity"
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedLead(lead);
@@ -996,12 +996,12 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                           : 'bg-white/10 text-white/70'
                       }`}>
                         {lead.status === 'new' ? 'Nouveau' : 
-                         lead.status === 'contacted' ? 'Contacté' :
-                         lead.status === 'converted' ? 'Converti' : 'Qualifié'}
+                         lead.status === 'contacted' ? 'ContactÃ©' :
+                         lead.status === 'converted' ? 'Converti' : 'QualifiÃ©'}
                       </Badge>
                       {lead.wantsAppointment && (
                         <Badge className="bg-orange-500/10 text-orange-400 text-xs">
-                          RDV demandé
+                          RDV demandÃ©
                         </Badge>
                       )}
                       {lead.interests && lead.interests.length > 0 && (
@@ -1028,11 +1028,11 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       </Card>
 
       {/* All Appointments (Bookings + Leads with RDV) */}
-      <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
-        <CardHeader className="border-b border-[#00FFC2]/10">
+      <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
+        <CardHeader className="border-b border-[#CCFF00]/10">
           <CardTitle className="flex items-center justify-between">
             <span>Tous les Rendez-vous</span>
-            <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-0">
+            <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-0">
               {filteredBookings.length + (leads || []).filter(l => l.wantsAppointment).length} RDV
             </Badge>
           </CardTitle>
@@ -1058,11 +1058,11 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
             ) : filteredBookings.length === 0 && (leads || []).filter(l => l.wantsAppointment).length === 0 ? (
               <div className="col-span-full text-center text-white/40 py-12">
                 <CalendarIcon className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                <p>Aucun rendez-vous trouvé</p>
+                <p>Aucun rendez-vous trouvÃ©</p>
               </div>
             ) : (
               <>
-                {/* Leads with RDV demandé */}
+                {/* Leads with RDV demandÃ© */}
                 {(leads || [])
                   .filter(lead => lead.wantsAppointment)
                   .filter(lead => 
@@ -1094,7 +1094,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                           )}
                         </div>
                         <Badge className="bg-orange-500/10 text-orange-400">
-                          RDV demandé
+                          RDV demandÃ©
                         </Badge>
                       </div>
                       
@@ -1113,8 +1113,8 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                             : 'bg-white/10 text-white/70'
                         }`}>
                           {lead.status === 'new' ? 'Nouveau' : 
-                           lead.status === 'contacted' ? 'Contacté' :
-                           lead.status === 'converted' ? 'Converti' : 'Qualifié'}
+                           lead.status === 'contacted' ? 'ContactÃ©' :
+                           lead.status === 'converted' ? 'Converti' : 'QualifiÃ©'}
                         </Badge>
                         {lead.interests && lead.interests.length > 0 && (
                           <Badge className="bg-white/10 text-white/70 text-xs">
@@ -1142,7 +1142,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: ((leads || []).filter(l => l.wantsAppointment).length + index) * 0.02 }}
-                    className="p-5 bg-white/5 rounded-xl border border-white/5 hover:border-[#00FFC2]/30 transition-all"
+                    className="p-5 bg-white/5 rounded-xl border border-white/5 hover:border-[#CCFF00]/30 transition-all"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
@@ -1186,11 +1186,11 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
 
       {/* Event Dialog */}
       <Dialog open={showEventDialog} onOpenChange={setShowEventDialog}>
-        <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+        <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
           <DialogHeader>
-            <DialogTitle className="text-white">Créer un événement</DialogTitle>
+            <DialogTitle className="text-white">CrÃ©er un Ã©vÃ©nement</DialogTitle>
             <DialogDescription className="text-white/60">
-              Ajoutez un événement personnalisé à votre calendrier
+              Ajoutez un Ã©vÃ©nement personnalisÃ© Ã  votre calendrier
             </DialogDescription>
           </DialogHeader>
           <EventForm onCreate={createEvent} onClose={() => setShowEventDialog(false)} />
@@ -1199,11 +1199,11 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
 
       {/* Availability Dialog */}
       <Dialog open={showAvailabilityDialog} onOpenChange={setShowAvailabilityDialog}>
-        <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+        <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
           <DialogHeader>
-            <DialogTitle className="text-white">Gérer les disponibilités</DialogTitle>
+            <DialogTitle className="text-white">GÃ©rer les disponibilitÃ©s</DialogTitle>
             <DialogDescription className="text-white/60">
-              Définissez vos créneaux disponibles ou bloquez une journée
+              DÃ©finissez vos crÃ©neaux disponibles ou bloquez une journÃ©e
             </DialogDescription>
           </DialogHeader>
           <AvailabilityForm onCreate={createAvailability} onClose={() => setShowAvailabilityDialog(false)} />
@@ -1232,7 +1232,7 @@ function EventForm({ onCreate, onClose }: any) {
     endTime: "10:00",
     type: "event" as "CalendarBooking" | "event" | "blocked",
     description: "",
-    color: "#00FFC2"
+    color: "#CCFF00"
   });
 
   const handleSubmit = () => {
@@ -1250,7 +1250,7 @@ function EventForm({ onCreate, onClose }: any) {
         <Input
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          placeholder="Titre de l'événement"
+          placeholder="Titre de l'Ã©vÃ©nement"
           className="bg-white/5 border-white/10 text-white"
         />
       </div>
@@ -1272,9 +1272,9 @@ function EventForm({ onCreate, onClose }: any) {
             <SelectTrigger className="bg-white/5 border-white/10 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
-              <SelectItem value="event">Événement</SelectItem>
-              <SelectItem value="blocked">Bloqué</SelectItem>
+            <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
+              <SelectItem value="event">Ã‰vÃ©nement</SelectItem>
+              <SelectItem value="blocked">BloquÃ©</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -1282,7 +1282,7 @@ function EventForm({ onCreate, onClose }: any) {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label className="text-white">Heure de début</Label>
+          <Label className="text-white">Heure de dÃ©but</Label>
           <Input
             type="time"
             value={formData.startTime}
@@ -1307,7 +1307,7 @@ function EventForm({ onCreate, onClose }: any) {
         <Textarea
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          placeholder="Description de l'événement..."
+          placeholder="Description de l'Ã©vÃ©nement..."
           rows={3}
           className="bg-white/5 border-white/10 text-white"
         />
@@ -1323,9 +1323,9 @@ function EventForm({ onCreate, onClose }: any) {
         </Button>
         <Button
           onClick={handleSubmit}
-          className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+          className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
         >
-          Créer l'événement
+          CrÃ©er l'Ã©vÃ©nement
         </Button>
       </div>
     </div>
@@ -1360,7 +1360,7 @@ function AvailabilityForm({ onCreate, onClose }: any) {
 
   const handleSubmit = () => {
     if (!formData.date) {
-      toast.error("Veuillez sélectionner une date");
+      toast.error("Veuillez sÃ©lectionner une date");
       return;
     }
 
@@ -1397,7 +1397,7 @@ function AvailabilityForm({ onCreate, onClose }: any) {
           className="w-4 h-4 rounded border-white/20 bg-white/5"
         />
         <Label htmlFor="blocked" className="text-white cursor-pointer">
-          Bloquer cette journée (pas de disponibilités)
+          Bloquer cette journÃ©e (pas de disponibilitÃ©s)
         </Label>
       </div>
 
@@ -1407,7 +1407,7 @@ function AvailabilityForm({ onCreate, onClose }: any) {
           <Input
             value={formData.reason}
             onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-            placeholder="Ex: Congés, formation..."
+            placeholder="Ex: CongÃ©s, formation..."
             className="bg-white/5 border-white/10 text-white"
           />
         </div>
@@ -1423,7 +1423,7 @@ function AvailabilityForm({ onCreate, onClose }: any) {
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-white">À</Label>
+            <Label className="text-white">Ã€</Label>
             <Input
               type="time"
               value={formData.endTime}
@@ -1444,9 +1444,9 @@ function AvailabilityForm({ onCreate, onClose }: any) {
         </Button>
         <Button
           onClick={handleSubmit}
-          className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+          className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
         >
-          {formData.isBlocked ? "Bloquer la journée" : "Ajouter les disponibilités"}
+          {formData.isBlocked ? "Bloquer la journÃ©e" : "Ajouter les disponibilitÃ©s"}
         </Button>
       </div>
     </div>

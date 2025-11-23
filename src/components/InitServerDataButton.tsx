@@ -1,5 +1,5 @@
 /**
- * Bouton pour initialiser le serveur avec des données de démonstration
+ * Bouton pour initialiser le serveur avec des donnÃ©es de dÃ©monstration
  */
 
 import { useState } from "react";
@@ -22,23 +22,23 @@ export function InitServerDataButton() {
       if (projectsResult.success) {
         setResult({
           success: true,
-          message: `✅ ${projectsResult.count} projets créés avec succès !`
+          message: `âœ… ${projectsResult.count} projets crÃ©Ã©s avec succÃ¨s !`
         });
 
-        // Reload après 2 secondes
+        // Reload aprÃ¨s 2 secondes
         setTimeout(() => {
           window.location.href = "/";
         }, 2000);
       } else {
         setResult({
           success: false,
-          message: "❌ Erreur lors de l'initialisation"
+          message: "âŒ Erreur lors de l'initialisation"
         });
       }
     } catch (error: any) {
       setResult({
         success: false,
-        message: `❌ Erreur: ${error.message}`
+        message: `âŒ Erreur: ${error.message}`
       });
     } finally {
       setLoading(false);
@@ -48,16 +48,16 @@ export function InitServerDataButton() {
   return (
     <Card className="bg-white/5 border-white/10 p-6">
       <div className="flex items-start gap-4">
-        <div className="p-3 rounded-lg bg-[#00FFC2]/10">
-          <Database className="h-6 w-6 text-[#00FFC2]" />
+        <div className="p-3 rounded-lg bg-[#CCFF00]/10">
+          <Database className="h-6 w-6 text-[#CCFF00]" />
         </div>
         
         <div className="flex-1">
           <h3 className="text-lg text-white mb-2">
-            Initialiser le serveur avec des données de démo
+            Initialiser le serveur avec des donnÃ©es de dÃ©mo
           </h3>
           <p className="text-sm text-white/60 mb-4">
-            Crée 3 projets de démonstration sur le serveur pour tester l'affichage
+            CrÃ©e 3 projets de dÃ©monstration sur le serveur pour tester l'affichage
             sur la homepage et le dashboard.
           </p>
 
@@ -65,7 +65,7 @@ export function InitServerDataButton() {
             <Button
               onClick={handleInit}
               disabled={loading}
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+              className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
             >
               {loading ? (
                 <>
@@ -75,7 +75,7 @@ export function InitServerDataButton() {
               ) : (
                 <>
                   <Database className="h-4 w-4 mr-2" />
-                  Initialiser les données
+                  Initialiser les donnÃ©es
                 </>
               )}
             </Button>

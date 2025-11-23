@@ -242,7 +242,7 @@ export function CRMUnifiedTab() {
 
     } catch (error) {
       console.error("Error fetching data:", error);
-      toast.error("Erreur lors du chargement des données");
+      toast.error("Erreur lors du chargement des donnÃ©es");
     } finally {
       setLoading(false);
     }
@@ -325,7 +325,7 @@ export function CRMUnifiedTab() {
       );
 
       if (res.ok) {
-        toast.success("✅ Lead converti en client !");
+        toast.success("âœ… Lead converti en client !");
         setConvertLeadModal(null);
         fetchAllData();
       }
@@ -356,7 +356,7 @@ export function CRMUnifiedTab() {
 
       if (error) throw error;
 
-      toast.success("✅ Devis créé !");
+      toast.success("âœ… Devis crÃ©Ã© !");
       setCreateQuoteModal(null);
       fetchAllData();
       
@@ -367,14 +367,14 @@ export function CRMUnifiedTab() {
         valid_until: ""
       });
     } catch (error) {
-      toast.error("Erreur lors de la création du devis");
+      toast.error("Erreur lors de la crÃ©ation du devis");
     }
   };
 
   const handleSendQuote = async (quote: any) => {
     try {
       await (supabase.from("quotes") as any).update({ status: "sent" }).eq("id", quote.id);
-      toast.success(`📧 Devis envoyé !`);
+      toast.success(`ðŸ“§ Devis envoyÃ© !`);
       fetchAllData();
     } catch (error) {
       toast.error("Erreur lors de l'envoi");
@@ -404,11 +404,11 @@ export function CRMUnifiedTab() {
 
       await (supabase.from("quotes") as any).update({ status: "accepted" }).eq("id", convertQuoteModal.id);
 
-      toast.success("✅ Facture créée !");
+      toast.success("âœ… Facture crÃ©Ã©e !");
       setConvertQuoteModal(null);
       fetchAllData();
     } catch (error) {
-      toast.error("Erreur lors de la création de la facture");
+      toast.error("Erreur lors de la crÃ©ation de la facture");
     }
   };
 
@@ -500,8 +500,8 @@ export function CRMUnifiedTab() {
             {/* Value */}
             {deal.value && (
               <div className="text-right w-32">
-                <div className="text-lg font-bold text-[#00FFC2]">
-                  {deal.value.toLocaleString()}€
+                <div className="text-lg font-bold text-[#CCFF00]">
+                  {deal.value.toLocaleString()}â‚¬
                 </div>
               </div>
             )}
@@ -517,7 +517,7 @@ export function CRMUnifiedTab() {
                 <Button
                   size="sm"
                   onClick={() => handleConvertLead(deal.lead!)}
-                  className="bg-[#00FFC2]/10 hover:bg-[#00FFC2]/20 text-[#00FFC2]"
+                  className="bg-[#CCFF00]/10 hover:bg-[#CCFF00]/20 text-[#CCFF00]"
                 >
                   <ArrowRight className="w-4 h-4 mr-1" />
                   Convertir
@@ -566,7 +566,7 @@ export function CRMUnifiedTab() {
                 <DropdownMenuContent>
                   <DropdownMenuItem>
                     <Eye className="w-4 h-4 mr-2" />
-                    Voir détails
+                    Voir dÃ©tails
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <History className="w-4 h-4 mr-2" />
@@ -594,10 +594,10 @@ export function CRMUnifiedTab() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-            <Sparkles className="w-8 h-8 text-[#00FFC2]" />
-            CRM Unifié
+            <Sparkles className="w-8 h-8 text-[#CCFF00]" />
+            CRM UnifiÃ©
           </h1>
-          <p className="text-white/60 mt-1">Toutes vos opportunités en un coup d'œil</p>
+          <p className="text-white/60 mt-1">Toutes vos opportunitÃ©s en un coup d'Å“il</p>
         </div>
       </div>
 
@@ -623,7 +623,7 @@ export function CRMUnifiedTab() {
         />
         <StatCard
           label="Valeur totale"
-          value={`${stats.totalValue.toLocaleString()}€`}
+          value={`${stats.totalValue.toLocaleString()}â‚¬`}
           icon={<Euro className="w-5 h-5" />}
           variant="gradient"
         />
@@ -647,7 +647,7 @@ export function CRMUnifiedTab() {
               size="sm"
               variant={statusFilter === type ? "default" : "ghost"}
               onClick={() => setStatusFilter(type)}
-              className={statusFilter === type ? "bg-[#00FFC2] text-black" : ""}
+              className={statusFilter === type ? "bg-[#CCFF00] text-black" : ""}
             >
               {type === "all" && "Tous"}
               {type === "lead" && "Leads"}
@@ -664,11 +664,11 @@ export function CRMUnifiedTab() {
         <div className="divide-y divide-white/5">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="w-8 h-8 border-4 border-[#00FFC2]/20 border-t-[#00FFC2] rounded-full animate-spin" />
+              <div className="w-8 h-8 border-4 border-[#CCFF00]/20 border-t-[#CCFF00] rounded-full animate-spin" />
             </div>
           ) : filteredDeals.length === 0 ? (
             <div className="text-center py-12 text-white/60">
-              Aucune opportunité trouvée
+              Aucune opportunitÃ© trouvÃ©e
             </div>
           ) : (
             filteredDeals.map(deal => renderDeal(deal))
@@ -681,7 +681,7 @@ export function CRMUnifiedTab() {
         <DialogContent className="max-w-2xl" style={{ background: colors.surface, border: `1px solid ${colors.border}` }}>
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
-              <ArrowRight className="w-5 h-5 text-[#00FFC2]" />
+              <ArrowRight className="w-5 h-5 text-[#CCFF00]" />
               Convertir le lead en client
             </DialogTitle>
           </DialogHeader>
@@ -705,7 +705,7 @@ export function CRMUnifiedTab() {
                 />
               </div>
               <div>
-                <Label className="text-white">Téléphone</Label>
+                <Label className="text-white">TÃ©lÃ©phone</Label>
                 <Input
                   value={clientForm.phone}
                   onChange={(e) => setClientForm({ ...clientForm, phone: e.target.value })}
@@ -722,7 +722,7 @@ export function CRMUnifiedTab() {
               </div>
             </div>
             <div>
-              <Label className="text-white">Adresse complète</Label>
+              <Label className="text-white">Adresse complÃ¨te</Label>
               <Textarea
                 value={clientForm.address}
                 onChange={(e) => setClientForm({ ...clientForm, address: e.target.value })}
@@ -736,10 +736,10 @@ export function CRMUnifiedTab() {
               </Button>
               <Button
                 onClick={handleConvertLeadToClient}
-                className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               >
                 <UserCheck className="w-4 h-4 mr-2" />
-                Créer le client
+                CrÃ©er le client
               </Button>
             </div>
           </div>
@@ -751,8 +751,8 @@ export function CRMUnifiedTab() {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" style={{ background: colors.surface, border: `1px solid ${colors.border}` }}>
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
-              <FileText className="w-5 h-5 text-[#00FFC2]" />
-              Créer un devis pour {createQuoteModal?.name}
+              <FileText className="w-5 h-5 text-[#CCFF00]" />
+              CrÃ©er un devis pour {createQuoteModal?.name}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
@@ -819,7 +819,7 @@ export function CRMUnifiedTab() {
                       <div className="grid grid-cols-2 gap-2">
                         <Input
                           type="number"
-                          placeholder="Quantité"
+                          placeholder="QuantitÃ©"
                           value={item.quantity}
                           onChange={(e) => {
                             const newItems = [...quoteForm.items];
@@ -830,7 +830,7 @@ export function CRMUnifiedTab() {
                         />
                         <Input
                           type="number"
-                          placeholder="Prix unitaire (€)"
+                          placeholder="Prix unitaire (â‚¬)"
                           value={item.price}
                           onChange={(e) => {
                             const newItems = [...quoteForm.items];
@@ -857,11 +857,11 @@ export function CRMUnifiedTab() {
               </div>
               
               {/* Total */}
-              <div className="mt-4 p-4 rounded-lg bg-[#00FFC2]/10 border border-[#00FFC2]/20">
+              <div className="mt-4 p-4 rounded-lg bg-[#CCFF00]/10 border border-[#CCFF00]/20">
                 <div className="flex items-center justify-between">
                   <span className="text-white font-semibold">Total HT</span>
-                  <span className="text-2xl font-bold text-[#00FFC2]">
-                    {quoteForm.items.reduce((sum, item) => sum + item.quantity * item.price, 0).toLocaleString()}€
+                  <span className="text-2xl font-bold text-[#CCFF00]">
+                    {quoteForm.items.reduce((sum, item) => sum + item.quantity * item.price, 0).toLocaleString()}â‚¬
                   </span>
                 </div>
               </div>
@@ -873,10 +873,10 @@ export function CRMUnifiedTab() {
               </Button>
               <Button
                 onClick={handleCreateQuote}
-                className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               >
                 <FileText className="w-4 h-4 mr-2" />
-                Créer le devis
+                CrÃ©er le devis
               </Button>
             </div>
           </div>
@@ -888,7 +888,7 @@ export function CRMUnifiedTab() {
         <DialogContent style={{ background: colors.surface, border: `1px solid ${colors.border}` }}>
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
-              <Receipt className="w-5 h-5 text-[#00FFC2]" />
+              <Receipt className="w-5 h-5 text-[#CCFF00]" />
               Transformer en facture
             </DialogTitle>
           </DialogHeader>
@@ -898,13 +898,13 @@ export function CRMUnifiedTab() {
               <p className="text-white/60 text-sm mb-3">{convertQuoteModal?.client_name}</p>
               <div className="flex items-center justify-between">
                 <span className="text-white/80">Montant</span>
-                <span className="text-2xl font-bold text-[#00FFC2]">
-                  {convertQuoteModal?.amount.toLocaleString()}€
+                <span className="text-2xl font-bold text-[#CCFF00]">
+                  {convertQuoteModal?.amount.toLocaleString()}â‚¬
                 </span>
               </div>
             </div>
             <p className="text-white/60 text-sm">
-              Une facture sera créée automatiquement avec un numéro unique et une échéance de 30 jours.
+              Une facture sera crÃ©Ã©e automatiquement avec un numÃ©ro unique et une Ã©chÃ©ance de 30 jours.
             </p>
             <div className="flex gap-3 justify-end">
               <Button variant="outline" onClick={() => setConvertQuoteModal(null)}>
@@ -912,10 +912,10 @@ export function CRMUnifiedTab() {
               </Button>
               <Button
                 onClick={handleConvertQuoteToInvoice}
-                className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               >
                 <CheckCircle className="w-4 h-4 mr-2" />
-                Créer la facture
+                CrÃ©er la facture
               </Button>
             </div>
           </div>

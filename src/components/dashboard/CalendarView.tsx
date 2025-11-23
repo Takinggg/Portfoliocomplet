@@ -90,9 +90,9 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
   const [pendingChanges, setPendingChanges] = useState<PendingChange[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
-  console.log('📅 CalendarView rendered with', bookings.length, 'bookings');
+  console.log('ðŸ“… CalendarView rendered with', bookings.length, 'bookings');
 
-  // Appliquer les changements en attente aux bookings affichés
+  // Appliquer les changements en attente aux bookings affichÃ©s
   const displayedBookings = useMemo(() => {
     return bookings.map(booking => {
       const change = pendingChanges.find(c => c.bookingId === booking.id);
@@ -136,9 +136,9 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
     setCurrentDate(new Date());
   };
 
-  // Générer les jours à afficher selon le mode
+  // GÃ©nÃ©rer les jours Ã  afficher selon le mode
   const days = useMemo(() => {
-    console.log('📅 Generating calendar days for:', viewMode, 'current date:', currentDate);
+    console.log('ðŸ“… Generating calendar days for:', viewMode, 'current date:', currentDate);
     
     if (viewMode === 'month') {
       const start = startOfWeek(startOfMonth(currentDate), { weekStartsOn: 1 });
@@ -151,7 +151,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
         day = addDays(day, 1);
       }
       
-      console.log('📅 Generated', days.length, 'days for month view');
+      console.log('ðŸ“… Generated', days.length, 'days for month view');
       return days;
     } else if (viewMode === 'week') {
       const start = startOfWeek(currentDate, { weekStartsOn: 1 });
@@ -161,15 +161,15 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
         days.push(addDays(start, i));
       }
       
-      console.log('📅 Generated', days.length, 'days for week view');
+      console.log('ðŸ“… Generated', days.length, 'days for week view');
       return days;
     } else {
-      console.log('📅 Generated 1 day for day view');
+      console.log('ðŸ“… Generated 1 day for day view');
       return [currentDate];
     }
   }, [currentDate, viewMode]);
 
-  // Récupérer les bookings pour un jour donné
+  // RÃ©cupÃ©rer les bookings pour un jour donnÃ©
   const getBookingsForDay = (day: Date) => {
     return displayedBookings.filter(booking => {
       const bookingDate = parseISO(booking.date);
@@ -197,13 +197,13 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
     const bookingId = active.id as string;
     const overId = over.id as string;
     
-    // Vérifier si c'est un drop dans la corbeille
+    // VÃ©rifier si c'est un drop dans la corbeille
     if (overId === 'trash-zone') {
       const booking = bookings.find(b => b.id === bookingId);
       if (booking && onDeleteBooking) {
-        if (confirm(`Supprimer le rendez-vous avec ${booking.name} le ${format(parseISO(booking.date), 'dd/MM/yyyy', { locale: fr })} à ${booking.time} ?`)) {
+        if (confirm(`Supprimer le rendez-vous avec ${booking.name} le ${format(parseISO(booking.date), 'dd/MM/yyyy', { locale: fr })} Ã  ${booking.time} ?`)) {
           await onDeleteBooking(bookingId);
-          toast.success('Rendez-vous supprimé');
+          toast.success('Rendez-vous supprimÃ©');
         }
       }
       setActiveId(null);
@@ -214,7 +214,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
     const booking = bookings.find(b => b.id === bookingId);
     
     if (booking && newDate !== booking.date) {
-      // Ajouter aux changements en attente au lieu de sauvegarder immédiatement
+      // Ajouter aux changements en attente au lieu de sauvegarder immÃ©diatement
       setPendingChanges(prev => {
         const existing = prev.find(c => c.bookingId === bookingId);
         if (existing) {
@@ -236,15 +236,15 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
 
     setIsSaving(true);
     try {
-      // Sauvegarder chaque changement séquentiellement
+      // Sauvegarder chaque changement sÃ©quentiellement
       for (const change of pendingChanges) {
         // Validation: s'assurer que le booking existe
         if (!change.bookingId || !change.booking) {
-          console.error('❌ Booking invalide, ignoré:', change);
+          console.error('âŒ Booking invalide, ignorÃ©:', change);
           continue;
         }
         
-        console.log('💾 Mise à jour booking:', {
+        console.log('ðŸ’¾ Mise Ã  jour booking:', {
           id: change.bookingId,
           from: change.oldDate,
           to: change.newDate
@@ -259,7 +259,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
       // Vider les changements en attente AVANT le toast
       setPendingChanges([]);
       
-      toast.success(`${pendingChanges.length} rendez-vous déplacé${pendingChanges.length > 1 ? 's' : ''} avec succès !`);
+      toast.success(`${pendingChanges.length} rendez-vous dÃ©placÃ©${pendingChanges.length > 1 ? 's' : ''} avec succÃ¨s !`);
     } catch (error) {
       console.error('Erreur sauvegarde:', error);
       toast.error('Erreur lors de la sauvegarde');
@@ -271,7 +271,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
   // Annuler les changements
   const handleCancelChanges = () => {
     setPendingChanges([]);
-    toast.info('Modifications annulées');
+    toast.info('Modifications annulÃ©es');
   };
 
   // Fonction pour envoyer l'email de confirmation
@@ -281,11 +281,11 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
       
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        console.error('❌ Pas de session');
+        console.error('âŒ Pas de session');
         return;
       }
       
-      // Utiliser le même format que BookingCalendar
+      // Utiliser le mÃªme format que BookingCalendar
       const payload = {
         to: change.booking.email,
         name: change.booking.name,
@@ -293,11 +293,11 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
         time: change.booking.time,
         service: change.booking.service || 'Rendez-vous',
         status: 'confirmed',
-        message: `Votre rendez-vous a été déplacé au ${format(parseISO(change.newDate), 'dd/MM/yyyy', { locale: fr })} à ${change.booking.time}.`
+        message: `Votre rendez-vous a Ã©tÃ© dÃ©placÃ© au ${format(parseISO(change.newDate), 'dd/MM/yyyy', { locale: fr })} Ã  ${change.booking.time}.`
       };
       
-      console.log('📧 Envoi email de confirmation (nouvelle date)...');
-      console.log('📝 Payload:', JSON.stringify(payload, null, 2));
+      console.log('ðŸ“§ Envoi email de confirmation (nouvelle date)...');
+      console.log('ðŸ“ Payload:', JSON.stringify(payload, null, 2));
       
       const response = await fetch(`${API_URL}/emails/booking-confirmation`, {
         method: 'POST',
@@ -310,14 +310,14 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ Erreur envoi email:', errorText);
+        console.error('âŒ Erreur envoi email:', errorText);
         toast.error('Erreur envoi email');
       } else {
         const result = await response.json();
-        console.log('✅ Email envoyé avec succès:', result);
+        console.log('âœ… Email envoyÃ© avec succÃ¨s:', result);
       }
     } catch (error) {
-      console.error('❌ Erreur envoi email:', error);
+      console.error('âŒ Erreur envoi email:', error);
       toast.error('Erreur envoi email');
     }
   };
@@ -359,7 +359,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
       a.click();
       URL.revokeObjectURL(url);
       
-      toast.success('Calendrier exporté !');
+      toast.success('Calendrier exportÃ© !');
     } catch (error) {
       console.error('Erreur export ICS:', error);
       toast.error('Erreur lors de l\'export');
@@ -374,7 +374,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-            <CalendarIcon className="w-6 h-6 text-[#00FFC2]" />
+            <CalendarIcon className="w-6 h-6 text-[#CCFF00]" />
             Calendrier
           </h2>
           
@@ -392,7 +392,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
               size="sm"
               variant="ghost"
               onClick={handleToday}
-              className="text-white/60 hover:text-[#00FFC2]"
+              className="text-white/60 hover:text-[#CCFF00]"
             >
               Aujourd'hui
             </Button>
@@ -434,7 +434,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
                 size="sm"
                 onClick={handleSaveChanges}
                 disabled={isSaving}
-                className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               >
                 {isSaving ? 'Sauvegarde...' : 'Sauvegarder'}
               </Button>
@@ -447,7 +447,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
               size="sm"
               variant={viewMode === 'month' ? 'default' : 'ghost'}
               onClick={() => setViewMode('month')}
-              className={viewMode === 'month' ? 'bg-[#00FFC2] text-black' : 'text-white/60'}
+              className={viewMode === 'month' ? 'bg-[#CCFF00] text-black' : 'text-white/60'}
             >
               Mois
             </Button>
@@ -455,7 +455,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
               size="sm"
               variant={viewMode === 'week' ? 'default' : 'ghost'}
               onClick={() => setViewMode('week')}
-              className={viewMode === 'week' ? 'bg-[#00FFC2] text-black' : 'text-white/60'}
+              className={viewMode === 'week' ? 'bg-[#CCFF00] text-black' : 'text-white/60'}
             >
               Semaine
             </Button>
@@ -463,7 +463,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
               size="sm"
               variant={viewMode === 'day' ? 'default' : 'ghost'}
               onClick={() => setViewMode('day')}
-              className={viewMode === 'day' ? 'bg-[#00FFC2] text-black' : 'text-white/60'}
+              className={viewMode === 'day' ? 'bg-[#CCFF00] text-black' : 'text-white/60'}
             >
               Jour
             </Button>
@@ -473,7 +473,7 @@ export function CalendarView({ bookings, onUpdateBooking, onCreateBooking, onEdi
           <Button
             size="sm"
             onClick={handleExportICS}
-            className="bg-[#00FFC2]/10 text-[#00FFC2] hover:bg-[#00FFC2]/20"
+            className="bg-[#CCFF00]/10 text-[#CCFF00] hover:bg-[#CCFF00]/20"
           >
             <Download className="w-4 h-4 mr-2" />
             Export .ics
@@ -535,7 +535,7 @@ function TrashZone({ isActive }: { isActive: boolean }) {
     >
       <Trash2 className={`w-6 h-6 ${isOver ? 'text-red-500' : 'text-white/40'}`} />
       <span className={`text-sm font-medium ${isOver ? 'text-red-500' : 'text-white/40'}`}>
-        {isOver ? 'Relâcher pour supprimer' : 'Glisser ici pour supprimer'}
+        {isOver ? 'RelÃ¢cher pour supprimer' : 'Glisser ici pour supprimer'}
       </span>
     </div>
   );
@@ -600,7 +600,7 @@ function MonthView({ days, currentDate, getBookingsForDay, onEditBooking }: any)
 
   return (
     <div className="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
-      {/* En-têtes jours de la semaine */}
+      {/* En-tÃªtes jours de la semaine */}
       <div className="grid grid-cols-7 border-b border-white/10">
         {weekDays.map(day => (
           <div key={day} className="p-3 text-center text-sm font-semibold text-white/60">
@@ -641,15 +641,15 @@ function DayCell({ day, currentDate, bookings, onEditBooking }: { day: Date; cur
       className={`
         min-h-[120px] p-2 border-r border-b border-white/10
         ${!isCurrentMonth ? 'bg-white/[0.02]' : ''}
-        ${isToday ? 'bg-[#00FFC2]/5' : ''}
-        ${isOver ? 'bg-[#00FFC2]/10 ring-2 ring-[#00FFC2]/50' : ''}
+        ${isToday ? 'bg-[#CCFF00]/5' : ''}
+        ${isOver ? 'bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/50' : ''}
         transition-all
       `}
     >
       <div className={`
         text-sm font-semibold mb-2
         ${!isCurrentMonth ? 'text-white/30' : 'text-white/80'}
-        ${isToday ? 'text-[#00FFC2]' : ''}
+        ${isToday ? 'text-[#CCFF00]' : ''}
       `}>
         {format(day, 'd')}
       </div>
@@ -699,10 +699,10 @@ function WeekView({ days, getBookingsForDay, onEditBooking }: any) {
               {/* Header jour */}
               <div className={`
                 h-12 border-b border-white/10 p-2 text-center
-                ${isToday ? 'bg-[#00FFC2]/10' : ''}
+                ${isToday ? 'bg-[#CCFF00]/10' : ''}
               `}>
                 <div className="text-xs text-white/60">{format(day, 'EEE', { locale: fr })}</div>
-                <div className={`text-sm font-semibold ${isToday ? 'text-[#00FFC2]' : 'text-white'}`}>
+                <div className={`text-sm font-semibold ${isToday ? 'text-[#CCFF00]' : 'text-white'}`}>
                   {format(day, 'd')}
                 </div>
               </div>
@@ -713,7 +713,7 @@ function WeekView({ days, getBookingsForDay, onEditBooking }: any) {
                   <div key={hour} className="h-16 border-b border-white/10" />
                 ))}
                 
-                {/* Bookings positionnés */}
+                {/* Bookings positionnÃ©s */}
                 {dayBookings.map((booking: Booking) => {
                   const [hours, minutes] = booking.time.split(':').map(Number);
                   const top = hours * 64 + (minutes / 60) * 64;

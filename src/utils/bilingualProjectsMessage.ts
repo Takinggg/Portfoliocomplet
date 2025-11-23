@@ -1,16 +1,16 @@
 /**
  * Message d'information sur les projets bilingues
- * Version complète avec tous les détails
+ * Version complÃ¨te avec tous les dÃ©tails
  */
 
 const styles = {
-  banner: 'background: linear-gradient(135deg, #00FFC2 0%, #00CC9A 100%); color: #0C0C0C; padding: 12px 20px; font-size: 14px; font-weight: bold; border-radius: 6px;',
-  title: 'color: #00FFC2; font-size: 16px; font-weight: bold;',
+  banner: 'background: linear-gradient(135deg, #CCFF00 0%, #C6FF1A 100%); color: #0C0C0C; padding: 12px 20px; font-size: 14px; font-weight: bold; border-radius: 6px;',
+  title: 'color: #CCFF00; font-size: 16px; font-weight: bold;',
   subtitle: 'color: #888; font-size: 13px; font-weight: bold;',
-  success: 'color: #00FFC2;',
+  success: 'color: #CCFF00;',
   info: 'color: #60A5FA;',
   warning: 'color: #FFA500;',
-  code: 'background: #1a1a1a; color: #00FFC2; padding: 2px 8px; border-radius: 4px; font-family: monospace;',
+  code: 'background: #1a1a1a; color: #CCFF00; padding: 2px 8px; border-radius: 4px; font-family: monospace;',
   text: 'color: #CCC;',
   muted: 'color: #666; font-size: 11px;',
 };
@@ -18,52 +18,52 @@ const styles = {
 // Only show detailed message if explicitly requested
 const showDetailedMessage = () => {
   console.log('');
-  console.log('%c🌍 PROJETS BILINGUES DISPONIBLES', styles.banner);
+  console.log('%cðŸŒ PROJETS BILINGUES DISPONIBLES', styles.banner);
   console.log('');
 
-  console.log('%c🔍 Problème', styles.warning);
+  console.log('%cðŸ” ProblÃ¨me', styles.warning);
   console.log('%c   Les projets ne changent pas de langue lors du switch FR/EN', styles.text);
   console.log('');
 
-  console.log('%c✅ Solution implémentée', styles.success);
-  console.log('%c   • Nouveau fichier : seedBilingualProjects.ts', styles.text);
-  console.log('%c   • 6 projets professionnels en FR et EN (12 entrées)', styles.text);
-  console.log('%c   • Traductions complètes (nom, description, résultats...)', styles.text);
+  console.log('%câœ… Solution implÃ©mentÃ©e', styles.success);
+  console.log('%c   â€¢ Nouveau fichier : seedBilingualProjects.ts', styles.text);
+  console.log('%c   â€¢ 6 projets professionnels en FR et EN (12 entrÃ©es)', styles.text);
+  console.log('%c   â€¢ Traductions complÃ¨tes (nom, description, rÃ©sultats...)', styles.text);
   console.log('');
 
-  console.log('%c🚀 COMMENT UTILISER', styles.title);
+  console.log('%cðŸš€ COMMENT UTILISER', styles.title);
   console.log('');
 
-  console.log('%c   1️⃣ Peupler la base avec les projets bilingues :', styles.info);
-  console.log('%c      await seedBilingualProjects()       %c← Crée 12 projets (6×FR + 6×EN)', styles.code, styles.text);
+  console.log('%c   1ï¸âƒ£ Peupler la base avec les projets bilingues :', styles.info);
+  console.log('%c      await seedBilingualProjects()       %câ† CrÃ©e 12 projets (6Ã—FR + 6Ã—EN)', styles.code, styles.text);
   console.log('');
 
-  console.log('%c   2️⃣ Vérifier les projets créés :', styles.info);
-  console.log('%c      await checkBilingualProjects()      %c← Affiche les projets FR et EN', styles.code, styles.text);
+  console.log('%c   2ï¸âƒ£ VÃ©rifier les projets crÃ©Ã©s :', styles.info);
+  console.log('%c      await checkBilingualProjects()      %câ† Affiche les projets FR et EN', styles.code, styles.text);
   console.log('');
 
-  console.log('%c   3️⃣ Tester sur la page Projects :', styles.info);
-  console.log('%c      • Aller sur /projects', styles.text);
-  console.log('%c      • Changer la langue (🇫🇷 ↔ 🇬🇧)', styles.text);
-  console.log('%c      • Les projets changent de langue ✨', styles.text);
+  console.log('%c   3ï¸âƒ£ Tester sur la page Projects :', styles.info);
+  console.log('%c      â€¢ Aller sur /projects', styles.text);
+  console.log('%c      â€¢ Changer la langue (ðŸ‡«ðŸ‡· â†” ðŸ‡¬ðŸ‡§)', styles.text);
+  console.log('%c      â€¢ Les projets changent de langue âœ¨', styles.text);
   console.log('');
 
-  console.log('%c📦 PROJETS INCLUS', styles.title);
+  console.log('%cðŸ“¦ PROJETS INCLUS', styles.title);
   console.log('%c   1. Plateforme E-commerce / E-commerce Platform', styles.text);
   console.log('%c   2. Application Bancaire Mobile / Mobile Banking App', styles.text);
   console.log('%c   3. Dashboard Analytics SaaS / SaaS Analytics Dashboard', styles.text);
-  console.log('%c   4. CRM Automatisé Notion / Automated Notion CRM', styles.text);
+  console.log('%c   4. CRM AutomatisÃ© Notion / Automated Notion CRM', styles.text);
   console.log('%c   5. Assistant IA Support Client / AI Customer Support Assistant', styles.text);
   console.log('%c   6. Site Portfolio + IA / Portfolio Site + AI Generator', styles.text);
   console.log('');
 
-  console.log('%c🎯 DÉTAILS TECHNIQUES', styles.subtitle);
-  console.log('%c   • Stockage : project_1_fr, project_1_en, project_2_fr...', styles.text);
-  console.log('%c   • Filtrage serveur par paramètre ?lang=fr ou ?lang=en', styles.text);
-  console.log('%c   • useEffect détecte le changement de langue et refetch', styles.text);
+  console.log('%cðŸŽ¯ DÃ‰TAILS TECHNIQUES', styles.subtitle);
+  console.log('%c   â€¢ Stockage : project_1_fr, project_1_en, project_2_fr...', styles.text);
+  console.log('%c   â€¢ Filtrage serveur par paramÃ¨tre ?lang=fr ou ?lang=en', styles.text);
+  console.log('%c   â€¢ useEffect dÃ©tecte le changement de langue et refetch', styles.text);
   console.log('');
 
-  console.log('%c📖 Documentation complète : PROJETS_BILINGUES_SOLUTION.md', styles.info);
+  console.log('%cðŸ“– Documentation complÃ¨te : PROJETS_BILINGUES_SOLUTION.md', styles.info);
   console.log('');
 };
 
@@ -71,23 +71,23 @@ const showDetailedMessage = () => {
 if (typeof window !== 'undefined') {
   (window as any).showBilingualProjectsHelp = () => {
     console.log('');
-    console.log('%c═══════════════════════════════════════════════════════', styles.title);
-    console.log('%c🌍 AIDE : PROJETS BILINGUES', styles.title);
-    console.log('%c═══════════════════════════════════════════════════════', styles.title);
+    console.log('%câ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•', styles.title);
+    console.log('%cðŸŒ AIDE : PROJETS BILINGUES', styles.title);
+    console.log('%câ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•', styles.title);
     console.log('');
-    console.log('%c📝 COMMANDES DISPONIBLES :', styles.subtitle);
+    console.log('%cðŸ“ COMMANDES DISPONIBLES :', styles.subtitle);
     console.log('');
-    console.log('%c   seedBilingualProjects()         %c← Créer les projets FR + EN', styles.code, styles.text);
-    console.log('%c   checkBilingualProjects()        %c← Vérifier les projets', styles.code, styles.text);
-    console.log('%c   showBilingualProjectsHelp()     %c← Afficher cette aide', styles.code, styles.text);
+    console.log('%c   seedBilingualProjects()         %câ† CrÃ©er les projets FR + EN', styles.code, styles.text);
+    console.log('%c   checkBilingualProjects()        %câ† VÃ©rifier les projets', styles.code, styles.text);
+    console.log('%c   showBilingualProjectsHelp()     %câ† Afficher cette aide', styles.code, styles.text);
     console.log('');
-    console.log('%c💡 ASTUCE :', styles.info);
+    console.log('%cðŸ’¡ ASTUCE :', styles.info);
     console.log('%c   Si les projets ne changent pas de langue, c\'est que', styles.text);
-    console.log('%c   la base de données ne contient que des projets FR.', styles.text);
-    console.log('%c   Exécutez seedBilingualProjects() pour corriger ça !', styles.success);
+    console.log('%c   la base de donnÃ©es ne contient que des projets FR.', styles.text);
+    console.log('%c   ExÃ©cutez seedBilingualProjects() pour corriger Ã§a !', styles.success);
     console.log('');
   };
 
-  console.log('%c💡 Tapez showBilingualProjectsHelp() pour revoir cette aide', 'color: #888; font-style: italic;');
+  console.log('%cðŸ’¡ Tapez showBilingualProjectsHelp() pour revoir cette aide', 'color: #888; font-style: italic;');
   console.log('');
 }

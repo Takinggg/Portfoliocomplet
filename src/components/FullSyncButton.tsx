@@ -1,6 +1,6 @@
 /**
- * Full Sync Button - Bouton pour synchroniser toutes les données avec Supabase
- * Affiche le statut de la synchronisation en temps réel
+ * Full Sync Button - Bouton pour synchroniser toutes les donnÃ©es avec Supabase
+ * Affiche le statut de la synchronisation en temps rÃ©el
  */
 
 import { useState } from "react";
@@ -63,7 +63,7 @@ export function FullSyncButton() {
     } catch (error: any) {
       setResult({
         success: false,
-        summary: `❌ Erreur: ${error.message}`,
+        summary: `âŒ Erreur: ${error.message}`,
         details: []
       });
     } finally {
@@ -74,18 +74,18 @@ export function FullSyncButton() {
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="bg-[#0C0C0C] border border-[#00FFC2]/20 rounded-lg p-6">
+      <div className="bg-[#0C0C0C] border border-[#CCFF00]/20 rounded-lg p-6">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-[#00FFC2]/10 rounded-lg">
-            <Database className="w-6 h-6 text-[#00FFC2]" />
+          <div className="p-3 bg-[#CCFF00]/10 rounded-lg">
+            <Database className="w-6 h-6 text-[#CCFF00]" />
           </div>
           <div className="flex-1">
             <h3 className="text-xl text-[#F4F4F4] mb-2">
-              Synchronisation Complète
+              Synchronisation ComplÃ¨te
             </h3>
             <p className="text-[#F4F4F4]/70 mb-4">
-              Synchronisez toutes les données (projets, blog, case studies, FAQs, 
-              témoignages, ressources) depuis les seeds locaux vers Supabase KV Store.
+              Synchronisez toutes les donnÃ©es (projets, blog, case studies, FAQs, 
+              tÃ©moignages, ressources) depuis les seeds locaux vers Supabase KV Store.
             </p>
             
             <div className="flex gap-3">
@@ -111,7 +111,7 @@ export function FullSyncButton() {
               <Button
                 onClick={handleSync}
                 disabled={syncing}
-                className="bg-[#00FFC2] hover:bg-[#00FFC2]/90 text-[#0C0C0C]"
+                className="bg-[#CCFF00] hover:bg-[#CCFF00]/90 text-[#0C0C0C]"
               >
                 {syncing ? (
                   <>
@@ -134,16 +134,16 @@ export function FullSyncButton() {
       {serverStatus && (
         <Alert className={
           serverStatus.success 
-            ? "bg-[#00FFC2]/10 border-[#00FFC2]/30"
+            ? "bg-[#CCFF00]/10 border-[#CCFF00]/30"
             : "bg-red-500/10 border-red-500/30"
         }>
           {serverStatus.success ? (
-            <CheckCircle2 className="h-5 w-5 text-[#00FFC2]" />
+            <CheckCircle2 className="h-5 w-5 text-[#CCFF00]" />
           ) : (
             <AlertCircle className="h-5 w-5 text-red-500" />
           )}
           <AlertTitle className="text-[#F4F4F4]">
-            {serverStatus.success ? "✅ Serveur Opérationnel" : "❌ Problème Serveur"}
+            {serverStatus.success ? "âœ… Serveur OpÃ©rationnel" : "âŒ ProblÃ¨me Serveur"}
           </AlertTitle>
           <AlertDescription className="text-[#F4F4F4]/70">
             {serverStatus.message}
@@ -155,11 +155,11 @@ export function FullSyncButton() {
       {result && (
         <Alert className={
           result.success 
-            ? "bg-[#00FFC2]/10 border-[#00FFC2]/30"
+            ? "bg-[#CCFF00]/10 border-[#CCFF00]/30"
             : "bg-orange-500/10 border-orange-500/30"
         }>
           {result.success ? (
-            <CheckCircle2 className="h-5 w-5 text-[#00FFC2]" />
+            <CheckCircle2 className="h-5 w-5 text-[#CCFF00]" />
           ) : (
             <AlertCircle className="h-5 w-5 text-orange-500" />
           )}
@@ -175,7 +175,7 @@ export function FullSyncButton() {
                     className="flex items-center gap-2 text-sm"
                   >
                     {detail.success ? (
-                      <CheckCircle2 className="w-4 h-4 text-[#00FFC2]" />
+                      <CheckCircle2 className="w-4 h-4 text-[#CCFF00]" />
                     ) : (
                       <AlertCircle className="w-4 h-4 text-red-500" />
                     )}
@@ -183,7 +183,7 @@ export function FullSyncButton() {
                       {detail.category}:
                     </span>
                     <span className="text-[#F4F4F4]/70">
-                      {detail.count} élément{detail.count > 1 ? 's' : ''}
+                      {detail.count} Ã©lÃ©ment{detail.count > 1 ? 's' : ''}
                     </span>
                     {detail.error && (
                       <span className="text-red-500 text-xs ml-2">
@@ -201,28 +201,28 @@ export function FullSyncButton() {
       {/* Instructions */}
       <div className="bg-[#F4F4F4]/5 border border-[#F4F4F4]/10 rounded-lg p-4">
         <h4 className="text-sm text-[#F4F4F4] mb-2">
-          📝 Instructions
+          ðŸ“ Instructions
         </h4>
         <ol className="text-sm text-[#F4F4F4]/70 space-y-1 list-decimal list-inside">
-          <li>Vérifiez d'abord que le serveur est accessible avec "Valider Serveur"</li>
-          <li>Cliquez sur "Synchroniser Tout" pour uploader toutes les données</li>
-          <li>Vérifiez les résultats et rechargez la page si besoin</li>
-          <li>Les données seront maintenant chargées depuis Supabase</li>
+          <li>VÃ©rifiez d'abord que le serveur est accessible avec "Valider Serveur"</li>
+          <li>Cliquez sur "Synchroniser Tout" pour uploader toutes les donnÃ©es</li>
+          <li>VÃ©rifiez les rÃ©sultats et rechargez la page si besoin</li>
+          <li>Les donnÃ©es seront maintenant chargÃ©es depuis Supabase</li>
         </ol>
       </div>
 
       {/* Mode Production Notice */}
-      <div className="bg-[#00FFC2]/5 border border-[#00FFC2]/20 rounded-lg p-4">
+      <div className="bg-[#CCFF00]/5 border border-[#CCFF00]/20 rounded-lg p-4">
         <div className="flex items-start gap-3">
-          <Server className="w-5 h-5 text-[#00FFC2] mt-0.5" />
+          <Server className="w-5 h-5 text-[#CCFF00] mt-0.5" />
           <div>
             <h4 className="text-sm text-[#F4F4F4] mb-1">
-              🔒 Mode Production Activé
+              ðŸ”’ Mode Production ActivÃ©
             </h4>
             <p className="text-sm text-[#F4F4F4]/70">
-              Le système est configuré en mode production. Tous les appels
+              Le systÃ¨me est configurÃ© en mode production. Tous les appels
               utilisent uniquement le serveur Supabase, sans fallback local.
-              Les données localStorage ne sont plus utilisées.
+              Les donnÃ©es localStorage ne sont plus utilisÃ©es.
             </p>
           </div>
         </div>
@@ -231,9 +231,9 @@ export function FullSyncButton() {
       {/* Console Command */}
       <div className="bg-[#0C0C0C]/50 border border-[#F4F4F4]/10 rounded-lg p-4">
         <p className="text-sm text-[#F4F4F4]/70 mb-2">
-          💡 Vous pouvez aussi synchroniser via la console:
+          ðŸ’¡ Vous pouvez aussi synchroniser via la console:
         </p>
-        <code className="text-xs text-[#00FFC2] bg-[#0C0C0C] px-3 py-2 rounded block">
+        <code className="text-xs text-[#CCFF00] bg-[#0C0C0C] px-3 py-2 rounded block">
           window.syncAllDataToSupabase()
         </code>
       </div>

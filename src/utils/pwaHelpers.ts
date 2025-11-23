@@ -1,21 +1,21 @@
 // Utilitaires PWA pour Portfolio Freelance Pro
 
 /**
- * Détecte si l'application est dans un environnement de preview (Figma Make) ou développement local
+ * DÃ©tecte si l'application est dans un environnement de preview (Figma Make) ou dÃ©veloppement local
  */
 function isPreviewEnvironment(): boolean {
-  // Détecter l'environnement de développement local
+  // DÃ©tecter l'environnement de dÃ©veloppement local
   const isDevelopment = import.meta.env.DEV || 
                         window.location.hostname === 'localhost' || 
                         window.location.hostname === '127.0.0.1' ||
                         window.location.port === '3000' ||
                         window.location.port === '5173';
   
-  // Détecter l'environnement Figma Make iframe
+  // DÃ©tecter l'environnement Figma Make iframe
   const isFigmaPreview = window.location.hostname.includes('figmaiframepreview') || 
                          window.location.hostname.includes('figma.site');
   
-  // Détecter si on est dans un iframe
+  // DÃ©tecter si on est dans un iframe
   const isInIframe = window.self !== window.top;
   
   return isDevelopment || isFigmaPreview || isInIframe;
@@ -23,17 +23,17 @@ function isPreviewEnvironment(): boolean {
 
 /**
  * Enregistre le Service Worker
- * Note: Désactivé en développement local et dans l'environnement de preview Figma Make
+ * Note: DÃ©sactivÃ© en dÃ©veloppement local et dans l'environnement de preview Figma Make
  */
 export async function registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
-  // Vérifier si on est dans un environnement de preview ou développement
+  // VÃ©rifier si on est dans un environnement de preview ou dÃ©veloppement
   if (isPreviewEnvironment()) {
     console.log(
-      '%c[PWA] Service Worker désactivé en mode développement/preview',
-      'color: #00FFC2; font-weight: bold;',
-      '\n📱 Les PWA ne sont pas supportées en développement local ou dans les iframes.',
-      '\n✅ Le Service Worker sera actif après déploiement en production.',
-      '\n📦 Fichiers PWA prêts: /public/service-worker.js, /public/manifest.json, /public/offline.html'
+      '%c[PWA] Service Worker dÃ©sactivÃ© en mode dÃ©veloppement/preview',
+      'color: #CCFF00; font-weight: bold;',
+      '\nðŸ“± Les PWA ne sont pas supportÃ©es en dÃ©veloppement local ou dans les iframes.',
+      '\nâœ… Le Service Worker sera actif aprÃ¨s dÃ©ploiement en production.',
+      '\nðŸ“¦ Fichiers PWA prÃªts: /public/service-worker.js, /public/manifest.json, /public/offline.html'
     );
     return null;
   }
@@ -44,9 +44,9 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
         scope: '/',
       });
       
-      console.log('[PWA] Service Worker enregistré:', registration.scope);
+      console.log('[PWA] Service Worker enregistrÃ©:', registration.scope);
       
-      // Gérer les mises à jour du Service Worker
+      // GÃ©rer les mises Ã  jour du Service Worker
       registration.addEventListener('updatefound', () => {
         const newWorker = registration.installing;
         
@@ -56,7 +56,7 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
               // Un nouveau Service Worker est disponible
               console.log('[PWA] Nouvelle version disponible');
               
-              // Afficher une notification à l'utilisateur
+              // Afficher une notification Ã  l'utilisateur
               showUpdateNotification(newWorker);
             }
           });
@@ -70,12 +70,12 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
     }
   }
   
-  console.warn('[PWA] Service Worker non supporté par ce navigateur');
+  console.warn('[PWA] Service Worker non supportÃ© par ce navigateur');
   return null;
 }
 
 /**
- * Affiche une notification de mise à jour
+ * Affiche une notification de mise Ã  jour
  */
 function showUpdateNotification(newWorker: ServiceWorker): void {
   const shouldUpdate = window.confirm(
@@ -89,10 +89,10 @@ function showUpdateNotification(newWorker: ServiceWorker): void {
 }
 
 /**
- * Vérifie si l'application est installée (mode standalone)
+ * VÃ©rifie si l'application est installÃ©e (mode standalone)
  */
 export function isInstalled(): boolean {
-  // Mode standalone (installé sur l'appareil)
+  // Mode standalone (installÃ© sur l'appareil)
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
   
   // iOS Safari
@@ -102,7 +102,7 @@ export function isInstalled(): boolean {
 }
 
 /**
- * Vérifie si le navigateur supporte les PWA
+ * VÃ©rifie si le navigateur supporte les PWA
  */
 import type { BeforeInstallPromptEvent } from './types/shared';
 
@@ -111,27 +111,27 @@ export function isPWASupported(): boolean {
 }
 
 /**
- * Gère l'événement beforeinstallprompt pour Android/Desktop
+ * GÃ¨re l'Ã©vÃ©nement beforeinstallprompt pour Android/Desktop
  */
 export function setupInstallPrompt(): void {
   let deferredPrompt: BeforeInstallPromptEvent | null = null;
   
   window.addEventListener('beforeinstallprompt', (e) => {
-    // Empêcher le mini-infobar par défaut
+    // EmpÃªcher le mini-infobar par dÃ©faut
     e.preventDefault();
     
-    // Stocker l'événement pour l'utiliser plus tard
+    // Stocker l'Ã©vÃ©nement pour l'utiliser plus tard
     deferredPrompt = e as BeforeInstallPromptEvent;
     
-    console.log('[PWA] L\'application peut être installée');
+    console.log('[PWA] L\'application peut Ãªtre installÃ©e');
     
-    // Afficher un bouton/bannière personnalisé pour l'installation
+    // Afficher un bouton/banniÃ¨re personnalisÃ© pour l'installation
     showInstallBanner(deferredPrompt);
   });
   
-  // Écouter l'événement d'installation
+  // Ã‰couter l'Ã©vÃ©nement d'installation
   window.addEventListener('appinstalled', () => {
-    console.log('[PWA] Application installée avec succès');
+    console.log('[PWA] Application installÃ©e avec succÃ¨s');
     deferredPrompt = null;
     
     // Analytics: tracker l'installation
@@ -145,17 +145,17 @@ export function setupInstallPrompt(): void {
 }
 
 /**
- * Affiche une bannière d'installation personnalisée
+ * Affiche une banniÃ¨re d'installation personnalisÃ©e
  */
 function showInstallBanner(deferredPrompt: BeforeInstallPromptEvent): void {
-  // Vérifier si l'utilisateur a déjà refusé l'installation
+  // VÃ©rifier si l'utilisateur a dÃ©jÃ  refusÃ© l'installation
   const installDismissed = localStorage.getItem('pwa-install-dismissed');
   
   if (installDismissed) {
     return;
   }
   
-  // Créer une bannière personnalisée
+  // CrÃ©er une banniÃ¨re personnalisÃ©e
   const banner = document.createElement('div');
   banner.id = 'pwa-install-banner';
   banner.innerHTML = `
@@ -165,25 +165,25 @@ function showInstallBanner(deferredPrompt: BeforeInstallPromptEvent): void {
       left: 50%;
       transform: translateX(-50%);
       background: #0C0C0C;
-      border: 1px solid #00FFC2;
+      border: 1px solid #CCFF00;
       border-radius: 12px;
       padding: 16px 24px;
       display: flex;
       align-items: center;
       gap: 16px;
-      box-shadow: 0 10px 40px rgba(0, 255, 194, 0.3);
+      box-shadow: 0 10px 40px rgba(204, 255, 0, 0.3);
       z-index: 9999;
       max-width: 90%;
       animation: slideUp 0.3s ease-out;
     ">
       <div style="flex: 1; color: #F4F4F4;">
-        <strong style="color: #00FFC2;">Installer l'application</strong>
+        <strong style="color: #CCFF00;">Installer l'application</strong>
         <p style="margin: 4px 0 0; font-size: 14px; color: #999;">
-          Accédez rapidement à votre portfolio et CRM
+          AccÃ©dez rapidement Ã  votre portfolio et CRM
         </p>
       </div>
       <button id="pwa-install-button" style="
-        background: #00FFC2;
+        background: #CCFF00;
         color: #0C0C0C;
         border: none;
         padding: 10px 20px;
@@ -202,7 +202,7 @@ function showInstallBanner(deferredPrompt: BeforeInstallPromptEvent): void {
         cursor: pointer;
         font-size: 20px;
       ">
-        ✕
+        âœ•
       </button>
     </div>
     <style>
@@ -221,7 +221,7 @@ function showInstallBanner(deferredPrompt: BeforeInstallPromptEvent): void {
   
   document.body.appendChild(banner);
   
-  // Gérer le clic sur le bouton Installer
+  // GÃ©rer le clic sur le bouton Installer
   document.getElementById('pwa-install-button')?.addEventListener('click', async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
@@ -233,7 +233,7 @@ function showInstallBanner(deferredPrompt: BeforeInstallPromptEvent): void {
     }
   });
   
-  // Gérer le clic sur le bouton Fermer
+  // GÃ©rer le clic sur le bouton Fermer
   document.getElementById('pwa-dismiss-button')?.addEventListener('click', () => {
     localStorage.setItem('pwa-install-dismissed', 'true');
     banner.remove();
@@ -268,7 +268,7 @@ export async function getServiceWorkerVersion(): Promise<string | null> {
 export async function clearServiceWorkerCache(): Promise<void> {
   if (navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.postMessage({ type: 'CLEAR_CACHE' });
-    console.log('[PWA] Cache vidé');
+    console.log('[PWA] Cache vidÃ©');
   }
 }
 
@@ -277,37 +277,37 @@ export async function clearServiceWorkerCache(): Promise<void> {
  */
 export async function subscribeToPushNotifications(): Promise<PushSubscription | null> {
   if (!('PushManager' in window)) {
-    console.warn('[PWA] Push notifications non supportées');
+    console.warn('[PWA] Push notifications non supportÃ©es');
     return null;
   }
   
   const permission = await Notification.requestPermission();
   
   if (permission !== 'granted') {
-    console.warn('[PWA] Permission de notification refusée');
+    console.warn('[PWA] Permission de notification refusÃ©e');
     return null;
   }
   
   try {
     const registration = await navigator.serviceWorker.ready;
     
-    // Vérifier si déjà abonné
+    // VÃ©rifier si dÃ©jÃ  abonnÃ©
     const existingSubscription = await registration.pushManager.getSubscription();
     
     if (existingSubscription) {
       return existingSubscription;
     }
     
-    // Créer un nouvel abonnement
+    // CrÃ©er un nouvel abonnement
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(
-        // Remplacer par votre clé publique VAPID
+        // Remplacer par votre clÃ© publique VAPID
         process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || ''
       ),
     });
     
-    console.log('[PWA] Abonné aux notifications push:', subscription);
+    console.log('[PWA] AbonnÃ© aux notifications push:', subscription);
     
     return subscription;
   } catch (error) {
@@ -317,7 +317,7 @@ export async function subscribeToPushNotifications(): Promise<PushSubscription |
 }
 
 /**
- * Convertit une clé VAPID base64 en Uint8Array
+ * Convertit une clÃ© VAPID base64 en Uint8Array
  */
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -334,25 +334,25 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
 }
 
 /**
- * Active la synchronisation en arrière-plan
+ * Active la synchronisation en arriÃ¨re-plan
  */
 export async function registerBackgroundSync(tag: string): Promise<void> {
   if (!('sync' in registration)) {
-    console.warn('[PWA] Background Sync non supporté');
+    console.warn('[PWA] Background Sync non supportÃ©');
     return;
   }
   
   try {
     const registration = await navigator.serviceWorker.ready;
     await (registration as any).sync.register(tag);
-    console.log('[PWA] Background sync enregistré:', tag);
+    console.log('[PWA] Background sync enregistrÃ©:', tag);
   } catch (error) {
     console.error('[PWA] Erreur lors de l\'enregistrement du background sync:', error);
   }
 }
 
 /**
- * Détecte le type d'appareil
+ * DÃ©tecte le type d'appareil
  */
 export function getDeviceType(): 'ios' | 'android' | 'desktop' {
   const userAgent = navigator.userAgent.toLowerCase();
@@ -384,7 +384,7 @@ export function showIOSInstallInstructions(): void {
         left: 0;
         right: 0;
         background: #0C0C0C;
-        border-top: 2px solid #00FFC2;
+        border-top: 2px solid #CCFF00;
         padding: 20px;
         z-index: 9999;
         animation: slideUp 0.3s ease-out;
@@ -398,15 +398,15 @@ export function showIOSInstallInstructions(): void {
           color: #999;
           font-size: 24px;
           cursor: pointer;
-        ">✕</button>
+        ">âœ•</button>
         
-        <h3 style="color: #00FFC2; margin-bottom: 12px;">
+        <h3 style="color: #CCFF00; margin-bottom: 12px;">
           Installer sur iOS
         </h3>
         
         <ol style="color: #F4F4F4; padding-left: 20px; line-height: 1.8;">
-          <li>Touchez le bouton de partage <span style="font-size: 20px;">⎙</span></li>
-          <li>Sélectionnez "Sur l'écran d'accueil"</li>
+          <li>Touchez le bouton de partage <span style="font-size: 20px;">âŽ™</span></li>
+          <li>SÃ©lectionnez "Sur l'Ã©cran d'accueil"</li>
           <li>Touchez "Ajouter"</li>
         </ol>
       </div>
@@ -414,7 +414,7 @@ export function showIOSInstallInstructions(): void {
     
     document.body.appendChild(instructions);
     
-    // Masquer après 10 secondes
+    // Masquer aprÃ¨s 10 secondes
     setTimeout(() => {
       instructions.remove();
     }, 10000);
@@ -422,7 +422,7 @@ export function showIOSInstallInstructions(): void {
 }
 
 /**
- * Vérifie la connexion réseau
+ * VÃ©rifie la connexion rÃ©seau
  */
 export function checkNetworkStatus(): {
   online: boolean;
@@ -441,7 +441,7 @@ export function checkNetworkStatus(): {
 }
 
 /**
- * Écoute les changements de connexion réseau
+ * Ã‰coute les changements de connexion rÃ©seau
  */
 export function setupNetworkStatusListener(
   onOnline: () => void,

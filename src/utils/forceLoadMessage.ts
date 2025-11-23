@@ -5,12 +5,12 @@
 
 if (typeof window !== 'undefined') {
   // Display immediately
-  console.log('%c╔════════════════════════════════════════════════════════════════╗', 'color: #00FFC2; font-weight: bold;');
-  console.log('%c║        🚀 NOUVEAU FIX APPLIQUÉ - CHARGEMENT FORCÉ             ║', 'color: #00FFC2; font-weight: bold;');
-  console.log('%c╚════════════════════════════════════════════════════════════════╝', 'color: #00FFC2; font-weight: bold;');
+  console.log('%câ•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—', 'color: #CCFF00; font-weight: bold;');
+  console.log('%câ•‘        ðŸš€ NOUVEAU FIX APPLIQUÃ‰ - CHARGEMENT FORCÃ‰             â•‘', 'color: #CCFF00; font-weight: bold;');
+  console.log('%câ•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•', 'color: #CCFF00; font-weight: bold;');
   console.log('');
-  console.log('✅ Les utilitaires de test sont en cours de chargement...');
-  console.log('⏳ Attendez 2-3 secondes pour la confirmation');
+  console.log('âœ… Les utilitaires de test sont en cours de chargement...');
+  console.log('â³ Attendez 2-3 secondes pour la confirmation');
   console.log('');
-  console.log('📖 Guide: /URGENCE_RECHARGEZ_MAINTENANT.txt');
+  console.log('ðŸ“– Guide: /URGENCE_RECHARGEZ_MAINTENANT.txt');
 }

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Button } from "../ui/button";
+import { ContactCTA } from "../../redesign/components/ContactCTA";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { contentService, BlogPost, CaseStudy } from "../../services/contentService";
 import { 
-  ArrowRight, Download, Mail, 
+  Download, Mail, 
   Palette, Code2, Brain, Workflow, 
   Target, Zap, Search, Eye,
   Github, Linkedin, Twitter,
@@ -18,7 +19,7 @@ interface AboutPageProps {
 }
 
 export default function AboutPage({ onNavigate }: AboutPageProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [pinnedBlogs, setPinnedBlogs] = useState<BlogPost[]>([]);
   const [pinnedCaseStudies, setPinnedCaseStudies] = useState<CaseStudy[]>([]);
   const [loading, setLoading] = useState(true);
@@ -381,26 +382,19 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
 
       {/* 6. CTA FINAL */}
       <section className="py-24 px-6 border-t border-neutral-900">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('aboutPage.cta.title')}
-            </h2>
-            <p className="text-xl text-neutral-400 mb-10 max-w-2xl mx-auto">
-              {t('aboutPage.cta.subtitle')}
-            </p>
-            <Button 
-              size="lg" 
-              onClick={() => onNavigate("contact")}
-              className="bg-mint text-black hover:bg-mint/90 h-16 px-12 rounded-full text-lg font-bold shadow-lg shadow-mint/20 hover:shadow-mint/40 transition-all"
-            >
-              {t('aboutPage.cta.button')}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <ContactCTA
+              eyebrow={t('aboutPage.hero.available')}
+              title={t('aboutPage.cta.title')}
+              description={t('aboutPage.cta.subtitle')}
+              primaryAction={{ label: t('aboutPage.cta.button'), onClick: () => onNavigate("contact") }}
+              helperText={language === "en" ? "Answer within 24h" : "Réponse sous 24h"}
+            />
           </motion.div>
         </div>
       </section>

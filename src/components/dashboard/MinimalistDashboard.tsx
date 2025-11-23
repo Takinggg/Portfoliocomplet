@@ -1,344 +1,257 @@
-import { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import {
+  ArrowRightLeft,
+  Calendar,
+  DollarSign,
+  Edit,
+  FileText,
+  Layers,
+  Mail,
+  Plus,
+  Receipt,
+  Search,
+  Target,
+  TrendingUp,
+  UserCheck,
+  Users,
+  X,
+} from "lucide-react";
+import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Badge } from "../ui/badge";
-import {
-  Command,
-  Users,
-  TrendingUp,
-  DollarSign,
-  Plus,
-  Search,
-  Bell,
-  Settings,
-  LogOut,
-  Zap,
-  Mail,
-  Phone,
-  Calendar,
-  ArrowRight,
-  CheckCircle,
-  Clock,
-  Target,
-  Filter,
-  Trash2,
-  FileText,
-  ChevronDown,
-  ChevronRight,
-  Receipt,
-  ArrowRightLeft,
-  UserCheck,
-  X,
-  Edit,
-  Layers
-} from "lucide-react";
-import { createClient } from "../../utils/supabase/client";
-import { projectId } from "../../utils/supabase/info";
-import { colors } from "../../styles/designSystem";
+import { AnalyticsDashboard } from "./AnalyticsDashboard";
+import { CalendarView } from "./CalendarView";
+import { ContentTab } from "./ContentTab";
 import { LeadEditDialog } from "./LeadEditDialog";
 import { ClientEditDialog } from "./ClientEditDialog";
 import { QuoteCreationDialog } from "./QuoteCreationDialog";
 import { InvoiceCreationDialog } from "./InvoiceCreationDialog";
 import { BookingEditDialog } from "./BookingEditDialog";
 import { ItemDetailsModal } from "./ItemDetailsModal";
-import { AnalyticsDashboard } from "./AnalyticsDashboard";
-import { CalendarView } from "./CalendarView";
-import { ContentTab } from "./ContentTab";
+import { ViewTabs } from "./ui/ViewTabs";
 import { DashboardHeader } from "./ui/DashboardHeader";
 import { MetricCard } from "./ui/MetricCard";
-import { ViewTabs } from "./ui/ViewTabs";
-import { PipelineItem, type PipelineItemAction, type PipelineStatus } from "./ui/PipelineItem";
-import { exportQuoteToPDF, exportInvoiceToPDF } from "../../utils/pdfGenerator";
+import { PipelineItem, PipelineItemAction, PipelineStatus } from "./ui/PipelineItem";
+import { createClient } from "@/utils/supabase/client";
+import { API_BASE_URL, projectId } from "@/utils/supabase/info";
+
+const supabase = createClient();
+
+type DashboardView = "pipeline" | "calendar" | "analytics" | "content";
+type PipelineFilter = "all" | "leads" | "clients" | "deals" | "invoices";
+type ItemDetailsType = "lead" | "client" | "quote" | "invoice" | "booking";
+type SidebarNavItem = {
+  id: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  badge?: string | number;
+  chip?: string;
+};
 
 interface MinimalistDashboardProps {
   onLogout: () => void;
 }
 
+const colors = {
+  background: "radial-gradient(circle at top, rgba(12,12,12,1) 0%, rgba(5,5,5,1) 50%, rgba(0,0,0,1) 100%)",
+};
+
+const INTEGRATION_ROWS = [
+  { application: "Stripe", type: "Finance", rate: "40%", profit: 650 },
+  { application: "Zapier", type: "Automation", rate: "80%", profit: 720 },
+  { application: "Supabase", type: "Backend", rate: "65%", profit: 540 },
+  { application: "Resend", type: "Email", rate: "55%", profit: 410 },
+];
+
+const formatCurrency = (value?: number) =>
+  new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(
+    Number.isFinite(value) ? value ?? 0 : 0
+  );
+
+const parseDate = (input?: string | Date | null) => {
+  if (!input) return new Date();
+  if (input instanceof Date) return input;
+  const parsed = new Date(input);
+  return Number.isNaN(parsed.getTime()) ? new Date() : parsed;
+};
+
 export default function MinimalistDashboard({ onLogout }: MinimalistDashboardProps) {
-  const [showCommandPalette, setShowCommandPalette] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeView, setActiveView] = useState<"pipeline" | "calendar" | "analytics" | "content">("pipeline");
-  const [activeFilter, setActiveFilter] = useState<"all" | "leads" | "clients" | "deals" | "invoices">("all");
   const [leads, setLeads] = useState<any[]>([]);
   const [clients, setClients] = useState<any[]>([]);
   const [quotes, setQuotes] = useState<any[]>([]);
   const [invoices, setInvoices] = useState<any[]>([]);
   const [bookings, setBookings] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // Dialog states
+  const [loading, setLoading] = useState(false);
+  const [activeView, setActiveView] = useState<DashboardView>("pipeline");
+  const [activeFilter, setActiveFilter] = useState<PipelineFilter>("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showCommandPalette, setShowCommandPalette] = useState(false);
   const [leadDialogOpen, setLeadDialogOpen] = useState(false);
   const [clientDialogOpen, setClientDialogOpen] = useState(false);
   const [quoteDialogOpen, setQuoteDialogOpen] = useState(false);
   const [invoiceDialogOpen, setInvoiceDialogOpen] = useState(false);
   const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
-  
-  // Details modal state
+  const [editingLead, setEditingLead] = useState<any | null>(null);
+  const [editingClient, setEditingClient] = useState<any | null>(null);
+  const [editingQuote, setEditingQuote] = useState<any | null>(null);
+  const [editingInvoice, setEditingInvoice] = useState<any | null>(null);
+  const [editingBooking, setEditingBooking] = useState<any | null>(null);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<any>(null);
-  const [selectedItemType, setSelectedItemType] = useState<'lead' | 'client' | 'quote' | 'invoice' | 'booking'>('lead');
-  const [editingLead, setEditingLead] = useState<any>(null);
-  const [editingClient, setEditingClient] = useState<any>(null);
-  const [editingQuote, setEditingQuote] = useState<any>(null);
-  const [editingInvoice, setEditingInvoice] = useState<any>(null);
-  const [editingBooking, setEditingBooking] = useState<any>(null);
-  
-  // Notes state (stored in localStorage for now, could be in DB)
-  const [clientNotes, setClientNotes] = useState<Record<string, any[]>>({});
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const [selectedItemType, setSelectedItemType] = useState<ItemDetailsType>("lead");
 
-  const supabase = createClient();
-
-  // Keyboard shortcut CMD+K / CTRL+K
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setShowCommandPalette(!showCommandPalette);
-      }
-      if (e.key === 'Escape') {
-        setShowCommandPalette(false);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [showCommandPalette]);
-
-  useEffect(() => {
-    fetchData();
+  const ensureSession = useCallback(async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
+      alert("Vous devez être connecté pour effectuer cette action");
+      throw new Error("Session required");
+    }
+    return data.session;
   }, []);
 
-  const fetchData = async () => {
+  const fetchCollection = useCallback(async (resource: string, token: string, key: string) => {
+    const response = await fetch(`${API_BASE_URL}/${resource}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const payload = await response.json().catch(() => ({}));
+    if (Array.isArray(payload)) return payload;
+    if (Array.isArray(payload?.data)) return payload.data;
+    if (Array.isArray(payload?.[key])) return payload[key];
+    return [];
+  }, []);
+
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
+      const { data } = await supabase.auth.getSession();
+      const session = data.session;
 
-      const [leadsRes, clientsRes, quotesRes, invoicesRes, bookingsRes] = await Promise.all([
-        fetch(`https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/leads`, {
-          headers: { Authorization: `Bearer ${session.access_token}` }
-        }),
-        fetch(`https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/clients`, {
-          headers: { Authorization: `Bearer ${session.access_token}` }
-        }),
-        fetch(`https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/quotes`, {
-          headers: { Authorization: `Bearer ${session.access_token}` }
-        }),
-        fetch(`https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/invoices`, {
-          headers: { Authorization: `Bearer ${session.access_token}` }
-        }),
-        fetch(`https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/bookings`, {
-          headers: { Authorization: `Bearer ${session.access_token}` }
-        })
+      if (!session) {
+        setLoading(false);
+        return;
+      }
+
+      const token = session.access_token;
+      const [leadsData, clientsData, quotesData, invoicesData, bookingsData] = await Promise.all([
+        fetchCollection("leads", token, "leads"),
+        fetchCollection("clients", token, "clients"),
+        fetchCollection("quotes", token, "quotes"),
+        fetchCollection("invoices", token, "invoices"),
+        fetchCollection("bookings", token, "bookings"),
       ]);
 
-      const leadsData = leadsRes.ok ? (await leadsRes.json()).leads || [] : [];
-      const clientsData = clientsRes.ok ? (await clientsRes.json()).clients || [] : [];
-      const quotesData = quotesRes.ok ? (await quotesRes.json()).quotes || [] : [];
-      const invoicesData = invoicesRes.ok ? (await invoicesRes.json()).invoices || [] : [];
-      const bookingsData = bookingsRes.ok ? (await bookingsRes.json()).bookings || [] : [];
-
-      // Utiliser les données réelles de la base, sans fallback sur les données de démo
       setLeads(leadsData);
       setClients(clientsData);
       setQuotes(quotesData);
       setInvoices(invoicesData);
       setBookings(bookingsData);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Failed to fetch dashboard data", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [fetchCollection]);
 
-  // CRUD Operations
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const persistEntity = useCallback(
+    async (resource: string, payload: any, id?: string | null) => {
+      try {
+        const session = await ensureSession();
+        const response = await fetch(`${API_BASE_URL}/${resource}${id ? `/${id}` : ""}`, {
+          method: id ? "PUT" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({}));
+          throw new Error(error.message || "Erreur lors de l'enregistrement");
+        }
+
+        await fetchData();
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
+    [ensureSession, fetchData]
+  );
+
   const handleSaveLead = async (leadData: any) => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
-
-    const url = editingLead
-      ? `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/leads/${editingLead.id}`
-      : `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/leads`;
-
-    const method = editingLead ? "PUT" : "POST";
-
-    const response = await fetch(url, {
-      method,
-      headers: {
-        Authorization: `Bearer ${session.access_token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(leadData)
-    });
-
-    if (response.ok) {
-      await fetchData();
-      setEditingLead(null);
-    }
-  };
-
-  const handleSaveClient = async (clientData: any) => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
-
-    const url = editingClient
-      ? `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/clients/${editingClient.id}`
-      : `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/clients`;
-
-    const method = editingClient ? "PUT" : "POST";
-
-    const response = await fetch(url, {
-      method,
-      headers: {
-        Authorization: `Bearer ${session.access_token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(clientData)
-    });
-
-    if (response.ok) {
-      await fetchData();
-      setEditingClient(null);
-    }
+    const id = leadData.id || editingLead?.id || null;
+    await persistEntity("leads", leadData, id);
+    setEditingLead(null);
   };
 
   const handleSaveQuote = async (quoteData: any) => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
-
-    const url = editingQuote
-      ? `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/quotes/${editingQuote.id}`
-      : `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/quotes`;
-
-    const method = editingQuote ? "PUT" : "POST";
-
-    const response = await fetch(url, {
-      method,
-      headers: {
-        Authorization: `Bearer ${session.access_token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(quoteData)
-    });
-
-    if (response.ok) {
-      await fetchData();
-      setEditingQuote(null);
-    }
+    const id = quoteData.id || editingQuote?.id || null;
+    await persistEntity("quotes", quoteData, id);
+    setEditingQuote(null);
   };
 
   const handleSaveBooking = async (bookingData: any) => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
+    const id = bookingData.id || editingBooking?.id || null;
+    await persistEntity("bookings", bookingData, id);
+    setEditingBooking(null);
+  };
 
-    const url = editingBooking
-      ? `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/bookings/${editingBooking.id}`
-      : `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/bookings`;
+  const handleCreateInvoiceFromQuote = async (quote: any, e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    try {
+      const session = await ensureSession();
+      const invoicePayload = {
+        clientId: quote.clientId || quote.client_id,
+        clientName: quote.clientName || quote.client_name,
+        clientEmail: quote.clientEmail || quote.client_email,
+        clientAddress: quote.clientAddress || quote.client_address,
+        items: quote.metadata?.items || quote.items || [],
+        total: quote.amount || quote.total || 0,
+        status: "pending",
+        sourceQuoteId: quote.id,
+      };
 
-    const method = editingBooking ? "PUT" : "POST";
+      const response = await fetch(`${API_BASE_URL}/invoices`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify(invoicePayload),
+      });
 
-    // Détecter si date ou heure a changé
-    const dateChanged = editingBooking && (
-      bookingData.date !== editingBooking.date || 
-      bookingData.time !== editingBooking.time
-    );
-
-    const response = await fetch(url, {
-      method,
-      headers: {
-        Authorization: `Bearer ${session.access_token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(bookingData)
-    });
-
-    if (response.ok) {
-      // Si modification de date/heure, envoyer email
-      if (dateChanged) {
-        const oldDate = new Date(editingBooking.date).toLocaleDateString('fr-FR', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        });
-        const newDate = new Date(bookingData.date).toLocaleDateString('fr-FR', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        });
-
-        const changeMessage = `Ancien rendez-vous : ${oldDate} à ${editingBooking.time}\nNouveau rendez-vous : ${newDate} à ${bookingData.time}`;
-
-        // Envoyer email de modification
-        await fetch(
-          `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/emails/booking-confirmation`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${session.access_token}`,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              to: bookingData.email,
-              name: bookingData.name,
-              date: bookingData.date,
-              time: bookingData.time,
-              service: bookingData.service,
-              status: 'modified',
-              message: changeMessage
-            })
-          }
-        ).then(res => {
-          if (res.ok) {
-            // Toast notification
-            const notification = document.createElement('div');
-            notification.className = 'fixed top-4 right-4 z-50 bg-blue-500/90 backdrop-blur-xl text-white px-6 py-4 rounded-lg shadow-2xl border border-blue-400/20 animate-slide-in-right';
-            notification.innerHTML = `
-              <div class="flex items-center gap-3">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                </svg>
-                <div>
-                  <p class="font-semibold">Rendez-vous modifié !</p>
-                  <p class="text-sm text-blue-100">Email de modification envoyé à ${bookingData.email}</p>
-                </div>
-              </div>
-            `;
-            document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 4000);
-          }
-        });
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || "Erreur lors de la création de la facture");
       }
 
-      await fetchData();
-      setEditingBooking(null);
-      setBookingDialogOpen(false);
+      alert("Facture créée avec succès à partir du devis !");
+      fetchData();
+    } catch (error: any) {
+      alert(error.message || "Impossible de créer la facture");
     }
   };
 
   const handleItemClick = (item: any) => {
-    if (item.type === "lead") {
-      setEditingLead(item);
-      setLeadDialogOpen(true);
-    } else if (item.type === "client") {
-      setEditingClient(item);
-      setClientDialogOpen(true);
-    } else if (item.type === "quote") {
-      setEditingQuote(item);
-      setQuoteDialogOpen(true);
-    } else if (item.type === "invoice") {
-      setEditingInvoice(item);
-      setInvoiceDialogOpen(true);
-    } else if (item.type === "booking") {
-      setEditingBooking(item);
-      setBookingDialogOpen(true);
-    }
+    if (!item) return;
+    const type = (item.type || "lead") as ItemDetailsType;
+    handleOpenDetails(item, type);
   };
 
   const handleNewClick = () => {
     if (activeView === "calendar") {
-      // Créer un nouveau rendez-vous
+      // CrÃ©er un nouveau rendez-vous
       setEditingBooking(null);
       setBookingDialogOpen(true);
     } else if (activeFilter === "leads") {
@@ -354,7 +267,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
       setEditingInvoice(null);
       setInvoiceDialogOpen(true);
     } else {
-      // Par défaut, créer un lead
+      // Par dÃ©faut, crÃ©er un lead
       setEditingLead(null);
       setLeadDialogOpen(true);
     }
@@ -363,13 +276,13 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
   const handleDeleteItem = async (item: any, e: React.MouseEvent) => {
     e.stopPropagation();
     
-    const displayName = item.display_name || item.name || 'cet élément';
+    const displayName = item.display_name || item.name || 'cet Ã©lÃ©ment';
     if (!confirm(`Voulez-vous vraiment supprimer "${displayName}" ?`)) return;
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        alert("Vous devez être connecté pour supprimer un élément");
+        alert("Vous devez Ãªtre connectÃ© pour supprimer un Ã©lÃ©ment");
         return;
       }
 
@@ -386,7 +299,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
         url = `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/bookings/${item.id}`;
       }
 
-      console.log("🗑️ DELETE Request:", { 
+      console.log("ðŸ—‘ï¸ DELETE Request:", { 
         type: item.type, 
         id: item.id, 
         url,
@@ -398,7 +311,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
         headers: { Authorization: `Bearer ${session.access_token}` }
       });
 
-      console.log("🗑️ DELETE Response:", { 
+      console.log("ðŸ—‘ï¸ DELETE Response:", { 
         ok: response.ok, 
         status: response.status,
         statusText: response.statusText
@@ -406,11 +319,11 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
 
       if (response.ok) {
         const result = await response.json();
-        console.log("✅ DELETE Success - Full response:", result);
-        console.log("📝 Deleted key was:", result.deletedKey);
-        console.log("🔍 Was found before delete:", result.wasFound);
+        console.log("âœ… DELETE Success - Full response:", result);
+        console.log("ðŸ“ Deleted key was:", result.deletedKey);
+        console.log("ðŸ” Was found before delete:", result.wasFound);
         
-        // Suppression locale immédiate
+        // Suppression locale immÃ©diate
         if (item.type === "lead") {
           setLeads(leads.filter(l => l.id !== item.id));
         } else if (item.type === "client") {
@@ -423,7 +336,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
           setBookings(bookings.filter(b => b.id !== item.id));
         }
         
-        // NE PAS rafraîchir pour éviter que l'élément revienne
+        // NE PAS rafraÃ®chir pour Ã©viter que l'Ã©lÃ©ment revienne
         // await fetchData();
       } else {
         const error = await response.json().catch(() => ({ message: 'Erreur inconnue' }));
@@ -437,17 +350,17 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
 
   // ADMIN: Supprimer TOUS les bookings
   const handleDeleteAllBookings = async () => {
-    if (!confirm(`⚠️ ATTENTION ! Voulez-vous vraiment supprimer TOUS les ${bookings.length} rendez-vous ?\n\nCette action est irréversible !`)) return;
+    if (!confirm(`âš ï¸ ATTENTION ! Voulez-vous vraiment supprimer TOUS les ${bookings.length} rendez-vous ?\n\nCette action est irrÃ©versible !`)) return;
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        alert("Vous devez être connecté");
+        alert("Vous devez Ãªtre connectÃ©");
         return;
       }
 
       const url = `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/bookings`;
-      console.log("🗑️ DELETE ALL bookings request");
+      console.log("ðŸ—‘ï¸ DELETE ALL bookings request");
 
       const response = await fetch(url, {
         method: "DELETE",
@@ -456,9 +369,9 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
 
       if (response.ok) {
         const result = await response.json();
-        console.log("✅ All bookings deleted:", result);
+        console.log("âœ… All bookings deleted:", result);
         setBookings([]);
-        alert(`✅ ${result.count} rendez-vous supprimés avec succès !`);
+        alert(`âœ… ${result.count} rendez-vous supprimÃ©s avec succÃ¨s !`);
       } else {
         const error = await response.json().catch(() => ({ message: 'Erreur inconnue' }));
         alert(`Erreur: ${error.message || response.statusText}`);
@@ -471,150 +384,74 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
 
   // Convertir un booking en client
   const handleConvertBookingToClient = async (booking: any) => {
-    if (!confirm(`Convertir "${booking.name}" en client ?`)) return;
+    if (!booking) return;
+    if (!confirm(`Convertir "${booking.name || booking.email}" en client ?`)) return;
+
+    if (!booking.email) {
+      alert("Impossible de créer un client sans email");
+      return;
+    }
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        alert("Vous devez être connecté");
-        return;
-      }
-
-      // Créer le client avec les données du booking
-      const clientData = {
-        name: booking.name,
+      const session = await ensureSession();
+      const clientPayload = {
+        name: booking.name || "Client sans nom",
         email: booking.email,
         phone: booking.phone || "",
-        company: "",
-        address: "",
+        company: booking.company || booking.serviceType || "",
+        address: booking.address || "",
         status: "active",
-        revenue: 0,
-        notes: `Client créé à partir du rendez-vous du ${booking.date} à ${booking.time}\nService: ${booking.service || 'N/A'}\nMessage: ${booking.message || 'N/A'}`
-      };
-
-      const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/clients`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${session.access_token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(clientData)
-        }
-      );
-
-      if (response.ok) {
-        await fetchData();
-        alert(`✅ Client "${booking.name}" créé avec succès !`);
-      } else {
-        const error = await response.json().catch(() => ({ message: 'Erreur inconnue' }));
-        alert(`Erreur: ${error.message || response.statusText}`);
-      }
-    } catch (error: any) {
-      console.error("Erreur conversion booking → client:", error);
-      alert(`Erreur: ${error.message}`);
-    }
-  };
-
-  // Créer une facture à partir d'un devis (le devis reste)
-  const handleCreateInvoiceFromQuote = async (quote: any, e: React.MouseEvent) => {
-    e.stopPropagation();
-    
-    console.log("📝 Quote data:", quote);
-    
-    const quoteName = quote.clientName || quote.client_name || quote.name || 'Sans nom';
-    if (!confirm(`Créer une facture à partir du devis "${quoteName}" ?`)) return;
-
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        alert("Vous devez être connecté");
-        return;
-      }
-
-      // Extraire les données du devis en gérant plusieurs formats possibles
-      const clientId = quote.clientId || quote.client_id;
-      const clientName = quote.clientName || quote.client_name || quote.name;
-      const clientEmail = quote.clientEmail || quote.client_email || quote.email;
-      const clientAddress = quote.clientAddress || quote.client_address || quote.address;
-      
-      // Pour les items et le montant
-      const items = quote.items || quote.metadata?.items || [];
-      const amount = quote.amount || quote.total || quote.value || 0;
-      
-      if (!clientId || !clientName || !clientEmail) {
-        alert("⚠️ Informations client manquantes dans le devis");
-        console.error("Missing client info:", { clientId, clientName, clientEmail });
-        return;
-      }
-
-      // Créer la nouvelle facture avec les données du devis
-      const invoiceData = {
-        clientId,
-        clientName,
-        clientEmail,
-        clientAddress,
-        items: items,
-        total: amount,
-        status: 'pending', // Facture en attente de paiement
-        dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // +30 jours
-        notes: quote.description || quote.notes || "",
+        notes: booking.notes || "",
+        tags: booking.tags || booking.services || [],
         metadata: {
-          ...(quote.metadata || {}),
-          sourceQuoteId: quote.id, // Référence au devis source
-          sourceQuoteNumber: quote.number || quote.quoteNumber,
-          convertedAt: new Date().toISOString()
-        }
+          source: "booking",
+          bookingId: booking.id,
+          bookingDate: booking.date,
+          bookingTime: booking.time,
+          serviceType: booking.serviceType,
+          budget: booking.budget,
+        },
       };
 
-      console.log("💰 Creating invoice with data:", invoiceData);
+      const response = await fetch(`${API_BASE_URL}/clients`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify(clientPayload),
+      });
 
-      const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/invoices`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session.access_token}`
-          },
-          body: JSON.stringify(invoiceData)
-        }
-      );
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("✅ Invoice created:", result);
-        alert("✅ Facture créée avec succès !");
-        await fetchData();
-      } else {
-        const error = await response.json().catch(() => ({ message: 'Erreur inconnue' }));
-        console.error("❌ Error response:", error);
-        alert(`Erreur: ${error.error || error.message || response.statusText}`);
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || "Erreur lors de la conversion du rendez-vous");
       }
+
+      alert("Client créé avec succès à partir du rendez-vous");
+      await fetchData();
     } catch (error: any) {
-      console.error("❌ Erreur création facture:", error);
-      alert(`Erreur: ${error.message}`);
+      console.error("Erreur conversion booking:", error);
+      alert(error.message || "Impossible de convertir ce rendez-vous");
     }
   };
 
-  // Transformer un devis en facture (le devis est supprimé)
+  // Transformer un devis en facture (le devis est supprimÃ©)
   const handleConvertQuoteToInvoice = async (quote: any, e: React.MouseEvent) => {
     e.stopPropagation();
     
-    console.log("🔄 Quote to convert:", quote);
+    console.log("ðŸ”„ Quote to convert:", quote);
     
     const quoteName = quote.clientName || quote.client_name || quote.name || 'Sans nom';
-    if (!confirm(`Transformer le devis "${quoteName}" en facture ?\n\n⚠️ Le devis sera supprimé et remplacé par une facture.`)) return;
+    if (!confirm(`Transformer le devis "${quoteName}" en facture ?\n\nâš ï¸ Le devis sera supprimÃ© et remplacÃ© par une facture.`)) return;
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        alert("Vous devez être connecté");
+        alert("Vous devez Ãªtre connectÃ©");
         return;
       }
 
-      // Extraire les données du devis en gérant plusieurs formats possibles
+      // Extraire les donnÃ©es du devis en gÃ©rant plusieurs formats possibles
       const clientId = quote.clientId || quote.client_id;
       const clientName = quote.clientName || quote.client_name || quote.name;
       const clientEmail = quote.clientEmail || quote.client_email || quote.email;
@@ -625,12 +462,12 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
       const amount = quote.amount || quote.total || quote.value || 0;
       
       if (!clientId || !clientName || !clientEmail) {
-        alert("⚠️ Informations client manquantes dans le devis");
+        alert("âš ï¸ Informations client manquantes dans le devis");
         console.error("Missing client info:", { clientId, clientName, clientEmail });
         return;
       }
 
-      // 1. Créer la facture
+      // 1. CrÃ©er la facture
       const invoiceData = {
         clientId,
         clientName,
@@ -649,7 +486,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
         }
       };
 
-      console.log("💰 Converting to invoice with data:", invoiceData);
+      console.log("ðŸ’° Converting to invoice with data:", invoiceData);
 
       const createResponse = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/invoices`,
@@ -665,13 +502,13 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
 
       if (!createResponse.ok) {
         const error = await createResponse.json().catch(() => ({ message: 'Erreur inconnue' }));
-        console.error("❌ Error creating invoice:", error);
-        alert(`Erreur création facture: ${error.error || error.message || createResponse.statusText}`);
+        console.error("âŒ Error creating invoice:", error);
+        alert(`Erreur crÃ©ation facture: ${error.error || error.message || createResponse.statusText}`);
         return;
       }
 
       const invoiceResult = await createResponse.json();
-      console.log("✅ Invoice created:", invoiceResult);
+      console.log("âœ… Invoice created:", invoiceResult);
 
       // 2. Supprimer le devis
       const deleteResponse = await fetch(
@@ -683,28 +520,28 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
       );
 
       if (deleteResponse.ok) {
-        console.log("✅ Quote deleted:", quote.id);
-        alert("✅ Devis transformé en facture !");
+        console.log("âœ… Quote deleted:", quote.id);
+        alert("âœ… Devis transformÃ© en facture !");
         await fetchData();
       } else {
-        console.warn("⚠️ Invoice created but quote deletion failed");
-        alert("⚠️ Facture créée mais erreur lors de la suppression du devis. Veuillez supprimer le devis manuellement.");
+        console.warn("âš ï¸ Invoice created but quote deletion failed");
+        alert("âš ï¸ Facture crÃ©Ã©e mais erreur lors de la suppression du devis. Veuillez supprimer le devis manuellement.");
         await fetchData();
       }
     } catch (error: any) {
-      console.error("❌ Erreur conversion:", error);
+      console.error("âŒ Erreur conversion:", error);
       alert(`Erreur: ${error.message}`);
     }
   };
 
-  // Ouvrir le modal de détails
-  const handleOpenDetails = (item: any, type: 'lead' | 'client' | 'quote' | 'invoice') => {
+  // Ouvrir le modal de dÃ©tails
+  const handleOpenDetails = (item: any, type: ItemDetailsType) => {
     setSelectedItem(item);
     setSelectedItemType(type);
     setDetailsModalOpen(true);
   };
 
-  // Formater la date du dernier email envoyé
+  // Formater la date du dernier email envoyÃ©
   const formatLastEmailSent = (lastEmailSent: string | null | undefined): string => {
     if (!lastEmailSent) return '';
     
@@ -715,7 +552,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     
-    if (diffMins < 1) return "À l'instant";
+    if (diffMins < 1) return "Ã€ l'instant";
     if (diffMins < 60) return `il y a ${diffMins}min`;
     if (diffHours < 24) return `il y a ${diffHours}h`;
     if (diffDays === 1) return "hier";
@@ -732,16 +569,16 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
     const clientName = quote.clientName || quote.client_name || quote.name || 'Client';
     
     if (!clientEmail) {
-      alert("⚠️ Aucun email client trouvé pour ce devis");
+      alert("âš ï¸ Aucun email client trouvÃ© pour ce devis");
       return;
     }
     
-    if (!confirm(`Envoyer le devis à ${clientEmail} ?`)) return;
+    if (!confirm(`Envoyer le devis Ã  ${clientEmail} ?`)) return;
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        alert("Vous devez être connecté");
+        alert("Vous devez Ãªtre connectÃ©");
         return;
       }
 
@@ -757,7 +594,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
       );
 
       if (response.ok) {
-        // Mettre à jour la date d'envoi
+        // Mettre Ã  jour la date d'envoi
         await fetch(
           `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/quotes/${quote.id}`,
           {
@@ -773,7 +610,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
           }
         );
         
-        // Notification de succès stylée
+        // Notification de succÃ¨s stylÃ©e
         const notification = document.createElement('div');
         notification.className = 'fixed top-4 right-4 z-50 bg-green-500/10 border border-green-500/20 text-green-400 px-6 py-4 rounded-lg shadow-2xl backdrop-blur-sm animate-in slide-in-from-top-5';
         notification.innerHTML = `
@@ -782,22 +619,22 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
             <div>
-              <p class="font-semibold">Email envoyé avec succès !</p>
-              <p class="text-sm text-green-400/70">Devis envoyé à ${clientEmail}</p>
+              <p class="font-semibold">Email envoyÃ© avec succÃ¨s !</p>
+              <p class="text-sm text-green-400/70">Devis envoyÃ© Ã  ${clientEmail}</p>
             </div>
           </div>
         `;
         document.body.appendChild(notification);
         setTimeout(() => notification.remove(), 4000);
         
-        // Recharger les données
+        // Recharger les donnÃ©es
         fetchData();
       } else {
         const error = await response.json().catch(() => ({ message: 'Erreur inconnue' }));
         alert(`Erreur: ${error.error || error.message || response.statusText}`);
       }
     } catch (error: any) {
-      console.error("❌ Erreur envoi email:", error);
+      console.error("âŒ Erreur envoi email:", error);
       alert(`Erreur: ${error.message}`);
     }
   };
@@ -810,16 +647,16 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
     const clientName = invoice.clientName || invoice.client_name || invoice.name || 'Client';
     
     if (!clientEmail) {
-      alert("⚠️ Aucun email client trouvé pour cette facture");
+      alert("âš ï¸ Aucun email client trouvÃ© pour cette facture");
       return;
     }
     
-    if (!confirm(`Envoyer la facture à ${clientEmail} ?`)) return;
+    if (!confirm(`Envoyer la facture Ã  ${clientEmail} ?`)) return;
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        alert("Vous devez être connecté");
+        alert("Vous devez Ãªtre connectÃ©");
         return;
       }
 
@@ -835,7 +672,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
       );
 
       if (response.ok) {
-        // Mettre à jour la date d'envoi
+        // Mettre Ã  jour la date d'envoi
         await fetch(
           `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/invoices/${invoice.id}`,
           {
@@ -851,7 +688,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
           }
         );
         
-        // Notification de succès stylée
+        // Notification de succÃ¨s stylÃ©e
         const notification = document.createElement('div');
         notification.className = 'fixed top-4 right-4 z-50 bg-green-500/10 border border-green-500/20 text-green-400 px-6 py-4 rounded-lg shadow-2xl backdrop-blur-sm animate-in slide-in-from-top-5';
         notification.innerHTML = `
@@ -860,22 +697,22 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
             <div>
-              <p class="font-semibold">Email envoyé avec succès !</p>
-              <p class="text-sm text-green-400/70">Facture envoyée à ${clientEmail}</p>
+              <p class="font-semibold">Email envoyÃ© avec succÃ¨s !</p>
+              <p class="text-sm text-green-400/70">Facture envoyÃ©e Ã  ${clientEmail}</p>
             </div>
           </div>
         `;
         document.body.appendChild(notification);
         setTimeout(() => notification.remove(), 4000);
         
-        // Recharger les données
+        // Recharger les donnÃ©es
         fetchData();
       } else {
         const error = await response.json().catch(() => ({ message: 'Erreur inconnue' }));
         alert(`Erreur: ${error.error || error.message || response.statusText}`);
       }
     } catch (error: any) {
-      console.error("❌ Erreur envoi email:", error);
+      console.error("âŒ Erreur envoi email:", error);
       alert(`Erreur: ${error.message}`);
     }
   };
@@ -895,7 +732,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
       type: "booking",
       value: 0,
       display_name: b.name,
-      display_info: `${b.date} à ${b.time} - ${b.service || 'RDV'}`,
+      display_info: `${b.date} Ã  ${b.time} - ${b.service || 'RDV'}`,
       status: b.status || 'pending'
     })),
     ...clients.map(c => ({ 
@@ -907,17 +744,17 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
     })),
     ...quotes.map(q => {
       const statusMap: Record<string, string> = {
-        'draft': '📝 Brouillon',
-        'sent': '📤 Envoyé',
-        'accepted': '✅ Accepté',
-        'rejected': '❌ Refusé',
-        'pending': '⏳ En attente'
+        'draft': 'ðŸ“ Brouillon',
+        'sent': 'ðŸ“¤ EnvoyÃ©',
+        'accepted': 'âœ… AcceptÃ©',
+        'rejected': 'âŒ RefusÃ©',
+        'pending': 'â³ En attente'
       };
       
       // Trouver le client correspondant
       const client = clients.find(c => c.id === q.clientId || c.id === q.client_id);
       
-      // Priorité: clientName (API) > client_name (legacy) > nom du client trouvé > email du client > "Devis sans client"
+      // PrioritÃ©: clientName (API) > client_name (legacy) > nom du client trouvÃ© > email du client > "Devis sans client"
       let clientName = 'Devis sans client';
       if (q.clientName) {
         clientName = q.clientName;
@@ -934,23 +771,23 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
         type: "quote", 
         value: q.amount || q.total || 0,
         display_name: clientName,
-        display_info: statusMap[q.status] || q.status || '📝 Brouillon',
+        display_info: statusMap[q.status] || q.status || 'ðŸ“ Brouillon',
         items_count: q.metadata?.items?.length || q.items?.length || 0
       };
     }),
     ...invoices.map(i => {
       const statusMap: Record<string, string> = {
-        'draft': '📝 Brouillon',
-        'sent': '📤 Envoyée',
-        'paid': '💰 Payée',
-        'overdue': '⏰ En retard',
-        'pending': '⏳ En attente'
+        'draft': 'ðŸ“ Brouillon',
+        'sent': 'ðŸ“¤ EnvoyÃ©e',
+        'paid': 'ðŸ’° PayÃ©e',
+        'overdue': 'â° En retard',
+        'pending': 'â³ En attente'
       };
       
       // Trouver le client correspondant
       const client = clients.find(c => c.id === i.clientId || c.id === i.client_id);
       
-      // Priorité: clientName (API) > client_name (legacy) > nom du client trouvé > email du client > "Facture sans client"
+      // PrioritÃ©: clientName (API) > client_name (legacy) > nom du client trouvÃ© > email du client > "Facture sans client"
       let clientName = 'Facture sans client';
       if (i.clientName) {
         clientName = i.clientName;
@@ -967,7 +804,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
         type: "invoice", 
         value: i.total || i.amount || 0,
         display_name: clientName,
-        display_info: statusMap[i.status] || i.status || '📝 Brouillon',
+        display_info: statusMap[i.status] || i.status || 'ðŸ“ Brouillon',
         items_count: i.items?.length || 0
       };
     })
@@ -986,16 +823,16 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
            item.client_name?.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
-  // Stats calculées de manière dynamique
+  // Stats calculÃ©es de maniÃ¨re dynamique
   const stats = useMemo(() => {
-    // 1. CA Total (factures payées uniquement)
+    // 1. CA Total (factures payÃ©es uniquement)
     const totalRevenue = invoices
-      .filter(inv => inv.status === 'paid' || inv.status === 'payée')
+      .filter(inv => inv.status === 'paid' || inv.status === 'payÃ©e')
       .reduce((sum, inv) => sum + (inv.total || inv.amount || 0), 0);
     
     // 2. Devis en attente (sent ou pending)
     const pendingQuotes = quotes.filter(q => 
-      q.status === 'sent' || q.status === 'pending' || q.status === '📤 Envoyé' || q.status === '⏳ En attente'
+      q.status === 'sent' || q.status === 'pending' || q.status === 'ðŸ“¤ EnvoyÃ©' || q.status === 'â³ En attente'
     ).length;
     
     // 3. Leads actifs (non convertis)
@@ -1003,8 +840,8 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
       l.status !== 'converted' && l.status !== 'lost'
     ).length;
     
-    // 4. Taux de conversion (devis acceptés / total devis)
-    const acceptedQuotes = quotes.filter(q => q.status === 'accepted' || q.status === '✅ Accepté').length;
+    // 4. Taux de conversion (devis acceptÃ©s / total devis)
+    const acceptedQuotes = quotes.filter(q => q.status === 'accepted' || q.status === 'âœ… AcceptÃ©').length;
     const conversionRate = quotes.length > 0 
       ? Math.round((acceptedQuotes / quotes.length) * 100) 
       : 0;
@@ -1014,12 +851,12 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
       .filter(q => q.status === 'sent' || q.status === 'pending')
       .reduce((sum, q) => sum + (q.amount || q.total || 0), 0);
     
-    // 6. Factures impayées
+    // 6. Factures impayÃ©es
     const unpaidInvoices = invoices.filter(inv => 
       inv.status === 'sent' || inv.status === 'overdue' || inv.status === 'unpaid'
     ).length;
     
-    // 7. Montant des factures impayées
+    // 7. Montant des factures impayÃ©es
     const unpaidAmount = invoices
       .filter(inv => inv.status === 'sent' || inv.status === 'overdue' || inv.status === 'unpaid')
       .reduce((sum, inv) => sum + (inv.total || inv.amount || 0), 0);
@@ -1036,6 +873,52 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
     };
   }, [leads, clients, quotes, invoices]);
 
+  const revenueSeries = useMemo(() => {
+    const now = new Date();
+    const buckets = Array.from({ length: 6 }).map((_, index) => {
+      const date = new Date(now.getFullYear(), now.getMonth() - (5 - index), 1);
+      const label = date.toLocaleString('en-US', { month: 'short' });
+      return { label, value: 0 };
+    });
+
+    invoices.forEach((invoice) => {
+      const date = parseDate(
+        invoice.created_at ||
+          invoice.createdAt ||
+          invoice.issuedAt ||
+          invoice.issueDate ||
+          invoice.date ||
+          invoice.dueDate
+      );
+      const label = date.toLocaleString('en-US', { month: 'short' });
+      const bucket = buckets.find((entry) => entry.label === label);
+      if (bucket) {
+        bucket.value += invoice.total || invoice.amount || 0;
+      }
+    });
+
+    return buckets;
+  }, [invoices]);
+
+  const subscriberSeries = useMemo(() => {
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((label) => ({ label, value: 0 }));
+    bookings.forEach((booking) => {
+      const dayIndex = parseDate(booking.date || booking.created_at || booking.createdAt).getDay();
+      days[dayIndex].value += 1;
+    });
+    return days;
+  }, [bookings]);
+
+  const distributionData = useMemo(() => {
+    const dataset = [
+      { label: 'Website', value: leads.length, color: '#CCFF00' },
+      { label: 'Mobile App', value: clients.length, color: '#7C45FF' },
+      { label: 'Autres', value: invoices.length, color: '#1EA7FF' },
+    ];
+    const total = dataset.reduce((sum, item) => sum + item.value, 0) || 1;
+    return dataset.map((item) => ({ ...item, percent: Math.round((item.value / total) * 100) }));
+  }, [leads.length, clients.length, invoices.length]);
+
   return (
     <div className="min-h-screen" style={{ background: colors.background }}>
       <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
@@ -1049,12 +932,12 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           <MetricCard
             icon={<DollarSign className="h-5 w-5" />}
-            label="CA réalisé"
-            value={`${stats.totalRevenue.toLocaleString('fr-FR')}€`}
-            sublabel={stats.unpaidAmount > 0 ? `${stats.unpaidAmount.toLocaleString('fr-FR')}€ en attente` : "Tout est payé"}
+            label="CA rÃ©alisÃ©"
+            value={`${stats.totalRevenue.toLocaleString('fr-FR')}â‚¬`}
+            sublabel={stats.unpaidAmount > 0 ? `${stats.unpaidAmount.toLocaleString('fr-FR')}â‚¬ en attente` : "Tout est payÃ©"}
             status="Revenus"
             trend={{
-              label: `${stats.potentialRevenue.toLocaleString('fr-FR')}€ potentiel`,
+              label: `${stats.potentialRevenue.toLocaleString('fr-FR')}â‚¬ potentiel`,
               direction: stats.potentialRevenue >= stats.totalRevenue ? "up" : "flat",
             }}
           />
@@ -1065,7 +948,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
             sublabel={`${quotes.length} devis au total`}
             status="Devis"
             trend={{
-              label: `${stats.unpaidInvoices} factures impayées`,
+              label: `${stats.unpaidInvoices} factures impayÃ©es`,
               direction: stats.unpaidInvoices > 0 ? "down" : "flat",
             }}
           />
@@ -1084,10 +967,10 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
             icon={<Target className="h-5 w-5" />}
             label="Conversion"
             value={`${stats.conversionRate}%`}
-            sublabel={`${quotes.filter(q => q.status === 'accepted' || q.status === '✅ Accepté').length}/${quotes.length || 1} acceptés`}
+            sublabel={`${quotes.filter(q => q.status === 'accepted' || q.status === 'âœ… AcceptÃ©').length}/${quotes.length || 1} acceptÃ©s`}
             status="Performance"
             trend={{
-              label: stats.conversionRate > 30 ? "Progression" : "À travailler",
+              label: stats.conversionRate > 30 ? "Progression" : "Ã€ travailler",
               direction: stats.conversionRate > 30 ? "up" : "flat",
             }}
           />
@@ -1114,7 +997,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
                     onClick={() => setActiveFilter(filter)}
                     className={`rounded-full border px-4 py-2 text-sm font-medium transition-all ${
                       activeFilter === filter
-                        ? "border-mint bg-mint text-black shadow-[0_10px_30px_rgba(0,255,194,.3)]"
+                        ? "border-mint bg-mint text-black shadow-[0_10px_30px_rgba(204, 255, 0,.3)]"
                         : "border-white/10 text-neutral-400 hover:border-white/20 hover:text-white"
                     }`}
                   >
@@ -1124,7 +1007,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
               </div>
               <div className="flex items-center gap-3">
                 <Badge className="rounded-full border border-mint/30 bg-mint/10 text-mint">
-                  {allItems.length} éléments
+                  {allItems.length} Ã©lÃ©ments
                 </Badge>
                 <Button
                   className="gap-2 rounded-2xl bg-mint px-4 py-2 text-sm font-semibold text-black hover:bg-mint/90"
@@ -1143,8 +1026,8 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
             ) : allItems.length === 0 ? (
               <div className="flex h-64 flex-col items-center justify-center text-center">
                 <Target className="mb-4 h-12 w-12 text-white/20" />
-                <p className="text-lg text-white/60">Aucun élément</p>
-                <p className="text-sm text-white/40">Créez votre premier lead pour commencer</p>
+                <p className="text-lg text-white/60">Aucun Ã©lÃ©ment</p>
+                <p className="text-sm text-white/40">CrÃ©ez votre premier lead pour commencer</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -1189,7 +1072,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
                       {
                         key: "create-invoice",
                         icon: <Receipt className="h-4 w-4" />,
-                        label: "Créer une facture",
+                        label: "CrÃ©er une facture",
                         onClick: (event) => handleCreateInvoiceFromQuote(item, event),
                       },
                       {
@@ -1367,10 +1250,10 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               className="fixed top-32 left-1/2 -translate-x-1/2 w-full max-w-2xl z-50"
             >
-              <div className="bg-[#0C0C0C] border border-[#00FFC2]/20 rounded-2xl shadow-2xl shadow-[#00FFC2]/10 overflow-hidden">
+              <div className="bg-[#0C0C0C] border border-[#CCFF00]/20 rounded-2xl shadow-2xl shadow-[#CCFF00]/10 overflow-hidden">
                 <div className="p-4 border-b border-white/10">
                   <div className="flex items-center gap-3">
-                    <Search className="w-5 h-5 text-[#00FFC2]" />
+                    <Search className="w-5 h-5 text-[#CCFF00]" />
                     <Input
                       placeholder="Rechercher un lead, client, devis, facture..."
                       value={searchQuery}
@@ -1391,7 +1274,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
                 <div className="p-2 max-h-96 overflow-y-auto">
                   {searchQuery ? (
                     <div className="space-y-3">
-                      {/* Résultats Leads */}
+                      {/* RÃ©sultats Leads */}
                       {(() => {
                         const filteredLeads = leads.filter(l => 
                           l.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1417,14 +1300,14 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
                                   <div className="text-sm font-medium text-white">{lead.name}</div>
                                   <div className="text-xs text-white/40">{lead.email || lead.company}</div>
                                 </div>
-                                <div className="text-xs text-white/40">{lead.value ? `${lead.value.toLocaleString('fr-FR')}€` : ''}</div>
+                                <div className="text-xs text-white/40">{lead.value ? `${lead.value.toLocaleString('fr-FR')}â‚¬` : ''}</div>
                               </button>
                             ))}
                           </div>
                         );
                       })()}
 
-                      {/* Résultats Clients */}
+                      {/* RÃ©sultats Clients */}
                       {(() => {
                         const filteredClients = clients.filter(c => 
                           c.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1456,7 +1339,7 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
                         );
                       })()}
 
-                      {/* Résultats Devis */}
+                      {/* RÃ©sultats Devis */}
                       {(() => {
                         const filteredQuotes = quotes.filter(q => 
                           q.clientName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1483,14 +1366,14 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
                                   <div className="text-sm font-medium text-white">{quote.clientName || quote.client_name || 'Sans client'}</div>
                                   <div className="text-xs text-white/40">Devis #{quote.number || quote.id}</div>
                                 </div>
-                                <div className="text-sm font-medium text-white">{(quote.amount || quote.total || 0).toLocaleString('fr-FR')}€</div>
+                                <div className="text-sm font-medium text-white">{(quote.amount || quote.total || 0).toLocaleString('fr-FR')}â‚¬</div>
                               </button>
                             ))}
                           </div>
                         );
                       })()}
 
-                      {/* Résultats Factures */}
+                      {/* RÃ©sultats Factures */}
                       {(() => {
                         const filteredInvoices = invoices.filter(inv => 
                           inv.clientName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1511,43 +1394,43 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
                                 }}
                                 className="w-full px-3 py-2 rounded-lg hover:bg-white/5 flex items-center gap-3 text-left transition-colors"
                               >
-                                <div className="w-8 h-8 rounded-lg bg-[#00FFC2]/10 flex items-center justify-center">
-                                  <Receipt className="w-4 h-4 text-[#00FFC2]" />
+                                <div className="w-8 h-8 rounded-lg bg-[#CCFF00]/10 flex items-center justify-center">
+                                  <Receipt className="w-4 h-4 text-[#CCFF00]" />
                                 </div>
                                 <div className="flex-1">
                                   <div className="text-sm font-medium text-white">{invoice.clientName || invoice.client_name || 'Sans client'}</div>
                                   <div className="text-xs text-white/40">Facture #{invoice.invoiceNumber || invoice.number || invoice.id}</div>
                                 </div>
-                                <div className="text-sm font-medium text-white">{(invoice.total || invoice.amount || 0).toLocaleString('fr-FR')}€</div>
+                                <div className="text-sm font-medium text-white">{(invoice.total || invoice.amount || 0).toLocaleString('fr-FR')}â‚¬</div>
                               </button>
                             ))}
                           </div>
                         );
                       })()}
 
-                      {/* Aucun résultat */}
+                      {/* Aucun rÃ©sultat */}
                       {leads.filter(l => l.name?.toLowerCase().includes(searchQuery.toLowerCase()) || l.email?.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 &&
                        clients.filter(c => c.name?.toLowerCase().includes(searchQuery.toLowerCase()) || c.email?.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 &&
                        quotes.filter(q => q.clientName?.toLowerCase().includes(searchQuery.toLowerCase()) || q.number?.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 &&
                        invoices.filter(i => i.clientName?.toLowerCase().includes(searchQuery.toLowerCase()) || i.number?.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
                         <div className="px-3 py-8 text-center text-white/40">
                           <Search className="w-8 h-8 mx-auto mb-2 opacity-20" />
-                          <p className="text-sm">Aucun résultat pour "{searchQuery}"</p>
+                          <p className="text-sm">Aucun rÃ©sultat pour "{searchQuery}"</p>
                         </div>
                       )}
                     </div>
                   ) : (
                     <div className="space-y-1">
-                      <CommandItem icon={Plus} label="Créer un lead" shortcut="⌘N" onClick={() => { setLeadDialogOpen(true); setShowCommandPalette(false); }} />
-                      <CommandItem icon={Users} label="Créer un client" shortcut="⌘C" onClick={() => { setClientDialogOpen(true); setShowCommandPalette(false); }} />
-                      <CommandItem icon={FileText} label="Créer un devis" shortcut="⌘Q" onClick={() => { setQuoteDialogOpen(true); setShowCommandPalette(false); }} />
-                      <CommandItem icon={Receipt} label="Créer une facture" shortcut="⌘I" onClick={() => { setInvoiceDialogOpen(true); setShowCommandPalette(false); }} />
+                      <CommandItem icon={Plus} label="CrÃ©er un lead" shortcut="âŒ˜N" onClick={() => { setLeadDialogOpen(true); setShowCommandPalette(false); }} />
+                      <CommandItem icon={Users} label="CrÃ©er un client" shortcut="âŒ˜C" onClick={() => { setClientDialogOpen(true); setShowCommandPalette(false); }} />
+                      <CommandItem icon={FileText} label="CrÃ©er un devis" shortcut="âŒ˜Q" onClick={() => { setQuoteDialogOpen(true); setShowCommandPalette(false); }} />
+                      <CommandItem icon={Receipt} label="CrÃ©er une facture" shortcut="âŒ˜I" onClick={() => { setInvoiceDialogOpen(true); setShowCommandPalette(false); }} />
                       <div className="my-2 border-t border-white/10" />
-                      <div className="px-2 py-1 text-xs font-semibold text-white/40 uppercase">Aperçu</div>
+                      <div className="px-2 py-1 text-xs font-semibold text-white/40 uppercase">AperÃ§u</div>
                       <CommandItem icon={Users} label={`${stats.activeLeads} leads actifs`} />
                       <CommandItem icon={UserCheck} label={`${stats.clients} clients`} />
                       <CommandItem icon={FileText} label={`${stats.pendingQuotes} devis en attente`} />
-                      <CommandItem icon={DollarSign} label={`${stats.totalRevenue.toLocaleString('fr-FR')}€ CA réalisé`} />
+                      <CommandItem icon={DollarSign} label={`${stats.totalRevenue.toLocaleString('fr-FR')}â‚¬ CA rÃ©alisÃ©`} />
                     </div>
                   )}
                 </div>
@@ -1640,6 +1523,183 @@ export default function MinimalistDashboard({ onLogout }: MinimalistDashboardPro
   );
 }
 
+const SidebarNav = ({ sections, activeId, onSelect }: { sections: { title: string; items: SidebarNavItem[] }[]; activeId: string; onSelect: (id: string) => void }) => (
+  <div className="space-y-8">
+    {sections.map((section) => (
+      <div key={section.title}>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.4em] text-white/40">{section.title}</p>
+        <div className="space-y-1">
+          {section.items.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeId === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => onSelect(item.id)}
+                className={`flex w-full items-center justify-between rounded-2xl px-3 py-2 text-sm transition-all ${
+                  isActive ? "border border-white/10 bg-white/10 text-white shadow-[0_10px_30px_rgba(0,0,0,0.45)]" : "text-white/60 hover:bg-white/5 hover:text-white"
+                }`}
+              >
+                <span className="flex items-center gap-3 font-medium">
+                  <span className={`flex h-8 w-8 items-center justify-center rounded-xl ${isActive ? "bg-primary/20 text-primary" : "bg-white/5 text-white/50"}`}>
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  {item.label}
+                </span>
+                {item.badge && (
+                  <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-white/70">{item.badge}</span>
+                )}
+                {item.chip && (
+                  <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+                    {item.chip}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+const SalesOverviewCard = ({ series, total, className = "" }: { series: { label: string; value: number }[]; total: number; className?: string }) => {
+  const maxValue = Math.max(...series.map((entry) => entry.value), 1);
+  const latest = series[series.length - 1];
+  return (
+    <div className={`rounded-3xl border border-white/5 bg-gradient-to-br from-[#0b0b0d] to-[#050505] p-6 shadow-[0_25px_70px_rgba(0,0,0,0.55)] ${className}`}>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-white/60">Sales Overview</p>
+          <p className="text-3xl font-bold text-white">{formatCurrency(total)}</p>
+          <p className="text-xs text-primary">+{latest ? latest.value.toLocaleString('fr-FR') : 0}€ ce mois</p>
+        </div>
+        <div className="flex gap-2 text-xs text-white/60">
+          <button className="rounded-full border border-white/10 px-3 py-1">Filter</button>
+          <button className="rounded-full border border-white/10 px-3 py-1">Sort</button>
+        </div>
+      </div>
+      <div className="mt-6 flex items-end gap-3">
+        {series.map((point) => (
+          <div key={point.label} className="flex flex-1 flex-col items-center gap-3">
+            <div className="flex h-44 w-full items-end justify-center rounded-2xl bg-white/5 p-1">
+              <div
+                className="w-full rounded-xl bg-gradient-to-t from-[#7C45FF] via-[#4c6fff] to-[#CCFF00]"
+                style={{ height: `${(point.value / maxValue) * 100 || 0}%` }}
+              />
+            </div>
+            <span className="text-xs text-white/50">{point.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const SubscribersCard = ({ data, total, className = "" }: { data: { label: string; value: number }[]; total: number; className?: string }) => {
+  const maxValue = Math.max(...data.map((entry) => entry.value), 1);
+  return (
+    <div className={`rounded-3xl border border-white/5 bg-[#070707]/90 p-6 ${className}`}>
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-sm text-white/60">Total Subscribers</p>
+          <p className="text-3xl font-bold text-white">{total.toLocaleString('fr-FR')}</p>
+          <p className="text-xs text-primary">+{Math.max(1, total - data[0]?.value || 0)} cette semaine</p>
+        </div>
+        <button className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/60">Weekly</button>
+      </div>
+      <div className="mt-6 flex items-end gap-3">
+        {data.map((point) => (
+          <div key={point.label} className="flex flex-1 flex-col items-center gap-2">
+            <div className="flex h-28 w-full items-end rounded-2xl bg-white/5 p-1">
+              <div className="w-full rounded-xl bg-primary/80" style={{ height: `${(point.value / maxValue) * 100 || 0}%` }} />
+            </div>
+            <span className={`text-xs ${point.label === 'Tue' ? 'text-white' : 'text-white/40'}`}>{point.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const DistributionCard = ({ data, total, className = "" }: { data: { label: string; value: number; percent: number; color: string }[]; total: number; className?: string }) => {
+  const colorStops: string[] = [];
+  let accumulator = 0;
+  data.forEach((segment) => {
+    const start = accumulator;
+    accumulator += segment.percent;
+    colorStops.push(`${segment.color} ${start}% ${accumulator}%`);
+  });
+
+  return (
+    <div className={`rounded-3xl border border-white/5 bg-[#070707]/90 p-6 ${className}`}>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-white/60">Sales Distribution</p>
+          <p className="text-3xl font-bold text-white">{formatCurrency(total)}</p>
+        </div>
+        <button className="text-xs text-primary">Voir tout</button>
+      </div>
+      <div className="mt-6 flex flex-col items-center gap-5 md:flex-row">
+        <div
+          className="relative h-40 w-40 rounded-full"
+          style={{ background: `conic-gradient(${colorStops.join(',')})` }}
+        >
+          <div className="absolute inset-6 rounded-full bg-[#050505] text-center">
+            <p className="mt-10 text-xs uppercase tracking-[0.4em] text-white/40">Share</p>
+            <p className="text-2xl font-bold text-white">{data[0]?.percent ?? 0}%</p>
+          </div>
+        </div>
+        <div className="flex-1 space-y-3">
+          {data.map((segment) => (
+            <div key={segment.label} className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="h-2 w-2 rounded-full" style={{ backgroundColor: segment.color }} />
+                <p className="text-sm text-white">{segment.label}</p>
+              </div>
+              <p className="text-sm text-white/60">{segment.percent}%</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const IntegrationListCard = ({ rows, className = "" }: { rows: { application: string; type: string; rate: string; profit: number }[]; className?: string }) => (
+  <div className={`rounded-3xl border border-white/5 bg-[#070707]/90 p-6 ${className}`}>
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-sm text-white/60">List of Integration</p>
+        <p className="text-2xl font-bold text-white">Connexions clés</p>
+      </div>
+      <button className="text-xs text-primary">Tout voir</button>
+    </div>
+    <div className="mt-6 overflow-x-auto">
+      <table className="w-full text-left text-sm text-white/70">
+        <thead>
+          <tr className="text-xs uppercase tracking-[0.3em] text-white/40">
+            <th className="pb-3">Application</th>
+            <th className="pb-3">Type</th>
+            <th className="pb-3">Taux</th>
+            <th className="pb-3 text-right">Profit</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-white/5">
+          {rows.map((row) => (
+            <tr key={row.application}>
+              <td className="py-3 font-medium text-white">{row.application}</td>
+              <td className="py-3">{row.type}</td>
+              <td className="py-3">{row.rate}</td>
+              <td className="py-3 text-right font-semibold text-white">{formatCurrency(row.profit)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
 // Composant helper
 function CommandItem({ icon: Icon, label, shortcut, onClick }: any) {
   return (
@@ -1648,7 +1708,7 @@ function CommandItem({ icon: Icon, label, shortcut, onClick }: any) {
       className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/10 transition-colors text-left group"
     >
       <div className="flex items-center gap-3">
-        <Icon className="w-4 h-4 text-white/60 group-hover:text-[#00FFC2] transition-colors" />
+        <Icon className="w-4 h-4 text-white/60 group-hover:text-[#CCFF00] transition-colors" />
         <span className="text-sm text-white">{label}</span>
       </div>
       {shortcut && (

@@ -31,7 +31,7 @@
       width: 120px;
       height: 120px;
       margin: 0 auto 32px;
-      background: linear-gradient(135deg, #00FFC2 0%, #00CC9A 100%);
+      background: linear-gradient(135deg, #CCFF00 0%, #C6FF1A 100%);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -59,7 +59,7 @@
     h1 {
       font-size: 2.5rem;
       margin-bottom: 16px;
-      background: linear-gradient(135deg, #00FFC2 0%, #F4F4F4 100%);
+      background: linear-gradient(135deg, #CCFF00 0%, #F4F4F4 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -75,7 +75,7 @@
     .button {
       display: inline-block;
       padding: 14px 32px;
-      background: #00FFC2;
+      background: #CCFF00;
       color: #0C0C0C;
       text-decoration: none;
       border-radius: 8px;
@@ -87,9 +87,9 @@
     }
     
     .button:hover {
-      background: #00CC9A;
+      background: #C6FF1A;
       transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(0, 255, 194, 0.3);
+      box-shadow: 0 10px 30px rgba(204, 255, 0, 0.3);
     }
     
     .button:active {
@@ -107,7 +107,7 @@
     .info h2 {
       font-size: 1.25rem;
       margin-bottom: 16px;
-      color: #00FFC2;
+      color: #CCFF00;
     }
     
     .info ul {
@@ -126,8 +126,8 @@
     }
     
     .info li::before {
-      content: "✓";
-      color: #00FFC2;
+      content: "âœ“";
+      color: #CCFF00;
       font-weight: bold;
       margin-right: 12px;
     }
@@ -164,36 +164,36 @@
     <h1>Mode Hors Ligne</h1>
     
     <p>
-      Vous êtes actuellement hors ligne. Certaines fonctionnalités peuvent être limitées,
-      mais vous pouvez toujours consulter les pages déjà visitées.
+      Vous Ãªtes actuellement hors ligne. Certaines fonctionnalitÃ©s peuvent Ãªtre limitÃ©es,
+      mais vous pouvez toujours consulter les pages dÃ©jÃ  visitÃ©es.
     </p>
     
     <button class="button" onclick="window.location.reload()">
-      Réessayer la connexion
+      RÃ©essayer la connexion
     </button>
     
     <div class="info">
       <h2>Pages disponibles hors ligne</h2>
       <ul>
         <li>Accueil</li>
-        <li>À propos</li>
+        <li>Ã€ propos</li>
         <li>Services</li>
         <li>Projets</li>
-        <li>Blog (articles consultés)</li>
-        <li>Contact (formulaire sauvegardé)</li>
+        <li>Blog (articles consultÃ©s)</li>
+        <li>Contact (formulaire sauvegardÃ©)</li>
       </ul>
     </div>
   </div>
   
   <script>
-    // Vérifier la connexion toutes les 5 secondes
+    // VÃ©rifier la connexion toutes les 5 secondes
     setInterval(() => {
       if (navigator.onLine) {
         window.location.reload();
       }
     }, 5000);
     
-    // Écouter les changements de connexion
+    // Ã‰couter les changements de connexion
     window.addEventListener('online', () => {
       window.location.reload();
     });

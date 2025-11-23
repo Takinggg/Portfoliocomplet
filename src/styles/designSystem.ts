@@ -12,8 +12,8 @@ export const colors = {
   borderHover: "rgba(255,255,255,0.15)",
   text: "#ffffff",
   textMuted: "rgba(255,255,255,0.60)",
-  accent: "#00FFC2",
-  accentMuted: "rgba(0,255,194,0.15)",
+  accent: "#CCFF00",
+  accentMuted: "rgba(204,255,0,0.15)",
   accentTextOn: "#0C0C0C",
   // Optional secondary hue for highlights
   secondary: "#7c3aed",

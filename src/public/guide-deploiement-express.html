@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🚨 Guide Déploiement Express - Fix 404 + posts.map</title>
+  <title>ðŸš¨ Guide DÃ©ploiement Express - Fix 404 + posts.map</title>
   <style>
     * {
       margin: 0;
@@ -25,7 +25,7 @@
     }
     
     h1 {
-      color: #00FFC2;
+      color: #CCFF00;
       font-size: 2.5rem;
       margin-bottom: 20px;
       text-align: center;
@@ -33,8 +33,8 @@
     }
     
     @keyframes glow {
-      0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 194, 0.5); }
-      50% { text-shadow: 0 0 30px rgba(0, 255, 194, 0.8); }
+      0%, 100% { text-shadow: 0 0 20px rgba(204, 255, 0, 0.5); }
+      50% { text-shadow: 0 0 30px rgba(204, 255, 0, 0.8); }
     }
     
     .error-box {
@@ -61,7 +61,7 @@
     
     .step-container {
       background: rgba(255, 255, 255, 0.05);
-      border: 2px solid #00FFC2;
+      border: 2px solid #CCFF00;
       border-radius: 12px;
       padding: 30px;
       margin-bottom: 30px;
@@ -75,7 +75,7 @@
     }
     
     .step-number {
-      background: #00FFC2;
+      background: #CCFF00;
       color: #0C0C0C;
       width: 50px;
       height: 50px;
@@ -89,7 +89,7 @@
     }
     
     .step-title {
-      color: #00FFC2;
+      color: #CCFF00;
       font-size: 1.8rem;
       font-weight: bold;
     }
@@ -100,14 +100,14 @@
     
     .substep {
       background: rgba(0, 0, 0, 0.3);
-      border-left: 3px solid #00FFC2;
+      border-left: 3px solid #CCFF00;
       padding: 15px 20px;
       margin-bottom: 15px;
       border-radius: 6px;
     }
     
     .substep strong {
-      color: #00FFC2;
+      color: #CCFF00;
       display: block;
       margin-bottom: 8px;
     }
@@ -124,12 +124,12 @@
     }
     
     .code-block code {
-      color: #00FFC2;
+      color: #CCFF00;
     }
     
     .checklist {
-      background: rgba(0, 255, 194, 0.05);
-      border: 1px solid #00FFC2;
+      background: rgba(204, 255, 0, 0.05);
+      border: 1px solid #CCFF00;
       border-radius: 8px;
       padding: 20px;
       margin: 20px 0;
@@ -145,7 +145,7 @@
     }
     
     .checklist-item:hover {
-      background: rgba(0, 255, 194, 0.1);
+      background: rgba(204, 255, 0, 0.1);
     }
     
     .checklist-item input[type="checkbox"] {
@@ -179,7 +179,7 @@
     }
     
     .btn {
-      background: #00FFC2;
+      background: #CCFF00;
       color: #0C0C0C;
       border: none;
       padding: 15px 30px;
@@ -194,14 +194,14 @@
     }
     
     .btn:hover {
-      background: #00d9a6;
+      background: #DAFF40;
       transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(0, 255, 194, 0.3);
+      box-shadow: 0 10px 30px rgba(204, 255, 0, 0.3);
     }
     
     .timer {
-      background: rgba(0, 255, 194, 0.1);
-      border: 2px solid #00FFC2;
+      background: rgba(204, 255, 0, 0.1);
+      border: 2px solid #CCFF00;
       border-radius: 12px;
       padding: 20px;
       text-align: center;
@@ -210,7 +210,7 @@
     
     .timer-display {
       font-size: 3rem;
-      color: #00FFC2;
+      color: #CCFF00;
       font-weight: bold;
       margin: 10px 0;
     }
@@ -223,34 +223,34 @@
     }
     
     .fix-card {
-      background: rgba(0, 255, 194, 0.1);
-      border: 1px solid #00FFC2;
+      background: rgba(204, 255, 0, 0.1);
+      border: 1px solid #CCFF00;
       border-radius: 8px;
       padding: 15px;
     }
     
     .fix-card h4 {
-      color: #00FFC2;
+      color: #CCFF00;
       margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🚨 Guide Déploiement Express</h1>
+    <h1>ðŸš¨ Guide DÃ©ploiement Express</h1>
     
     <div class="error-box">
-      <h2>❌ Erreurs Actuelles</h2>
+      <h2>âŒ Erreurs Actuelles</h2>
       <p style="margin: 10px 0;"><code>TypeError: posts.map is not a function</code></p>
       <p style="margin: 10px 0;"><code>Error: Erreur serveur: 404 Not Found</code></p>
-      <p style="margin-top: 15px;"><strong>Cause :</strong> Le serveur n'est <strong>PAS déployé</strong> sur Supabase.</p>
+      <p style="margin-top: 15px;"><strong>Cause :</strong> Le serveur n'est <strong>PAS dÃ©ployÃ©</strong> sur Supabase.</p>
     </div>
 
-    <!-- ÉTAPE 1 -->
+    <!-- Ã‰TAPE 1 -->
     <div class="step-container">
       <div class="step-header">
         <div class="step-number">1</div>
-        <div class="step-title">Déployer le Serveur</div>
+        <div class="step-title">DÃ©ployer le Serveur</div>
       </div>
       
       <div class="step-content">
@@ -263,41 +263,41 @@
         
         <div class="substep">
           <strong>1.2 - Copiez TOUT le contenu</strong>
-          <p>• Appuyez sur <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+A</code> (tout sélectionner)</p>
-          <p>• Appuyez sur <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+C</code> (copier)</p>
+          <p>â€¢ Appuyez sur <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+A</code> (tout sÃ©lectionner)</p>
+          <p>â€¢ Appuyez sur <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+C</code> (copier)</p>
         </div>
         
         <div class="substep">
           <strong>1.3 - Allez sur Supabase Dashboard</strong>
-          <p>• Ouvrez : <a href="https://supabase.com/dashboard" target="_blank" style="color: #00FFC2;">https://supabase.com/dashboard</a></p>
-          <p>• Allez dans <strong>Edge Functions</strong></p>
-          <p>• Trouvez la fonction <code style="background: #000; padding: 2px 6px; border-radius: 3px;">make-server-04919ac5</code></p>
+          <p>â€¢ Ouvrez : <a href="https://supabase.com/dashboard" target="_blank" style="color: #CCFF00;">https://supabase.com/dashboard</a></p>
+          <p>â€¢ Allez dans <strong>Edge Functions</strong></p>
+          <p>â€¢ Trouvez la fonction <code style="background: #000; padding: 2px 6px; border-radius: 3px;">make-server-04919ac5</code></p>
         </div>
         
         <div class="substep">
           <strong>1.4 - Remplacez le code</strong>
-          <p>Dans l'éditeur Supabase :</p>
-          <p>• <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+A</code> (sélectionner tout)</p>
-          <p>• <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Delete</code> (supprimer)</p>
-          <p>• <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+V</code> (coller le nouveau code)</p>
+          <p>Dans l'Ã©diteur Supabase :</p>
+          <p>â€¢ <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+A</code> (sÃ©lectionner tout)</p>
+          <p>â€¢ <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Delete</code> (supprimer)</p>
+          <p>â€¢ <code style="background: #000; padding: 2px 6px; border-radius: 3px;">Ctrl+V</code> (coller le nouveau code)</p>
         </div>
         
         <div class="substep">
-          <strong>1.5 - Déployez</strong>
-          <p>• Cliquez sur le bouton <strong>"Deploy"</strong> (vert)</p>
-          <p>• <strong>Attendez 2 minutes</strong> ⏱️</p>
+          <strong>1.5 - DÃ©ployez</strong>
+          <p>â€¢ Cliquez sur le bouton <strong>"Deploy"</strong> (vert)</p>
+          <p>â€¢ <strong>Attendez 2 minutes</strong> â±ï¸</p>
         </div>
         
         <div class="timer">
-          <h3>⏱️ Timer de Propagation</h3>
+          <h3>â±ï¸ Timer de Propagation</h3>
           <div class="timer-display" id="timer">02:00</div>
-          <button class="btn" onclick="startTimer()">▶ Démarrer le Timer</button>
-          <p style="margin-top: 10px; color: #aaa;">Démarrez après avoir cliqué sur "Deploy"</p>
+          <button class="btn" onclick="startTimer()">â–¶ DÃ©marrer le Timer</button>
+          <p style="margin-top: 10px; color: #aaa;">DÃ©marrez aprÃ¨s avoir cliquÃ© sur "Deploy"</p>
         </div>
       </div>
     </div>
 
-    <!-- ÉTAPE 2 -->
+    <!-- Ã‰TAPE 2 -->
     <div class="step-container">
       <div class="step-header">
         <div class="step-number">2</div>
@@ -306,71 +306,71 @@
       
       <div class="step-content">
         <div class="warning">
-          <strong>⚠️ Attendez que le timer soit terminé avant de continuer !</strong>
+          <strong>âš ï¸ Attendez que le timer soit terminÃ© avant de continuer !</strong>
           <p>Le serveur a besoin de 2 minutes pour se propager.</p>
         </div>
         
         <div class="substep">
           <strong>2.1 - Allez sur le Dashboard</strong>
-          <p>• Ouvrez votre dashboard CRM</p>
+          <p>â€¢ Ouvrez votre dashboard CRM</p>
         </div>
         
         <div class="substep">
-          <strong>2.2 - Cliquez sur "🔍 Tester Connexion"</strong>
-          <p>• Devrait afficher : <span style="color: #22c55e;">✅ Serveur connecté ! Version: v2</span></p>
-          <p style="margin-top: 10px; color: #fbbf24;">⚠️ Si vous obtenez une erreur 404, attendez encore 2-3 minutes.</p>
+          <strong>2.2 - Cliquez sur "ðŸ” Tester Connexion"</strong>
+          <p>â€¢ Devrait afficher : <span style="color: #22c55e;">âœ… Serveur connectÃ© ! Version: v2</span></p>
+          <p style="margin-top: 10px; color: #fbbf24;">âš ï¸ Si vous obtenez une erreur 404, attendez encore 2-3 minutes.</p>
         </div>
         
         <div class="substep">
-          <strong>2.3 - Cliquez sur "🌱 Initialiser les Données"</strong>
-          <p>Crée automatiquement :</p>
+          <strong>2.3 - Cliquez sur "ðŸŒ± Initialiser les DonnÃ©es"</strong>
+          <p>CrÃ©e automatiquement :</p>
           <ul style="margin-left: 20px; margin-top: 10px;">
-            <li>✅ 3 projets</li>
-            <li>✅ 3 articles de blog</li>
-            <li>✅ 2 études de cas</li>
-            <li>✅ 2 témoignages</li>
+            <li>âœ… 3 projets</li>
+            <li>âœ… 3 articles de blog</li>
+            <li>âœ… 2 Ã©tudes de cas</li>
+            <li>âœ… 2 tÃ©moignages</li>
           </ul>
         </div>
         
         <div class="substep">
-          <strong>2.4 - Rafraîchissez la page</strong>
-          <p>• Appuyez sur <code style="background: #000; padding: 2px 6px; border-radius: 3px;">F5</code></p>
-          <p>• Les données apparaissent dans toutes les catégories !</p>
+          <strong>2.4 - RafraÃ®chissez la page</strong>
+          <p>â€¢ Appuyez sur <code style="background: #000; padding: 2px 6px; border-radius: 3px;">F5</code></p>
+          <p>â€¢ Les donnÃ©es apparaissent dans toutes les catÃ©gories !</p>
         </div>
       </div>
     </div>
 
-    <!-- CE QUI EST FIXÉ -->
-    <div style="background: rgba(0, 255, 194, 0.05); border: 2px solid #00FFC2; border-radius: 12px; padding: 30px; margin-bottom: 30px;">
-      <h2 style="color: #00FFC2; margin-bottom: 20px;">🎯 Ce Qui Est Fixé</h2>
+    <!-- CE QUI EST FIXÃ‰ -->
+    <div style="background: rgba(204, 255, 0, 0.05); border: 2px solid #CCFF00; border-radius: 12px; padding: 30px; margin-bottom: 30px;">
+      <h2 style="color: #CCFF00; margin-bottom: 20px;">ðŸŽ¯ Ce Qui Est FixÃ©</h2>
       
       <div class="fixes">
         <div class="fix-card">
-          <h4>🛠️ Serveur (v2)</h4>
-          <p>✅ Routes corrigées</p>
-          <p>✅ Retours en tableaux</p>
-          <p>✅ Route /seed-data</p>
+          <h4>ðŸ› ï¸ Serveur (v2)</h4>
+          <p>âœ… Routes corrigÃ©es</p>
+          <p>âœ… Retours en tableaux</p>
+          <p>âœ… Route /seed-data</p>
         </div>
         
         <div class="fix-card">
-          <h4>📱 Frontend</h4>
-          <p>✅ Fix posts.map error</p>
-          <p>✅ Protection Array.isArray()</p>
-          <p>✅ Gestion erreurs 404</p>
+          <h4>ðŸ“± Frontend</h4>
+          <p>âœ… Fix posts.map error</p>
+          <p>âœ… Protection Array.isArray()</p>
+          <p>âœ… Gestion erreurs 404</p>
         </div>
         
         <div class="fix-card">
-          <h4>📊 Dashboard</h4>
-          <p>✅ Bouton "Tester Connexion"</p>
-          <p>✅ Bouton "Initialiser Données"</p>
-          <p>✅ Messages d'erreur clairs</p>
+          <h4>ðŸ“Š Dashboard</h4>
+          <p>âœ… Bouton "Tester Connexion"</p>
+          <p>âœ… Bouton "Initialiser DonnÃ©es"</p>
+          <p>âœ… Messages d'erreur clairs</p>
         </div>
       </div>
     </div>
 
     <!-- CHECKLIST -->
     <div class="checklist">
-      <h3 style="color: #00FFC2; margin-bottom: 15px;">📋 Checklist de Déploiement</h3>
+      <h3 style="color: #CCFF00; margin-bottom: 15px;">ðŸ“‹ Checklist de DÃ©ploiement</h3>
       
       <label class="checklist-item">
         <input type="checkbox" id="check1">
@@ -379,7 +379,7 @@
       
       <label class="checklist-item">
         <input type="checkbox" id="check2">
-        <span>Contenu copié (Ctrl+A, Ctrl+C)</span>
+        <span>Contenu copiÃ© (Ctrl+A, Ctrl+C)</span>
       </label>
       
       <label class="checklist-item">
@@ -389,44 +389,44 @@
       
       <label class="checklist-item">
         <input type="checkbox" id="check4">
-        <span>Code remplacé dans Edge Function</span>
+        <span>Code remplacÃ© dans Edge Function</span>
       </label>
       
       <label class="checklist-item">
         <input type="checkbox" id="check5">
-        <span>Bouton "Deploy" cliqué</span>
+        <span>Bouton "Deploy" cliquÃ©</span>
       </label>
       
       <label class="checklist-item">
         <input type="checkbox" id="check6">
-        <span>Attente de 2 minutes (timer terminé)</span>
+        <span>Attente de 2 minutes (timer terminÃ©)</span>
       </label>
       
       <label class="checklist-item">
         <input type="checkbox" id="check7">
-        <span>"🔍 Tester Connexion" cliqué → ✅ Serveur connecté</span>
+        <span>"ðŸ” Tester Connexion" cliquÃ© â†’ âœ… Serveur connectÃ©</span>
       </label>
       
       <label class="checklist-item">
         <input type="checkbox" id="check8">
-        <span>"🌱 Initialiser les Données" cliqué → ✅ Données créées</span>
+        <span>"ðŸŒ± Initialiser les DonnÃ©es" cliquÃ© â†’ âœ… DonnÃ©es crÃ©Ã©es</span>
       </label>
       
       <label class="checklist-item">
         <input type="checkbox" id="check9">
-        <span>Page rafraîchie (F5)</span>
+        <span>Page rafraÃ®chie (F5)</span>
       </label>
       
       <label class="checklist-item">
         <input type="checkbox" id="check10">
-        <span>Données visibles dans toutes les catégories</span>
+        <span>DonnÃ©es visibles dans toutes les catÃ©gories</span>
       </label>
     </div>
 
     <div class="success" style="text-align: center; margin-top: 40px;">
-      <h3 style="margin-bottom: 15px;">🚀 Prêt à Commencer ?</h3>
-      <p style="margin-bottom: 20px;">Temps total : <strong>2 minutes de déploiement + 30 secondes d'initialisation = 2min30</strong></p>
-      <a href="https://supabase.com/dashboard" target="_blank" class="btn">🚀 Ouvrir Supabase Dashboard</a>
+      <h3 style="margin-bottom: 15px;">ðŸš€ PrÃªt Ã  Commencer ?</h3>
+      <p style="margin-bottom: 20px;">Temps total : <strong>2 minutes de dÃ©ploiement + 30 secondes d'initialisation = 2min30</strong></p>
+      <a href="https://supabase.com/dashboard" target="_blank" class="btn">ðŸš€ Ouvrir Supabase Dashboard</a>
     </div>
   </div>
 
@@ -449,14 +449,14 @@
         
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
-          document.getElementById('timer').textContent = '✅ PRÊT !';
+          document.getElementById('timer').textContent = 'âœ… PRÃŠT !';
           document.getElementById('timer').style.color = '#22c55e';
           
-          // Auto-check étape 6
+          // Auto-check Ã©tape 6
           document.getElementById('check6').checked = true;
           
           // Notification
-          alert('✅ TIMER TERMINÉ !\n\nVous pouvez maintenant tester la connexion et initialiser les données.');
+          alert('âœ… TIMER TERMINÃ‰ !\n\nVous pouvez maintenant tester la connexion et initialiser les donnÃ©es.');
         }
       }, 1000);
     }

@@ -17,7 +17,7 @@ export function ViewTabs({ views, activeId, onChange }: ViewTabsProps) {
             onClick={() => onChange(view.id)}
             className={`flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium transition-all ${
               isActive
-                ? "bg-mint text-black shadow-[0_10px_30px_rgba(0,255,194,.3)]"
+                ? "bg-mint text-black shadow-[0_10px_30px_rgba(204, 255, 0,.3)]"
                 : "text-neutral-400 hover:text-white"
             }`}
           >

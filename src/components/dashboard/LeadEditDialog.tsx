@@ -71,7 +71,7 @@ export function LeadEditDialog({ open, onOpenChange, lead, onSave }: LeadEditDia
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] bg-[#0C0C0C] border-[#00FFC2]/20">
+      <DialogContent className="sm:max-w-[600px] bg-[#0C0C0C] border-[#CCFF00]/20">
         <DialogHeader>
           <DialogTitle className="text-white text-xl">
             {lead ? "Modifier le lead" : "Nouveau lead"}
@@ -108,7 +108,7 @@ export function LeadEditDialog({ open, onOpenChange, lead, onSave }: LeadEditDia
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-white/80">Téléphone</Label>
+              <Label htmlFor="phone" className="text-white/80">TÃ©lÃ©phone</Label>
               <Input
                 id="phone"
                 value={formData.phone}
@@ -138,19 +138,19 @@ export function LeadEditDialog({ open, onOpenChange, lead, onSave }: LeadEditDia
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-[#0C0C0C] border-white/10">
-                  <SelectItem value="new">🆕 Nouveau</SelectItem>
-                  <SelectItem value="contacted">💬 Contacté</SelectItem>
-                  <SelectItem value="qualified">✅ Qualifié</SelectItem>
-                  <SelectItem value="proposal">📄 Proposition</SelectItem>
-                  <SelectItem value="negotiation">💰 Négociation</SelectItem>
-                  <SelectItem value="won">🎉 Gagné</SelectItem>
-                  <SelectItem value="lost">❌ Perdu</SelectItem>
+                  <SelectItem value="new">ðŸ†• Nouveau</SelectItem>
+                  <SelectItem value="contacted">ðŸ’¬ ContactÃ©</SelectItem>
+                  <SelectItem value="qualified">âœ… QualifiÃ©</SelectItem>
+                  <SelectItem value="proposal">ðŸ“„ Proposition</SelectItem>
+                  <SelectItem value="negotiation">ðŸ’° NÃ©gociation</SelectItem>
+                  <SelectItem value="won">ðŸŽ‰ GagnÃ©</SelectItem>
+                  <SelectItem value="lost">âŒ Perdu</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="value" className="text-white/80">Valeur estimée (€)</Label>
+              <Label htmlFor="value" className="text-white/80">Valeur estimÃ©e (â‚¬)</Label>
               <Input
                 id="value"
                 type="number"
@@ -171,7 +171,7 @@ export function LeadEditDialog({ open, onOpenChange, lead, onSave }: LeadEditDia
               value={formData.source}
               onChange={(e) => setFormData({ ...formData, source: e.target.value })}
               className="bg-white/5 border-white/10 text-white"
-              placeholder="LinkedIn, Référence, Site web..."
+              placeholder="LinkedIn, RÃ©fÃ©rence, Site web..."
             />
           </div>
 
@@ -190,9 +190,9 @@ export function LeadEditDialog({ open, onOpenChange, lead, onSave }: LeadEditDia
             <Button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+              className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
             >
-              {loading ? "Enregistrement..." : lead ? "Mettre à jour" : "Créer le lead"}
+              {loading ? "Enregistrement..." : lead ? "Mettre Ã  jour" : "CrÃ©er le lead"}
             </Button>
             <Button
               type="button"

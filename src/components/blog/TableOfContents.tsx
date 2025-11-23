@@ -95,8 +95,8 @@ export function TableOfContents({ content, className = "" }: TableOfContentsProp
       <div className="bg-white/5 border border-white/10 rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <List className="h-4 w-4 text-[#00FFC2]" />
-            <h3 className="text-white">Table des matières</h3>
+            <List className="h-4 w-4 text-[#CCFF00]" />
+            <h3 className="text-white">Table des matiÃ¨res</h3>
           </div>
           <Button
             variant="ghost"
@@ -129,7 +129,7 @@ export function TableOfContents({ content, className = "" }: TableOfContentsProp
                       onClick={() => scrollToHeading(heading.id)}
                       className={`w-full text-left text-sm py-1.5 px-3 rounded transition-all ${
                         activeId === heading.id
-                          ? "bg-[#00FFC2]/20 text-[#00FFC2] border-l-2 border-[#00FFC2]"
+                          ? "bg-[#CCFF00]/20 text-[#CCFF00] border-l-2 border-[#CCFF00]"
                           : "text-white/60 hover:text-white hover:bg-white/5 border-l-2 border-transparent"
                       }`}
                     >
@@ -148,7 +148,7 @@ export function TableOfContents({ content, className = "" }: TableOfContentsProp
         <div className="text-xs text-white/40 mb-2">Progression de lecture</div>
         <div className="h-2 bg-white/10 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-[#00FFC2] to-[#00D9A6]"
+            className="h-full bg-gradient-to-r from-[#CCFF00] to-[#DAFF40]"
             initial={{ width: "0%" }}
             animate={{
               width: activeId

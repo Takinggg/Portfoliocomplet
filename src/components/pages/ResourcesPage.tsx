@@ -17,7 +17,6 @@ import {
   CheckSquare,
   Wrench,
   Sparkles,
-  Mail,
   ChevronRight
 } from "lucide-react";
 import { toast } from "sonner";
@@ -25,6 +24,7 @@ import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { useTranslation } from "../../utils/i18n/useTranslation";
 import { fetchWithCache } from "../../utils/apiCache";
+import { ContactCTA } from "../../redesign/components/ContactCTA";
 
 interface Resource {
   id: string;
@@ -117,7 +117,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
   const fetchResources = useCallback(async () => {
     setLoading(true);
     try {
-      console.log(`📚 [FRONTEND] Fetching resources from API (lang: ${language})...`);
+      console.log(`ðŸ“š [FRONTEND] Fetching resources from API (lang: ${language})...`);
       
       // Use cache for resources (10 minutes cache per language)
       const result = await fetchWithCache(
@@ -129,10 +129,10 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
         10 * 60 * 1000 // 10 minutes
       );
       
-      console.log(`✅ Resources loaded in ${result.mode} mode (${language}):`, result.resources.length);
+      console.log(`âœ… Resources loaded in ${result.mode} mode (${language}):`, result.resources.length);
       setResources(result.resources);
     } catch (error) {
-      console.error("❌ Error fetching resources:", error);
+      console.error("âŒ Error fetching resources:", error);
       setResources([]);
     } finally {
       setLoading(false);
@@ -260,8 +260,8 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
   return (
     <div className="min-h-screen bg-[#0C0C0C] text-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-[#00FFC2]/10">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00FFC2]/5 via-transparent to-transparent" />
+      <section className="relative overflow-hidden border-b border-[#CCFF00]/10">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#CCFF00]/5 via-transparent to-transparent" />
         
         <div className="relative max-w-7xl mx-auto px-6 py-24">
           <motion.div
@@ -270,7 +270,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
             transition={{ duration: 0.6 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/20 mb-6">
+            <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-[#CCFF00]/20 mb-6">
               <Sparkles className="h-3.5 w-3.5 mr-1.5" />
               {t.resources.hero.badge}
             </Badge>
@@ -287,12 +287,12 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
 
             <div className="flex items-center justify-center gap-6">
               <div className="flex items-center gap-2 text-white/40">
-                <Download className="h-5 w-5 text-[#00FFC2]" />
+                <Download className="h-5 w-5 text-[#CCFF00]" />
                 <span>{stats.downloads}+ {t.resources.hero.stats.downloads}</span>
               </div>
               <div className="h-4 w-px bg-white/10" />
               <div className="flex items-center gap-2 text-white/40">
-                <FileText className="h-5 w-5 text-[#00FFC2]" />
+                <FileText className="h-5 w-5 text-[#CCFF00]" />
                 <span>{stats.total} {t.resources.hero.stats.resources}</span>
               </div>
             </div>
@@ -301,7 +301,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
       </section>
 
       {/* Filters */}
-      <section className="border-b border-[#00FFC2]/10 bg-black/20">
+      <section className="border-b border-[#CCFF00]/10 bg-black/20">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             {/* Search */}
@@ -311,7 +311,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
                 value={searchQuery}
                 onChange={handleSearchChange}
                 placeholder={t.resources.filters.search}
-                className="pl-10 bg-black/40 border-[#00FFC2]/20 focus:border-[#00FFC2]/40"
+                className="pl-10 bg-black/40 border-[#CCFF00]/20 focus:border-[#CCFF00]/40"
               />
             </div>
 
@@ -320,7 +320,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
               <Button
                 variant={filterCategory === "all" ? "default" : "outline"}
                 onClick={() => handleCategoryClick("all")}
-                className={filterCategory === "all" ? "bg-[#00FFC2] text-black" : "border-[#00FFC2]/20"}
+                className={filterCategory === "all" ? "bg-[#CCFF00] text-black" : "border-[#CCFF00]/20"}
               >
                 {t.resources.filters.all}
               </Button>
@@ -331,7 +331,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
                     key={key}
                     variant={filterCategory === key ? "default" : "outline"}
                     onClick={() => handleCategoryClick(key)}
-                    className={filterCategory === key ? "bg-[#00FFC2] text-black" : "border-[#00FFC2]/20"}
+                    className={filterCategory === key ? "bg-[#CCFF00] text-black" : "border-[#CCFF00]/20"}
                   >
                     <Icon className="h-4 w-4 mr-2" />
                     {config.label}
@@ -355,19 +355,19 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-20"
           >
-            <div className="bg-black/40 border border-[#00FFC2]/20 rounded-lg p-12 max-w-2xl mx-auto">
-              <FileText className="h-16 w-16 text-[#00FFC2]/40 mx-auto mb-6" />
+            <div className="bg-black/40 border border-[#CCFF00]/20 rounded-lg p-12 max-w-2xl mx-auto">
+              <FileText className="h-16 w-16 text-[#CCFF00]/40 mx-auto mb-6" />
               <h3 className="text-2xl mb-4">{t.resources.empty.title}</h3>
               <p className="text-white/60 mb-6">
                 {t.resources.empty.subtitle}
                 <br />
                 {t.resources.empty.subtitleLine2}
               </p>
-              <div className="bg-[#00FFC2]/10 border border-[#00FFC2]/20 rounded-lg p-4 text-left">
+              <div className="bg-[#CCFF00]/10 border border-[#CCFF00]/20 rounded-lg p-4 text-left">
                 <p className="text-sm text-white/80 mb-2 font-mono">
                   {t.resources.empty.console.title}
                 </p>
-                <code className="text-xs text-[#00FFC2] bg-black/60 px-3 py-2 rounded block">
+                <code className="text-xs text-[#CCFF00] bg-black/60 px-3 py-2 rounded block">
                   {t.resources.empty.console.command}
                 </code>
               </div>
@@ -384,7 +384,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
             <Button
               onClick={handleResetFilters}
               variant="outline"
-              className="mt-4 border-[#00FFC2]/20"
+              className="mt-4 border-[#CCFF00]/20"
             >
               {t.resources.noResults.reset}
             </Button>
@@ -415,9 +415,9 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
                     visible: { opacity: 1, y: 0 }
                   }}
                 >
-                  <Card className="group bg-black/40 border-[#00FFC2]/10 overflow-hidden hover:border-[#00FFC2]/30 transition-all duration-300 h-full flex flex-col">
+                  <Card className="group bg-black/40 border-[#CCFF00]/10 overflow-hidden hover:border-[#CCFF00]/30 transition-all duration-300 h-full flex flex-col">
                     {/* Cover Image */}
-                    <div className="relative h-48 overflow-hidden bg-gradient-to-br from-[#00FFC2]/10 to-transparent">
+                    <div className="relative h-48 overflow-hidden bg-gradient-to-br from-[#CCFF00]/10 to-transparent">
                       <ImageWithFallback
                         src={resource.coverImage || config.defaultImage}
                         alt={resource.title}
@@ -469,7 +469,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
                       {/* Download Button */}
                       <Button
                         onClick={() => openDownloadDialog(resource)}
-                        className="w-full bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 group-hover:shadow-lg group-hover:shadow-[#00FFC2]/20 transition-all"
+                        className="w-full bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90 group-hover:shadow-lg group-hover:shadow-[#CCFF00]/20 transition-all"
                       >
                         <Download className="h-4 w-4 mr-2" />
                         {t.resources.card.download}
@@ -485,38 +485,30 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="border-t border-[#00FFC2]/10 bg-gradient-to-b from-transparent to-[#00FFC2]/5">
-        <div className="max-w-7xl mx-auto px-6 py-20 text-center">
+      <section className="border-t border-white/10 px-6 py-20">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-2xl mx-auto"
           >
-            <Mail className="h-12 w-12 text-[#00FFC2] mx-auto mb-6" />
-            <h2 className="text-3xl mb-4">
-              {t.resources.cta.title}
-            </h2>
-            <p className="text-white/60 mb-8">
-              {t.resources.cta.subtitle}
-            </p>
-            <Button
-              onClick={() => onNavigate("contact")}
-              className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
-            >
-              {t.resources.cta.button}
-              <ChevronRight className="h-4 w-4 ml-2" />
-            </Button>
+            <ContactCTA
+              eyebrow={language === "en" ? "Need a tailored asset?" : "Besoin d'une ressource sur mesure ?"}
+              title={t.resources.cta.title}
+              description={t.resources.cta.subtitle}
+              primaryAction={{ label: t.resources.cta.button, onClick: () => onNavigate("contact") }}
+              helperText={language === "en" ? "Guaranteed response in 24h" : "Réponse garantie sous 24h"}
+            />
           </motion.div>
         </div>
       </section>
 
       {/* Download Dialog (Gated Content) */}
       <Dialog open={downloadDialogOpen} onOpenChange={setDownloadDialogOpen}>
-        <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+        <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Download className="h-5 w-5 text-[#00FFC2]" />
+              <Download className="h-5 w-5 text-[#CCFF00]" />
               {t.resources.dialog.title} "{selectedResource?.title}"
             </DialogTitle>
             <DialogDescription className="text-white/60">
@@ -532,7 +524,7 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
                 value={downloadForm.name}
                 onChange={(e) => setDownloadForm({ ...downloadForm, name: e.target.value })}
                 placeholder={t.resources.dialog.form.namePlaceholder}
-                className="bg-black/40 border-[#00FFC2]/20"
+                className="bg-black/40 border-[#CCFF00]/20"
                 required
               />
             </div>
@@ -545,14 +537,14 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
                 value={downloadForm.email}
                 onChange={(e) => setDownloadForm({ ...downloadForm, email: e.target.value })}
                 placeholder={t.resources.dialog.form.emailPlaceholder}
-                className="bg-black/40 border-[#00FFC2]/20"
+                className="bg-black/40 border-[#CCFF00]/20"
                 required
               />
             </div>
 
-            <div className="bg-[#00FFC2]/5 border border-[#00FFC2]/10 rounded-lg p-4">
+            <div className="bg-[#CCFF00]/5 border border-[#CCFF00]/10 rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <Sparkles className="h-5 w-5 text-[#00FFC2] shrink-0 mt-0.5" />
+                <Sparkles className="h-5 w-5 text-[#CCFF00] shrink-0 mt-0.5" />
                 <div className="text-sm text-white/60">
                   <p>{t.resources.dialog.notice.text}</p>
                   <p className="mt-2 text-xs text-white/40">
@@ -570,14 +562,14 @@ export default function ResourcesPage({ onNavigate }: ResourcesPageProps) {
                   setDownloadDialogOpen(false);
                   setDownloadForm({ name: "", email: "" });
                 }}
-                className="flex-1 border-[#00FFC2]/20"
+                className="flex-1 border-[#CCFF00]/20"
               >
                 {t.resources.dialog.buttons.cancel}
               </Button>
               <Button
                 type="submit"
                 disabled={downloading}
-                className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               >
                 {downloading ? (
                   t.resources.dialog.buttons.downloading

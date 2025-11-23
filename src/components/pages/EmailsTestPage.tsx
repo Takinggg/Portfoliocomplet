@@ -2,13 +2,13 @@
  * PAGE DE TEST - Emails Dashboard
  * 
  * Cette page standalone permet de tester le composant EmailSettings
- * sans avoir besoin de l'intégrer dans le dashboard complet.
+ * sans avoir besoin de l'intÃ©grer dans le dashboard complet.
  * 
  * UTILISATION :
  * 1. Importer dans App.tsx
- * 2. Ajouter une route temporaire pour y accéder
- * 3. Tester les fonctionnalités emails
- * 4. Une fois validé, intégrer dans DashboardPage
+ * 2. Ajouter une route temporaire pour y accÃ©der
+ * 3. Tester les fonctionnalitÃ©s emails
+ * 4. Une fois validÃ©, intÃ©grer dans DashboardPage
  */
 
 import { Button } from "../ui/button";
@@ -39,7 +39,7 @@ export default function EmailsTestPage({ onBack }: EmailsTestPageProps) {
           <div>
             <h1 className="text-xl font-bold">Test - Gestion des Emails</h1>
             <p className="text-sm text-neutral-400">
-              Page de test du système d'emails automatiques
+              Page de test du systÃ¨me d'emails automatiques
             </p>
           </div>
         </div>
@@ -53,11 +53,11 @@ export default function EmailsTestPage({ onBack }: EmailsTestPageProps) {
       {/* Footer Info */}
       <div className="fixed bottom-4 right-4 bg-neutral-900 border border-neutral-800 rounded-lg p-4 max-w-md">
         <p className="text-sm text-neutral-300 mb-2">
-          <strong className="text-[#00FFC2]">✅ Page de test active</strong>
+          <strong className="text-[#CCFF00]">âœ… Page de test active</strong>
         </p>
         <p className="text-xs text-neutral-400">
-          Cette page permet de tester EmailSettings avant de l'intégrer dans DashboardPage.
-          Supprimez ce fichier après intégration complète.
+          Cette page permet de tester EmailSettings avant de l'intÃ©grer dans DashboardPage.
+          Supprimez ce fichier aprÃ¨s intÃ©gration complÃ¨te.
         </p>
       </div>
     </div>
@@ -65,7 +65,7 @@ export default function EmailsTestPage({ onBack }: EmailsTestPageProps) {
 }
 
 /**
- * INTÉGRATION DANS APP.TSX (Temporaire pour test) :
+ * INTÃ‰GRATION DANS APP.TSX (Temporaire pour test) :
  * 
  * 1. Import :
  *    import EmailsTestPage from "./components/pages/EmailsTestPage";
@@ -77,8 +77,8 @@ export default function EmailsTestPage({ onBack }: EmailsTestPageProps) {
  *    case "emails-test":
  *      return <EmailsTestPage onBack={() => setCurrentPage("dashboard")} />;
  * 
- * 4. Accéder via : window.location.hash = "emails-test"
+ * 4. AccÃ©der via : window.location.hash = "emails-test"
  *    ou en modifiant temporairement currentPage
  * 
- * 5. Après validation, supprimer cette page et intégrer EmailSettings dans DashboardPage
+ * 5. AprÃ¨s validation, supprimer cette page et intÃ©grer EmailSettings dans DashboardPage
  */

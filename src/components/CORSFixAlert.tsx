@@ -1,6 +1,6 @@
 /**
  * CORS Fix Alert Component
- * Alerte visible pour guider l'utilisateur vers le déploiement du fix CORS
+ * Alerte visible pour guider l'utilisateur vers le dÃ©ploiement du fix CORS
  */
 
 import { useState } from "react";
@@ -15,7 +15,7 @@ export function CORSFixAlert() {
 
   // Simplified - just show instructions, no code fetching
   const handleOpenGuide = () => {
-    toast.info("📖 Consultez le guide /URGENT_LIRE_CORS.md pour les instructions détaillées", {
+    toast.info("ðŸ“– Consultez le guide /URGENT_LIRE_CORS.md pour les instructions dÃ©taillÃ©es", {
       duration: 5000,
     });
   };
@@ -41,7 +41,7 @@ export function CORSFixAlert() {
             </div>
             <div>
               <h3 className="font-bold text-white text-lg">
-                🚨 Erreur CORS Détectée
+                ðŸš¨ Erreur CORS DÃ©tectÃ©e
               </h3>
               <p className="text-sm text-white/70">
                 Action requise pour corriger
@@ -61,30 +61,30 @@ export function CORSFixAlert() {
         <div className="space-y-4">
           <Alert className="bg-red-500/10 border-red-500/30">
             <AlertCircle className="h-4 w-4 text-red-400" />
-            <AlertTitle className="text-red-200">Problème identifié</AlertTitle>
+            <AlertTitle className="text-red-200">ProblÃ¨me identifiÃ©</AlertTitle>
             <AlertDescription className="text-red-100/80 text-sm">
-              Le serveur Supabase bloque les requêtes à cause d'une mauvaise configuration CORS.
+              Le serveur Supabase bloque les requÃªtes Ã  cause d'une mauvaise configuration CORS.
             </AlertDescription>
           </Alert>
 
           <Alert className="bg-green-500/10 border-green-500/30">
             <CheckCircle className="h-4 w-4 text-green-400" />
-            <AlertTitle className="text-green-200">Solution prête</AlertTitle>
+            <AlertTitle className="text-green-200">Solution prÃªte</AlertTitle>
             <AlertDescription className="text-green-100/80 text-sm">
-              Le code corrigé est disponible dans /supabase/functions/server/index.tsx
+              Le code corrigÃ© est disponible dans /supabase/functions/server/index.tsx
             </AlertDescription>
           </Alert>
 
           <div className="bg-white/5 border border-white/10 rounded-lg p-4">
             <p className="text-sm text-white/80 font-medium mb-3">
-              📋 Étapes rapides (2 min) :
+              ðŸ“‹ Ã‰tapes rapides (2 min) :
             </p>
             <ol className="text-sm text-white/70 space-y-2 list-decimal list-inside">
               <li>Ouvrir le fichier /supabase/functions/server/index.tsx</li>
               <li>Copier tout le contenu</li>
               <li>Ouvrir Supabase Dashboard</li>
-              <li>Éditer la fonction make-server-04919ac5</li>
-              <li>Remplacer tout le code et déployer</li>
+              <li>Ã‰diter la fonction make-server-04919ac5</li>
+              <li>Remplacer tout le code et dÃ©ployer</li>
             </ol>
           </div>
 
@@ -94,13 +94,13 @@ export function CORSFixAlert() {
               className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
             >
               <Copy className="h-4 w-4 mr-2" />
-              Voir le Guide de Déploiement
+              Voir le Guide de DÃ©ploiement
             </Button>
 
             <Button
               onClick={openSupabase}
               variant="outline"
-              className="w-full border-[#00FFC2]/30 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+              className="w-full border-[#CCFF00]/30 text-[#CCFF00] hover:bg-[#CCFF00]/10"
             >
               <ExternalLink className="h-4 w-4 mr-2" />
               Ouvrir Supabase Dashboard
@@ -109,7 +109,7 @@ export function CORSFixAlert() {
 
           <div className="pt-3 border-t border-white/10">
             <p className="text-xs text-white/50">
-              📖 Guide détaillé :{" "}
+              ðŸ“– Guide dÃ©taillÃ© :{" "}
               <code className="bg-white/10 px-1 py-0.5 rounded text-yellow-300">
                 /URGENT_LIRE_CORS.md
               </code>

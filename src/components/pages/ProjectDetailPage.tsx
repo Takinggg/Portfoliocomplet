@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Button } from "../ui/button";
+import { ContactCTA } from "../../redesign/components/ContactCTA";
 import { Badge } from "../ui/badge";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { Breadcrumbs } from "../layout/Breadcrumbs";
@@ -41,7 +42,7 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        console.log(`🔍 Fetching project with ID: ${projectId} (lang: ${language})`);
+        console.log(`ðŸ” Fetching project with ID: ${projectId} (lang: ${language})`);
         const response = await fetch(
           `https://${supabaseProjectId}.supabase.co/functions/v1/make-server-04919ac5/projects/${projectId}?lang=${language}`,
           {
@@ -53,24 +54,24 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
         
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
-          console.error('❌ Project not found:', {
+          console.error('âŒ Project not found:', {
             projectId,
             status: response.status,
             error: errorData
           });
-          console.log('💡 Tip: Run checkProjectIdsFormat() in console to see available projects');
+          console.log('ðŸ’¡ Tip: Run checkProjectIdsFormat() in console to see available projects');
           throw new Error('Project not found');
         }
         
         const data = await response.json();
         if (!data.project) {
-          console.error('❌ No project data in response:', data);
+          console.error('âŒ No project data in response:', data);
           throw new Error('Project data missing');
         }
         
-        console.log('✅ Project loaded:', data.project.name);
-        console.log('📋 All project fields:', Object.keys(data.project));
-        console.log('📦 Full project data:', data.project);
+        console.log('âœ… Project loaded:', data.project.name);
+        console.log('ðŸ“‹ All project fields:', Object.keys(data.project));
+        console.log('ðŸ“¦ Full project data:', data.project);
         setProject(data.project);
       } catch (error) {
         console.error('Error fetching project:', error);
@@ -109,7 +110,7 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
           <p className="text-lg text-neutral-400 mb-8">
             {t('projects.detail.notFoundDescription')}
             <br />
-            ID recherché : <code className="text-mint text-sm">{projectId}</code>
+            ID recherchÃ© : <code className="text-mint text-sm">{projectId}</code>
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button onClick={onBack} className="bg-mint text-black hover:bg-mint/90">
@@ -119,7 +120,7 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
           </div>
           <div className="mt-8 p-4 rounded-lg bg-neutral-900/50 border border-neutral-800 text-left">
             <p className="text-sm text-neutral-400">
-              💡 <strong className="text-white">Astuce :</strong> Ouvrez la console et tapez <code className="text-mint">checkProjectIdsFormat()</code> pour voir tous les projets disponibles.
+              ðŸ’¡ <strong className="text-white">Astuce :</strong> Ouvrez la console et tapez <code className="text-mint">checkProjectIdsFormat()</code> pour voir tous les projets disponibles.
             </p>
           </div>
         </div>
@@ -160,8 +161,8 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0" style={{
             backgroundImage: `
-              linear-gradient(rgba(0, 255, 194, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 255, 194, 0.03) 1px, transparent 1px)
+              linear-gradient(rgba(204, 255, 0, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(204, 255, 0, 0.03) 1px, transparent 1px)
             `,
             backgroundSize: '80px 80px',
           }}></div>
@@ -566,33 +567,21 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
 
       {/* CTA Section */}
       <section className="py-24 px-6 border-t border-neutral-900">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              {t('projects.detail.similarProjectTitle')}
-            </h2>
-            <p className="text-xl text-neutral-400 mb-8">
-              {t('projects.detail.similarProjectDescription')}
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Button 
-                onClick={() => onNavigate("contact")}
-                className="bg-mint text-black hover:bg-mint/90"
-              >
-                {t('projects.detail.discussProject')}
-              </Button>
-              <Button 
-                onClick={() => onNavigate("booking")}
-                variant="outline"
-                className="border-mint/20 text-mint hover:bg-mint/10"
-              >
-                {t('projects.detail.bookCall')}
-              </Button>
-            </div>
+            <ContactCTA
+              align="left"
+              eyebrow={language === "en" ? "Next mission" : "Prochain brief"}
+              title={t('projects.detail.similarProjectTitle')}
+              description={t('projects.detail.similarProjectDescription')}
+              primaryAction={{ label: t('projects.detail.discussProject'), onClick: () => onNavigate("contact") }}
+              secondaryAction={{ label: t('projects.detail.bookCall'), onClick: () => onNavigate("booking") }}
+              helperText={language === "en" ? "Answer within 24h" : "Réponse sous 24h"}
+            />
           </motion.div>
         </div>
       </section>
@@ -603,8 +592,8 @@ export default function ProjectDetailPage({ projectId, onNavigate }: ProjectDeta
           <div className="max-w-7xl mx-auto">
             <details className="group">
               <summary className="cursor-pointer text-yellow-400 font-semibold mb-4 flex items-center gap-2">
-                <span>🔍 Debug: Voir tous les champs disponibles</span>
-                <span className="text-xs text-neutral-500">(Mode développement uniquement)</span>
+                <span>ðŸ” Debug: Voir tous les champs disponibles</span>
+                <span className="text-xs text-neutral-500">(Mode dÃ©veloppement uniquement)</span>
               </summary>
               <div className="bg-black/50 rounded-lg p-6 border border-yellow-500/20">
                 <pre className="text-xs text-neutral-300 overflow-x-auto">

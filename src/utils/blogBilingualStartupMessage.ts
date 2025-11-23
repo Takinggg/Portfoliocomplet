@@ -1,63 +1,63 @@
 /**
- * Message de démarrage pour informer sur le blog bilingue
+ * Message de dÃ©marrage pour informer sur le blog bilingue
  */
 
 export function showBlogBilingualStartupMessage() {
   const styles = {
-    title: 'font-size: 16px; font-weight: bold; color: #00FFC2; background: #0C0C0C; padding: 8px 12px; border-left: 4px solid #00FFC2;',
-    success: 'color: #00FFC2; font-weight: bold;',
+    title: 'font-size: 16px; font-weight: bold; color: #CCFF00; background: #0C0C0C; padding: 8px 12px; border-left: 4px solid #CCFF00;',
+    success: 'color: #CCFF00; font-weight: bold;',
     info: 'color: #60A5FA; font-weight: bold;',
     warning: 'color: #FFA500; font-weight: bold;',
     error: 'color: #FF6B6B; font-weight: bold;',
-    code: 'background: #1a1a1a; color: #00FFC2; padding: 2px 6px; border-radius: 3px; font-family: monospace;',
+    code: 'background: #1a1a1a; color: #CCFF00; padding: 2px 6px; border-radius: 3px; font-family: monospace;',
     dim: 'color: #888;'
   };
 
   console.log('\n');
-  console.log('%c🌍 BLOG BILINGUE CONFIGURÉ', styles.title);
+  console.log('%cðŸŒ BLOG BILINGUE CONFIGURÃ‰', styles.title);
   console.log('');
   
-  console.log('%c📝 Le blog supporte maintenant FR + EN', styles.success);
-  console.log('   Le problème du "blog vide en anglais" est résolu !');
+  console.log('%cðŸ“ Le blog supporte maintenant FR + EN', styles.success);
+  console.log('   Le problÃ¨me du "blog vide en anglais" est rÃ©solu !');
   console.log('');
   
-  console.log('%c🎯 Comment ça fonctionne', styles.info);
-  console.log('   • Chaque article a un champ %clanguage%c ("fr" ou "en")', '', styles.code, '');
-  console.log('   • Le serveur filtre les posts selon la langue active');
-  console.log('   • Le mode local utilise des suffixes (_fr, _en)');
+  console.log('%cðŸŽ¯ Comment Ã§a fonctionne', styles.info);
+  console.log('   â€¢ Chaque article a un champ %clanguage%c ("fr" ou "en")', '', styles.code, '');
+  console.log('   â€¢ Le serveur filtre les posts selon la langue active');
+  console.log('   â€¢ Le mode local utilise des suffixes (_fr, _en)');
   console.log('');
   
-  console.log('%c🚀 Initialiser les articles bilingues', styles.info);
-  console.log('   1️⃣  Allez sur %c/blog%c ou %c/dashboard', '', styles.code, '', styles.code, '');
-  console.log('   2️⃣  Cliquez sur "Initialiser Blog (10 articles FR+EN)"');
-  console.log('   3️⃣  Attendez le rafraîchissement automatique');
-  console.log('   4️⃣  Testez le changement de langue FR ↔️ EN');
+  console.log('%cðŸš€ Initialiser les articles bilingues', styles.info);
+  console.log('   1ï¸âƒ£  Allez sur %c/blog%c ou %c/dashboard', '', styles.code, '', styles.code, '');
+  console.log('   2ï¸âƒ£  Cliquez sur "Initialiser Blog (10 articles FR+EN)"');
+  console.log('   3ï¸âƒ£  Attendez le rafraÃ®chissement automatique');
+  console.log('   4ï¸âƒ£  Testez le changement de langue FR â†”ï¸ EN');
   console.log('');
   
-  console.log('%c🧪 Tester dans la console', styles.info);
-  console.log('   %cawait testBlogBilingual()%c      ← Vérifier les articles FR + EN', styles.code, '', styles.dim);
-  console.log('   %cawait testLanguageSwitching()%c  ← Tester le changement de langue', styles.code, '', styles.dim);
-  console.log('   %cawait seedBlogPostsBilingual()%c ← Créer les 10 articles', styles.code, '', styles.dim);
+  console.log('%cðŸ§ª Tester dans la console', styles.info);
+  console.log('   %cawait testBlogBilingual()%c      â† VÃ©rifier les articles FR + EN', styles.code, '', styles.dim);
+  console.log('   %cawait testLanguageSwitching()%c  â† Tester le changement de langue', styles.code, '', styles.dim);
+  console.log('   %cawait seedBlogPostsBilingual()%c â† CrÃ©er les 10 articles', styles.code, '', styles.dim);
   console.log('');
   
-  console.log('%c📚 10 Articles Créés', styles.info);
-  console.log('   Français (5):');
-  console.log('   • Débuter avec React en 2024');
-  console.log('   • Design System Moderne avec Tailwind CSS');
-  console.log('   • Tarification Freelance');
-  console.log('   • TypeScript Avancé');
-  console.log('   • Animations Web Performantes');
+  console.log('%cðŸ“š 10 Articles CrÃ©Ã©s', styles.info);
+  console.log('   FranÃ§ais (5):');
+  console.log('   â€¢ DÃ©buter avec React en 2024');
+  console.log('   â€¢ Design System Moderne avec Tailwind CSS');
+  console.log('   â€¢ Tarification Freelance');
+  console.log('   â€¢ TypeScript AvancÃ©');
+  console.log('   â€¢ Animations Web Performantes');
   console.log('');
   console.log('   English (5):');
-  console.log('   • Getting Started with React in 2024');
-  console.log('   • Building a Modern Design System');
-  console.log('   • Freelance Pricing Guide');
-  console.log('   • Advanced TypeScript');
-  console.log('   • Creating Performant Web Animations');
+  console.log('   â€¢ Getting Started with React in 2024');
+  console.log('   â€¢ Building a Modern Design System');
+  console.log('   â€¢ Freelance Pricing Guide');
+  console.log('   â€¢ Advanced TypeScript');
+  console.log('   â€¢ Creating Performant Web Animations');
   console.log('');
   
-  console.log('%c💡 Guide Complet', styles.info);
-  console.log('   Consultez %c/BLOG_BILINGUE_READY.md%c pour tous les détails', '', styles.code, '');
+  console.log('%cðŸ’¡ Guide Complet', styles.info);
+  console.log('   Consultez %c/BLOG_BILINGUE_READY.md%c pour tous les dÃ©tails', '', styles.code, '');
   console.log('\n');
 }
 
@@ -67,7 +67,7 @@ if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
   const shown = sessionStorage.getItem(key);
   
   if (!shown) {
-    // Attendre que la console soit prête
+    // Attendre que la console soit prÃªte
     setTimeout(() => {
       showBlogBilingualStartupMessage();
       sessionStorage.setItem(key, 'true');

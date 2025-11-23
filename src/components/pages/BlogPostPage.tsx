@@ -25,6 +25,7 @@ import { SocialShare } from "../SocialShare";
 import { ViewCounter } from "../ViewCounter";
 import { fetchBlogPost, fetchBlogPosts, incrementPostViews } from "../../utils/blogService";
 import DOMPurify from "dompurify";
+import { ContactCTA } from "../../redesign/components/ContactCTA";
 
 interface BlogPostPageProps {
   slug: string;
@@ -38,6 +39,20 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [isBookmarked, setIsBookmarked] = useState(false);
+
+  const contactCopy = language === "en"
+    ? {
+        eyebrow: "Freelance availability",
+        title: "Need help on this topic?",
+        description: "I'm taking on a handful of strategic missions. Share your context and I'll send a plan within 24h.",
+        helper: "Answer within 24h",
+      }
+    : {
+        eyebrow: "Disponibilité freelance",
+        title: "Besoin d'aide sur ce sujet ?",
+        description: "Je suis disponible pour des missions sur-mesure. Partagez votre contexte et je vous réponds sous 24h avec un plan d'action.",
+        helper: "Réponse sous 24h",
+      };
 
   useEffect(() => {
     loadPost();
@@ -53,7 +68,7 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
       setPost(fetchedPost);
 
       if (fetchedPost) {
-        // Charger les articles liés
+        // Charger les articles liÃ©s
         const { posts: allPosts } = await fetchBlogPosts(language);
         const related = allPosts
           .filter((p: BlogPost) => 
@@ -65,7 +80,7 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
           .slice(0, 3);
         setRelatedPosts(related);
         
-        console.log(`✅ Article chargé (${mode}): ${fetchedPost.title}`);
+        console.log(`âœ… Article chargÃ© (${mode}): ${fetchedPost.title}`);
       }
     } catch (error) {
       console.error("Error loading post:", error);
@@ -94,20 +109,20 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
 
     if (platform === "link") {
       const { copyToClipboard } = await import("../../utils/clipboardHelper");
-      await copyToClipboard(url, "Lien copié dans le presse-papier !");
+      await copyToClipboard(url, "Lien copiÃ© dans le presse-papier !");
     } else if (shareUrls[platform]) {
       window.open(shareUrls[platform], "_blank", "width=600,height=400");
     }
   };
 
   const categoryConfig: Record<string, { label: string; color: string }> = {
-    development: { label: "Développement", color: "#00FFC2" },
-    design: { label: "Design", color: "#00D9A6" },
+    development: { label: "DÃ©veloppement", color: "#CCFF00" },
+    design: { label: "Design", color: "#DAFF40" },
     business: { label: "Business", color: "#00B38A" },
-    // Support pour catégories en français (mode local)
-    "Développement": { label: "Développement", color: "#00FFC2" },
+    // Support pour catÃ©gories en franÃ§ais (mode local)
+    "DÃ©veloppement": { label: "DÃ©veloppement", color: "#CCFF00" },
     "TypeScript": { label: "TypeScript", color: "#3178C6" },
-    "Design": { label: "Design", color: "#00D9A6" },
+    "Design": { label: "Design", color: "#DAFF40" },
     "Performance": { label: "Performance", color: "#FF6B6B" },
     "React": { label: "React", color: "#61DAFB" },
   };
@@ -118,7 +133,7 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
-              <div className="inline-block w-12 h-12 border-4 border-[#00FFC2] border-t-transparent rounded-full animate-spin mb-4" />
+              <div className="inline-block w-12 h-12 border-4 border-[#CCFF00] border-t-transparent rounded-full animate-spin mb-4" />
               <p className="text-white/60">Chargement de l'article...</p>
             </div>
           </div>
@@ -133,10 +148,10 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center py-20">
             <h1 className="text-3xl text-white mb-4">Article introuvable</h1>
-            <p className="text-white/60 mb-8">Cet article n'existe pas ou a été supprimé.</p>
+            <p className="text-white/60 mb-8">Cet article n'existe pas ou a Ã©tÃ© supprimÃ©.</p>
             <Button
               onClick={() => onNavigate("blog")}
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+              className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Retour au blog
@@ -147,11 +162,11 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
     );
   }
 
-  // Normaliser la catégorie et ajouter un fallback
+  // Normaliser la catÃ©gorie et ajouter un fallback
   const normalizedCategory = post.category?.toLowerCase() || "development";
   const config = categoryConfig[post.category] || 
                  categoryConfig[normalizedCategory] || 
-                 { label: post.category || "Article", color: "#00FFC2" };
+                 { label: post.category || "Article", color: "#CCFF00" };
 
   return (
     <div className="min-h-screen bg-[#0C0C0C] pt-24 pb-20">
@@ -246,14 +261,14 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
                 onClick={() => setIsBookmarked(!isBookmarked)}
                 className={`${
                   isBookmarked
-                    ? "bg-[#00FFC2]/20 border-[#00FFC2] text-[#00FFC2]"
+                    ? "bg-[#CCFF00]/20 border-[#CCFF00] text-[#CCFF00]"
                     : "bg-white/5 border-white/10 text-white/60"
                 } hover:bg-white/10`}
               >
                 <Bookmark
                   className={`h-4 w-4 mr-2 ${isBookmarked ? "fill-current" : ""}`}
                 />
-                {isBookmarked ? "Sauvegardé" : "Sauvegarder"}
+                {isBookmarked ? "SauvegardÃ©" : "Sauvegarder"}
               </Button>
             </div>
             
@@ -335,28 +350,17 @@ export function BlogPostPage({ slug, onNavigate, onBlogPostClick }: BlogPostPage
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-[#00FFC2]/10 to-transparent border border-[#00FFC2]/20 rounded-2xl p-8 mb-12"
+          className="mb-12"
         >
-          <h3 className="text-2xl text-white mb-3">Besoin d'aide sur ce sujet ?</h3>
-          <p className="text-white/60 mb-6">
-            Je suis disponible pour des missions freelance. Discutons de votre
-            projet !
-          </p>
-          <div className="flex gap-3">
-            <Button
-              onClick={() => onNavigate("contact")}
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
-            >
-              {t('nav.contact')}
-            </Button>
-            <Button
-              onClick={() => onNavigate("booking")}
-              variant="outline"
-              className="bg-white/5 border-white/10 text-white hover:bg-white/10"
-            >
-              {t('nav.cta')}
-            </Button>
-          </div>
+          <ContactCTA
+            align="left"
+            eyebrow={contactCopy.eyebrow}
+            title={contactCopy.title}
+            description={contactCopy.description}
+            primaryAction={{ label: t('nav.contact'), onClick: () => onNavigate("contact") }}
+            secondaryAction={{ label: t('nav.cta'), onClick: () => onNavigate("booking") }}
+            helperText={contactCopy.helper}
+          />
         </motion.div>
 
         {/* Related Posts */}

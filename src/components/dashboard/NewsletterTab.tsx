@@ -54,7 +54,7 @@ export function NewsletterTab() {
     
     // Listen for switch to campaign tab event
     const handleSwitchToCampaign = () => {
-      console.log("🔄 Switch vers l'onglet campagne demandé");
+      console.log("ðŸ”„ Switch vers l'onglet campagne demandÃ©");
       setActiveTab("campaign");
     };
     
@@ -72,7 +72,7 @@ export function NewsletterTab() {
       const { fetchSubscribers } = await import("../../utils/dataService");
       const { subscribers: loadedSubscribers, mode } = await fetchSubscribers();
       
-      console.log(`✅ Subscribers loaded in ${mode} mode:`, loadedSubscribers.length);
+      console.log(`âœ… Subscribers loaded in ${mode} mode:`, loadedSubscribers.length);
       setSubscribers(loadedSubscribers as any);
     } catch (error) {
       console.error("Error loading subscribers:", error);
@@ -99,14 +99,14 @@ export function NewsletterTab() {
       );
 
       if (response.ok) {
-        toast.success("Abonné supprimé");
+        toast.success("AbonnÃ© supprimÃ©");
         loadSubscribers();
       } else {
         toast.error("Erreur lors de la suppression");
       }
     } catch (error) {
       console.error("Error deleting subscriber:", error);
-      toast.error("Impossible de supprimer l'abonné");
+      toast.error("Impossible de supprimer l'abonnÃ©");
     } finally {
       setDeletingSubscriber(null);
     }
@@ -155,9 +155,9 @@ export function NewsletterTab() {
     switch (status) {
       case "confirmed":
         return (
-          <Badge className="bg-[#00FFC2]/20 text-[#00FFC2] border-[#00FFC2]/30">
+          <Badge className="bg-[#CCFF00]/20 text-[#CCFF00] border-[#CCFF00]/30">
             <CheckCircle2 className="h-3 w-3 mr-1" />
-            Confirmé
+            ConfirmÃ©
           </Badge>
         );
       case "pending":
@@ -171,7 +171,7 @@ export function NewsletterTab() {
         return (
           <Badge variant="outline" className="border-red-500/30 text-red-500">
             <XCircle className="h-3 w-3 mr-1" />
-            Désabonné
+            DÃ©sabonnÃ©
           </Badge>
         );
       default:
@@ -186,7 +186,7 @@ export function NewsletterTab() {
         <div>
           <h2 className="text-white mb-2">Newsletter</h2>
           <p className="text-white/60">
-            Gérez vos abonnés et envoyez des campagnes email
+            GÃ©rez vos abonnÃ©s et envoyez des campagnes email
           </p>
         </div>
       </div>
@@ -194,15 +194,15 @@ export function NewsletterTab() {
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="bg-white/5 border-white/10">
-          <TabsTrigger value="subscribers" className="data-[state=active]:bg-[#00FFC2]/20 data-[state=active]:text-[#00FFC2]">
+          <TabsTrigger value="subscribers" className="data-[state=active]:bg-[#CCFF00]/20 data-[state=active]:text-[#CCFF00]">
             <Users className="h-4 w-4 mr-2" />
-            Abonnés ({stats.total})
+            AbonnÃ©s ({stats.total})
           </TabsTrigger>
-          <TabsTrigger value="templates" className="data-[state=active]:bg-[#00FFC2]/20 data-[state=active]:text-[#00FFC2]">
+          <TabsTrigger value="templates" className="data-[state=active]:bg-[#CCFF00]/20 data-[state=active]:text-[#CCFF00]">
             <FileText className="h-4 w-4 mr-2" />
             Templates
           </TabsTrigger>
-          <TabsTrigger value="campaign" className="data-[state=active]:bg-[#00FFC2]/20 data-[state=active]:text-[#00FFC2]">
+          <TabsTrigger value="campaign" className="data-[state=active]:bg-[#CCFF00]/20 data-[state=active]:text-[#CCFF00]">
             <Send className="h-4 w-4 mr-2" />
             Envoyer une campagne
           </TabsTrigger>
@@ -214,7 +214,7 @@ export function NewsletterTab() {
             <Button
               onClick={exportSubscribers}
               variant="outline"
-              className="border-[#00FFC2]/30 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+              className="border-[#CCFF00]/30 text-[#CCFF00] hover:bg-[#CCFF00]/10"
             >
               <Download className="h-4 w-4 mr-2" />
               Exporter CSV
@@ -229,16 +229,16 @@ export function NewsletterTab() {
               <p className="text-sm text-white/60 mb-1">Total</p>
               <p className="text-2xl text-white">{stats.total}</p>
             </div>
-            <Users className="h-8 w-8 text-[#00FFC2]" />
+            <Users className="h-8 w-8 text-[#CCFF00]" />
           </div>
         </Card>
         <Card className="bg-white/5 border-white/10 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-white/60 mb-1">Confirmés</p>
+              <p className="text-sm text-white/60 mb-1">ConfirmÃ©s</p>
               <p className="text-2xl text-white">{stats.confirmed}</p>
             </div>
-            <MailOpen className="h-8 w-8 text-[#00FFC2]" />
+            <MailOpen className="h-8 w-8 text-[#CCFF00]" />
           </div>
         </Card>
         <Card className="bg-white/5 border-white/10 p-6">
@@ -261,7 +261,7 @@ export function NewsletterTab() {
                 %
               </p>
             </div>
-            <TrendingUp className="h-8 w-8 text-[#00FFC2]" />
+            <TrendingUp className="h-8 w-8 text-[#CCFF00]" />
           </div>
         </Card>
       </div>
@@ -283,9 +283,9 @@ export function NewsletterTab() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Tous les statuts</SelectItem>
-            <SelectItem value="confirmed">Confirmés</SelectItem>
+            <SelectItem value="confirmed">ConfirmÃ©s</SelectItem>
             <SelectItem value="pending">En attente</SelectItem>
-            <SelectItem value="unsubscribed">Désabonnés</SelectItem>
+            <SelectItem value="unsubscribed">DÃ©sabonnÃ©s</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -295,13 +295,13 @@ export function NewsletterTab() {
         <AnimatePresence mode="popLayout">
           {isLoading ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00FFC2] mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#CCFF00] mx-auto mb-4"></div>
               <p className="text-white/60">Chargement...</p>
             </div>
           ) : filteredSubscribers.length === 0 ? (
             <Card className="bg-white/5 border-white/10 p-12 text-center">
               <Mail className="h-12 w-12 text-white/20 mx-auto mb-4" />
-              <p className="text-white/60">Aucun abonné trouvé</p>
+              <p className="text-white/60">Aucun abonnÃ© trouvÃ©</p>
             </Card>
           ) : (
             filteredSubscribers.map((subscriber) => (
@@ -312,12 +312,12 @@ export function NewsletterTab() {
                 exit={{ opacity: 0, y: -20 }}
                 layout
               >
-                <Card className="bg-white/5 border-white/10 p-4 hover:border-[#00FFC2]/30 transition-colors">
+                <Card className="bg-white/5 border-white/10 p-4 hover:border-[#CCFF00]/30 transition-colors">
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4 flex-1 min-w-0">
                       <div className="flex-shrink-0">
-                        <div className="w-10 h-10 rounded-full bg-[#00FFC2]/10 flex items-center justify-center">
-                          <Mail className="h-5 w-5 text-[#00FFC2]" />
+                        <div className="w-10 h-10 rounded-full bg-[#CCFF00]/10 flex items-center justify-center">
+                          <Mail className="h-5 w-5 text-[#CCFF00]" />
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
@@ -329,7 +329,7 @@ export function NewsletterTab() {
                           </span>
                           {subscriber.confirmedAt && (
                             <span className="text-xs text-white/40">
-                              • Confirmé le{" "}
+                              â€¢ ConfirmÃ© le{" "}
                               {new Date(subscriber.confirmedAt).toLocaleDateString("fr-FR")}
                             </span>
                           )}
@@ -360,8 +360,8 @@ export function NewsletterTab() {
         open={!!deletingSubscriber}
         onOpenChange={(open) => !open && setDeletingSubscriber(null)}
         onConfirm={handleDelete}
-        title="Supprimer cet abonné ?"
-        description={`Êtes-vous sûr de vouloir supprimer ${deletingSubscriber?.email} de la liste ? Cette action est irréversible.`}
+        title="Supprimer cet abonnÃ© ?"
+        description={`ÃŠtes-vous sÃ»r de vouloir supprimer ${deletingSubscriber?.email} de la liste ? Cette action est irrÃ©versible.`}
       />
         </TabsContent>
 

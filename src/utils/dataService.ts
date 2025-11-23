@@ -1,6 +1,6 @@
 /**
- * Data Service - Service unifié pour toutes les données avec fallback local
- * Utilise serverService pour la détection et localDataStorage pour les fallbacks
+ * Data Service - Service unifiÃ© pour toutes les donnÃ©es avec fallback local
+ * Utilise serverService pour la dÃ©tection et localDataStorage pour les fallbacks
  */
 
 import { fetchWithFallback, ServerMode } from "./serverService";
@@ -34,7 +34,7 @@ export async function fetchCaseStudies(): Promise<{
     "/case-studies",
     { method: "GET" },
     async () => {
-      console.log("📦 Chargement des case studies en mode local");
+      console.log("ðŸ“¦ Chargement des case studies en mode local");
       let caseStudies = getLocalCaseStudies();
       if (caseStudies.length === 0) {
         seedLocalCaseStudies();
@@ -55,7 +55,7 @@ export async function fetchCaseStudyBySlug(slug: string): Promise<{
     `/case-studies/${slug}`,
     { method: "GET" },
     async () => {
-      console.log(`📦 Chargement du case study "${slug}" en mode local`);
+      console.log(`ðŸ“¦ Chargement du case study "${slug}" en mode local`);
       let caseStudy = getLocalCaseStudyBySlug(slug);
       if (!caseStudy) {
         seedLocalCaseStudies();
@@ -78,7 +78,7 @@ export async function fetchFAQs(language: string = "fr"): Promise<{
     `/faq?language=${language}`,
     { method: "GET" },
     async () => {
-      console.log("📦 Chargement des FAQs en mode local");
+      console.log("ðŸ“¦ Chargement des FAQs en mode local");
       let faqs = getLocalFAQs();
       if (faqs.length === 0) {
         seedLocalFAQs();
@@ -101,7 +101,7 @@ export async function fetchResources(language: string = "fr"): Promise<{
     `/resources?lang=${language}`,
     { method: "GET" },
     async () => {
-      console.log("📦 Chargement des resources en mode local");
+      console.log("ðŸ“¦ Chargement des resources en mode local");
       let resources = getLocalResources();
       if (resources.length === 0) {
         seedLocalResources();
@@ -122,7 +122,7 @@ export async function fetchResourceBySlug(slug: string): Promise<{
     `/resources/${slug}`,
     { method: "GET" },
     async () => {
-      console.log(`📦 Chargement de la resource "${slug}" en mode local`);
+      console.log(`ðŸ“¦ Chargement de la resource "${slug}" en mode local`);
       let resource = getLocalResourceBySlug(slug);
       if (!resource) {
         seedLocalResources();
@@ -141,7 +141,7 @@ export async function fetchDashboardData(): Promise<{
   data: LocalDashboardData;
   mode: ServerMode;
 }> {
-  console.log("🔍 [dataService] Fetching dashboard data...");
+  console.log("ðŸ” [dataService] Fetching dashboard data...");
   const startTime = Date.now();
   
   try {
@@ -149,7 +149,7 @@ export async function fetchDashboardData(): Promise<{
       "/dashboard/stats",
       { method: "GET" },
       async () => {
-        console.log("📦 Chargement des données dashboard en mode local");
+        console.log("ðŸ“¦ Chargement des donnÃ©es dashboard en mode local");
         let dashboardData = getLocalDashboardData();
         if (!dashboardData.leads || dashboardData.leads.length === 0) {
           seedLocalDashboardData();
@@ -160,7 +160,7 @@ export async function fetchDashboardData(): Promise<{
     );
     
     const fetchTime = Date.now() - startTime;
-    console.log(`✅ [dataService] Dashboard data fetched in ${fetchTime}ms (mode: ${mode})`);
+    console.log(`âœ… [dataService] Dashboard data fetched in ${fetchTime}ms (mode: ${mode})`);
 
     // Ensure data has the right structure with arrays
     const normalizedData = {
@@ -171,7 +171,7 @@ export async function fetchDashboardData(): Promise<{
 
     return { data: normalizedData, mode };
   } catch (error) {
-    console.error("❌ [dataService] Error fetching dashboard data:", error);
+    console.error("âŒ [dataService] Error fetching dashboard data:", error);
     // Return empty arrays on error instead of throwing
     return { 
       data: { leads: [], clients: [], bookings: [] }, 
@@ -190,7 +190,7 @@ export async function fetchSubscribers(): Promise<{
     "/newsletter/subscribers",
     { method: "GET" },
     async () => {
-      console.log("📦 Chargement des subscribers en mode local");
+      console.log("ðŸ“¦ Chargement des subscribers en mode local");
       let subscribers = getLocalSubscribers();
       if (subscribers.length === 0) {
         seedLocalSubscribers();
@@ -208,10 +208,10 @@ export async function fetchSubscribers(): Promise<{
 export function getModeBadge(mode: ServerMode): { icon: string; text: string; color: string } {
   switch (mode) {
     case "server":
-      return { icon: "🟢", text: "Connecté", color: "#00FFC2" };
+      return { icon: "ðŸŸ¢", text: "ConnectÃ©", color: "#CCFF00" };
     case "local":
-      return { icon: "🟠", text: "Mode Local", color: "#FFA500" };
+      return { icon: "ðŸŸ ", text: "Mode Local", color: "#FFA500" };
     case "checking":
-      return { icon: "🔄", text: "Vérification...", color: "#888888" };
+      return { icon: "ðŸ”„", text: "VÃ©rification...", color: "#888888" };
   }
 }

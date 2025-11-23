@@ -1,8 +1,7 @@
 import { lazy, Suspense } from "react";
 import { colors } from "../../styles/designSystem";
 
-// Dashboard minimaliste uniquement
-const MinimalistDashboard = lazy(() => import("./MinimalistDashboard"));
+const AdminExperienceDashboard = lazy(() => import("./AdminExperienceDashboard"));
 
 interface ModernDashboardProps {
   onLogout: () => void;
@@ -14,7 +13,7 @@ export default function ModernDashboard({ onLogout, onNavigate }: ModernDashboar
   const LoadingFallback = () => (
     <div className="min-h-screen flex items-center justify-center" style={{ background: colors.background }}>
       <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-4 border-[#00FFC2]/20 border-t-[#00FFC2] rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[#CCFF00]/20 border-t-[#CCFF00] rounded-full animate-spin" />
         <p className="text-white/60 text-sm">Chargement...</p>
       </div>
     </div>
@@ -22,7 +21,7 @@ export default function ModernDashboard({ onLogout, onNavigate }: ModernDashboar
 
   return (
     <Suspense fallback={<LoadingFallback />}>
-      <MinimalistDashboard onLogout={onLogout} />
+      <AdminExperienceDashboard onLogout={onLogout} />
     </Suspense>
   );
 }

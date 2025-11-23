@@ -31,7 +31,7 @@ export default function LoginPage({ onLoginSuccess, onNavigate }: LoginPageProps
     setIsLoading(true);
 
     try {
-      // ✅ Use Supabase Auth Session instead of custom API
+      // Use Supabase Auth Session instead of custom API
       const { data, error } = await supabase.auth.signInWithPassword({
         email: ADMIN_EMAIL,
         password: password,
@@ -52,7 +52,7 @@ export default function LoginPage({ onLoginSuccess, onNavigate }: LoginPageProps
       }
 
       if (data.session) {
-        console.log("✅ Login successful with Supabase Session");
+        console.log("✔ Login successful with Supabase Session");
         toast.success("Connexion réussie !");
         onLoginSuccess();
       }
@@ -68,8 +68,8 @@ export default function LoginPage({ onLoginSuccess, onNavigate }: LoginPageProps
     <div className="min-h-screen bg-[#0C0C0C] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-[#00FFC2] rounded-full mix-blend-screen filter blur-3xl opacity-5 animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#00FFC2] rounded-full mix-blend-screen filter blur-3xl opacity-5 animate-pulse animation-delay-2000"></div>
+        <div className="absolute top-20 left-10 w-96 h-96 bg-[#CCFF00] rounded-full mix-blend-screen filter blur-3xl opacity-5 animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#CCFF00] rounded-full mix-blend-screen filter blur-3xl opacity-5 animate-pulse animation-delay-2000"></div>
       </div>
 
       <div className="relative w-full max-w-md">
@@ -83,10 +83,10 @@ export default function LoginPage({ onLoginSuccess, onNavigate }: LoginPageProps
           Retour à l'accueil
         </Button>
 
-        <Card className="shadow-2xl bg-black/40 backdrop-blur-xl border-[#00FFC2]/20">
+        <Card className="shadow-2xl bg-black/40 backdrop-blur-xl border-[#CCFF00]/20">
           <CardHeader className="text-center">
             {/* Logo */}
-            <div className="w-16 h-16 bg-gradient-to-br from-[#00FFC2] to-[#00FFC2]/60 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-[#CCFF00] to-[#CCFF00]/60 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Lock className="h-8 w-8 text-black" />
             </div>
             <CardTitle className="text-white">Connexion Dashboard</CardTitle>
@@ -99,7 +99,7 @@ export default function LoginPage({ onLoginSuccess, onNavigate }: LoginPageProps
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-white/80">Email administrateur</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#00FFC2]/60" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#CCFF00]/60" />
                   <Input
                     id="email"
                     type="email"
@@ -118,7 +118,7 @@ export default function LoginPage({ onLoginSuccess, onNavigate }: LoginPageProps
                     id="password"
                     type="password"
                     placeholder="Entrez votre mot de passe"
-                    className="pl-10 bg-white/5 border-white/10 text-white focus:border-[#00FFC2]/50"
+                    className="pl-10 bg-white/5 border-white/10 text-white focus:border-[#CCFF00]/50"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isLoading}
@@ -129,7 +129,7 @@ export default function LoginPage({ onLoginSuccess, onNavigate }: LoginPageProps
 
               <Button
                 type="submit"
-                className="w-full bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="w-full bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
                 size="lg"
                 disabled={isLoading}
               >

@@ -1,6 +1,6 @@
 /**
  * Supabase Function Setup Helper
- * Guide visuel pour créer la fonction Edge
+ * Guide visuel pour crÃ©er la fonction Edge
  */
 
 import { useState } from "react";
@@ -48,13 +48,13 @@ export function SupabaseFunctionSetupHelper() {
       description: "Copiez le code complet dans votre presse-papier",
       icon: Copy,
       action: handleCopyCode,
-      actionText: codeCopied ? "Code Copié !" : "Copier le Code",
+      actionText: codeCopied ? "Code CopiÃ© !" : "Copier le Code",
       actionVariant: codeCopied ? "success" : "default"
     },
     {
       id: 1,
       title: "Ouvrir Supabase Dashboard",
-      description: "Accédez à la page Edge Functions de votre projet",
+      description: "AccÃ©dez Ã  la page Edge Functions de votre projet",
       icon: ExternalLink,
       action: handleOpenDashboard,
       actionText: "Ouvrir Dashboard",
@@ -62,8 +62,8 @@ export function SupabaseFunctionSetupHelper() {
     },
     {
       id: 2,
-      title: "Créer la Fonction",
-      description: "Instructions détaillées ci-dessous",
+      title: "CrÃ©er la Fonction",
+      description: "Instructions dÃ©taillÃ©es ci-dessous",
       icon: FileCode,
       action: () => {},
       actionText: "",
@@ -79,10 +79,10 @@ export function SupabaseFunctionSetupHelper() {
         </div>
         <div>
           <h3 className="text-lg text-white font-medium mb-1">
-            🆕 Créer la Fonction Edge sur Supabase
+            ðŸ†• CrÃ©er la Fonction Edge sur Supabase
           </h3>
           <p className="text-sm text-white/60">
-            La fonction n'existe pas encore dans votre projet. Suivez ces étapes :
+            La fonction n'existe pas encore dans votre projet. Suivez ces Ã©tapes :
           </p>
         </div>
       </div>
@@ -161,27 +161,27 @@ export function SupabaseFunctionSetupHelper() {
               
               <ol className="text-xs text-yellow-200/80 space-y-2 list-decimal list-inside">
                 <li>
-                  Cliquez le bouton <strong>"+ New Function"</strong> (vert, en haut à droite)
+                  Cliquez le bouton <strong>"+ New Function"</strong> (vert, en haut Ã  droite)
                 </li>
                 <li>
                   Dans le modal :
                   <ul className="ml-6 mt-1 space-y-1 list-disc list-inside">
                     <li><strong>Name</strong> : <code className="bg-white/10 px-1 rounded">make-server-04919ac5</code> (exactement !)</li>
-                    <li><strong>Verify JWT</strong> : Décochez</li>
+                    <li><strong>Verify JWT</strong> : DÃ©cochez</li>
                   </ul>
                 </li>
                 <li>Cliquez <strong>"Create function"</strong></li>
-                <li>Dans l'éditeur : <strong>SUPPRIMEZ</strong> tout le code exemple</li>
-                <li><strong>COLLEZ</strong> le code que vous avez copié (Ctrl+V)</li>
+                <li>Dans l'Ã©diteur : <strong>SUPPRIMEZ</strong> tout le code exemple</li>
+                <li><strong>COLLEZ</strong> le code que vous avez copiÃ© (Ctrl+V)</li>
                 <li>Cliquez <strong>"Deploy"</strong> (bouton vert)</li>
                 <li>Attendez 30-60 secondes</li>
-                <li>Revenez ici et cliquez <strong>"Rafraîchir le serveur"</strong></li>
+                <li>Revenez ici et cliquez <strong>"RafraÃ®chir le serveur"</strong></li>
               </ol>
 
               <div className="pt-2 border-t border-yellow-500/20">
                 <p className="text-xs text-yellow-200/60">
-                  💡 <strong>Astuce :</strong> Si vous voyez "Function already exists", 
-                  cliquez sur la fonction existante, puis "Edit" pour la mettre à jour.
+                  ðŸ’¡ <strong>Astuce :</strong> Si vous voyez "Function already exists", 
+                  cliquez sur la fonction existante, puis "Edit" pour la mettre Ã  jour.
                 </p>
               </div>
             </div>
@@ -192,11 +192,11 @@ export function SupabaseFunctionSetupHelper() {
       {/* Guide Link */}
       <div className="mt-4 pt-4 border-t border-white/10">
         <p className="text-xs text-white/40">
-          📖 <strong>Guide détaillé :</strong>{" "}
+          ðŸ“– <strong>Guide dÃ©taillÃ© :</strong>{" "}
           <a 
             href="/CREER_FONCTION_SUPABASE_GUIDE.md" 
             target="_blank"
-            className="text-[#00FFC2] hover:underline"
+            className="text-[#CCFF00] hover:underline"
           >
             CREER_FONCTION_SUPABASE_GUIDE.md
           </a>

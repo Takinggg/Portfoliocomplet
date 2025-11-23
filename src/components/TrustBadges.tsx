@@ -29,19 +29,19 @@ export function TrustBadges({
     {
       icon: <Award className="h-5 w-5" />,
       title: "50+",
-      subtitle: "Projets réussis",
-      color: "#00FFC2",
+      subtitle: "Projets rÃ©ussis",
+      color: "#CCFF00",
     },
     {
       icon: <CheckCircle className="h-5 w-5" />,
       title: "100%",
       subtitle: "Clients satisfaits",
-      color: "#00D9A6",
+      color: "#DAFF40",
     },
     {
       icon: <Shield className="h-5 w-5" />,
       title: "5 ans",
-      subtitle: "D'expérience",
+      subtitle: "D'expÃ©rience",
       color: "#00B38A",
     },
   ];
@@ -207,8 +207,8 @@ export function AllTrustBadges({ className = "" }: { className?: string }) {
       >
         <Shield className="h-5 w-5 text-mint" />
         <div>
-          <div className="text-sm text-white">Vérifié</div>
-          <div className="text-xs text-neutral-400">Professionnel certifié</div>
+          <div className="text-sm text-white">VÃ©rifiÃ©</div>
+          <div className="text-xs text-neutral-400">Professionnel certifiÃ©</div>
         </div>
       </motion.div>
 

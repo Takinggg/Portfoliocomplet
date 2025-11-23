@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 Déployer le serveur Supabase - Interface Web</title>
+    <title>ðŸš€ DÃ©ployer le serveur Supabase - Interface Web</title>
     <style>
         * {
             margin: 0;
@@ -24,20 +24,20 @@
             margin: 0 auto;
             background: #1a1a1a;
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 255, 194, 0.1);
+            box-shadow: 0 8px 32px rgba(204, 255, 0, 0.1);
             overflow: hidden;
         }
         
         .header {
             background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
             padding: 40px;
-            border-bottom: 2px solid #00FFC2;
+            border-bottom: 2px solid #CCFF00;
         }
         
         .header h1 {
             font-size: 32px;
             margin-bottom: 10px;
-            color: #00FFC2;
+            color: #CCFF00;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -53,15 +53,15 @@
         }
         
         .alert {
-            background: rgba(0, 255, 194, 0.1);
-            border-left: 4px solid #00FFC2;
+            background: rgba(204, 255, 0, 0.1);
+            border-left: 4px solid #CCFF00;
             padding: 20px;
             margin-bottom: 30px;
             border-radius: 6px;
         }
         
         .alert-title {
-            color: #00FFC2;
+            color: #CCFF00;
             font-weight: 600;
             margin-bottom: 10px;
             font-size: 18px;
@@ -77,8 +77,8 @@
         }
         
         .step:hover {
-            border-color: #00FFC2;
-            box-shadow: 0 4px 20px rgba(0, 255, 194, 0.15);
+            border-color: #CCFF00;
+            box-shadow: 0 4px 20px rgba(204, 255, 0, 0.15);
         }
         
         .step-number {
@@ -87,7 +87,7 @@
             justify-content: center;
             width: 36px;
             height: 36px;
-            background: #00FFC2;
+            background: #CCFF00;
             color: #0C0C0C;
             border-radius: 50%;
             font-weight: 700;
@@ -120,7 +120,7 @@
             margin: 15px 0;
             font-family: 'Courier New', monospace;
             font-size: 14px;
-            color: #00FFC2;
+            color: #CCFF00;
             overflow-x: auto;
             position: relative;
         }
@@ -134,7 +134,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: #00FFC2;
+            background: #CCFF00;
             color: #0C0C0C;
             border: none;
             padding: 6px 12px;
@@ -146,11 +146,11 @@
         }
         
         .copy-btn:hover {
-            background: #00d9a6;
+            background: #DAFF40;
         }
         
         .path {
-            background: #00FFC2;
+            background: #CCFF00;
             color: #0C0C0C;
             padding: 2px 8px;
             border-radius: 4px;
@@ -165,8 +165,8 @@
             border-radius: 4px;
             font-family: 'Courier New', monospace;
             font-size: 13px;
-            border: 1px solid #00FFC2;
-            color: #00FFC2;
+            border: 1px solid #CCFF00;
+            color: #CCFF00;
         }
         
         .warning {
@@ -208,18 +208,18 @@
         }
         
         strong {
-            color: #00FFC2;
+            color: #CCFF00;
         }
         
         a {
-            color: #00FFC2;
+            color: #CCFF00;
             text-decoration: none;
             border-bottom: 1px solid transparent;
             transition: border-color 0.2s;
         }
         
         a:hover {
-            border-bottom-color: #00FFC2;
+            border-bottom-color: #CCFF00;
         }
         
         .footer {
@@ -233,7 +233,7 @@
 
         .img-placeholder {
             background: #252525;
-            border: 2px dashed #00FFC2;
+            border: 2px dashed #CCFF00;
             border-radius: 8px;
             padding: 20px;
             margin: 15px 0;
@@ -246,52 +246,52 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 Déployer le serveur Supabase</h1>
-            <p>Guide pas à pas pour déployer via l'interface web (sans CLI)</p>
+            <h1>ðŸš€ DÃ©ployer le serveur Supabase</h1>
+            <p>Guide pas Ã  pas pour dÃ©ployer via l'interface web (sans CLI)</p>
         </div>
         
         <div class="content">
             <div class="alert">
-                <div class="alert-title">📌 Pourquoi déployer ?</div>
+                <div class="alert-title">ðŸ“Œ Pourquoi dÃ©ployer ?</div>
                 <p>
                     Les routes <span class="path">/clients</span> existent dans votre code local mais le serveur Supabase 
-                    déployé utilise une ancienne version. Vous devez copier-coller le code mis à jour via l'interface web.
+                    dÃ©ployÃ© utilise une ancienne version. Vous devez copier-coller le code mis Ã  jour via l'interface web.
                 </p>
             </div>
 
-            <!-- Étape 1 -->
+            <!-- Ã‰tape 1 -->
             <div class="step">
                 <div class="step-title">
                     <span class="step-number">1</span>
-                    Accéder à l'interface Supabase
+                    AccÃ©der Ã  l'interface Supabase
                 </div>
                 <div class="step-content">
                     <p>1. Allez sur <a href="https://supabase.com/dashboard" target="_blank">https://supabase.com/dashboard</a></p>
-                    <p>2. Connectez-vous à votre compte</p>
-                    <p>3. Sélectionnez votre projet</p>
+                    <p>2. Connectez-vous Ã  votre compte</p>
+                    <p>3. SÃ©lectionnez votre projet</p>
                 </div>
             </div>
 
-            <!-- Étape 2 -->
+            <!-- Ã‰tape 2 -->
             <div class="step">
                 <div class="step-title">
                     <span class="step-number">2</span>
-                    Ouvrir l'éditeur de Edge Functions
+                    Ouvrir l'Ã©diteur de Edge Functions
                 </div>
                 <div class="step-content">
                     <p>1. Dans le menu de gauche, cliquez sur <strong>"Edge Functions"</strong></p>
-                    <p>2. Cherchez la fonction nommée <span class="path">make-server-04919ac5</span></p>
+                    <p>2. Cherchez la fonction nommÃ©e <span class="path">make-server-04919ac5</span></p>
                     <p>3. Cliquez dessus pour l'ouvrir</p>
                     
                     <div class="warning">
-                        <div class="warning-title">⚠️ Important</div>
-                        Si vous ne voyez pas la fonction, elle n'existe pas encore. Vous devrez la créer en cliquant sur 
+                        <div class="warning-title">âš ï¸ Important</div>
+                        Si vous ne voyez pas la fonction, elle n'existe pas encore. Vous devrez la crÃ©er en cliquant sur 
                         <strong>"New Function"</strong> et en la nommant exactement <span class="path">make-server-04919ac5</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Étape 3 -->
+            <!-- Ã‰tape 3 -->
             <div class="step">
                 <div class="step-title">
                     <span class="step-number">3</span>
@@ -299,11 +299,11 @@
                 </div>
                 <div class="step-content">
                     <p>1. Dans Figma Make, ouvrez le fichier : <span class="path">/supabase/functions/server/index.tsx</span></p>
-                    <p>2. Sélectionnez <strong>TOUT LE CONTENU</strong> du fichier (Ctrl+A ou Cmd+A)</p>
+                    <p>2. SÃ©lectionnez <strong>TOUT LE CONTENU</strong> du fichier (Ctrl+A ou Cmd+A)</p>
                     <p>3. Copiez-le (Ctrl+C ou Cmd+C)</p>
                     
                     <div class="warning">
-                        <div class="warning-title">📝 Note importante</div>
+                        <div class="warning-title">ðŸ“ Note importante</div>
                         Le fichier contient environ <strong>4000+ lignes de code</strong>. Assurez-vous de tout copier !
                         Le code doit commencer par :
                         <div class="code-block" style="margin-top: 10px;">
@@ -314,52 +314,52 @@
                 </div>
             </div>
 
-            <!-- Étape 4 -->
+            <!-- Ã‰tape 4 -->
             <div class="step">
                 <div class="step-title">
                     <span class="step-number">4</span>
-                    Coller dans l'éditeur Supabase
+                    Coller dans l'Ã©diteur Supabase
                 </div>
                 <div class="step-content">
-                    <p>1. Dans l'éditeur web de Supabase, <strong>sélectionnez tout le contenu existant</strong> (Ctrl+A)</p>
+                    <p>1. Dans l'Ã©diteur web de Supabase, <strong>sÃ©lectionnez tout le contenu existant</strong> (Ctrl+A)</p>
                     <p>2. <strong>Remplacez-le</strong> en collant le nouveau code (Ctrl+V ou Cmd+V)</p>
-                    <p>3. Vérifiez que le code a bien été collé en entier</p>
+                    <p>3. VÃ©rifiez que le code a bien Ã©tÃ© collÃ© en entier</p>
                     
                     <div class="success">
-                        <div class="success-title">✅ Vérification visuelle</div>
+                        <div class="success-title">âœ… VÃ©rification visuelle</div>
                         Le fichier doit avoir environ <strong>4000+ lignes</strong>. 
-                        Faites défiler jusqu'en bas pour vérifier que tout est bien là.
+                        Faites dÃ©filer jusqu'en bas pour vÃ©rifier que tout est bien lÃ .
                     </div>
                 </div>
             </div>
 
-            <!-- Étape 5 -->
+            <!-- Ã‰tape 5 -->
             <div class="step">
                 <div class="step-title">
                     <span class="step-number">5</span>
-                    Déployer la fonction
+                    DÃ©ployer la fonction
                 </div>
                 <div class="step-content">
-                    <p>1. Cherchez le bouton <strong>"Deploy"</strong> ou <strong>"Save & Deploy"</strong> (généralement en haut à droite)</p>
+                    <p>1. Cherchez le bouton <strong>"Deploy"</strong> ou <strong>"Save & Deploy"</strong> (gÃ©nÃ©ralement en haut Ã  droite)</p>
                     <p>2. Cliquez dessus</p>
-                    <p>3. Attendez que le déploiement se termine (peut prendre 30 secondes à 2 minutes)</p>
+                    <p>3. Attendez que le dÃ©ploiement se termine (peut prendre 30 secondes Ã  2 minutes)</p>
                     
                     <div class="success">
-                        <div class="success-title">✅ Succès</div>
-                        Vous devriez voir un message confirmant que la fonction a été déployée avec succès.
-                        La mention "Live" ou "Active" devrait apparaître à côté du nom de la fonction.
+                        <div class="success-title">âœ… SuccÃ¨s</div>
+                        Vous devriez voir un message confirmant que la fonction a Ã©tÃ© dÃ©ployÃ©e avec succÃ¨s.
+                        La mention "Live" ou "Active" devrait apparaÃ®tre Ã  cÃ´tÃ© du nom de la fonction.
                     </div>
                 </div>
             </div>
 
-            <!-- Étape 6 -->
+            <!-- Ã‰tape 6 -->
             <div class="step">
                 <div class="step-title">
                     <span class="step-number">6</span>
-                    Vérifier que ça fonctionne
+                    VÃ©rifier que Ã§a fonctionne
                 </div>
                 <div class="step-content">
-                    <p><strong>Test 1 : Vérifier la version du serveur</strong></p>
+                    <p><strong>Test 1 : VÃ©rifier la version du serveur</strong></p>
                     <p>Visitez cette URL dans votre navigateur :</p>
                     <div class="code-block">
                         <code>https://ptcxeqtjlxittxayffgu.supabase.co/functions/v1/make-server-04919ac5/health</code>
@@ -372,25 +372,25 @@
   "version": "consolidated-v1"
 }</code>
                     </div>
-                    <p style="margin-top: 15px;"><strong>Si vous voyez <span class="path">"version": "consolidated-v1"</span></strong> → ✅ Le déploiement a réussi !</p>
+                    <p style="margin-top: 15px;"><strong>Si vous voyez <span class="path">"version": "consolidated-v1"</span></strong> â†’ âœ… Le dÃ©ploiement a rÃ©ussi !</p>
 
                     <div style="height: 20px;"></div>
 
-                    <p><strong>Test 2 : Vérifier le dashboard</strong></p>
+                    <p><strong>Test 2 : VÃ©rifier le dashboard</strong></p>
                     <ol>
                         <li>Retournez sur votre application portfolio</li>
                         <li>Connectez-vous au dashboard</li>
                         <li>Allez dans l'onglet <strong>"Clients"</strong></li>
-                        <li>L'erreur 404 devrait avoir disparu ! 🎉</li>
+                        <li>L'erreur 404 devrait avoir disparu ! ðŸŽ‰</li>
                     </ol>
                     
                     <div class="warning">
-                        <div class="warning-title">🔄 Cache du navigateur</div>
+                        <div class="warning-title">ðŸ”„ Cache du navigateur</div>
                         Si vous voyez toujours l'erreur, essayez :
                         <ul>
                             <li>Rechargez la page avec <strong>Ctrl+Shift+R</strong> (ou Cmd+Shift+R sur Mac)</li>
                             <li>Videz le cache du navigateur</li>
-                            <li>Ouvrez en navigation privée</li>
+                            <li>Ouvrez en navigation privÃ©e</li>
                         </ul>
                     </div>
                 </div>
@@ -398,29 +398,29 @@
 
             <!-- Troubleshooting -->
             <div class="alert" style="margin-top: 40px; background: rgba(255, 193, 7, 0.1); border-left-color: #ffc107;">
-                <div class="alert-title" style="color: #ffc107;">🔧 Problèmes courants</div>
-                <p><strong>❌ "Function not found" ou 404</strong></p>
+                <div class="alert-title" style="color: #ffc107;">ðŸ”§ ProblÃ¨mes courants</div>
+                <p><strong>âŒ "Function not found" ou 404</strong></p>
                 <ul>
-                    <li>Vérifiez que le nom de la fonction est exactement <span class="path">make-server-04919ac5</span></li>
-                    <li>Attendez 1-2 minutes après le déploiement (propagation)</li>
+                    <li>VÃ©rifiez que le nom de la fonction est exactement <span class="path">make-server-04919ac5</span></li>
+                    <li>Attendez 1-2 minutes aprÃ¨s le dÃ©ploiement (propagation)</li>
                 </ul>
                 
-                <p style="margin-top: 15px;"><strong>❌ "Internal server error" ou 500</strong></p>
+                <p style="margin-top: 15px;"><strong>âŒ "Internal server error" ou 500</strong></p>
                 <ul>
-                    <li>Vérifiez que vous avez bien copié TOUT le code (4000+ lignes)</li>
-                    <li>Consultez les logs dans Supabase : Edge Functions → make-server-04919ac5 → Logs</li>
+                    <li>VÃ©rifiez que vous avez bien copiÃ© TOUT le code (4000+ lignes)</li>
+                    <li>Consultez les logs dans Supabase : Edge Functions â†’ make-server-04919ac5 â†’ Logs</li>
                 </ul>
 
-                <p style="margin-top: 15px;"><strong>❌ La version est toujours ancienne</strong></p>
+                <p style="margin-top: 15px;"><strong>âŒ La version est toujours ancienne</strong></p>
                 <ul>
-                    <li>Vérifiez que vous avez bien cliqué sur "Deploy" après avoir collé le code</li>
+                    <li>VÃ©rifiez que vous avez bien cliquÃ© sur "Deploy" aprÃ¨s avoir collÃ© le code</li>
                     <li>Videz le cache de votre navigateur</li>
                 </ul>
             </div>
         </div>
         
         <div class="footer">
-            <p>💡 <strong>Conseil :</strong> Gardez ce guide à portée de main pour les prochains déploiements</p>
+            <p>ðŸ’¡ <strong>Conseil :</strong> Gardez ce guide Ã  portÃ©e de main pour les prochains dÃ©ploiements</p>
             <p style="margin-top: 10px; font-size: 12px;">
                 Fichier : <code>/public/deploiement-web.html</code> ou <code>/DEPLOIEMENT_WEB.html</code>
             </p>
@@ -437,7 +437,7 @@
                 btn.onclick = () => {
                     const code = block.querySelector('code')?.textContent || block.textContent;
                     navigator.clipboard.writeText(code).then(() => {
-                        btn.textContent = '✓ Copié !';
+                        btn.textContent = 'âœ“ CopiÃ© !';
                         setTimeout(() => {
                             btn.textContent = 'Copier';
                         }, 2000);

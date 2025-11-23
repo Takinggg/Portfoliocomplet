@@ -36,11 +36,11 @@ export function BlogConnectionStatus() {
   const statusConfig = {
     server: {
       icon: Server,
-      color: "#00FFC2",
-      bgColor: "bg-[#00FFC2]/10",
-      borderColor: "border-[#00FFC2]/30",
-      label: "Connecté au serveur",
-      description: "Les articles sont synchronisés avec la base de données",
+      color: "#CCFF00",
+      bgColor: "bg-[#CCFF00]/10",
+      borderColor: "border-[#CCFF00]/30",
+      label: "ConnectÃ© au serveur",
+      description: "Les articles sont synchronisÃ©s avec la base de donnÃ©es",
     },
     local: {
       icon: Database,
@@ -48,14 +48,14 @@ export function BlogConnectionStatus() {
       bgColor: "bg-amber-500/10",
       borderColor: "border-amber-500/30",
       label: "Mode local",
-      description: "Les articles sont stockés dans votre navigateur",
+      description: "Les articles sont stockÃ©s dans votre navigateur",
     },
     checking: {
       icon: RefreshCw,
       color: "#94A3B8",
       bgColor: "bg-white/5",
       borderColor: "border-white/10",
-      label: "Vérification...",
+      label: "VÃ©rification...",
       description: "Connexion au serveur en cours",
     },
   };
@@ -96,7 +96,7 @@ export function BlogConnectionStatus() {
                     onClick={() => setShowDetails(false)}
                     className="text-white/40 hover:text-white/60 transition-colors"
                   >
-                    ×
+                    Ã—
                   </button>
                 </div>
 
@@ -106,25 +106,25 @@ export function BlogConnectionStatus() {
                       Pour connecter au backend :
                     </p>
                     <ol className="text-xs text-white/60 space-y-1 pl-4 list-decimal">
-                      <li>Déployer le serveur sur Supabase</li>
+                      <li>DÃ©ployer le serveur sur Supabase</li>
                       <li>Utiliser le bouton "Seed Blog" dans le dashboard</li>
-                      <li>Rafraîchir cette page</li>
+                      <li>RafraÃ®chir cette page</li>
                     </ol>
                     <Button
                       size="sm"
                       onClick={handleRecheck}
                       disabled={isChecking}
-                      className="w-full bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90 mt-2"
+                      className="w-full bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90 mt-2"
                     >
                       {isChecking ? (
                         <>
                           <RefreshCw className="h-3 w-3 mr-2 animate-spin" />
-                          Vérification...
+                          VÃ©rification...
                         </>
                       ) : (
                         <>
                           <RefreshCw className="h-3 w-3 mr-2" />
-                          Vérifier la connexion
+                          VÃ©rifier la connexion
                         </>
                       )}
                     </Button>
@@ -133,7 +133,7 @@ export function BlogConnectionStatus() {
 
                 {mode === "server" && (
                   <div className="flex items-center gap-2 pt-2 border-t border-white/10">
-                    <CheckCircle className="h-4 w-4 text-[#00FFC2]" />
+                    <CheckCircle className="h-4 w-4 text-[#CCFF00]" />
                     <p className="text-xs text-white/60">
                       Tout fonctionne correctement
                     </p>
@@ -161,7 +161,7 @@ export function BlogConnectionStatus() {
               <WifiOff className="h-3 w-3 text-amber-500" />
             )}
             {mode === "server" && (
-              <Wifi className="h-3 w-3 text-[#00FFC2]" />
+              <Wifi className="h-3 w-3 text-[#CCFF00]" />
             )}
           </motion.button>
         )}

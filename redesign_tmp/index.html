@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maxence Design | UI/UX Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Clash Display', 'sans-serif'],
+              mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+            },
+            colors: {
+              background: '#050505', 
+              surface: '#0F0F0F', 
+              surfaceHighlight: '#1A1A1A',
+              primary: '#CCFF00', // Acid Green / Lime for high contrast
+              secondary: '#FFFFFF', 
+            },
+            animation: {
+              'noise': 'noise 0.5s steps(1) infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              noise: {
+                '0%': { transform: 'translate(0,0)' },
+                '10%': { transform: 'translate(-5%,-5%)' },
+                '20%': { transform: 'translate(-10%,5%)' },
+                '30%': { transform: 'translate(5%,-10%)' },
+                '40%': { transform: 'translate(-5%,15%)' },
+                '50%': { transform: 'translate(-10%,5%)' },
+                '60%': { transform: 'translate(15%,0)' },
+                '70%': { transform: 'translate(0,10%)' },
+                '80%': { transform: 'translate(-15%,0)' },
+                '90%': { transform: 'translate(10%,5%)' },
+                '100%': { transform: 'translate(5%,0)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #050505;
+        color: #e5e5e5;
+        overflow-x: hidden;
+      }
+      
+      /* Cinematic Noise Overlay */
+      .bg-noise {
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        right: -50%;
+        bottom: -50%;
+        width: 200%;
+        height: 200vh;
+        background: transparent url('http://assets.iceable.com/img/noise-transparent.png') repeat 0 0;
+        background-repeat: repeat;
+        animation: noise .2s infinite;
+        opacity: .05;
+        visibility: visible;
+        pointer-events: none;
+        z-index: 999;
+      }
+
+      /* Bento Box Styling */
+      .bento-card {
+        background-color: #0F0F0F;
+        border: 1px solid #1F1F1F;
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      }
+      
+      .bento-card:hover {
+        border-color: #333;
+        transform: translateY(-2px);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+      }
+
+      .text-reveal-wrapper {
+        overflow: hidden;
+      }
+      .text-reveal-content {
+        transform: translateY(100%);
+        opacity: 0;
+        transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+      }
+      .text-reveal-content.visible {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #050505;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #CCFF00;
+      }
+      
+      /* Selection Color */
+      ::selection {
+        background: #CCFF00;
+        color: #000;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

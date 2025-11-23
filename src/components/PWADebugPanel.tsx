@@ -43,15 +43,15 @@ export const PWADebugPanel: React.FC = () => {
     // Ajouter un helper global pour ouvrir le debug panel
     (window as any).pwaDebug = () => {
       setIsVisible(true);
-      console.log('🔧 PWA Debug Panel ouvert');
+      console.log('ðŸ”§ PWA Debug Panel ouvert');
     };
 
-    console.log('💡 PWA Debug helper loaded! Run: pwaDebug()');
+    console.log('ðŸ’¡ PWA Debug helper loaded! Run: pwaDebug()');
 
-    // Mettre à jour le statut initial
+    // Mettre Ã  jour le statut initial
     updateStatus();
 
-    // Mettre à jour toutes les 2 secondes
+    // Mettre Ã  jour toutes les 2 secondes
     const interval = setInterval(updateStatus, 2000);
 
     return () => clearInterval(interval);
@@ -92,10 +92,10 @@ export const PWADebugPanel: React.FC = () => {
       }
     }
 
-    // Vérifier le manifest (désactivé dans Figma Make car /public/ n'est pas servi)
+    // VÃ©rifier le manifest (dÃ©sactivÃ© dans Figma Make car /public/ n'est pas servi)
     try {
       // Dans Figma Make, les fichiers publics ne sont pas accessibles
-      // On considère le manifest comme valide si on est en production
+      // On considÃ¨re le manifest comme valide si on est en production
       const isProduction = window.location.hostname !== 'localhost';
       newStatus.manifestValid = isProduction ? null : false;
     } catch (e) {
@@ -121,43 +121,43 @@ export const PWADebugPanel: React.FC = () => {
     if (navigator.serviceWorker.controller) {
       const registration = await navigator.serviceWorker.getRegistration();
       await registration?.update();
-      console.log('✅ Mise à jour forcée du Service Worker');
-      alert('✅ Mise à jour forcée. Rechargement...');
+      console.log('âœ… Mise Ã  jour forcÃ©e du Service Worker');
+      alert('âœ… Mise Ã  jour forcÃ©e. Rechargement...');
       window.location.reload();
     }
   };
 
   const handleClearCache = async () => {
     const confirmed = window.confirm(
-      '⚠️ Êtes-vous sûr de vouloir vider tous les caches ?\n\nCela supprimera toutes les données mises en cache.'
+      'âš ï¸ ÃŠtes-vous sÃ»r de vouloir vider tous les caches ?\n\nCela supprimera toutes les donnÃ©es mises en cache.'
     );
 
     if (confirmed) {
       const cacheNames = await caches.keys();
       await Promise.all(cacheNames.map(name => caches.delete(name)));
-      console.log('✅ Tous les caches ont été vidés');
-      alert('✅ Cache vidé. Rechargement...');
+      console.log('âœ… Tous les caches ont Ã©tÃ© vidÃ©s');
+      alert('âœ… Cache vidÃ©. Rechargement...');
       window.location.reload();
     }
   };
 
   const handleUnregisterSW = async () => {
     const confirmed = window.confirm(
-      '⚠️ Êtes-vous sûr de vouloir désenregistrer le Service Worker ?\n\nCela désactivera le mode offline.'
+      'âš ï¸ ÃŠtes-vous sÃ»r de vouloir dÃ©senregistrer le Service Worker ?\n\nCela dÃ©sactivera le mode offline.'
     );
 
     if (confirmed) {
       const registrations = await navigator.serviceWorker.getRegistrations();
       await Promise.all(registrations.map(reg => reg.unregister()));
-      console.log('✅ Service Worker désenregistré');
-      alert('✅ Service Worker désenregistré. Rechargement...');
+      console.log('âœ… Service Worker dÃ©senregistrÃ©');
+      alert('âœ… Service Worker dÃ©senregistrÃ©. Rechargement...');
       window.location.reload();
     }
   };
 
   const handleTestNotification = async () => {
     if (!('Notification' in window)) {
-      alert('❌ Les notifications ne sont pas supportées par ce navigateur');
+      alert('âŒ Les notifications ne sont pas supportÃ©es par ce navigateur');
       return;
     }
 
@@ -170,9 +170,9 @@ export const PWADebugPanel: React.FC = () => {
         badge: '/icons/badge-72x72.png',
         vibrate: [200, 100, 200],
       });
-      console.log('✅ Notification test envoyée');
+      console.log('âœ… Notification test envoyÃ©e');
     } else {
-      alert('❌ Permission de notification refusée');
+      alert('âŒ Permission de notification refusÃ©e');
     }
   };
 
@@ -180,17 +180,17 @@ export const PWADebugPanel: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <Card className="bg-[#0C0C0C] border-[#00FFC2] w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <Card className="bg-[#0C0C0C] border-[#CCFF00] w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#00FFC2] to-[#00CC9A] rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#CCFF00] to-[#C6FF1A] rounded-full flex items-center justify-center">
                 <Info className="w-5 h-5 text-[#0C0C0C]" />
               </div>
               <div>
-                <h2 className="text-[#00FFC2]">PWA Debug Panel</h2>
-                <p className="text-sm text-gray-400">Diagnostics et contrôles</p>
+                <h2 className="text-[#CCFF00]">PWA Debug Panel</h2>
+                <p className="text-sm text-gray-400">Diagnostics et contrÃ´les</p>
               </div>
             </div>
             <Button
@@ -234,7 +234,7 @@ export const PWADebugPanel: React.FC = () => {
                 )}
               </div>
               <p className="text-white">
-                {status.isInstalled ? 'Installée' : 'Non installée'}
+                {status.isInstalled ? 'InstallÃ©e' : 'Non installÃ©e'}
               </p>
             </div>
 
@@ -249,10 +249,10 @@ export const PWADebugPanel: React.FC = () => {
               </p>
             </div>
 
-            {/* Réseau */}
+            {/* RÃ©seau */}
             <div className="p-4 bg-white/5 rounded-lg border border-white/10">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-400">Réseau</span>
+                <span className="text-sm text-gray-400">RÃ©seau</span>
                 <Wifi className={`w-5 h-5 ${status.networkStatus === 'online' ? 'text-green-400' : 'text-red-400'}`} />
               </div>
               <p className="text-white capitalize">{status.networkStatus}</p>
@@ -280,9 +280,9 @@ export const PWADebugPanel: React.FC = () => {
                   'secondary'
                 }
               >
-                {status.notificationPermission === 'granted' ? 'Autorisées' :
-                 status.notificationPermission === 'denied' ? 'Refusées' :
-                 'Non demandées'}
+                {status.notificationPermission === 'granted' ? 'AutorisÃ©es' :
+                 status.notificationPermission === 'denied' ? 'RefusÃ©es' :
+                 'Non demandÃ©es'}
               </Badge>
             </div>
 
@@ -311,16 +311,16 @@ export const PWADebugPanel: React.FC = () => {
               className="w-full bg-blue-600 hover:bg-blue-700 text-white"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
-              Rafraîchir le statut
+              RafraÃ®chir le statut
             </Button>
 
             <Button
               onClick={handleForceUpdate}
-              className="w-full bg-[#00FFC2] hover:bg-[#00CC9A] text-[#0C0C0C]"
+              className="w-full bg-[#CCFF00] hover:bg-[#C6FF1A] text-[#0C0C0C]"
               disabled={!status.serviceWorkerActive}
             >
               <Download className="w-4 h-4 mr-2" />
-              Forcer la mise à jour
+              Forcer la mise Ã  jour
             </Button>
 
             <Button
@@ -347,18 +347,18 @@ export const PWADebugPanel: React.FC = () => {
               disabled={!status.serviceWorkerActive}
             >
               <XCircle className="w-4 h-4 mr-2" />
-              Désenregistrer le SW
+              DÃ©senregistrer le SW
             </Button>
           </div>
 
           {/* Console Commands */}
           <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
-            <h4 className="text-[#00FFC2] text-sm mb-2">Commandes Console</h4>
+            <h4 className="text-[#CCFF00] text-sm mb-2">Commandes Console</h4>
             <div className="space-y-1 text-xs font-mono text-gray-400">
-              <p>• pwaDebug() - Ouvrir ce panel</p>
-              <p>• caches.keys() - Lister les caches</p>
-              <p>• navigator.serviceWorker.controller - Info SW</p>
-              <p>• Notification.requestPermission() - Demander permissions</p>
+              <p>â€¢ pwaDebug() - Ouvrir ce panel</p>
+              <p>â€¢ caches.keys() - Lister les caches</p>
+              <p>â€¢ navigator.serviceWorker.controller - Info SW</p>
+              <p>â€¢ Notification.requestPermission() - Demander permissions</p>
             </div>
           </div>
         </div>

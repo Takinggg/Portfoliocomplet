@@ -65,7 +65,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
         phone: selectedLead.phone || prev.phone,
         company: selectedLead.company || prev.company,
       }));
-      toast.success("Informations du lead chargées !");
+      toast.success("Informations du lead chargÃ©es !");
     }
   };
 
@@ -127,7 +127,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -165,11 +165,11 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
           errorData = { error: errorText };
         }
         
-        console.error("❌ Server error:", response.status, errorData);
+        console.error("âŒ Server error:", response.status, errorData);
         
-        // Message d'erreur spécifique pour 404
+        // Message d'erreur spÃ©cifique pour 404
         if (response.status === 404) {
-          throw new Error("Routes clients non déployées. Le serveur doit être redéployé sur Supabase. Consultez REDEPLOYER_SERVEUR.md");
+          throw new Error("Routes clients non dÃ©ployÃ©es. Le serveur doit Ãªtre redÃ©ployÃ© sur Supabase. Consultez REDEPLOYER_SERVEUR.md");
         }
         
         throw new Error(errorData.error || `HTTP ${response.status}`);
@@ -178,21 +178,21 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
       const data = await response.json();
       
       if (data.success) {
-        toast.success(isCreating ? "Client créé avec succès" : "Client mis à jour avec succès");
+        toast.success(isCreating ? "Client crÃ©Ã© avec succÃ¨s" : "Client mis Ã  jour avec succÃ¨s");
         onClientUpdated();
         onOpenChange(false);
       } else {
-        throw new Error(data.error || `Erreur lors de ${isCreating ? "la création" : "la mise à jour"}`);
+        throw new Error(data.error || `Erreur lors de ${isCreating ? "la crÃ©ation" : "la mise Ã  jour"}`);
       }
     } catch (error: any) {
-      console.error("❌ Error saving client:", error);
+      console.error("âŒ Error saving client:", error);
       
-      // Message d'erreur détaillé
-      const errorMessage = error.message || `Erreur lors de ${client ? "la mise à jour" : "la création"} du client`;
+      // Message d'erreur dÃ©taillÃ©
+      const errorMessage = error.message || `Erreur lors de ${client ? "la mise Ã  jour" : "la crÃ©ation"} du client`;
       
       toast.error("Erreur de sauvegarde", {
         description: errorMessage,
-        duration: error.message?.includes("redéployé") ? 10000 : 5000,
+        duration: error.message?.includes("redÃ©ployÃ©") ? 10000 : 5000,
       });
     } finally {
       setSaving(false);
@@ -214,18 +214,18 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20 text-white max-w-2xl max-h-[90vh] overflow-hidden p-0">
+      <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 text-white max-w-2xl max-h-[90vh] overflow-hidden p-0">
         {/* Header */}
-        <div className="border-b border-[#00FFC2]/10 px-6 py-5">
+        <div className="border-b border-[#CCFF00]/10 px-6 py-5">
           <DialogHeader>
             <DialogTitle className="text-2xl text-white flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#00FFC2]/10 flex items-center justify-center">
-                <User className="h-4 w-4 text-[#00FFC2]" />
+              <div className="w-8 h-8 rounded-lg bg-[#CCFF00]/10 flex items-center justify-center">
+                <User className="h-4 w-4 text-[#CCFF00]" />
               </div>
               {client ? "Modifier le client" : "Nouveau client"}
             </DialogTitle>
             <DialogDescription className="text-white/60 mt-2">
-              {client ? "Modifiez les informations du client" : "Ajoutez un nouveau client à votre base"}
+              {client ? "Modifiez les informations du client" : "Ajoutez un nouveau client Ã  votre base"}
             </DialogDescription>
           </DialogHeader>
         </div>
@@ -235,14 +235,14 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
           <div className="space-y-6">
             {/* Smart Lead Selector - Only show for new clients */}
             {!client && availableLeads.length > 0 && (
-              <div className="p-4 rounded-xl border border-[#00FFC2]/30 bg-gradient-to-br from-[#00FFC2]/5 to-transparent">
+              <div className="p-4 rounded-xl border border-[#CCFF00]/30 bg-gradient-to-br from-[#CCFF00]/5 to-transparent">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#00FFC2]/10 flex items-center justify-center">
-                    <Sparkles className="w-4 h-4 text-[#00FFC2]" />
+                  <div className="w-8 h-8 rounded-lg bg-[#CCFF00]/10 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-[#CCFF00]" />
                   </div>
                   <div>
                     <Label className="text-white font-medium text-base">Conversion intelligente depuis un lead</Label>
-                    <p className="text-xs text-gray-400">Sélectionnez un lead pour pré-remplir les informations</p>
+                    <p className="text-xs text-gray-400">SÃ©lectionnez un lead pour prÃ©-remplir les informations</p>
                   </div>
                 </div>
 
@@ -250,13 +250,13 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
                   <div>
                     <Label className="text-gray-300 flex items-center gap-2 mb-2">
                       <User className="w-4 h-4" />
-                      Sélectionner un lead (optionnel)
+                      SÃ©lectionner un lead (optionnel)
                     </Label>
                     <Select value={selectedLeadId} onValueChange={handleLeadSelect}>
                       <SelectTrigger className="bg-white/5 border-white/10 h-11 text-base text-white">
                         <SelectValue placeholder="Choisir un lead..." />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+                      <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
                         {availableLeads.map((lead) => (
                           <SelectItem key={lead.id} value={lead.id} className="text-white hover:bg-white/10">
                             <div className="flex items-center gap-2">
@@ -280,7 +280,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
                       onClick={resetLeadSelection}
                       className="w-full border-white/20 hover:bg-white/5 text-gray-300"
                     >
-                      Réinitialiser et créer client vierge
+                      RÃ©initialiser et crÃ©er client vierge
                     </Button>
                   )}
                 </div>
@@ -290,17 +290,17 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
             {/* Informations principales */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-4">
-                <div className="h-px flex-1 bg-gradient-to-r from-[#00FFC2]/20 to-transparent" />
-                <span className="text-xs uppercase tracking-wider text-[#00FFC2]/60">Informations principales</span>
-                <div className="h-px flex-1 bg-gradient-to-l from-[#00FFC2]/20 to-transparent" />
+                <div className="h-px flex-1 bg-gradient-to-r from-[#CCFF00]/20 to-transparent" />
+                <span className="text-xs uppercase tracking-wider text-[#CCFF00]/60">Informations principales</span>
+                <div className="h-px flex-1 bg-gradient-to-l from-[#CCFF00]/20 to-transparent" />
               </div>
 
               <div className="grid gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-white/90">
-                    <User className="h-3.5 w-3.5 text-[#00FFC2]" />
+                    <User className="h-3.5 w-3.5 text-[#CCFF00]" />
                     Nom complet
-                    <span className="text-[#00FFC2] ml-1">*</span>
+                    <span className="text-[#CCFF00] ml-1">*</span>
                   </Label>
                   <Input
                     id="name"
@@ -312,9 +312,9 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
 
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-white/90">
-                    <Mail className="h-3.5 w-3.5 text-[#00FFC2]" />
+                    <Mail className="h-3.5 w-3.5 text-[#CCFF00]" />
                     Email
-                    <span className="text-[#00FFC2] ml-1">*</span>
+                    <span className="text-[#CCFF00] ml-1">*</span>
                   </Label>
                   <Input
                     id="email"
@@ -327,12 +327,12 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
               </div>
             </div>
 
-            {/* Informations complémentaires */}
+            {/* Informations complÃ©mentaires */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-4">
-                <div className="h-px flex-1 bg-gradient-to-r from-[#00FFC2]/20 to-transparent" />
-                <span className="text-xs uppercase tracking-wider text-[#00FFC2]/60">Informations complémentaires</span>
-                <div className="h-px flex-1 bg-gradient-to-l from-[#00FFC2]/20 to-transparent" />
+                <div className="h-px flex-1 bg-gradient-to-r from-[#CCFF00]/20 to-transparent" />
+                <span className="text-xs uppercase tracking-wider text-[#CCFF00]/60">Informations complÃ©mentaires</span>
+                <div className="h-px flex-1 bg-gradient-to-l from-[#CCFF00]/20 to-transparent" />
               </div>
 
               <div className="grid gap-4">
@@ -352,7 +352,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
                 <div className="space-y-2">
                   <Label htmlFor="phone" className="text-white/70">
                     <Phone className="h-3.5 w-3.5 text-white/50" />
-                    Téléphone
+                    TÃ©lÃ©phone
                   </Label>
                   <Input
                     id="phone"
@@ -372,7 +372,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
                     id="address"
                     value={formData.address}
                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    placeholder="123 Rue de la République, 75001 Paris"
+                    placeholder="123 Rue de la RÃ©publique, 75001 Paris"
                     rows={3}
                   />
                 </div>
@@ -382,9 +382,9 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
             {/* Statut et Finances */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-4">
-                <div className="h-px flex-1 bg-gradient-to-r from-[#00FFC2]/20 to-transparent" />
-                <span className="text-xs uppercase tracking-wider text-[#00FFC2]/60">Statut & Finances</span>
-                <div className="h-px flex-1 bg-gradient-to-l from-[#00FFC2]/20 to-transparent" />
+                <div className="h-px flex-1 bg-gradient-to-r from-[#CCFF00]/20 to-transparent" />
+                <span className="text-xs uppercase tracking-wider text-[#CCFF00]/60">Statut & Finances</span>
+                <div className="h-px flex-1 bg-gradient-to-l from-[#CCFF00]/20 to-transparent" />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -433,7 +433,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
                 <div className="space-y-2">
                   <Label htmlFor="revenue" className="text-white/70">
                     <DollarSign className="h-3.5 w-3.5 text-white/50" />
-                    Revenu généré (€)
+                    Revenu gÃ©nÃ©rÃ© (â‚¬)
                   </Label>
                   <Input
                     id="revenue"
@@ -451,7 +451,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
         </div>
 
         {/* Footer */}
-        <div className="border-t border-[#00FFC2]/10 px-6 py-4 bg-black/20">
+        <div className="border-t border-[#CCFF00]/10 px-6 py-4 bg-black/20">
           <DialogFooter className="flex-row justify-end gap-3">
             <Button
               variant="outline"
@@ -463,7 +463,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
             <Button
               onClick={handleSave}
               disabled={saving || !formData.name.trim() || !formData.email.trim()}
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90 transition-all shadow-lg shadow-[#00FFC2]/20 hover:shadow-[#00FFC2]/30 hover:scale-[1.02]"
+              className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90 transition-all shadow-lg shadow-[#CCFF00]/20 hover:shadow-[#CCFF00]/30 hover:scale-[1.02]"
             >
               {saving ? (
                 <>
@@ -473,7 +473,7 @@ export function ClientEditDialog({ client, open, onOpenChange, onClientUpdated, 
               ) : (
                 <>
                   <CheckCircle2 className="mr-2 h-4 w-4" />
-                  {client ? "Mettre à jour" : "Créer le client"}
+                  {client ? "Mettre Ã  jour" : "CrÃ©er le client"}
                 </>
               )}
             </Button>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vérification Déploiement Serveur</title>
+  <title>VÃ©rification DÃ©ploiement Serveur</title>
   <style>
     * {
       margin: 0;
@@ -27,7 +27,7 @@
     h1 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
-      color: #00FFC2;
+      color: #CCFF00;
     }
 
     .status-card {
@@ -39,8 +39,8 @@
     }
 
     .status-card.success {
-      border-color: #00FFC2;
-      background: rgba(0, 255, 194, 0.05);
+      border-color: #CCFF00;
+      background: rgba(204, 255, 0, 0.05);
     }
 
     .status-card.error {
@@ -62,7 +62,7 @@
     }
 
     .route-item.success {
-      border-left-color: #00FFC2;
+      border-left-color: #CCFF00;
     }
 
     .route-item.error {
@@ -76,7 +76,7 @@
     .route-path {
       font-family: 'Courier New', monospace;
       font-size: 0.9rem;
-      color: #00FFC2;
+      color: #CCFF00;
       margin-bottom: 4px;
     }
 
@@ -86,7 +86,7 @@
     }
 
     button {
-      background: #00FFC2;
+      background: #CCFF00;
       color: #0C0C0C;
       border: none;
       padding: 14px 28px;
@@ -99,7 +99,7 @@
 
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 255, 194, 0.3);
+      box-shadow: 0 4px 12px rgba(204, 255, 0, 0.3);
     }
 
     button:disabled {
@@ -110,13 +110,13 @@
 
     .command-box {
       background: #000;
-      border: 1px solid #00FFC2;
+      border: 1px solid #CCFF00;
       border-radius: 8px;
       padding: 16px;
       margin: 20px 0;
       font-family: 'Courier New', monospace;
       font-size: 0.9rem;
-      color: #00FFC2;
+      color: #CCFF00;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -124,14 +124,14 @@
 
     .copy-btn {
       background: transparent;
-      border: 1px solid #00FFC2;
-      color: #00FFC2;
+      border: 1px solid #CCFF00;
+      color: #CCFF00;
       padding: 8px 16px;
       font-size: 0.85rem;
     }
 
     .copy-btn:hover {
-      background: #00FFC2;
+      background: #CCFF00;
       color: #0C0C0C;
     }
 
@@ -159,7 +159,7 @@
     }
 
     .instructions h3 {
-      color: #00FFC2;
+      color: #CCFF00;
       margin-bottom: 12px;
     }
 
@@ -184,46 +184,46 @@
     }
 
     .alert.success {
-      background: rgba(0, 255, 194, 0.1);
-      border: 1px solid #00FFC2;
-      color: #00FFC2;
+      background: rgba(204, 255, 0, 0.1);
+      border: 1px solid #CCFF00;
+      color: #CCFF00;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🔍 Vérification du Déploiement</h1>
-    <p style="margin-bottom: 24px; color: #999;">Vérification automatique des routes du serveur Supabase</p>
+    <h1>ðŸ” VÃ©rification du DÃ©ploiement</h1>
+    <p style="margin-bottom: 24px; color: #999;">VÃ©rification automatique des routes du serveur Supabase</p>
 
     <div id="main-status" class="status-card checking">
-      <h2><span class="icon spinner">⏳</span> Vérification en cours...</h2>
+      <h2><span class="icon spinner">â³</span> VÃ©rification en cours...</h2>
       <p style="margin-top: 8px; color: #999;">Connexion au serveur Supabase...</p>
     </div>
 
     <div id="routes-container">
-      <!-- Les routes seront ajoutées dynamiquement -->
+      <!-- Les routes seront ajoutÃ©es dynamiquement -->
     </div>
 
     <div id="action-container" style="display: none;">
-      <!-- Les actions seront ajoutées si nécessaire -->
+      <!-- Les actions seront ajoutÃ©es si nÃ©cessaire -->
     </div>
 
     <button id="check-btn" onclick="checkDeployment()">
-      <span class="icon">🔄</span> Revérifier
+      <span class="icon">ðŸ”„</span> RevÃ©rifier
     </button>
 
     <div class="instructions">
-      <h3>📖 Instructions de déploiement</h3>
+      <h3>ðŸ“– Instructions de dÃ©ploiement</h3>
       <ol>
         <li>Ouvrez votre terminal dans le dossier du projet</li>
-        <li>Exécutez la commande de déploiement (voir ci-dessous)</li>
-        <li>Attendez que le déploiement se termine (30-60 secondes)</li>
-        <li>Cliquez sur "Revérifier" pour vérifier que tout fonctionne</li>
+        <li>ExÃ©cutez la commande de dÃ©ploiement (voir ci-dessous)</li>
+        <li>Attendez que le dÃ©ploiement se termine (30-60 secondes)</li>
+        <li>Cliquez sur "RevÃ©rifier" pour vÃ©rifier que tout fonctionne</li>
       </ol>
 
       <div class="command-box">
         <code id="deploy-command">supabase functions deploy make-server-04919ac5</code>
-        <button class="copy-btn" onclick="copyCommand()">📋 Copier</button>
+        <button class="copy-btn" onclick="copyCommand()">ðŸ“‹ Copier</button>
       </div>
     </div>
   </div>
@@ -239,7 +239,7 @@
       { 
         path: '/clients', 
         method: 'GET', 
-        description: 'Récupération des clients',
+        description: 'RÃ©cupÃ©ration des clients',
         requiresAuth: true
       },
     ];
@@ -252,17 +252,17 @@
 
       btn.disabled = true;
       mainStatus.className = 'status-card checking';
-      mainStatus.innerHTML = '<h2><span class="icon spinner">⏳</span> Vérification en cours...</h2><p style="margin-top: 8px; color: #999;">Test des routes du serveur...</p>';
+      mainStatus.innerHTML = '<h2><span class="icon spinner">â³</span> VÃ©rification en cours...</h2><p style="margin-top: 8px; color: #999;">Test des routes du serveur...</p>';
       routesContainer.innerHTML = '';
       actionContainer.style.display = 'none';
 
-      // Récupérer le project ID depuis le contexte ou l'environnement
-      // Pour l'instant, on va essayer de le détecter depuis l'URL actuelle
+      // RÃ©cupÃ©rer le project ID depuis le contexte ou l'environnement
+      // Pour l'instant, on va essayer de le dÃ©tecter depuis l'URL actuelle
       const projectId = await getProjectId();
 
       if (!projectId) {
         mainStatus.className = 'status-card error';
-        mainStatus.innerHTML = '<h2><span class="icon">❌</span> Erreur</h2><p style="margin-top: 8px;">Impossible de détecter le Project ID Supabase</p>';
+        mainStatus.innerHTML = '<h2><span class="icon">âŒ</span> Erreur</h2><p style="margin-top: 8px;">Impossible de dÃ©tecter le Project ID Supabase</p>';
         btn.disabled = false;
         return;
       }
@@ -274,7 +274,7 @@
         routeDiv.className = 'route-item checking';
         routeDiv.innerHTML = `
           <div class="route-path">${route.method} ${route.path}</div>
-          <div class="route-status"><span class="spinner">⏳</span> Vérification...</div>
+          <div class="route-status"><span class="spinner">â³</span> VÃ©rification...</div>
         `;
         routesContainer.appendChild(routeDiv);
 
@@ -285,7 +285,7 @@
         routeDiv.innerHTML = `
           <div class="route-path">${route.method} ${route.path}</div>
           <div class="route-status">
-            <span class="icon">${result.success ? '✅' : '❌'}</span>
+            <span class="icon">${result.success ? 'âœ…' : 'âŒ'}</span>
             ${result.message}
             ${result.details ? `<br><small>${result.details}</small>` : ''}
           </div>
@@ -297,21 +297,21 @@
       if (allSuccess) {
         mainStatus.className = 'status-card success';
         mainStatus.innerHTML = `
-          <h2><span class="icon">✅</span> Serveur déployé correctement !</h2>
-          <p style="margin-top: 8px; color: #999;">Toutes les routes sont accessibles. Votre dashboard CRM est prêt à l'emploi.</p>
+          <h2><span class="icon">âœ…</span> Serveur dÃ©ployÃ© correctement !</h2>
+          <p style="margin-top: 8px; color: #999;">Toutes les routes sont accessibles. Votre dashboard CRM est prÃªt Ã  l'emploi.</p>
         `;
       } else {
         mainStatus.className = 'status-card error';
         mainStatus.innerHTML = `
-          <h2><span class="icon">❌</span> Déploiement requis</h2>
-          <p style="margin-top: 8px; color: #999;">Certaines routes ne sont pas disponibles. Vous devez déployer le serveur.</p>
+          <h2><span class="icon">âŒ</span> DÃ©ploiement requis</h2>
+          <p style="margin-top: 8px; color: #999;">Certaines routes ne sont pas disponibles. Vous devez dÃ©ployer le serveur.</p>
         `;
 
         actionContainer.style.display = 'block';
         actionContainer.innerHTML = `
           <div class="alert warning">
-            <strong>🚨 Action requise :</strong><br>
-            Exécutez la commande de déploiement dans votre terminal (voir ci-dessous).
+            <strong>ðŸš¨ Action requise :</strong><br>
+            ExÃ©cutez la commande de dÃ©ploiement dans votre terminal (voir ci-dessous).
           </div>
         `;
       }
@@ -321,16 +321,16 @@
 
     async function getProjectId() {
       try {
-        // Essayer de récupérer depuis un endpoint de santé
+        // Essayer de rÃ©cupÃ©rer depuis un endpoint de santÃ©
         const response = await fetch('/utils/supabase/info.tsx');
         const text = await response.text();
         const match = text.match(/export const projectId = ["']([^"']+)["']/);
         if (match) return match[1];
       } catch (e) {
-        console.error('Impossible de récupérer le project ID:', e);
+        console.error('Impossible de rÃ©cupÃ©rer le project ID:', e);
       }
 
-      // Sinon demander à l'utilisateur
+      // Sinon demander Ã  l'utilisateur
       const id = prompt('Entrez votre Supabase Project ID:');
       return id;
     }
@@ -343,7 +343,7 @@
         const status = response.status;
 
         if (route.requiresAuth) {
-          // Pour les routes protégées, 401/403 = route existe
+          // Pour les routes protÃ©gÃ©es, 401/403 = route existe
           if (status === 401 || status === 403) {
             return {
               success: true,
@@ -353,12 +353,12 @@
           } else if (status === 404) {
             return {
               success: false,
-              message: 'Route non trouvée (404)',
-              details: 'Le serveur doit être redéployé'
+              message: 'Route non trouvÃ©e (404)',
+              details: 'Le serveur doit Ãªtre redÃ©ployÃ©'
             };
           }
         } else {
-          // Pour les routes publiques, 200-299 = succès
+          // Pour les routes publiques, 200-299 = succÃ¨s
           if (status >= 200 && status < 300) {
             return {
               success: true,
@@ -376,7 +376,7 @@
       } catch (error) {
         return {
           success: false,
-          message: 'Erreur réseau',
+          message: 'Erreur rÃ©seau',
           details: error.message
         };
       }
@@ -386,14 +386,14 @@
       const command = document.getElementById('deploy-command').textContent;
       navigator.clipboard.writeText(command).then(() => {
         const btn = event.target;
-        btn.textContent = '✅ Copié !';
+        btn.textContent = 'âœ… CopiÃ© !';
         setTimeout(() => {
-          btn.textContent = '📋 Copier';
+          btn.textContent = 'ðŸ“‹ Copier';
         }, 2000);
       });
     }
 
-    // Lancer la vérification automatiquement au chargement
+    // Lancer la vÃ©rification automatiquement au chargement
     window.addEventListener('load', () => {
       setTimeout(checkDeployment, 500);
     });

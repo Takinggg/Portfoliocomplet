@@ -95,7 +95,7 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
 
       if (response.ok) {
         toast.success(
-          "Commentaire soumis ! Il sera visible après modération."
+          "Commentaire soumis ! Il sera visible aprÃ¨s modÃ©ration."
         );
         setContent("");
         setReplyingTo(null);
@@ -132,7 +132,7 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
   };
 
   const handleReport = async (commentId: string) => {
-    toast.info("Fonctionnalité de signalement à venir");
+    toast.info("FonctionnalitÃ© de signalement Ã  venir");
   };
 
   // Organize comments into tree structure
@@ -186,7 +186,7 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
         <div className="flex gap-4">
           {/* Avatar */}
           <Avatar className="h-10 w-10 border border-white/10">
-            <AvatarFallback className="bg-gradient-to-br from-[#00FFC2]/20 to-[#00D9A6]/20 text-[#00FFC2]">
+            <AvatarFallback className="bg-gradient-to-br from-[#CCFF00]/20 to-[#DAFF40]/20 text-[#CCFF00]">
               {initials}
             </AvatarFallback>
           </Avatar>
@@ -213,7 +213,7 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => handleLike(comment.id)}
-                className="flex items-center gap-1.5 text-sm text-white/40 hover:text-[#00FFC2] transition-colors group"
+                className="flex items-center gap-1.5 text-sm text-white/40 hover:text-[#CCFF00] transition-colors group"
               >
                 <ThumbsUp className="h-3.5 w-3.5 group-hover:scale-110 transition-transform" />
                 {comment.likes > 0 && <span>{comment.likes}</span>}
@@ -222,10 +222,10 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
               {!isReply && (
                 <button
                   onClick={() => setReplyingTo(comment.id)}
-                  className="flex items-center gap-1.5 text-sm text-white/40 hover:text-[#00FFC2] transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-white/40 hover:text-[#CCFF00] transition-colors"
                 >
                   <Reply className="h-3.5 w-3.5" />
-                  Répondre
+                  RÃ©pondre
                 </button>
               )}
 
@@ -248,7 +248,7 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
                 <Textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder="Votre réponse..."
+                  placeholder="Votre rÃ©ponse..."
                   className="mb-3 bg-white/5 border-white/10"
                   rows={3}
                 />
@@ -256,7 +256,7 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
                   <Button
                     type="submit"
                     disabled={submitting}
-                    className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+                    className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
                     size="sm"
                   >
                     <Send className="h-3 w-3 mr-1" />
@@ -301,7 +301,7 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
       >
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
-          <MessageSquare className="h-6 w-6 text-[#00FFC2]" />
+          <MessageSquare className="h-6 w-6 text-[#CCFF00]" />
           <h2 className="text-2xl text-white">
             Commentaires ({comments.length})
           </h2>
@@ -337,12 +337,12 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
             />
             <div className="flex items-center justify-between">
               <p className="text-xs text-white/40">
-                * Votre email ne sera pas publié. Les commentaires sont modérés.
+                * Votre email ne sera pas publiÃ©. Les commentaires sont modÃ©rÃ©s.
               </p>
               <Button
                 type="submit"
                 disabled={submitting}
-                className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
               >
                 {submitting ? (
                   <span className="flex items-center gap-2">
@@ -364,7 +364,7 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
         {loading ? (
           <div className="flex justify-center py-12">
             <div className="text-center">
-              <div className="inline-block h-8 w-8 border-4 border-[#00FFC2] border-t-transparent rounded-full animate-spin mb-2" />
+              <div className="inline-block h-8 w-8 border-4 border-[#CCFF00] border-t-transparent rounded-full animate-spin mb-2" />
               <p className="text-white/40 text-sm">Chargement des commentaires...</p>
             </div>
           </div>
@@ -372,7 +372,7 @@ export function CommentsSection({ postId, postSlug }: CommentsSectionProps) {
           <div className="text-center py-12">
             <MessageSquare className="h-12 w-12 text-white/20 mx-auto mb-4" />
             <p className="text-white/40">
-              Aucun commentaire pour le moment. Soyez le premier à commenter !
+              Aucun commentaire pour le moment. Soyez le premier Ã  commenter !
             </p>
           </div>
         ) : (

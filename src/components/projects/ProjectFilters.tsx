@@ -22,7 +22,7 @@ export function ProjectFilters({
   const { t } = useTranslation();
 
   const filters = [
-    { id: "all", label: t('projects.filters.all'), color: "#00FFC2" },
+    { id: "all", label: t('projects.filters.all'), color: "#CCFF00" },
     { id: "web", label: t('projects.filters.web'), color: "#61DAFB" },
     { id: "mobile", label: t('projects.filters.mobile'), color: "#FF6B6B" },
     { id: "design", label: t('projects.filters.design'), color: "#FF69B4" },
@@ -47,7 +47,7 @@ export function ProjectFilters({
           placeholder={t("projects.search")}
           value={searchQuery}
           onChange={(e) => onSearch(e.target.value)}
-          className="pl-12 pr-10 bg-[#0C0C0C] border-white/10 text-white placeholder:text-white/40 h-12 focus:border-[#00FFC2]/50 transition-all w-full"
+          className="pl-12 pr-10 bg-[#0C0C0C] border-white/10 text-white placeholder:text-white/40 h-12 focus:border-[#CCFF00]/50 transition-all w-full"
         />
         {searchQuery && (
           <button

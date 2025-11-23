@@ -56,7 +56,7 @@ function generateInvoiceHTML(invoice: InvoiceData, freelanceInfo: FreelanceInfo)
           align-items: start;
           margin-bottom: 60px;
           padding-bottom: 30px;
-          border-bottom: 3px solid #00FFC2;
+          border-bottom: 3px solid #CCFF00;
         }
         
         .logo-section h1 {
@@ -67,7 +67,7 @@ function generateInvoiceHTML(invoice: InvoiceData, freelanceInfo: FreelanceInfo)
         }
         
         .logo-section .accent {
-          color: #00FFC2;
+          color: #CCFF00;
         }
         
         .invoice-info {
@@ -97,7 +97,7 @@ function generateInvoiceHTML(invoice: InvoiceData, freelanceInfo: FreelanceInfo)
           font-size: 12px;
           text-transform: uppercase;
           font-weight: 600;
-          color: #00FFC2;
+          color: #CCFF00;
           margin-bottom: 16px;
           letter-spacing: 0.5px;
         }
@@ -165,7 +165,7 @@ function generateInvoiceHTML(invoice: InvoiceData, freelanceInfo: FreelanceInfo)
         .total-row {
           margin-top: 20px;
           padding-top: 20px;
-          border-top: 2px solid #00FFC2;
+          border-top: 2px solid #CCFF00;
         }
         
         .total-label {
@@ -176,7 +176,7 @@ function generateInvoiceHTML(invoice: InvoiceData, freelanceInfo: FreelanceInfo)
         .total-value {
           font-size: 32px;
           font-weight: 700;
-          color: #00FFC2;
+          color: #CCFF00;
         }
         
         .payment-info {
@@ -251,14 +251,14 @@ function generateInvoiceHTML(invoice: InvoiceData, freelanceInfo: FreelanceInfo)
             <div class="invoice-number">FACTURE</div>
             <div class="invoice-number">${invoice.number}</div>
             <div class="invoice-date">Date : ${new Date(invoice.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}</div>
-            ${invoice.status ? `<span class="status-badge status-${invoice.status}">${invoice.status === 'paid' ? 'Payée' : invoice.status === 'sent' ? 'Envoyée' : invoice.status === 'overdue' ? 'En retard' : invoice.status}</span>` : ''}
+            ${invoice.status ? `<span class="status-badge status-${invoice.status}">${invoice.status === 'paid' ? 'PayÃ©e' : invoice.status === 'sent' ? 'EnvoyÃ©e' : invoice.status === 'overdue' ? 'En retard' : invoice.status}</span>` : ''}
           </div>
         </div>
 
         <!-- Parties -->
         <div class="parties">
           <div class="party">
-            <h3>Émetteur</h3>
+            <h3>Ã‰metteur</h3>
             <p><strong>${freelanceInfo.name}</strong></p>
             <p>${freelanceInfo.address || ''}</p>
             <p>${freelanceInfo.email}</p>
@@ -278,15 +278,15 @@ function generateInvoiceHTML(invoice: InvoiceData, freelanceInfo: FreelanceInfo)
         <!-- Details -->
         <div class="details">
           <div class="detail-row">
-            <span class="detail-label">Numéro de facture</span>
+            <span class="detail-label">NumÃ©ro de facture</span>
             <span class="detail-value">${invoice.number}</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label">Date d'émission</span>
+            <span class="detail-label">Date d'Ã©mission</span>
             <span class="detail-value">${new Date(invoice.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label">Date d'échéance</span>
+            <span class="detail-label">Date d'Ã©chÃ©ance</span>
             <span class="detail-value">${new Date(invoice.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
           </div>
           ${invoice.description ? `
@@ -301,7 +301,7 @@ function generateInvoiceHTML(invoice: InvoiceData, freelanceInfo: FreelanceInfo)
         <div class="amount-section">
           <div class="amount-row">
             <span class="amount-label">Sous-total HT</span>
-            <span class="amount-value">${invoice.amount.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €</span>
+            <span class="amount-value">${invoice.amount.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} â‚¬</span>
           </div>
           <div class="amount-row">
             <span class="amount-label">TVA non applicable</span>
@@ -309,26 +309,26 @@ function generateInvoiceHTML(invoice: InvoiceData, freelanceInfo: FreelanceInfo)
           </div>
           <div class="amount-row total-row">
             <span class="total-label">TOTAL TTC</span>
-            <span class="total-value">${invoice.amount.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €</span>
+            <span class="total-value">${invoice.amount.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} â‚¬</span>
           </div>
         </div>
 
         <!-- Payment Info -->
         <div class="payment-info">
-          <h3>💳 Modalités de paiement</h3>
-          <p><strong>Échéance :</strong> ${new Date(invoice.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
-          <p><strong>Moyens de paiement acceptés :</strong> Virement bancaire, PayPal</p>
+          <h3>ðŸ’³ ModalitÃ©s de paiement</h3>
+          <p><strong>Ã‰chÃ©ance :</strong> ${new Date(invoice.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+          <p><strong>Moyens de paiement acceptÃ©s :</strong> Virement bancaire, PayPal</p>
           <p style="margin-top: 12px; font-size: 12px; color: #d32f2f;">
-            ⚠️ En cas de retard de paiement, seront exigibles des pénalités de retard calculées à un taux égal à trois fois le taux d'intérêt légal, ainsi qu'une indemnité forfaitaire de 40 € pour frais de recouvrement.
+            âš ï¸ En cas de retard de paiement, seront exigibles des pÃ©nalitÃ©s de retard calculÃ©es Ã  un taux Ã©gal Ã  trois fois le taux d'intÃ©rÃªt lÃ©gal, ainsi qu'une indemnitÃ© forfaitaire de 40 â‚¬ pour frais de recouvrement.
           </p>
         </div>
 
         <!-- Footer -->
         <div class="footer">
           <p>Merci pour votre confiance !</p>
-          <p style="margin-top: 8px;">Cette facture a été générée automatiquement et ne nécessite pas de signature.</p>
+          <p style="margin-top: 8px;">Cette facture a Ã©tÃ© gÃ©nÃ©rÃ©e automatiquement et ne nÃ©cessite pas de signature.</p>
           <p style="margin-top: 16px; font-size: 11px;">
-            ${freelanceInfo.name} • ${freelanceInfo.email} • ${freelanceInfo.phone || ''}
+            ${freelanceInfo.name} â€¢ ${freelanceInfo.email} â€¢ ${freelanceInfo.phone || ''}
           </p>
         </div>
       </div>
@@ -346,7 +346,7 @@ async function convertHTMLToPDF(html: string): Promise<Uint8Array> {
     // Option 1: Try using Deno's built-in WebAssembly PDF generation
     // This is a simplified version - in production you might want to use a proper service
     
-    console.log("🔄 Converting HTML to PDF using external service...");
+    console.log("ðŸ”„ Converting HTML to PDF using external service...");
     
     // Use pdf.co REST API (has a free tier)
     const API_KEY = Deno.env.get("PDFCO_API_KEY") || "demo"; // Use demo key or real key
@@ -387,7 +387,7 @@ async function convertHTMLToPDF(html: string): Promise<Uint8Array> {
     console.error("Error generating PDF:", error);
     
     // Fallback: Return a simple text-based PDF message
-    console.log("⚠️ Falling back to simple PDF generation...");
+    console.log("âš ï¸ Falling back to simple PDF generation...");
     throw new Error(`Failed to generate PDF: ${error.message}. Please configure PDFCO_API_KEY or use another PDF service.`);
   }
 }
@@ -398,7 +398,7 @@ export async function generateInvoicePDF(
   freelanceInfo: FreelanceInfo
 ): Promise<{ success: boolean; pdf?: Uint8Array; base64?: string; error?: string }> {
   try {
-    console.log(`📄 Generating PDF for invoice ${invoice.number}...`);
+    console.log(`ðŸ“„ Generating PDF for invoice ${invoice.number}...`);
     
     const html = generateInvoiceHTML(invoice, freelanceInfo);
     const pdfBytes = await convertHTMLToPDF(html);
@@ -406,7 +406,7 @@ export async function generateInvoicePDF(
     // Convert to base64 for email attachment
     const base64 = btoa(String.fromCharCode(...pdfBytes));
     
-    console.log(`✅ PDF generated successfully for invoice ${invoice.number} (${pdfBytes.length} bytes)`);
+    console.log(`âœ… PDF generated successfully for invoice ${invoice.number} (${pdfBytes.length} bytes)`);
     
     return {
       success: true,
@@ -414,7 +414,7 @@ export async function generateInvoicePDF(
       base64
     };
   } catch (error) {
-    console.error(`❌ Error generating PDF for invoice ${invoice.number}:`, error);
+    console.error(`âŒ Error generating PDF for invoice ${invoice.number}:`, error);
     return {
       success: false,
       error: error.message

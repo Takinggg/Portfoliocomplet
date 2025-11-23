@@ -24,7 +24,7 @@ export function StatCard({
   trend,
   trendLabel,
   className, 
-  accentColor = '#00FFC2',
+  accentColor = '#CCFF00',
   variant = 'default',
   animate = true,
   loading = false,
@@ -90,7 +90,7 @@ export function StatCard({
         {(meta || trendLabel) && (
           <div className="flex items-center gap-2 text-xs text-white/40 mt-2">
             {meta && <span>{meta}</span>}
-            {meta && trendLabel && <span>•</span>}
+            {meta && trendLabel && <span>â€¢</span>}
             {trendLabel && <span>{trendLabel}</span>}
           </div>
         )}

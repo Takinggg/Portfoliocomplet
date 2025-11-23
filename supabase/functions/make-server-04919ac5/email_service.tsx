@@ -29,7 +29,7 @@ export const emailTemplates = {
     message: string;
     wantsAppointment: boolean;
   }): EmailTemplate => ({
-    subject: "Votre message a bien été reçu - Portfolio Freelance",
+    subject: "Votre message a bien Ã©tÃ© reÃ§u - Portfolio Freelance",
     html: `
       <!DOCTYPE html>
       <html>
@@ -38,23 +38,23 @@ export const emailTemplates = {
           <style>
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #CCFF00; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
             .content { background: #F4F4F4; padding: 40px 30px; }
-            .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
-            .button { display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
-            .highlight { background: #00FFC2; color: #0C0C0C; padding: 2px 8px; border-radius: 4px; }
-            .message-box { background: white; padding: 20px; border-left: 4px solid #00FFC2; margin: 20px 0; border-radius: 4px; }
+            .footer { background: #0C0C0C; color: #CCFF00; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+            .button { display: inline-block; background: #CCFF00; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
+            .highlight { background: #CCFF00; color: #0C0C0C; padding: 2px 8px; border-radius: 4px; }
+            .message-box { background: white; padding: 20px; border-left: 4px solid #CCFF00; margin: 20px 0; border-radius: 4px; }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
-              <h1 style="margin: 0; font-size: 28px;">✨ Message bien reçu !</h1>
+              <h1 style="margin: 0; font-size: 28px;">âœ¨ Message bien reÃ§u !</h1>
             </div>
             <div class="content">
               <p>Bonjour <strong>${data.name}</strong>,</p>
               
-              <p>Merci pour votre message ! Je l'ai bien reçu et je vous répondrai dans les <span class="highlight">24 heures</span>.</p>
+              <p>Merci pour votre message ! Je l'ai bien reÃ§u et je vous rÃ©pondrai dans les <span class="highlight">24 heures</span>.</p>
               
               <div class="message-box">
                 <p style="margin: 0; color: #666; font-size: 14px;"><strong>Votre message :</strong></p>
@@ -62,29 +62,29 @@ export const emailTemplates = {
               </div>
               
               ${data.wantsAppointment ? `
-                <p>🗓️ <strong>Vous avez demandé un rendez-vous</strong> - Je reviendrai vers vous très rapidement pour planifier notre échange.</p>
+                <p>ðŸ—“ï¸ <strong>Vous avez demandÃ© un rendez-vous</strong> - Je reviendrai vers vous trÃ¨s rapidement pour planifier notre Ã©change.</p>
               ` : ''}
               
-              <p>En attendant, n'hésitez pas à consulter mon portfolio et mes services.</p>
+              <p>En attendant, n'hÃ©sitez pas Ã  consulter mon portfolio et mes services.</p>
               
               <center>
                 <a href="${Deno.env.get('FRONTEND_URL') || 'http://localhost:5173'}" class="button">Voir le portfolio</a>
               </center>
               
               <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                À très bientôt,<br>
+                Ã€ trÃ¨s bientÃ´t,<br>
                 <strong>Votre Freelance</strong>
               </p>
             </div>
             <div class="footer">
-              <p style="margin: 0;">© 2025 FOULON Maxence - Développeur Web Freelance</p>
-              <p style="margin: 5px 0 0 0; opacity: 0.8;">Cet email a été envoyé automatiquement suite à votre prise de contact.</p>
+              <p style="margin: 0;">Â© 2025 FOULON Maxence - DÃ©veloppeur Web Freelance</p>
+              <p style="margin: 5px 0 0 0; opacity: 0.8;">Cet email a Ã©tÃ© envoyÃ© automatiquement suite Ã  votre prise de contact.</p>
             </div>
           </div>
         </body>
       </html>
     `,
-    text: `Bonjour ${data.name},\n\nMerci pour votre message ! Je l'ai bien reçu et je vous répondrai dans les 24 heures.\n\nVotre message : ${data.message}\n\n${data.wantsAppointment ? 'Vous avez demandé un rendez-vous - Je reviendrai vers vous très rapidement pour planifier notre échange.\n\n' : ''}À très bientôt,\nVotre Freelance`
+    text: `Bonjour ${data.name},\n\nMerci pour votre message ! Je l'ai bien reÃ§u et je vous rÃ©pondrai dans les 24 heures.\n\nVotre message : ${data.message}\n\n${data.wantsAppointment ? 'Vous avez demandÃ© un rendez-vous - Je reviendrai vers vous trÃ¨s rapidement pour planifier notre Ã©change.\n\n' : ''}Ã€ trÃ¨s bientÃ´t,\nVotre Freelance`
   }),
 
   // Booking confirmation email
@@ -95,7 +95,7 @@ export const emailTemplates = {
     duration: number;
     service?: string;
   }): EmailTemplate => ({
-    subject: "✅ Votre rendez-vous est confirmé",
+    subject: "âœ… Votre rendez-vous est confirmÃ©",
     html: `
       <!DOCTYPE html>
       <html>
@@ -104,68 +104,68 @@ export const emailTemplates = {
           <style>
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #CCFF00; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
             .content { background: #F4F4F4; padding: 40px 30px; }
-            .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
-            .rdv-card { background: white; padding: 30px; border-radius: 8px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,255,194,0.1); border: 2px solid #00FFC2; }
+            .footer { background: #0C0C0C; color: #CCFF00; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+            .rdv-card { background: white; padding: 30px; border-radius: 8px; margin: 20px 0; box-shadow: 0 2px 10px rgba(204, 255, 0,0.1); border: 2px solid #CCFF00; }
             .rdv-info { display: flex; align-items: center; margin: 15px 0; font-size: 16px; }
             .icon { margin-right: 10px; font-size: 20px; }
-            .button { display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
+            .button { display: inline-block; background: #CCFF00; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
-              <h1 style="margin: 0; font-size: 28px;">✅ Rendez-vous confirmé !</h1>
+              <h1 style="margin: 0; font-size: 28px;">âœ… Rendez-vous confirmÃ© !</h1>
             </div>
             <div class="content">
               <p>Bonjour <strong>${data.name}</strong>,</p>
               
-              <p>Votre rendez-vous est confirmé ! Je me réjouis de notre échange.</p>
+              <p>Votre rendez-vous est confirmÃ© ! Je me rÃ©jouis de notre Ã©change.</p>
               
               <div class="rdv-card">
-                <h3 style="margin: 0 0 20px 0; color: #00FFC2;">📅 Détails du rendez-vous</h3>
+                <h3 style="margin: 0 0 20px 0; color: #CCFF00;">ðŸ“… DÃ©tails du rendez-vous</h3>
                 <div class="rdv-info">
-                  <span class="icon">📆</span>
+                  <span class="icon">ðŸ“†</span>
                   <strong>Date :</strong>&nbsp;${new Date(data.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
                 <div class="rdv-info">
-                  <span class="icon">🕒</span>
+                  <span class="icon">ðŸ•’</span>
                   <strong>Heure :</strong>&nbsp;${data.time}
                 </div>
                 <div class="rdv-info">
-                  <span class="icon">⏱️</span>
-                  <strong>Durée :</strong>&nbsp;${data.duration} minutes
+                  <span class="icon">â±ï¸</span>
+                  <strong>DurÃ©e :</strong>&nbsp;${data.duration} minutes
                 </div>
                 ${data.service ? `
                 <div class="rdv-info">
-                  <span class="icon">💼</span>
+                  <span class="icon">ðŸ’¼</span>
                   <strong>Service :</strong>&nbsp;${data.service}
                 </div>
                 ` : ''}
               </div>
               
-              <p><strong>⚠️ Important :</strong> Si vous devez modifier ou annuler ce rendez-vous, merci de me prévenir au moins 24h à l'avance.</p>
+              <p><strong>âš ï¸ Important :</strong> Si vous devez modifier ou annuler ce rendez-vous, merci de me prÃ©venir au moins 24h Ã  l'avance.</p>
               
-              <p>Un rappel vous sera envoyé 24 heures avant notre rendez-vous.</p>
+              <p>Un rappel vous sera envoyÃ© 24 heures avant notre rendez-vous.</p>
               
               <center>
-                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Rendez-vous+Freelance&dates=${data.date.replace(/-/g, '')}T${data.time.replace(':', '')}00/${data.date.replace(/-/g, '')}T${(parseInt(data.time.split(':')[0]) + Math.floor(data.duration / 60)).toString().padStart(2, '0')}${((parseInt(data.time.split(':')[1]) + (data.duration % 60)) % 60).toString().padStart(2, '0')}00" class="button" target="_blank">📅 Ajouter au calendrier</a>
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Rendez-vous+Freelance&dates=${data.date.replace(/-/g, '')}T${data.time.replace(':', '')}00/${data.date.replace(/-/g, '')}T${(parseInt(data.time.split(':')[0]) + Math.floor(data.duration / 60)).toString().padStart(2, '0')}${((parseInt(data.time.split(':')[1]) + (data.duration % 60)) % 60).toString().padStart(2, '0')}00" class="button" target="_blank">ðŸ“… Ajouter au calendrier</a>
               </center>
               
               <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                À très bientôt,<br>
+                Ã€ trÃ¨s bientÃ´t,<br>
                 <strong>Votre Freelance</strong>
               </p>
             </div>
             <div class="footer">
-              <p style="margin: 0;">© 2025 Portfolio Freelance - Tous droits réservés</p>
+              <p style="margin: 0;">Â© 2025 Portfolio Freelance - Tous droits rÃ©servÃ©s</p>
             </div>
           </div>
         </body>
       </html>
     `,
-    text: `Bonjour ${data.name},\n\nVotre rendez-vous est confirmé !\n\nDétails :\n- Date : ${new Date(data.date).toLocaleDateString('fr-FR')}\n- Heure : ${data.time}\n- Durée : ${data.duration} minutes\n${data.service ? `- Service : ${data.service}\n` : ''}\nUn rappel vous sera envoyé 24 heures avant notre rendez-vous.\n\nÀ très bientôt,\nVotre Freelance`
+    text: `Bonjour ${data.name},\n\nVotre rendez-vous est confirmÃ© !\n\nDÃ©tails :\n- Date : ${new Date(data.date).toLocaleDateString('fr-FR')}\n- Heure : ${data.time}\n- DurÃ©e : ${data.duration} minutes\n${data.service ? `- Service : ${data.service}\n` : ''}\nUn rappel vous sera envoyÃ© 24 heures avant notre rendez-vous.\n\nÃ€ trÃ¨s bientÃ´t,\nVotre Freelance`
   }),
 
   // Invoice email
@@ -176,7 +176,7 @@ export const emailTemplates = {
     dueDate: string;
     pdfUrl?: string;
   }): EmailTemplate => ({
-    subject: `Facture ${data.invoiceNumber} - À régler avant le ${new Date(data.dueDate).toLocaleDateString('fr-FR')}`,
+    subject: `Facture ${data.invoiceNumber} - Ã€ rÃ©gler avant le ${new Date(data.dueDate).toLocaleDateString('fr-FR')}`,
     html: `
       <!DOCTYPE html>
       <html>
@@ -185,19 +185,19 @@ export const emailTemplates = {
           <style>
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #CCFF00; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
             .content { background: #F4F4F4; padding: 40px 30px; }
-            .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
-            .invoice-card { background: white; padding: 30px; border-radius: 8px; margin: 20px 0; border: 2px solid #00FFC2; }
-            .amount { font-size: 36px; font-weight: 700; color: #00FFC2; margin: 20px 0; }
-            .button { display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
+            .footer { background: #0C0C0C; color: #CCFF00; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+            .invoice-card { background: white; padding: 30px; border-radius: 8px; margin: 20px 0; border: 2px solid #CCFF00; }
+            .amount { font-size: 36px; font-weight: 700; color: #CCFF00; margin: 20px 0; }
+            .button { display: inline-block; background: #CCFF00; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
             .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
-              <h1 style="margin: 0; font-size: 28px;">💼 Nouvelle facture</h1>
+              <h1 style="margin: 0; font-size: 28px;">ðŸ’¼ Nouvelle facture</h1>
             </div>
             <div class="content">
               <p>Bonjour <strong>${data.clientName}</strong>,</p>
@@ -213,40 +213,40 @@ export const emailTemplates = {
                 </div>
                 
                 <div class="info-row">
-                  <span>Date d'échéance :</span>
+                  <span>Date d'Ã©chÃ©ance :</span>
                   <strong>${new Date(data.dueDate).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</strong>
                 </div>
               </div>
               
               ${data.pdfUrl ? `
               <center>
-                <a href="${data.pdfUrl}" class="button">📄 Télécharger la facture (PDF)</a>
+                <a href="${data.pdfUrl}" class="button">ðŸ“„ TÃ©lÃ©charger la facture (PDF)</a>
               </center>
               ` : ''}
               
-              <p><strong>💳 Modalités de paiement :</strong></p>
+              <p><strong>ðŸ’³ ModalitÃ©s de paiement :</strong></p>
               <ul style="color: #666; list-style: none; padding-left: 0;">
-                <li style="margin-bottom: 8px;">✅ <strong>Virement bancaire</strong> (recommandé)</li>
+                <li style="margin-bottom: 8px;">âœ… <strong>Virement bancaire</strong> (recommandÃ©)</li>
                 <li style="font-size: 13px; margin-left: 24px; margin-bottom: 12px;">
                   IBAN : <code style="background: #f0f0f0; padding: 3px 8px; border-radius: 3px; font-size: 12px;">FR76 2823 3000 0195 1140 4606 069</code>
                 </li>
-                <li>💳 PayPal (me contacter pour les détails)</li>
+                <li>ðŸ’³ PayPal (me contacter pour les dÃ©tails)</li>
               </ul>
               
               <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                Pour toute question concernant cette facture, n'hésitez pas à me contacter.<br><br>
+                Pour toute question concernant cette facture, n'hÃ©sitez pas Ã  me contacter.<br><br>
                 Cordialement,<br>
                 <strong>Maxence FOULON</strong>
               </p>
             </div>
             <div class="footer">
-              <p style="margin: 0;">© 2025 Portfolio Freelance - Tous droits réservés</p>
+              <p style="margin: 0;">Â© 2025 Portfolio Freelance - Tous droits rÃ©servÃ©s</p>
             </div>
           </div>
         </body>
       </html>
     `,
-    text: `Bonjour ${data.clientName},\n\nVeuillez trouver ci-joint votre facture ${data.invoiceNumber}.\n\nMontant : ${data.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}\nDate d'échéance : ${new Date(data.dueDate).toLocaleDateString('fr-FR')}\n\nCordialement,\nVotre Freelance`
+    text: `Bonjour ${data.clientName},\n\nVeuillez trouver ci-joint votre facture ${data.invoiceNumber}.\n\nMontant : ${data.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}\nDate d'Ã©chÃ©ance : ${new Date(data.dueDate).toLocaleDateString('fr-FR')}\n\nCordialement,\nVotre Freelance`
   }),
 
   // Appointment reminder (24h before)
@@ -256,7 +256,7 @@ export const emailTemplates = {
     time: string;
     duration: number;
   }): EmailTemplate => ({
-    subject: "⏰ Rappel : Rendez-vous demain",
+    subject: "â° Rappel : Rendez-vous demain",
     html: `
       <!DOCTYPE html>
       <html>
@@ -265,16 +265,16 @@ export const emailTemplates = {
           <style>
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #CCFF00; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
             .content { background: #F4F4F4; padding: 40px 30px; }
-            .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
-            .reminder-box { background: white; padding: 20px; border-left: 4px solid #00FFC2; margin: 20px 0; border-radius: 4px; }
+            .footer { background: #0C0C0C; color: #CCFF00; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+            .reminder-box { background: white; padding: 20px; border-left: 4px solid #CCFF00; margin: 20px 0; border-radius: 4px; }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
-              <h1 style="margin: 0; font-size: 28px;">⏰ Rappel de rendez-vous</h1>
+              <h1 style="margin: 0; font-size: 28px;">â° Rappel de rendez-vous</h1>
             </div>
             <div class="content">
               <p>Bonjour <strong>${data.name}</strong>,</p>
@@ -282,27 +282,27 @@ export const emailTemplates = {
               <p>Petit rappel concernant notre rendez-vous <strong>demain</strong> !</p>
               
               <div class="reminder-box">
-                <p style="margin: 0;"><strong>📅 Demain - ${new Date(data.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</strong></p>
-                <p style="margin: 10px 0 0 0; font-size: 18px;">🕒 ${data.time} (${data.duration} minutes)</p>
+                <p style="margin: 0;"><strong>ðŸ“… Demain - ${new Date(data.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</strong></p>
+                <p style="margin: 10px 0 0 0; font-size: 18px;">ðŸ•’ ${data.time} (${data.duration} minutes)</p>
               </div>
               
-              <p>J'ai hâte de notre échange !</p>
+              <p>J'ai hÃ¢te de notre Ã©change !</p>
               
-              <p style="font-size: 14px; color: #666;">Si vous avez un empêchement, merci de me prévenir dès que possible.</p>
+              <p style="font-size: 14px; color: #666;">Si vous avez un empÃªchement, merci de me prÃ©venir dÃ¨s que possible.</p>
               
               <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                À demain,<br>
+                Ã€ demain,<br>
                 <strong>Votre Freelance</strong>
               </p>
             </div>
             <div class="footer">
-              <p style="margin: 0;">© 2025 Portfolio Freelance - Tous droits réservés</p>
+              <p style="margin: 0;">Â© 2025 Portfolio Freelance - Tous droits rÃ©servÃ©s</p>
             </div>
           </div>
         </body>
       </html>
     `,
-    text: `Bonjour ${data.name},\n\nPetit rappel concernant notre rendez-vous demain !\n\nDemain - ${new Date(data.date).toLocaleDateString('fr-FR')}\n${data.time} (${data.duration} minutes)\n\nÀ demain,\nVotre Freelance`
+    text: `Bonjour ${data.name},\n\nPetit rappel concernant notre rendez-vous demain !\n\nDemain - ${new Date(data.date).toLocaleDateString('fr-FR')}\n${data.time} (${data.duration} minutes)\n\nÃ€ demain,\nVotre Freelance`
   }),
 
   // Invoice overdue reminder
@@ -313,7 +313,7 @@ export const emailTemplates = {
     dueDate: string;
     daysOverdue: number;
   }): EmailTemplate => ({
-    subject: `⚠️ Facture ${data.invoiceNumber} en attente de paiement`,
+    subject: `âš ï¸ Facture ${data.invoiceNumber} en attente de paiement`,
     html: `
       <!DOCTYPE html>
       <html>
@@ -322,36 +322,36 @@ export const emailTemplates = {
           <style>
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #CCFF00; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
             .content { background: #F4F4F4; padding: 40px 30px; }
-            .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+            .footer { background: #0C0C0C; color: #CCFF00; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
             .alert-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; margin: 20px 0; border-radius: 4px; }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
-              <h1 style="margin: 0; font-size: 28px;">⚠️ Rappel de paiement</h1>
+              <h1 style="margin: 0; font-size: 28px;">âš ï¸ Rappel de paiement</h1>
             </div>
             <div class="content">
               <p>Bonjour <strong>${data.clientName}</strong>,</p>
               
-              <p>Je me permets de vous rappeler que la facture <strong>${data.invoiceNumber}</strong> est en attente de règlement.</p>
+              <p>Je me permets de vous rappeler que la facture <strong>${data.invoiceNumber}</strong> est en attente de rÃ¨glement.</p>
               
               <div class="alert-box">
                 <p style="margin: 0;"><strong>Facture ${data.invoiceNumber}</strong></p>
                 <p style="margin: 10px 0;">Montant : <strong>${data.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}</strong></p>
-                <p style="margin: 10px 0 0 0; color: #856404;">Date d'échéance dépassée de ${data.daysOverdue} jour${data.daysOverdue > 1 ? 's' : ''} (${new Date(data.dueDate).toLocaleDateString('fr-FR')})</p>
+                <p style="margin: 10px 0 0 0; color: #856404;">Date d'Ã©chÃ©ance dÃ©passÃ©e de ${data.daysOverdue} jour${data.daysOverdue > 1 ? 's' : ''} (${new Date(data.dueDate).toLocaleDateString('fr-FR')})</p>
               </div>
               
-              <p>Si vous avez déjà effectué ce paiement, merci de m'en informer. Dans le cas contraire, je vous serais reconnaissant de procéder au règlement dans les plus brefs délais.</p>
+              <p>Si vous avez dÃ©jÃ  effectuÃ© ce paiement, merci de m'en informer. Dans le cas contraire, je vous serais reconnaissant de procÃ©der au rÃ¨glement dans les plus brefs dÃ©lais.</p>
               
-              <p><strong>💳 Coordonnées bancaires :</strong></p>
+              <p><strong>ðŸ’³ CoordonnÃ©es bancaires :</strong></p>
               <p style="font-size: 13px; margin-left: 20px;">
                 IBAN : <code style="background: #f0f0f0; padding: 3px 8px; border-radius: 3px; font-size: 12px;">FR76 2823 3000 0195 1140 4606 069</code>
               </p>
               
-              <p style="font-size: 14px; color: #666;">Pour toute question ou difficulté, n'hésitez pas à me contacter.</p>
+              <p style="font-size: 14px; color: #666;">Pour toute question ou difficultÃ©, n'hÃ©sitez pas Ã  me contacter.</p>
               
               <p style="margin-top: 30px; font-size: 14px; color: #666;">
                 Cordialement,<br>
@@ -359,13 +359,13 @@ export const emailTemplates = {
               </p>
             </div>
             <div class="footer">
-              <p style="margin: 0;">© 2025 Portfolio Freelance - Tous droits réservés</p>
+              <p style="margin: 0;">Â© 2025 Portfolio Freelance - Tous droits rÃ©servÃ©s</p>
             </div>
           </div>
         </body>
       </html>
     `,
-    text: `Bonjour ${data.clientName},\n\nJe me permets de vous rappeler que la facture ${data.invoiceNumber} est en attente de règlement.\n\nMontant : ${data.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}\nDate d'échéance dépassée de ${data.daysOverdue} jour(s) (${new Date(data.dueDate).toLocaleDateString('fr-FR')})\n\nMerci de procéder au règlement dans les plus brefs délais.\n\nCordialement,\nVotre Freelance`
+    text: `Bonjour ${data.clientName},\n\nJe me permets de vous rappeler que la facture ${data.invoiceNumber} est en attente de rÃ¨glement.\n\nMontant : ${data.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}\nDate d'Ã©chÃ©ance dÃ©passÃ©e de ${data.daysOverdue} jour(s) (${new Date(data.dueDate).toLocaleDateString('fr-FR')})\n\nMerci de procÃ©der au rÃ¨glement dans les plus brefs dÃ©lais.\n\nCordialement,\nVotre Freelance`
   }),
 
   // Quote email
@@ -385,12 +385,12 @@ export const emailTemplates = {
           <style>
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #CCFF00; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
             .content { background: #F4F4F4; padding: 40px 30px; }
-            .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
-            .quote-card { background: white; padding: 30px; border-radius: 8px; margin: 20px 0; border: 2px solid #00FFC2; }
-            .amount { font-size: 36px; font-weight: 700; color: #00FFC2; margin: 20px 0; }
-            .button { display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
+            .footer { background: #0C0C0C; color: #CCFF00; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+            .quote-card { background: white; padding: 30px; border-radius: 8px; margin: 20px 0; border: 2px solid #CCFF00; }
+            .amount { font-size: 36px; font-weight: 700; color: #CCFF00; margin: 20px 0; }
+            .button { display: inline-block; background: #CCFF00; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
             .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
             .validity-box { background: #FFF3CD; border-left: 4px solid #FFC107; padding: 16px; margin: 20px 0; border-radius: 4px; }
           </style>
@@ -398,7 +398,7 @@ export const emailTemplates = {
         <body>
           <div class="container">
             <div class="header">
-              <h1 style="margin: 0; font-size: 28px;">✨ Nouvelle proposition commerciale</h1>
+              <h1 style="margin: 0; font-size: 28px;">âœ¨ Nouvelle proposition commerciale</h1>
             </div>
             <div class="content">
               <p>Bonjour <strong>${data.clientName}</strong>,</p>
@@ -420,13 +420,13 @@ export const emailTemplates = {
               </div>
               
               <div class="validity-box">
-                <p style="margin: 0; color: #856404;"><strong>⏰ Ce devis est valable jusqu'au ${new Date(data.validUntil).toLocaleDateString('fr-FR')}</strong></p>
-                <p style="margin: 8px 0 0 0; font-size: 13px; color: #856404;">Passé cette date, les tarifs et disponibilités pourront être modifiés.</p>
+                <p style="margin: 0; color: #856404;"><strong>â° Ce devis est valable jusqu'au ${new Date(data.validUntil).toLocaleDateString('fr-FR')}</strong></p>
+                <p style="margin: 8px 0 0 0; font-size: 13px; color: #856404;">PassÃ© cette date, les tarifs et disponibilitÃ©s pourront Ãªtre modifiÃ©s.</p>
               </div>
               
               ${data.pdfUrl ? `
               <center>
-                <a href="${data.pdfUrl}" class="button">📄 Télécharger le devis (PDF)</a>
+                <a href="${data.pdfUrl}" class="button">ðŸ“„ TÃ©lÃ©charger le devis (PDF)</a>
               </center>
               ` : ''}
               
@@ -434,23 +434,23 @@ export const emailTemplates = {
               <ul style="color: #666;">
                 <li>Signez le document PDF avec la mention "Bon pour accord"</li>
                 <li>Retournez-le moi par email</li>
-                <li>Un acompte de 30% sera demandé pour démarrer le projet</li>
+                <li>Un acompte de 30% sera demandÃ© pour dÃ©marrer le projet</li>
               </ul>
               
               <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                Je reste à votre disposition pour toute question ou précision concernant cette proposition.<br><br>
+                Je reste Ã  votre disposition pour toute question ou prÃ©cision concernant cette proposition.<br><br>
                 Cordialement,<br>
                 <strong>Votre Freelance</strong>
               </p>
             </div>
             <div class="footer">
-              <p style="margin: 0;">© 2025 Portfolio Freelance - Tous droits réservés</p>
+              <p style="margin: 0;">Â© 2025 Portfolio Freelance - Tous droits rÃ©servÃ©s</p>
             </div>
           </div>
         </body>
       </html>
     `,
-    text: `Bonjour ${data.clientName},\n\nJ'ai le plaisir de vous transmettre ma proposition commerciale ${data.quoteNumber} pour votre projet.\n\nMontant : ${data.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}\nValide jusqu'au : ${new Date(data.validUntil).toLocaleDateString('fr-FR')}\n\nCe devis est valable jusqu'au ${new Date(data.validUntil).toLocaleDateString('fr-FR')}.\n\nPour accepter ce devis, signez le document PDF avec la mention "Bon pour accord" et retournez-le moi par email.\n\nJe reste à votre disposition pour toute question.\n\nCordialement,\nVotre Freelance`
+    text: `Bonjour ${data.clientName},\n\nJ'ai le plaisir de vous transmettre ma proposition commerciale ${data.quoteNumber} pour votre projet.\n\nMontant : ${data.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}\nValide jusqu'au : ${new Date(data.validUntil).toLocaleDateString('fr-FR')}\n\nCe devis est valable jusqu'au ${new Date(data.validUntil).toLocaleDateString('fr-FR')}.\n\nPour accepter ce devis, signez le document PDF avec la mention "Bon pour accord" et retournez-le moi par email.\n\nJe reste Ã  votre disposition pour toute question.\n\nCordialement,\nVotre Freelance`
   }),
 };
 
@@ -466,7 +466,7 @@ export async function sendEmail(params: SendEmailParams): Promise<{ success: boo
   // Validate email format BEFORE sending
   // Ensure 'to' is a string and not an array or object
   if (!params.to || typeof params.to !== 'string') {
-    console.error(`❌ Invalid 'to' field type: ${typeof params.to}, value:`, params.to);
+    console.error(`âŒ Invalid 'to' field type: ${typeof params.to}, value:`, params.to);
     return { success: false, error: `Invalid 'to' field. Must be a string email address.` };
   }
 
@@ -474,7 +474,7 @@ export async function sendEmail(params: SendEmailParams): Promise<{ success: boo
   const toEmail = String(params.to).trim();
   
   if (!toEmail || !emailRegex.test(toEmail)) {
-    console.error(`❌ Invalid email format for 'to' field: "${params.to}" (type: ${typeof params.to})`);
+    console.error(`âŒ Invalid email format for 'to' field: "${params.to}" (type: ${typeof params.to})`);
     return { success: false, error: `Invalid 'to' field. The email address needs to follow the email@example.com format.` };
   }
 
@@ -493,7 +493,7 @@ export async function sendEmail(params: SendEmailParams): Promise<{ success: boo
     payload.attachments = params.attachments;
   }
 
-  console.log(`📧 Preparing to send email:`, {
+  console.log(`ðŸ“§ Preparing to send email:`, {
     to: payload.to,
     subject: payload.subject,
     from: payload.from,
@@ -676,8 +676,8 @@ export async function sendInvoiceLink(invoice: {
   });
   
   const subject = invoice.isOverdue 
-    ? `⚠️ Facture ${invoice.invoiceNumber} en attente de paiement`
-    : `📄 Facture ${invoice.invoiceNumber} - FOULON Maxence`;
+    ? `âš ï¸ Facture ${invoice.invoiceNumber} en attente de paiement`
+    : `ðŸ“„ Facture ${invoice.invoiceNumber} - FOULON Maxence`;
   
   const html = `
     <!DOCTYPE html>
@@ -704,7 +704,7 @@ export async function sendInvoiceLink(invoice: {
           }
           .header { 
             background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); 
-            color: #00FFC2; 
+            color: #CCFF00; 
             padding: 40px 30px; 
             text-align: center;
           }
@@ -746,7 +746,7 @@ export async function sendInvoiceLink(invoice: {
             font-size: 14px;
           }
           .amount-highlight {
-            background: #00FFC2;
+            background: #CCFF00;
             color: #0C0C0C;
             padding: 20px;
             border-radius: 8px;
@@ -764,7 +764,7 @@ export async function sendInvoiceLink(invoice: {
           }
           .cta-button { 
             display: inline-block; 
-            background: #00FFC2; 
+            background: #CCFF00; 
             color: #0C0C0C; 
             padding: 16px 40px; 
             text-decoration: none; 
@@ -811,14 +811,14 @@ export async function sendInvoiceLink(invoice: {
           }
           .footer { 
             background: #0C0C0C; 
-            color: #00FFC2; 
+            color: #CCFF00; 
             padding: 30px; 
             text-align: center; 
             font-size: 13px;
           }
           .footer-divider {
             height: 1px;
-            background: rgba(0, 255, 194, 0.2);
+            background: rgba(204, 255, 0, 0.2);
             margin: 20px 0;
           }
           .footer-info {
@@ -842,8 +842,8 @@ export async function sendInvoiceLink(invoice: {
       <body>
         <div class="container">
           <div class="header">
-            <h1>${invoice.isOverdue ? '⚠️ Relance de paiement' : '📄 Nouvelle facture'}</h1>
-            <p>${invoice.isOverdue ? 'Facture en attente de règlement' : 'Merci pour votre confiance'}</p>
+            <h1>${invoice.isOverdue ? 'âš ï¸ Relance de paiement' : 'ðŸ“„ Nouvelle facture'}</h1>
+            <p>${invoice.isOverdue ? 'Facture en attente de rÃ¨glement' : 'Merci pour votre confiance'}</p>
           </div>
           
           <div class="content">
@@ -851,41 +851,41 @@ export async function sendInvoiceLink(invoice: {
             
             ${invoice.isOverdue ? `
               <div class="warning-box">
-                <strong>⚠️ Facture en retard de ${invoice.daysOverdue} jour${invoice.daysOverdue > 1 ? 's' : ''}</strong>
+                <strong>âš ï¸ Facture en retard de ${invoice.daysOverdue} jour${invoice.daysOverdue > 1 ? 's' : ''}</strong>
                 <p style="margin: 8px 0 0 0; font-size: 14px;">
-                  Cette facture aurait dû être réglée le ${dueDateFormatted}. Merci de procéder au paiement dans les plus brefs délais.
+                  Cette facture aurait dÃ» Ãªtre rÃ©glÃ©e le ${dueDateFormatted}. Merci de procÃ©der au paiement dans les plus brefs dÃ©lais.
                 </p>
               </div>
             ` : `
-              <p>Vous trouverez ci-dessous le détail de votre facture.</p>
+              <p>Vous trouverez ci-dessous le dÃ©tail de votre facture.</p>
             `}
             
             <div class="invoice-details">
               <div class="invoice-row">
-                <span class="invoice-label">Numéro de facture</span>
+                <span class="invoice-label">NumÃ©ro de facture</span>
                 <span class="invoice-value">${invoice.invoiceNumber}</span>
               </div>
               <div class="invoice-row">
-                <span class="invoice-label">Date d'échéance</span>
+                <span class="invoice-label">Date d'Ã©chÃ©ance</span>
                 <span class="invoice-value">${dueDateFormatted}</span>
               </div>
             </div>
             
             <div class="amount-highlight">
-              <div class="amount-label">Montant à régler</div>
-              <div class="amount-value">${invoice.amount.toFixed(2)} €</div>
+              <div class="amount-label">Montant Ã  rÃ©gler</div>
+              <div class="amount-value">${invoice.amount.toFixed(2)} â‚¬</div>
             </div>
             
             <div style="text-align: center;">
               <a href="${invoice.viewLink}" class="cta-button">
-                👁️ Voir et payer la facture
+                ðŸ‘ï¸ Voir et payer la facture
               </a>
             </div>
             
             <div class="payment-info">
-              <strong>💳 Modalités de paiement</strong>
+              <strong>ðŸ’³ ModalitÃ©s de paiement</strong>
               <p style="margin: 4px 0; font-size: 14px;">
-                Moyens acceptés : Virement bancaire, PayPal
+                Moyens acceptÃ©s : Virement bancaire, PayPal
               </p>
               <div class="iban">
                 IBAN : FR76 2823 3000 0195 1140 4606 069
@@ -893,13 +893,13 @@ export async function sendInvoiceLink(invoice: {
             </div>
             
             <p style="margin-top: 30px; font-size: 14px; color: #666;">
-              Pour toute question, n'hésitez pas à me contacter directement.
+              Pour toute question, n'hÃ©sitez pas Ã  me contacter directement.
             </p>
             
             <p style="margin-top: 24px; font-size: 14px;">
               Cordialement,<br>
               <strong>Maxence FOULON</strong><br>
-              <span style="color: #666;">Développeur Web Freelance</span>
+              <span style="color: #666;">DÃ©veloppeur Web Freelance</span>
             </p>
           </div>
           
@@ -921,28 +921,28 @@ export async function sendInvoiceLink(invoice: {
 Bonjour ${invoice.clientName},
 
 ${invoice.isOverdue 
-  ? `⚠️ RELANCE - Facture en retard de ${invoice.daysOverdue} jour${invoice.daysOverdue > 1 ? 's' : ''}
+  ? `âš ï¸ RELANCE - Facture en retard de ${invoice.daysOverdue} jour${invoice.daysOverdue > 1 ? 's' : ''}
 
-Cette facture aurait dû être réglée le ${dueDateFormatted}.`
-  : 'Vous trouverez ci-dessous le détail de votre facture.'
+Cette facture aurait dÃ» Ãªtre rÃ©glÃ©e le ${dueDateFormatted}.`
+  : 'Vous trouverez ci-dessous le dÃ©tail de votre facture.'
 }
 
-Numéro de facture : ${invoice.invoiceNumber}
-Date d'échéance : ${dueDateFormatted}
-Montant à régler : ${invoice.amount.toFixed(2)} €
+NumÃ©ro de facture : ${invoice.invoiceNumber}
+Date d'Ã©chÃ©ance : ${dueDateFormatted}
+Montant Ã  rÃ©gler : ${invoice.amount.toFixed(2)} â‚¬
 
-Pour consulter et payer votre facture, veuillez suivre ce lien sécurisé :
+Pour consulter et payer votre facture, veuillez suivre ce lien sÃ©curisÃ© :
 ${invoice.viewLink}
 
-Modalités de paiement :
-- Moyens acceptés : Virement bancaire, PayPal
+ModalitÃ©s de paiement :
+- Moyens acceptÃ©s : Virement bancaire, PayPal
 - IBAN : FR76 2823 3000 0195 1140 4606 069
 
-Pour toute question, n'hésitez pas à me contacter directement.
+Pour toute question, n'hÃ©sitez pas Ã  me contacter directement.
 
 Cordialement,
 Maxence FOULON
-Développeur Web Freelance
+DÃ©veloppeur Web Freelance
 
 ---
 FOULON Maxence
@@ -1010,79 +1010,79 @@ export async function sendTestimonialRequest(data: {
         <style>
           body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-          .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+          .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #CCFF00; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
           .content { background: #F4F4F4; padding: 40px 30px; }
-          .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
-          .button { display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-weight: 600; margin: 20px 0; font-size: 16px; }
-          .highlight { background: #00FFC2; color: #0C0C0C; padding: 2px 8px; border-radius: 4px; }
-          .message-box { background: white; padding: 20px; border-left: 4px solid #00FFC2; margin: 20px 0; border-radius: 4px; }
+          .footer { background: #0C0C0C; color: #CCFF00; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+          .button { display: inline-block; background: #CCFF00; color: #0C0C0C; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-weight: 600; margin: 20px 0; font-size: 16px; }
+          .highlight { background: #CCFF00; color: #0C0C0C; padding: 2px 8px; border-radius: 4px; }
+          .message-box { background: white; padding: 20px; border-left: 4px solid #CCFF00; margin: 20px 0; border-radius: 4px; }
           .stars { font-size: 32px; margin: 20px 0; text-align: center; }
-          .benefit-box { background: white; padding: 15px; margin: 15px 0; border-radius: 8px; border: 2px solid #00FFC2; }
+          .benefit-box { background: white; padding: 15px; margin: 15px 0; border-radius: 8px; border: 2px solid #CCFF00; }
         </style>
       </head>
       <body>
         <div class="container">
           <div class="header">
-            <h1 style="margin: 0; font-size: 28px;">⭐ Votre avis compte !</h1>
+            <h1 style="margin: 0; font-size: 28px;">â­ Votre avis compte !</h1>
           </div>
           <div class="content">
             <p>Bonjour <strong>${data.clientName}</strong>,</p>
             
             <p>
-              J'espère que vous êtes satisfait(e) de notre collaboration sur le projet 
+              J'espÃ¨re que vous Ãªtes satisfait(e) de notre collaboration sur le projet 
               <span class="highlight">${data.projectName}</span>${data.projectType ? ` (${data.projectType})` : ''} !
             </p>
 
             ${customMessageSection}
             
             <p>
-              <strong>Votre retour d'expérience est très précieux</strong> pour moi et pour mes futurs clients. 
-              Cela m'aide à améliorer mes services et à inspirer confiance aux personnes qui hésitent encore.
+              <strong>Votre retour d'expÃ©rience est trÃ¨s prÃ©cieux</strong> pour moi et pour mes futurs clients. 
+              Cela m'aide Ã  amÃ©liorer mes services et Ã  inspirer confiance aux personnes qui hÃ©sitent encore.
             </p>
 
             <div class="stars">
-              ⭐⭐⭐⭐⭐
+              â­â­â­â­â­
             </div>
 
             <center>
               <a href="${data.reviewUrl}" class="button">
-                ✍️ Laisser mon avis (2 minutes)
+                âœï¸ Laisser mon avis (2 minutes)
               </a>
             </center>
 
             <div class="benefit-box">
-              <p style="margin: 0 0 10px 0;"><strong>📝 Ce que vous pouvez partager :</strong></p>
+              <p style="margin: 0 0 10px 0;"><strong>ðŸ“ Ce que vous pouvez partager :</strong></p>
               <ul style="margin: 0; padding-left: 20px; color: #666;">
-                <li>Votre expérience de collaboration</li>
-                <li>Les résultats obtenus</li>
-                <li>Ce qui vous a particulièrement plu</li>
+                <li>Votre expÃ©rience de collaboration</li>
+                <li>Les rÃ©sultats obtenus</li>
+                <li>Ce qui vous a particuliÃ¨rement plu</li>
                 <li>Votre recommandation pour d'autres projets</li>
               </ul>
             </div>
 
             <p style="margin-top: 30px; font-size: 14px; color: #666;">
               <strong>Pourquoi votre avis est important ?</strong><br>
-              • Il aide d'autres entreprises à faire le bon choix<br>
-              • Il me permet d'améliorer continuellement mes services<br>
-              • Il valorise notre collaboration réussie<br>
-              • Il ne prend que 2 minutes de votre temps
+              â€¢ Il aide d'autres entreprises Ã  faire le bon choix<br>
+              â€¢ Il me permet d'amÃ©liorer continuellement mes services<br>
+              â€¢ Il valorise notre collaboration rÃ©ussie<br>
+              â€¢ Il ne prend que 2 minutes de votre temps
             </p>
 
             <p style="margin-top: 30px; font-size: 14px; color: #666;">
-              Je vous remercie sincèrement d'avoir fait confiance à mes services et j'espère avoir l'opportunité de travailler à nouveau avec vous !
+              Je vous remercie sincÃ¨rement d'avoir fait confiance Ã  mes services et j'espÃ¨re avoir l'opportunitÃ© de travailler Ã  nouveau avec vous !
               <br><br>
               Cordialement,<br>
               <strong>Maxence</strong>
             </p>
 
             <p style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; font-size: 13px; color: #999;">
-              💡 <em>Votre témoignage pourra être publié sur mon portfolio avec votre accord. Si vous préférez rester anonyme, précisez-le dans votre message.</em>
+              ðŸ’¡ <em>Votre tÃ©moignage pourra Ãªtre publiÃ© sur mon portfolio avec votre accord. Si vous prÃ©fÃ©rez rester anonyme, prÃ©cisez-le dans votre message.</em>
             </p>
           </div>
           <div class="footer">
-            <p style="margin: 0;">© 2025 Maxence - Portfolio Freelance</p>
+            <p style="margin: 0;">Â© 2025 Maxence - Portfolio Freelance</p>
             <p style="margin: 10px 0 0 0; font-size: 11px; opacity: 0.7;">
-              Paris, France • <a href="https://maxence.design" style="color: #00FFC2;">maxence.design</a>
+              Paris, France â€¢ <a href="https://maxence.design" style="color: #CCFF00;">maxence.design</a>
             </p>
           </div>
         </div>
@@ -1092,20 +1092,20 @@ export async function sendTestimonialRequest(data: {
 
   const text = `Bonjour ${data.clientName},
 
-J'espère que vous êtes satisfait(e) de notre collaboration sur le projet ${data.projectName}${data.projectType ? ` (${data.projectType})` : ''} !
+J'espÃ¨re que vous Ãªtes satisfait(e) de notre collaboration sur le projet ${data.projectName}${data.projectType ? ` (${data.projectType})` : ''} !
 
-${data.customMessage ? `"${data.customMessage}"\n\n` : ''}Votre retour d'expérience est très précieux pour moi et pour mes futurs clients.
+${data.customMessage ? `"${data.customMessage}"\n\n` : ''}Votre retour d'expÃ©rience est trÃ¨s prÃ©cieux pour moi et pour mes futurs clients.
 
 Pour laisser votre avis, cliquez sur ce lien : ${data.reviewUrl}
 
-Cela ne prend que 2 minutes et m'aide énormément !
+Cela ne prend que 2 minutes et m'aide Ã©normÃ©ment !
 
-Merci sincèrement,
+Merci sincÃ¨rement,
 Maxence`;
 
   return sendEmail({
     to: data.clientEmail,
-    subject: `⭐ Votre avis sur notre projet "${data.projectName}"`,
+    subject: `â­ Votre avis sur notre projet "${data.projectName}"`,
     html,
     text,
   });

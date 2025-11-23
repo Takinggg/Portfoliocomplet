@@ -63,7 +63,7 @@ export function NewsletterCampaignTab() {
       const text = localStorage.getItem("newsletter_draft_text");
       
       if (subject && html) {
-        console.log("📧 Template chargé depuis localStorage");
+        console.log("ðŸ“§ Template chargÃ© depuis localStorage");
         console.log("  Sujet:", subject);
         console.log("  HTML length:", html.length);
         console.log("  Text length:", text?.length || 0);
@@ -75,7 +75,7 @@ export function NewsletterCampaignTab() {
           recipientFilter: "confirmed",
         });
         
-        toast.success("✅ Template chargé avec succès !", {
+        toast.success("âœ… Template chargÃ© avec succÃ¨s !", {
           description: "Vous pouvez maintenant modifier et envoyer",
         });
         
@@ -90,7 +90,7 @@ export function NewsletterCampaignTab() {
     
     // Listen for template selection event
     const handleTemplateSelected = () => {
-      console.log("🔔 Événement template-selected reçu");
+      console.log("ðŸ”” Ã‰vÃ©nement template-selected reÃ§u");
       setTimeout(() => {
         loadTemplate();
       }, 100); // Small delay to ensure localStorage is written
@@ -173,9 +173,9 @@ export function NewsletterCampaignTab() {
       if (response.ok) {
         const data = await response.json();
         toast.success(
-          `✅ Campagne envoyée à ${data.sent} abonné${data.sent > 1 ? "s" : ""}`,
+          `âœ… Campagne envoyÃ©e Ã  ${data.sent} abonnÃ©${data.sent > 1 ? "s" : ""}`,
           {
-            description: data.failed > 0 ? `${data.failed} échec(s)` : undefined,
+            description: data.failed > 0 ? `${data.failed} Ã©chec(s)` : undefined,
           }
         );
         
@@ -202,7 +202,7 @@ export function NewsletterCampaignTab() {
   const generateEmailHTML = () => {
     // If we have pre-generated HTML from a template, use it
     if (campaign.htmlContent) {
-      console.log("📧 Utilisation du HTML pré-généré du template");
+      console.log("ðŸ“§ Utilisation du HTML prÃ©-gÃ©nÃ©rÃ© du template");
       return `
         <!DOCTYPE html>
         <html>
@@ -225,7 +225,7 @@ export function NewsletterCampaignTab() {
               }
               .header {
                 background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
-                color: #00FFC2;
+                color: #CCFF00;
                 padding: 40px 20px;
                 text-align: center;
                 border-radius: 8px 8px 0 0;
@@ -241,7 +241,7 @@ export function NewsletterCampaignTab() {
               }
               .footer {
                 background: #0C0C0C;
-                color: #00FFC2;
+                color: #CCFF00;
                 padding: 20px;
                 text-align: center;
                 font-size: 12px;
@@ -256,7 +256,7 @@ export function NewsletterCampaignTab() {
                 color: #999;
               }
               .unsubscribe a {
-                color: #00FFC2;
+                color: #CCFF00;
                 text-decoration: none;
               }
             </style>
@@ -264,18 +264,18 @@ export function NewsletterCampaignTab() {
           <body>
             <div class="container">
               <div class="header">
-                <h1>✨ ${campaign.subject}</h1>
+                <h1>âœ¨ ${campaign.subject}</h1>
               </div>
               <div class="content">
                 ${campaign.htmlContent}
                 
                 <div class="unsubscribe">
-                  <p>Vous recevez cet email car vous êtes inscrit à notre newsletter.</p>
-                  <p><a href="{{unsubscribe_url}}">Se désabonner</a></p>
+                  <p>Vous recevez cet email car vous Ãªtes inscrit Ã  notre newsletter.</p>
+                  <p><a href="{{unsubscribe_url}}">Se dÃ©sabonner</a></p>
                 </div>
               </div>
               <div class="footer">
-                <p style="margin: 0;">© 2025 Portfolio Freelance - Tous droits réservés</p>
+                <p style="margin: 0;">Â© 2025 Portfolio Freelance - Tous droits rÃ©servÃ©s</p>
               </div>
             </div>
           </body>
@@ -284,7 +284,7 @@ export function NewsletterCampaignTab() {
     }
     
     // Otherwise, generate HTML from text content (manual entry)
-    console.log("📧 Génération du HTML depuis le contenu texte");
+    console.log("ðŸ“§ GÃ©nÃ©ration du HTML depuis le contenu texte");
     const formattedContent = campaign.content.replace(/\n/g, "<br>");
 
     return `
@@ -309,7 +309,7 @@ export function NewsletterCampaignTab() {
             }
             .header {
               background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
-              color: #00FFC2;
+              color: #CCFF00;
               padding: 40px 20px;
               text-align: center;
               border-radius: 8px 8px 0 0;
@@ -325,7 +325,7 @@ export function NewsletterCampaignTab() {
             }
             .footer {
               background: #0C0C0C;
-              color: #00FFC2;
+              color: #CCFF00;
               padding: 20px;
               text-align: center;
               font-size: 12px;
@@ -340,7 +340,7 @@ export function NewsletterCampaignTab() {
               color: #999;
             }
             .unsubscribe a {
-              color: #00FFC2;
+              color: #CCFF00;
               text-decoration: none;
             }
           </style>
@@ -348,18 +348,18 @@ export function NewsletterCampaignTab() {
         <body>
           <div class="container">
             <div class="header">
-              <h1>✨ ${campaign.subject || "Newsletter"}</h1>
+              <h1>âœ¨ ${campaign.subject || "Newsletter"}</h1>
             </div>
             <div class="content">
               <p style="white-space: pre-wrap;">${formattedContent || "Contenu de votre newsletter..."}</p>
               
               <div class="unsubscribe">
-                <p>Vous recevez cet email car vous êtes inscrit à notre newsletter.</p>
-                <p><a href="{{unsubscribe_url}}">Se désabonner</a></p>
+                <p>Vous recevez cet email car vous Ãªtes inscrit Ã  notre newsletter.</p>
+                <p><a href="{{unsubscribe_url}}">Se dÃ©sabonner</a></p>
               </div>
             </div>
             <div class="footer">
-              <p style="margin: 0;">© 2025 Portfolio Freelance - Tous droits réservés</p>
+              <p style="margin: 0;">Â© 2025 Portfolio Freelance - Tous droits rÃ©servÃ©s</p>
             </div>
           </div>
         </body>
@@ -374,23 +374,23 @@ export function NewsletterCampaignTab() {
         <div>
           <h2 className="text-white mb-2">Campagne Newsletter</h2>
           <p className="text-white/60">
-            Composez et envoyez un email à vos abonnés
+            Composez et envoyez un email Ã  vos abonnÃ©s
           </p>
         </div>
         <div className="flex items-center gap-3">
           <Button
             onClick={() => setShowPreview(true)}
             variant="outline"
-            className="border-[#00FFC2]/30 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+            className="border-[#CCFF00]/30 text-[#CCFF00] hover:bg-[#CCFF00]/10"
             disabled={!campaign.subject || !campaign.content}
           >
             <Eye className="h-4 w-4 mr-2" />
-            Prévisualiser
+            PrÃ©visualiser
           </Button>
           <Button
             onClick={handleSendCampaign}
             disabled={isSending || !campaign.subject || !campaign.content}
-            className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+            className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
           >
             {isSending ? (
               <>
@@ -412,16 +412,16 @@ export function NewsletterCampaignTab() {
         <Card className="bg-white/5 border-white/10 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-white/60 mb-1">Abonnés confirmés</p>
+              <p className="text-sm text-white/60 mb-1">AbonnÃ©s confirmÃ©s</p>
               <p className="text-2xl text-white">{subscriberCount.confirmed}</p>
             </div>
-            <CheckCircle2 className="h-8 w-8 text-[#00FFC2]" />
+            <CheckCircle2 className="h-8 w-8 text-[#CCFF00]" />
           </div>
         </Card>
         <Card className="bg-white/5 border-white/10 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-white/60 mb-1">Total abonnés</p>
+              <p className="text-sm text-white/60 mb-1">Total abonnÃ©s</p>
               <p className="text-2xl text-white">{subscriberCount.total}</p>
             </div>
             <Users className="h-8 w-8 text-white/40" />
@@ -433,7 +433,7 @@ export function NewsletterCampaignTab() {
               <p className="text-sm text-white/60 mb-1">Destinataires</p>
               <p className="text-2xl text-white">{getRecipientCount()}</p>
             </div>
-            <Mail className="h-8 w-8 text-[#00FFC2]" />
+            <Mail className="h-8 w-8 text-[#CCFF00]" />
           </div>
         </Card>
       </div>
@@ -448,7 +448,7 @@ export function NewsletterCampaignTab() {
               Sujet de l'email *
             </label>
             <Input
-              placeholder="Ex: Nouvelle fonctionnalité disponible !"
+              placeholder="Ex: Nouvelle fonctionnalitÃ© disponible !"
               value={campaign.subject}
               onChange={(e) =>
                 setCampaign({ ...campaign, subject: e.target.value })
@@ -463,7 +463,7 @@ export function NewsletterCampaignTab() {
               Contenu du message *
             </label>
             <Textarea
-              placeholder="Rédigez votre message ici...&#10;&#10;Bonjour,&#10;&#10;Nous avons le plaisir de vous annoncer...&#10;&#10;À très bientôt !"
+              placeholder="RÃ©digez votre message ici...&#10;&#10;Bonjour,&#10;&#10;Nous avons le plaisir de vous annoncer...&#10;&#10;Ã€ trÃ¨s bientÃ´t !"
               value={campaign.content}
               onChange={(e) =>
                 setCampaign({ ...campaign, content: e.target.value })
@@ -471,11 +471,11 @@ export function NewsletterCampaignTab() {
               className="bg-white/5 border-white/10 text-white min-h-[300px]"
             />
             <p className="text-xs text-white/40 mt-2">
-              Longueur : {campaign.content.length} caractères
+              Longueur : {campaign.content.length} caractÃ¨res
             </p>
             {campaign.htmlContent && (
-              <p className="text-xs text-[#00FFC2] mt-1">
-                ✨ Template HTML pré-généré actif
+              <p className="text-xs text-[#CCFF00] mt-1">
+                âœ¨ Template HTML prÃ©-gÃ©nÃ©rÃ© actif
               </p>
             )}
           </Card>
@@ -500,35 +500,35 @@ export function NewsletterCampaignTab() {
               <SelectContent>
                 <SelectItem value="confirmed">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-[#00FFC2]" />
-                    <span>Confirmés uniquement ({subscriberCount.confirmed})</span>
+                    <CheckCircle2 className="h-4 w-4 text-[#CCFF00]" />
+                    <span>ConfirmÃ©s uniquement ({subscriberCount.confirmed})</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="all">
                   <div className="flex items-center gap-2">
                     <Users className="h-4 w-4" />
-                    <span>Tous les abonnés ({subscriberCount.total})</span>
+                    <span>Tous les abonnÃ©s ({subscriberCount.total})</span>
                   </div>
                 </SelectItem>
               </SelectContent>
             </Select>
             <p className="text-xs text-white/40 mt-2">
-              ⚠️ Recommandé : envoyez uniquement aux abonnés confirmés
+              âš ï¸ RecommandÃ© : envoyez uniquement aux abonnÃ©s confirmÃ©s
             </p>
           </Card>
 
           {/* Tips */}
-          <Card className="bg-gradient-to-br from-[#00FFC2]/10 to-[#00FFC2]/5 border-[#00FFC2]/30 p-6">
+          <Card className="bg-gradient-to-br from-[#CCFF00]/10 to-[#CCFF00]/5 border-[#CCFF00]/30 p-6">
             <div className="flex items-start gap-3 mb-4">
-              <Sparkles className="h-5 w-5 text-[#00FFC2] flex-shrink-0 mt-0.5" />
+              <Sparkles className="h-5 w-5 text-[#CCFF00] flex-shrink-0 mt-0.5" />
               <div>
                 <h3 className="text-white mb-2">Conseils</h3>
                 <ul className="space-y-2 text-sm text-white/70">
-                  <li>• Sujet court et accrocheur (max 50 caractères)</li>
-                  <li>• Contenu clair et concis</li>
-                  <li>• Utilisez des sauts de ligne pour aérer</li>
-                  <li>• Prévisualisez avant d'envoyer</li>
-                  <li>• Envoyez aux heures de bureau</li>
+                  <li>â€¢ Sujet court et accrocheur (max 50 caractÃ¨res)</li>
+                  <li>â€¢ Contenu clair et concis</li>
+                  <li>â€¢ Utilisez des sauts de ligne pour aÃ©rer</li>
+                  <li>â€¢ PrÃ©visualisez avant d'envoyer</li>
+                  <li>â€¢ Envoyez aux heures de bureau</li>
                 </ul>
               </div>
             </div>
@@ -541,12 +541,12 @@ export function NewsletterCampaignTab() {
                 <AlertCircle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm text-yellow-500">
-                    Cette action enverra un email à{" "}
-                    <strong>{getRecipientCount()} abonné
+                    Cette action enverra un email Ã {" "}
+                    <strong>{getRecipientCount()} abonnÃ©
                     {getRecipientCount() > 1 ? "s" : ""}</strong>.
                   </p>
                   <p className="text-xs text-yellow-500/70 mt-1">
-                    Cette action est irréversible.
+                    Cette action est irrÃ©versible.
                   </p>
                 </div>
               </div>
@@ -560,10 +560,10 @@ export function NewsletterCampaignTab() {
         <DialogContent className="max-w-3xl bg-[#0C0C0C] border-white/10 max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-white">
-              Aperçu de l'email
+              AperÃ§u de l'email
             </DialogTitle>
             <DialogDescription className="text-white/60">
-              Voici comment votre email apparaîtra aux abonnés
+              Voici comment votre email apparaÃ®tra aux abonnÃ©s
             </DialogDescription>
           </DialogHeader>
           <div className="mt-4">

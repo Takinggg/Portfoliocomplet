@@ -85,7 +85,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
             <Button
               size="lg"
               onClick={() => onNavigate("contact")}
-              className="bg-mint text-[#0C0C0C] hover:bg-mint/90 h-14 px-8 text-base font-bold rounded-xl shadow-[0_0_20px_rgba(0,255,194,0.3)] hover:shadow-[0_0_30px_rgba(0,255,194,0.5)] transition-all duration-300"
+              className="bg-mint text-[#0C0C0C] hover:bg-mint/90 h-14 px-8 text-base font-bold rounded-xl shadow-[0_0_20px_rgba(204, 255, 0,0.3)] hover:shadow-[0_0_30px_rgba(204, 255, 0,0.5)] transition-all duration-300"
             >
               {t('home.hero.cta.secondary')}
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -230,7 +230,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
             <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-30">
               <motion.path 
                 d="M 350 150 L 240 270" 
-                stroke="#00FFC2" 
+                stroke="#CCFF00" 
                 strokeWidth="2" 
                 strokeDasharray="5,5"
                 initial={{ pathLength: 0 }}
@@ -239,7 +239,7 @@ export function HeroDesignerAutomate({ onNavigate }: HeroDesignerAutomateProps) 
               />
               <motion.path 
                 d="M 240 270 L 400 450" 
-                stroke="#00FFC2" 
+                stroke="#CCFF00" 
                 strokeWidth="2" 
                 strokeDasharray="5,5"
                 initial={{ pathLength: 0 }}

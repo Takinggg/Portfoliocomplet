@@ -28,7 +28,7 @@ export async function generateInvoicePDF(
   freelanceInfo: FreelanceInfo
 ): Promise<{ success: boolean; pdf?: Uint8Array; base64?: string; error?: string }> {
   try {
-    console.log(`📄 Generating PDF for invoice ${invoice.number}...`);
+    console.log(`ðŸ“„ Generating PDF for invoice ${invoice.number}...`);
     
     // Import jsPDF from CDN
     const { jsPDF } = await import("https://esm.sh/jspdf@2.5.1");
@@ -44,7 +44,7 @@ export async function generateInvoicePDF(
     doc.setFont("helvetica");
     
     // Colors
-    const primaryColor = [0, 255, 194]; // #00FFC2
+    const primaryColor = [204, 255, 0]; // #CCFF00
     const darkColor = [12, 12, 12]; // #0C0C0C
     const grayColor = [102, 102, 102]; // #666
     
@@ -85,8 +85,8 @@ export async function generateInvoicePDF(
     
     // Status badge
     if (invoice.status) {
-      const statusText = invoice.status === 'paid' ? 'Payée' : 
-                        invoice.status === 'sent' ? 'Envoyée' : 
+      const statusText = invoice.status === 'paid' ? 'PayÃ©e' : 
+                        invoice.status === 'sent' ? 'EnvoyÃ©e' : 
                         invoice.status === 'overdue' ? 'En retard' : 
                         invoice.status;
       doc.setFontSize(8);
@@ -170,9 +170,9 @@ export async function generateInvoicePDF(
     
     // Detail rows
     const detailRows = [
-      ['Numéro de facture', invoice.number],
-      ['Date d\'émission', new Date(invoice.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })],
-      ['Date d\'échéance', new Date(invoice.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })]
+      ['NumÃ©ro de facture', invoice.number],
+      ['Date d\'Ã©mission', new Date(invoice.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })],
+      ['Date d\'Ã©chÃ©ance', new Date(invoice.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })]
     ];
     
     if (invoice.description) {
@@ -205,7 +205,7 @@ export async function generateInvoicePDF(
     doc.text("Sous-total HT", 25, yPos);
     
     doc.setFont("helvetica", "bold");
-    doc.text(`${invoice.amount.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €`, 185, yPos, { align: 'right' });
+    doc.text(`${invoice.amount.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} â‚¬`, 185, yPos, { align: 'right' });
     
     // TVA
     yPos += 7;
@@ -227,7 +227,7 @@ export async function generateInvoicePDF(
     
     doc.setFontSize(20);
     doc.setTextColor(...primaryColor);
-    doc.text(`${invoice.amount.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €`, 185, yPos, { align: 'right' });
+    doc.text(`${invoice.amount.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} â‚¬`, 185, yPos, { align: 'right' });
     
     yPos += 20;
     
@@ -240,7 +240,7 @@ export async function generateInvoicePDF(
     doc.setFontSize(9);
     doc.setTextColor(...darkColor);
     doc.setFont("helvetica", "bold");
-    doc.text("💳 Modalites de paiement", 25, yPos);
+    doc.text("ðŸ’³ Modalites de paiement", 25, yPos);
     
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
@@ -263,8 +263,8 @@ export async function generateInvoicePDF(
     doc.setTextColor(211, 47, 47);
     doc.setFontSize(6.5);
     
-    // Texte des pénalités avec saut de ligne automatique
-    const penaltyFullText = "⚠️ Le paiement est du a la date d'echeance. Tout reglement effectue apres expiration du delai donnera lieu, a titre de penalite de retard, a la facturation d'un interet de retard egal a trois fois le taux d'interet legal en vigueur en France, a compter de la date d'exigibilite de cette presente facture jusqu'a la date de paiement effectif, ainsi qu'a une indemnite forfaitaire pour frais de recouvrement d'un montant de 40 €. Les penalites de retard sont exigibles sans qu'un rappel soit necessaire.";
+    // Texte des pÃ©nalitÃ©s avec saut de ligne automatique
+    const penaltyFullText = "âš ï¸ Le paiement est du a la date d'echeance. Tout reglement effectue apres expiration du delai donnera lieu, a titre de penalite de retard, a la facturation d'un interet de retard egal a trois fois le taux d'interet legal en vigueur en France, a compter de la date d'exigibilite de cette presente facture jusqu'a la date de paiement effectif, ainsi qu'a une indemnite forfaitaire pour frais de recouvrement d'un montant de 40 â‚¬. Les penalites de retard sont exigibles sans qu'un rappel soit necessaire.";
     
     const splitPenaltyText = doc.splitTextToSize(penaltyFullText, 160);
     doc.text(splitPenaltyText, 25, yPos);
@@ -286,11 +286,11 @@ export async function generateInvoicePDF(
     
     yPos += 4;
     doc.setFontSize(7);
-    doc.text("Cette facture a été générée automatiquement et ne nécessite pas de signature.", 105, yPos, { align: 'center' });
+    doc.text("Cette facture a Ã©tÃ© gÃ©nÃ©rÃ©e automatiquement et ne nÃ©cessite pas de signature.", 105, yPos, { align: 'center' });
     
     yPos += 5;
     doc.setFontSize(7);
-    const footerText = "FOULON Maxence • 33 Route Du Mans, 72650 La Milesse, France • contact@maxence.design";
+    const footerText = "FOULON Maxence â€¢ 33 Route Du Mans, 72650 La Milesse, France â€¢ contact@maxence.design";
     doc.text(footerText, 105, yPos, { align: 'center' });
     
     yPos += 3;
@@ -304,7 +304,7 @@ export async function generateInvoicePDF(
     // Convert to base64
     const base64 = btoa(String.fromCharCode(...pdfBytes));
     
-    console.log(`✅ PDF generated successfully for invoice ${invoice.number} (${pdfBytes.length} bytes)`);
+    console.log(`âœ… PDF generated successfully for invoice ${invoice.number} (${pdfBytes.length} bytes)`);
     
     return {
       success: true,
@@ -312,7 +312,7 @@ export async function generateInvoicePDF(
       base64
     };
   } catch (error) {
-    console.error(`❌ Error generating PDF for invoice ${invoice.number}:`, error);
+    console.error(`âŒ Error generating PDF for invoice ${invoice.number}:`, error);
     return {
       success: false,
       error: error.message

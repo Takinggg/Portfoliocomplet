@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { Button } from "../ui/button";
 import { HeroDesignerAutomate } from "../hero/HeroDesignerAutomate";
 import { ArrowRight, Workflow, LayoutDashboard, Sparkles, TrendingDown, TrendingUp, Clock, Star, Zap, Users, Award, CheckCircle2, ArrowUpRight, Code2, Palette, Brain, Github, Linkedin, Twitter, Send, Play, ChevronDown, CheckCircle, BarChart3, Target, Rocket, Hexagon, Cpu, Database, Globe, Lock, Layers, MessageSquare, Calendar, Shield, Check, Upload, Phone, MessageCircle, Briefcase, Mail } from "lucide-react";
@@ -201,9 +201,9 @@ function AuroraEffect() {
           background: `
             linear-gradient(90deg, 
               transparent 0%, 
-              rgba(0, 255, 194, 0.05) 25%, 
-              rgba(0, 255, 194, 0.1) 50%, 
-              rgba(0, 255, 194, 0.05) 75%, 
+              rgba(204, 255, 0, 0.05) 25%, 
+              rgba(204, 255, 0, 0.1) 50%, 
+              rgba(204, 255, 0, 0.05) 75%, 
               transparent 100%
             )
           `,
@@ -315,8 +315,8 @@ function AutomationWorkflow() {
                 >
                   <motion.div
                     animate={{
-                      backgroundColor: activeTab === tab ? 'rgba(0, 255, 194, 0.1)' : 'transparent',
-                      color: activeTab === tab ? '#00FFC2' : '#888',
+                      backgroundColor: activeTab === tab ? 'rgba(204, 255, 0, 0.1)' : 'transparent',
+                      color: activeTab === tab ? '#CCFF00' : '#888',
                     }}
                     className="flex items-center gap-2 relative z-10"
                   >
@@ -443,7 +443,7 @@ function AutomationWorkflow() {
                   >
                     {/* Color palette */}
                     <div className="flex gap-2">
-                      {['#00FFC2', '#0C0C0C', '#F4F4F4'].map((color, i) => (
+                      {['#CCFF00', '#0C0C0C', '#F4F4F4'].map((color, i) => (
                         <motion.div
                           key={color}
                           initial={{ scale: 0, rotate: -180 }}
@@ -706,7 +706,7 @@ function HexagonPattern() {
       <svg width="100%" height="100%">
         <defs>
           <pattern id="hexagons" width="50" height="43.4" patternUnits="userSpaceOnUse" patternTransform="scale(2)">
-            <polygon points="24.8,22 37.3,29.2 37.3,43.7 24.8,50.9 12.3,43.7 12.3,29.2" fill="none" stroke="#00FFC2" strokeWidth="0.5"/>
+            <polygon points="24.8,22 37.3,29.2 37.3,43.7 24.8,50.9 12.3,43.7 12.3,29.2" fill="none" stroke="#CCFF00" strokeWidth="0.5"/>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#hexagons)" />
@@ -740,7 +740,7 @@ function SpotlightEffect() {
       style={{
         x,
         y,
-        background: "radial-gradient(circle, rgba(0, 255, 194, 0.15) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(204, 255, 0, 0.15) 0%, transparent 70%)",
       }}
     />
   );
@@ -773,7 +773,7 @@ function AnimatedWorkflow() {
       className="relative w-full h-[500px] flex items-center justify-center"
     >
       {/* Connection lines */}
-      <svg className="absolute inset-0 w-full h-full" style={{ filter: 'drop-shadow(0 0 8px rgba(0, 255, 194, 0.3))' }}>
+      <svg className="absolute inset-0 w-full h-full" style={{ filter: 'drop-shadow(0 0 8px rgba(204, 255, 0, 0.3))' }}>
         <motion.path
           d="M 100,250 Q 200,100 300,250 T 500,250"
           fill="none"
@@ -786,9 +786,9 @@ function AnimatedWorkflow() {
         />
         <defs>
           <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#00ffc2" stopOpacity="0.3" />
-            <stop offset="50%" stopColor="#00ffc2" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#00ffc2" stopOpacity="0.3" />
+            <stop offset="0%" stopColor="#CCFF00" stopOpacity="0.3" />
+            <stop offset="50%" stopColor="#CCFF00" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#CCFF00" stopOpacity="0.3" />
           </linearGradient>
         </defs>
       </svg>
@@ -816,7 +816,7 @@ function AnimatedWorkflow() {
               }}
               transition={{ duration: 0.3 }}
             >
-              <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-br ${step.color} p-[2px] ${isActive ? 'shadow-[0_0_30px_rgba(0,255,194,0.5)]' : ''}`}>
+              <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-br ${step.color} p-[2px] ${isActive ? 'shadow-[0_0_30px_rgba(204, 255, 0,0.5)]' : ''}`}>
                 <div className="w-full h-full bg-black rounded-2xl flex items-center justify-center">
                   <Icon className={`w-8 h-8 ${isActive ? 'text-mint' : 'text-neutral-400'} transition-colors`} />
                 </div>
@@ -952,8 +952,8 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
             }}
             style={{
               backgroundImage: `
-                linear-gradient(to right, rgba(0, 255, 194, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 255, 194, 0.03) 1px, transparent 1px)
+                linear-gradient(to right, rgba(204, 255, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(204, 255, 0, 0.03) 1px, transparent 1px)
               `,
               backgroundSize: '100px 100px',
             }}
@@ -964,7 +964,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
             <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <pattern id="diagonal-lines" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                  <line x1="0" y1="0" x2="0" y2="40" stroke="rgba(0, 255, 194, 0.05)" strokeWidth="1"/>
+                  <line x1="0" y1="0" x2="0" y2="40" stroke="rgba(204, 255, 0, 0.05)" strokeWidth="1"/>
                 </pattern>
               </defs>
               <rect width="100%" height="100%" fill="url(#diagonal-lines)" />
@@ -975,7 +975,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
           <motion.div
             className="absolute top-0 left-1/4 w-[800px] h-[800px] rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(0, 255, 194, 0.15) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(204, 255, 0, 0.15) 0%, transparent 70%)",
             }}
             animate={{
               scale: [1, 1.2, 1],
@@ -991,7 +991,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
           <motion.div
             className="absolute bottom-0 right-1/4 w-[700px] h-[700px] rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(0, 255, 194, 0.12) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(204, 255, 0, 0.12) 0%, transparent 70%)",
             }}
             animate={{
               scale: [1.2, 1, 1.2],
@@ -1008,7 +1008,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
           <motion.div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(0, 255, 194, 0.08) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(204, 255, 0, 0.08) 0%, transparent 70%)",
             }}
             animate={{
               scale: [1, 1.3, 1],
@@ -1154,8 +1154,8 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
               >
                 {/* Ligne 0° - HAUT - COULEUR UNIE */}
                 <g>
-                  <line x1="400" y1="330" x2="400" y2="80" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
-                  <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
+                  <line x1="400" y1="330" x2="400" y2="80" stroke="rgba(204, 255, 0, 0.6)" strokeWidth="3" strokeLinecap="round" />
+                  <circle r="4" fill="#CCFF00" opacity="0.9" filter="drop-shadow(0 0 4px rgba(204, 255, 0, 0.8))">
                     <animate attributeName="cx" values="400;400;400" dur="4s" repeatCount="indefinite" begin="0s" />
                     <animate attributeName="cy" values="330;80;330" dur="4s" repeatCount="indefinite" begin="0s" />
                   </circle>
@@ -1163,8 +1163,8 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 
                 {/* Ligne 60° - HAUT-DROITE - COULEUR UNIE */}
                 <g>
-                  <line x1="460.6" y1="365" x2="677" y2="223.9" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
-                  <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
+                  <line x1="460.6" y1="365" x2="677" y2="223.9" stroke="rgba(204, 255, 0, 0.6)" strokeWidth="3" strokeLinecap="round" />
+                  <circle r="4" fill="#CCFF00" opacity="0.9" filter="drop-shadow(0 0 4px rgba(204, 255, 0, 0.8))">
                     <animate attributeName="cx" values="460.6;677;460.6" dur="4s" repeatCount="indefinite" begin="0.4s" />
                     <animate attributeName="cy" values="365;223.9;365" dur="4s" repeatCount="indefinite" begin="0.4s" />
                   </circle>
@@ -1172,8 +1172,8 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 
                 {/* Ligne 120° - BAS-DROITE - COULEUR UNIE */}
                 <g>
-                  <line x1="460.6" y1="435" x2="677" y2="576.1" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
-                  <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
+                  <line x1="460.6" y1="435" x2="677" y2="576.1" stroke="rgba(204, 255, 0, 0.6)" strokeWidth="3" strokeLinecap="round" />
+                  <circle r="4" fill="#CCFF00" opacity="0.9" filter="drop-shadow(0 0 4px rgba(204, 255, 0, 0.8))">
                     <animate attributeName="cx" values="460.6;677;460.6" dur="4s" repeatCount="indefinite" begin="0.8s" />
                     <animate attributeName="cy" values="435;576.1;435" dur="4s" repeatCount="indefinite" begin="0.8s" />
                   </circle>
@@ -1181,8 +1181,8 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 
                 {/* Ligne 180° - BAS - COULEUR UNIE */}
                 <g>
-                  <line x1="400" y1="470" x2="400" y2="720" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
-                  <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
+                  <line x1="400" y1="470" x2="400" y2="720" stroke="rgba(204, 255, 0, 0.6)" strokeWidth="3" strokeLinecap="round" />
+                  <circle r="4" fill="#CCFF00" opacity="0.9" filter="drop-shadow(0 0 4px rgba(204, 255, 0, 0.8))">
                     <animate attributeName="cx" values="400;400;400" dur="4s" repeatCount="indefinite" begin="1.2s" />
                     <animate attributeName="cy" values="470;720;470" dur="4s" repeatCount="indefinite" begin="1.2s" />
                   </circle>
@@ -1190,8 +1190,8 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 
                 {/* Ligne 240° - BAS-GAUCHE - COULEUR UNIE */}
                 <g>
-                  <line x1="339.4" y1="435" x2="123" y2="576.1" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
-                  <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
+                  <line x1="339.4" y1="435" x2="123" y2="576.1" stroke="rgba(204, 255, 0, 0.6)" strokeWidth="3" strokeLinecap="round" />
+                  <circle r="4" fill="#CCFF00" opacity="0.9" filter="drop-shadow(0 0 4px rgba(204, 255, 0, 0.8))">
                     <animate attributeName="cx" values="339.4;123;339.4" dur="4s" repeatCount="indefinite" begin="1.6s" />
                     <animate attributeName="cy" values="435;576.1;435" dur="4s" repeatCount="indefinite" begin="1.6s" />
                   </circle>
@@ -1199,8 +1199,8 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
                 
                 {/* Ligne 300° - HAUT-GAUCHE - COULEUR UNIE */}
                 <g>
-                  <line x1="339.4" y1="365" x2="123" y2="223.9" stroke="rgba(0, 255, 194, 0.6)" strokeWidth="3" strokeLinecap="round" />
-                  <circle r="4" fill="#00FFC2" opacity="0.9" filter="drop-shadow(0 0 4px rgba(0, 255, 194, 0.8))">
+                  <line x1="339.4" y1="365" x2="123" y2="223.9" stroke="rgba(204, 255, 0, 0.6)" strokeWidth="3" strokeLinecap="round" />
+                  <circle r="4" fill="#CCFF00" opacity="0.9" filter="drop-shadow(0 0 4px rgba(204, 255, 0, 0.8))">
                     <animate attributeName="cx" values="339.4;123;339.4" dur="4s" repeatCount="indefinite" begin="2s" />
                     <animate attributeName="cy" values="365;223.9;365" dur="4s" repeatCount="indefinite" begin="2s" />
                   </circle>
@@ -1528,7 +1528,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
 
                     {/* Hover border glow */}
                     <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                      <div className="absolute inset-0 rounded-3xl shadow-[inset_0_0_60px_rgba(0,255,194,0.1)]" />
+                      <div className="absolute inset-0 rounded-3xl shadow-[inset_0_0_60px_rgba(204, 255, 0,0.1)]" />
                     </div>
                   </motion.div>
                 </motion.div>
@@ -1557,7 +1557,7 @@ export default function HomePage({ onNavigate, onProjectClick }: HomePageProps) 
               {/* Progress line avec glow - hidden on mobile */}
               <div className="hidden md:block absolute top-24 left-0 right-0 h-1 bg-neutral-900 rounded-full">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-mint via-cyan-400 to-mint rounded-full shadow-[0_0_20px_rgba(0,255,194,0.5)]"
+                  className="h-full bg-gradient-to-r from-mint via-cyan-400 to-mint rounded-full shadow-[0_0_20px_rgba(204, 255, 0,0.5)]"
                   initial={{ width: 0 }}
                   whileInView={{ width: "100%" }}
                   viewport={{ once: true }}
@@ -2128,7 +2128,7 @@ function ContactSection({ onNavigate }: HomePageProps) {
           particleCount: 100,
           spread: 70,
           origin: { y: 0.6 },
-          colors: ["#00FFC2", "#0C0C0C", "#F4F4F4"],
+          colors: ["#CCFF00", "#0C0C0C", "#F4F4F4"],
         });
 
         toast.success(language === 'en' ? 'Message sent successfully!' : 'Message envoyé avec succès !');
@@ -2205,8 +2205,8 @@ function ContactSection({ onNavigate }: HomePageProps) {
           className="absolute inset-0 opacity-20"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(0, 255, 194, 0.03) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0, 255, 194, 0.03) 1px, transparent 1px)
+              linear-gradient(to right, rgba(204, 255, 0, 0.03) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(204, 255, 0, 0.03) 1px, transparent 1px)
             `,
             backgroundSize: '80px 80px',
           }}

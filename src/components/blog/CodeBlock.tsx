@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { Check, Copy } from "lucide-react";
 import { Button } from "../ui/button";
 import Prism from "prismjs";
-// ✅ CSS import removed to fix Vite build - using inline Tailwind styles instead
+// âœ… CSS import removed to fix Vite build - using inline Tailwind styles instead
 
 // Import language support
 import "prismjs/components/prism-javascript";
@@ -77,8 +77,8 @@ export function CodeBlock({
           >
             {copied ? (
               <>
-                <Check className="h-3 w-3 mr-1 text-[#00FFC2]" />
-                <span className="text-xs text-[#00FFC2]">Copié !</span>
+                <Check className="h-3 w-3 mr-1 text-[#CCFF00]" />
+                <span className="text-xs text-[#CCFF00]">CopiÃ© !</span>
               </>
             ) : (
               <>
@@ -106,7 +106,7 @@ export function CodeBlock({
                     key={index}
                     className={`${
                       highlightLines.includes(index + 1)
-                        ? "text-[#00FFC2]"
+                        ? "text-[#CCFF00]"
                         : ""
                     }`}
                   >
@@ -139,8 +139,8 @@ export function CodeBlock({
           >
             {copied ? (
               <>
-                <Check className="h-3 w-3 mr-1 text-[#00FFC2]" />
-                <span className="text-xs text-[#00FFC2]">Copié</span>
+                <Check className="h-3 w-3 mr-1 text-[#CCFF00]" />
+                <span className="text-xs text-[#CCFF00]">CopiÃ©</span>
               </>
             ) : (
               <>
@@ -158,7 +158,7 @@ export function CodeBlock({
 // Inline code component
 export function InlineCode({ children }: { children: React.ReactNode }) {
   return (
-    <code className="px-1.5 py-0.5 bg-white/10 border border-white/10 rounded text-sm text-[#00FFC2]">
+    <code className="px-1.5 py-0.5 bg-white/10 border border-white/10 rounded text-sm text-[#CCFF00]">
       {children}
     </code>
   );

@@ -123,29 +123,29 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
   // Load case studies from Supabase (FULL DB)
   const loadCaseStudies = async () => {
     try {
-      console.log("🔍 Loading case studies from Supabase...");
+      console.log("ðŸ” Loading case studies from Supabase...");
       
-      // ✅ Utiliser unifiedDataService.ts (Supabase uniquement, FULL DB)
+      // âœ… Utiliser unifiedDataService.ts (Supabase uniquement, FULL DB)
       const { fetchCaseStudies } = await import("../../utils/unifiedDataService");
       
       const loadedCaseStudies = await fetchCaseStudies();
       
-      console.log(`✅ Case studies chargées depuis Supabase:`, loadedCaseStudies.length);
-      console.log("📋 Case studies IDs:", loadedCaseStudies.map(cs => cs.id));
+      console.log(`âœ… Case studies chargÃ©es depuis Supabase:`, loadedCaseStudies.length);
+      console.log("ðŸ“‹ Case studies IDs:", loadedCaseStudies.map(cs => cs.id));
       
       setCaseStudies(loadedCaseStudies);
       
       if (loadedCaseStudies.length === 0) {
-        toast.info("Aucune case study. Utilisez le bouton '+' pour en créer.", {
+        toast.info("Aucune case study. Utilisez le bouton '+' pour en crÃ©er.", {
           duration: 5000,
         });
       }
     } catch (error: any) {
-      console.error("❌ Error loading case studies:", error);
+      console.error("âŒ Error loading case studies:", error);
       
-      // Message d'erreur détaillé avec instructions de déploiement
+      // Message d'erreur dÃ©taillÃ© avec instructions de dÃ©ploiement
       if (error.message.includes("fetch") || error.message.includes("network")) {
-        toast.error("❌ Serveur Supabase non déployé. Consultez DEPLOYMENT_GUIDE_SUPABASE.md", {
+        toast.error("âŒ Serveur Supabase non dÃ©ployÃ©. Consultez DEPLOYMENT_GUIDE_SUPABASE.md", {
           duration: 8000,
         });
       } else {
@@ -284,13 +284,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
     setIsSubmitting(true);
 
     try {
-      // Récupérer le token d'authentification
+      // RÃ©cupÃ©rer le token d'authentification
       const { createClient } = await import("../../utils/supabase/client");
       const supabase = createClient();
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Vous devez être connecté pour effectuer cette action");
+        toast.error("Vous devez Ãªtre connectÃ© pour effectuer cette action");
         setIsSubmitting(false);
         return;
       }
@@ -345,17 +345,17 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
         video: formData.video,
       };
 
-      console.log("📤 Saving case study data:", caseStudyData);
+      console.log("ðŸ“¤ Saving case study data:", caseStudyData);
 
-      // Utiliser le service unifié
+      // Utiliser le service unifiÃ©
       const { createCaseStudy, updateCaseStudy } = await import("../../utils/unifiedDataService");
       
       if (editingCaseStudy) {
         await updateCaseStudy(editingCaseStudy.id, caseStudyData, session.access_token);
-        toast.success("Étude de cas mise à jour avec succès");
+        toast.success("Ã‰tude de cas mise Ã  jour avec succÃ¨s");
       } else {
         await createCaseStudy(caseStudyData, session.access_token);
-        toast.success("Étude de cas créée avec succès");
+        toast.success("Ã‰tude de cas crÃ©Ã©e avec succÃ¨s");
       }
 
       await loadCaseStudies();
@@ -376,53 +376,53 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
     if (!deletingCaseStudy) return;
 
     try {
-      console.log("🗑️ Attempting to delete case study:", deletingCaseStudy.id);
+      console.log("ðŸ—‘ï¸ Attempting to delete case study:", deletingCaseStudy.id);
 
-      // Récupérer le token d'authentification
+      // RÃ©cupÃ©rer le token d'authentification
       const { createClient } = await import("../../utils/supabase/client");
       const supabase = createClient();
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Vous devez être connecté pour effectuer cette action");
+        toast.error("Vous devez Ãªtre connectÃ© pour effectuer cette action");
         return;
       }
 
-      // Utiliser le service unifié
+      // Utiliser le service unifiÃ©
       const { deleteCaseStudy } = await import("../../utils/unifiedDataService");
       await deleteCaseStudy(deletingCaseStudy.id, session.access_token);
 
-      console.log("✅ Case study supprimé avec succès:", deletingCaseStudy.id);
-      toast.success("Étude de cas supprimée avec succès");
+      console.log("âœ… Case study supprimÃ© avec succÃ¨s:", deletingCaseStudy.id);
+      toast.success("Ã‰tude de cas supprimÃ©e avec succÃ¨s");
       
       await loadCaseStudies();
       setDeletingCaseStudy(null);
       onRefresh?.();
     } catch (error: any) {
-      console.error("❌ Error deleting case study:", error);
+      console.error("âŒ Error deleting case study:", error);
       toast.error(`Erreur lors de la suppression: ${error.message || "Erreur inconnue"}`);
     }
   };
 
   // Add/remove items from arrays
   const addArrayItem = (field: string, value: string, lang: "fr" | "en" = "fr") => {
-    console.log(`🏷️ addArrayItem called:`, { field, value, lang });
+    console.log(`ðŸ·ï¸ addArrayItem called:`, { field, value, lang });
     if (!value.trim()) {
-      console.log(`⚠️ Value is empty, returning`);
+      console.log(`âš ï¸ Value is empty, returning`);
       return;
     }
 
     if (field === "tags") {
       if (lang === "en") {
         const newTagsEn = [...(formData.tags_en || []), value.trim()];
-        console.log(`✅ Adding EN tag:`, { currentTags: formData.tags_en, newTag: value.trim(), result: newTagsEn });
+        console.log(`âœ… Adding EN tag:`, { currentTags: formData.tags_en, newTag: value.trim(), result: newTagsEn });
         setFormData({
           ...formData,
           tags_en: newTagsEn,
         });
       } else {
         const newTagsFr = [...(formData.tags || []), value.trim()];
-        console.log(`✅ Adding FR tag:`, { currentTags: formData.tags, newTag: value.trim(), result: newTagsFr });
+        console.log(`âœ… Adding FR tag:`, { currentTags: formData.tags, newTag: value.trim(), result: newTagsFr });
         setFormData({
           ...formData,
           tags: newTagsFr,
@@ -483,13 +483,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
   const removeArrayItem = (field: string, index: number, lang: "fr" | "en" = "fr") => {
     if (field === "tags") {
       if (lang === "en") {
-        console.log(`🗑️ Removing EN tag at index ${index}`);
+        console.log(`ðŸ—‘ï¸ Removing EN tag at index ${index}`);
         setFormData({
           ...formData,
           tags_en: formData.tags_en?.filter((_, i) => i !== index),
         });
       } else {
-        console.log(`🗑️ Removing FR tag at index ${index}`);
+        console.log(`ðŸ—‘ï¸ Removing FR tag at index ${index}`);
         setFormData({
           ...formData,
           tags: formData.tags?.filter((_, i) => i !== index),
@@ -631,32 +631,32 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-white mb-2">Études de Cas</h2>
+          <h2 className="text-white mb-2">Ã‰tudes de Cas</h2>
           <p className="text-white/60">
-            Gérez vos études de cas détaillées avec métriques et témoignages
+            GÃ©rez vos Ã©tudes de cas dÃ©taillÃ©es avec mÃ©triques et tÃ©moignages
           </p>
         </div>
         <div className="flex gap-2">
           <Button
             onClick={async () => {
-              if (window.confirm("Voulez-vous initialiser les études de cas bilingues dans Supabase ?\n\nCela va :\n1. Vider la liste de suppression permanente\n2. Charger 3 études de cas professionnelles (FR + EN)\n3. Synchroniser avec la database Supabase\n4. Afficher les données")) {
+              if (window.confirm("Voulez-vous initialiser les Ã©tudes de cas bilingues dans Supabase ?\n\nCela va :\n1. Vider la liste de suppression permanente\n2. Charger 3 Ã©tudes de cas professionnelles (FR + EN)\n3. Synchroniser avec la database Supabase\n4. Afficher les donnÃ©es")) {
                 try {
-                  toast.info("🔄 Initialisation Supabase en cours...");
+                  toast.info("ðŸ”„ Initialisation Supabase en cours...");
                   
-                  console.log("🗑️ Étape 1/4 : Suppression de la liste noire...");
-                  // Vider la liste de suppression permanente (bonne clé)
+                  console.log("ðŸ—‘ï¸ Ã‰tape 1/4 : Suppression de la liste noire...");
+                  // Vider la liste de suppression permanente (bonne clÃ©)
                   localStorage.removeItem("deleted_case_studies");
                   
-                  console.log("📦 Étape 2/4 : Génération des case studies bilingues...");
-                  // Importer les données bilingues
+                  console.log("ðŸ“¦ Ã‰tape 2/4 : GÃ©nÃ©ration des case studies bilingues...");
+                  // Importer les donnÃ©es bilingues
                   const { bilingualCaseStudies } = await import("../../utils/caseStudiesDataBilingual");
                   const { convertBilingualToCaseStudy } = await import("../../utils/seedBilingualCaseStudies");
                   
                   // Convertir en format CaseStudy
                   const caseStudiesData = bilingualCaseStudies.map(convertBilingualToCaseStudy);
-                  console.log("📋 Case studies générées:", caseStudiesData.length);
+                  console.log("ðŸ“‹ Case studies gÃ©nÃ©rÃ©es:", caseStudiesData.length);
                   
-                  console.log("☁️ Étape 3/4 : Envoi vers Supabase...");
+                  console.log("â˜ï¸ Ã‰tape 3/4 : Envoi vers Supabase...");
                   // Envoyer au serveur Supabase via bulk create
                   const { projectId, publicAnonKey } = await import("../../utils/supabase/info");
                   
@@ -678,23 +678,23 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   }
                   
                   const result = await response.json();
-                  console.log("✅ Supabase sync result:", result);
+                  console.log("âœ… Supabase sync result:", result);
                   
-                  console.log("📥 Étape 4/4 : Rechargement depuis Supabase...");
+                  console.log("ðŸ“¥ Ã‰tape 4/4 : Rechargement depuis Supabase...");
                   // Recharger depuis le serveur
                   await loadCaseStudies();
                   
-                  console.log("✅ Initialisation Supabase terminée !");
-                  toast.success(`✅ ${result.count} case studies synchronisées avec Supabase !`);
+                  console.log("âœ… Initialisation Supabase terminÃ©e !");
+                  toast.success(`âœ… ${result.count} case studies synchronisÃ©es avec Supabase !`);
                   
                 } catch (error: any) {
-                  console.error("❌ Erreur lors de l'initialisation Supabase:", error);
+                  console.error("âŒ Erreur lors de l'initialisation Supabase:", error);
                   toast.error(`Erreur: ${error.message}`);
                 }
               }
             }}
             variant="outline"
-            className="border-[#00FFC2]/30 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+            className="border-[#CCFF00]/30 text-[#CCFF00] hover:bg-[#CCFF00]/10"
           >
             <Sparkles className="h-4 w-4 mr-2" />
             Initialiser
@@ -705,10 +705,10 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
               setEditingCaseStudy(null);
               setIsCreateOpen(true);
             }}
-            className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+            className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Nouvelle étude de cas
+            Nouvelle Ã©tude de cas
           </Button>
         </div>
       </div>
@@ -721,7 +721,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
               <p className="text-sm text-white/60 mb-1">Total</p>
               <p className="text-2xl text-white">{caseStudies.length}</p>
             </div>
-            <Sparkles className="h-8 w-8 text-[#00FFC2]" />
+            <Sparkles className="h-8 w-8 text-[#CCFF00]" />
           </div>
         </Card>
         <Card className="bg-white/5 border-white/10 p-6">
@@ -732,7 +732,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                 {caseStudies.filter((cs) => cs.featured).length}
               </p>
             </div>
-            <TrendingUp className="h-8 w-8 text-[#00FFC2]" />
+            <TrendingUp className="h-8 w-8 text-[#CCFF00]" />
           </div>
         </Card>
         <Card className="bg-white/5 border-white/10 p-6">
@@ -759,7 +759,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                 {caseStudies.filter((cs) => cs.category === "E-commerce").length}
               </p>
             </div>
-            <Zap className="h-8 w-8 text-[#00FFC2]" />
+            <Zap className="h-8 w-8 text-[#CCFF00]" />
           </div>
         </Card>
       </div>
@@ -769,7 +769,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
           <Input
-            placeholder="Rechercher une étude de cas..."
+            placeholder="Rechercher une Ã©tude de cas..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 bg-white/5 border-white/10 text-white"
@@ -780,7 +780,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Toutes les catégories</SelectItem>
+            <SelectItem value="all">Toutes les catÃ©gories</SelectItem>
             <SelectItem value="E-commerce">E-commerce</SelectItem>
             <SelectItem value="SaaS">SaaS</SelectItem>
             <SelectItem value="Website">Website</SelectItem>
@@ -803,7 +803,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
                       {cs.featured && (
-                        <Badge className="bg-[#00FFC2]/20 text-[#00FFC2] border-[#00FFC2]/40">
+                        <Badge className="bg-[#CCFF00]/20 text-[#CCFF00] border-[#CCFF00]/40">
                           Featured
                         </Badge>
                       )}
@@ -868,7 +868,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
         {filteredCaseStudies.length === 0 && (
           <div className="col-span-full text-center py-12">
             <Sparkles className="h-12 w-12 text-white/20 mx-auto mb-4" />
-            <p className="text-white/60">Aucune étude de cas trouvée</p>
+            <p className="text-white/60">Aucune Ã©tude de cas trouvÃ©e</p>
           </div>
         )}
       </div>
@@ -882,27 +882,27 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
         <DialogContent className="bg-[#0C0C0C] border-white/10 text-white max-w-5xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {editingCaseStudy ? "Modifier l'étude de cas" : "Nouvelle étude de cas"}
+              {editingCaseStudy ? "Modifier l'Ã©tude de cas" : "Nouvelle Ã©tude de cas"}
             </DialogTitle>
             <DialogDescription className="text-white/60">
               {editingCaseStudy
-                ? "Modifiez les informations de votre étude de cas"
-                : "Créez une nouvelle étude de cas détaillée"}
+                ? "Modifiez les informations de votre Ã©tude de cas"
+                : "CrÃ©ez une nouvelle Ã©tude de cas dÃ©taillÃ©e"}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 mt-4">
             <p className="text-white/60 text-sm">
-              🌍 Contenu multilingue - Remplissez le français (obligatoire) et l'anglais (optionnel)
+              ðŸŒ Contenu multilingue - Remplissez le franÃ§ais (obligatoire) et l'anglais (optionnel)
             </p>
 
             {/* Main Tabs: General / Challenge / Solution / Results / Extras */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-5 bg-white/5">
-                <TabsTrigger value="general">Général</TabsTrigger>
-                <TabsTrigger value="challenge">Défi</TabsTrigger>
+                <TabsTrigger value="general">GÃ©nÃ©ral</TabsTrigger>
+                <TabsTrigger value="challenge">DÃ©fi</TabsTrigger>
                 <TabsTrigger value="solution">Solution</TabsTrigger>
-                <TabsTrigger value="results">Résultats</TabsTrigger>
+                <TabsTrigger value="results">RÃ©sultats</TabsTrigger>
                 <TabsTrigger value="extras">Extras</TabsTrigger>
               </TabsList>
 
@@ -924,7 +924,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   </div>
                   <div>
                     <Label htmlFor="year" className="text-white/80">
-                      Année
+                      AnnÃ©e
                     </Label>
                     <Input
                       id="year"
@@ -970,15 +970,15 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                     <TabsList className="grid w-full grid-cols-2 bg-white/5 mb-4">
                       <TabsTrigger 
                         value="fr" 
-                        className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                        className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                       >
-                        🇫🇷 Français {!formData.title && <span className="ml-1 text-red-400">*</span>}
+                        ðŸ‡«ðŸ‡· FranÃ§ais {!formData.title && <span className="ml-1 text-red-400">*</span>}
                       </TabsTrigger>
                       <TabsTrigger 
                         value="en" 
-                        className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                        className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                       >
-                        🇬🇧 English
+                        ðŸ‡¬ðŸ‡§ English
                       </TabsTrigger>
                     </TabsList>
 
@@ -986,7 +986,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                     <TabsContent value="fr" className="space-y-4">
                       <div>
                         <Label htmlFor="title_fr" className="text-white/80">
-                          Titre (Français) *
+                          Titre (FranÃ§ais) *
                         </Label>
                         <Input
                           id="title_fr"
@@ -999,7 +999,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
 
                       <div className="space-y-2">
                         <Label htmlFor="category_fr" className="text-white/80">
-                          Catégorie (Français)
+                          CatÃ©gorie (FranÃ§ais)
                         </Label>
                         <Select
                           value={formData.category?.startsWith("Autre:") ? "Autre" : formData.category}
@@ -1021,13 +1021,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                             <SelectItem value="Application Mobile">Application Mobile</SelectItem>
                             <SelectItem value="Application Web">Application Web</SelectItem>
                             <SelectItem value="Page d'Atterrissage">Page d'Atterrissage</SelectItem>
-                            <SelectItem value="Identité de Marque">Identité de Marque</SelectItem>
+                            <SelectItem value="IdentitÃ© de Marque">IdentitÃ© de Marque</SelectItem>
                             <SelectItem value="Design UI/UX">Design UI/UX</SelectItem>
                             <SelectItem value="Marketing">Marketing</SelectItem>
                             <SelectItem value="Tableau de Bord">Tableau de Bord</SelectItem>
                             <SelectItem value="Portfolio">Portfolio</SelectItem>
                             <SelectItem value="Blog">Blog</SelectItem>
-                            <SelectItem value="Autre">Autre (préciser)</SelectItem>
+                            <SelectItem value="Autre">Autre (prÃ©ciser)</SelectItem>
                           </SelectContent>
                         </Select>
                         {formData.category?.startsWith("Autre:") && (
@@ -1035,14 +1035,14 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                             value={formData.category.replace("Autre: ", "")}
                             onChange={(e) => setFormData({ ...formData, category: `Autre: ${e.target.value}` })}
                             className="bg-white/5 border-white/10 text-white"
-                            placeholder="Préciser la catégorie..."
+                            placeholder="PrÃ©ciser la catÃ©gorie..."
                           />
                         )}
                       </div>
 
                       <div>
                         <Label htmlFor="tagline_fr" className="text-white/80">
-                          Tagline (Français)
+                          Tagline (FranÃ§ais)
                         </Label>
                         <Input
                           id="tagline_fr"
@@ -1055,7 +1055,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
 
                       <div>
                         <Label htmlFor="description_fr" className="text-white/80">
-                          Description (Français)
+                          Description (FranÃ§ais)
                         </Label>
                         <Textarea
                           id="description_fr"
@@ -1071,7 +1071,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
 
                       {/* Tags FR */}
                       <div>
-                        <Label className="text-white/80 mb-2 block">Tags (Français)</Label>
+                        <Label className="text-white/80 mb-2 block">Tags (FranÃ§ais)</Label>
                         <div className="flex gap-2 mb-2">
                           <Input
                             id="tagInput_fr"
@@ -1092,7 +1092,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                               addArrayItem("tags", input.value, "fr");
                               input.value = "";
                             }}
-                            className="bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30"
+                            className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
                           >
                             <Plus className="h-4 w-4" />
                           </Button>
@@ -1101,7 +1101,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           {formData.tags?.map((tag, index) => (
                             <Badge
                               key={index}
-                              className="bg-[#00FFC2]/20 text-[#00FFC2] cursor-pointer hover:bg-red-500/20 hover:text-red-400"
+                              className="bg-[#CCFF00]/20 text-[#CCFF00] cursor-pointer hover:bg-red-500/20 hover:text-red-400"
                               onClick={() => removeArrayItem("tags", index, "fr")}
                             >
                               {tag}
@@ -1222,7 +1222,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                               addArrayItem("tags", input.value, "en");
                               input.value = "";
                             }}
-                            className="bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30"
+                            className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
                           >
                             <Plus className="h-4 w-4" />
                           </Button>
@@ -1231,7 +1231,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           {formData.tags_en?.map((tag, index) => (
                             <Badge
                               key={index}
-                              className="bg-[#00FFC2]/20 text-[#00FFC2] cursor-pointer hover:bg-red-500/20 hover:text-red-400"
+                              className="bg-[#CCFF00]/20 text-[#CCFF00] cursor-pointer hover:bg-red-500/20 hover:text-red-400"
                               onClick={() => removeArrayItem("tags", index, "en")}
                             >
                               {tag}
@@ -1251,15 +1251,15 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <TabsList className="grid w-full grid-cols-2 bg-white/5 mb-4">
                     <TabsTrigger 
                       value="fr" 
-                      className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                      className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      🇫🇷 Français
+                      ðŸ‡«ðŸ‡· FranÃ§ais
                     </TabsTrigger>
                     <TabsTrigger 
                       value="en" 
-                      className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                      className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      🇬🇧 English
+                      ðŸ‡¬ðŸ‡§ English
                     </TabsTrigger>
                   </TabsList>
 
@@ -1267,7 +1267,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <TabsContent value="fr" className="space-y-4">
                     <div>
                       <Label htmlFor="challengeTitle_fr" className="text-white/80">
-                        Titre du défi (Français)
+                        Titre du dÃ©fi (FranÃ§ais)
                       </Label>
                       <Input
                         id="challengeTitle_fr"
@@ -1279,13 +1279,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Un site obsolète qui freinait la croissance"
+                        placeholder="Un site obsolÃ¨te qui freinait la croissance"
                       />
                     </div>
 
                     <div>
                       <Label htmlFor="challengeDescription_fr" className="text-white/80">
-                        Description du défi (Français)
+                        Description du dÃ©fi (FranÃ§ais)
                       </Label>
                       <Textarea
                         id="challengeDescription_fr"
@@ -1297,14 +1297,14 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Description détaillée du problème..."
+                        placeholder="Description dÃ©taillÃ©e du problÃ¨me..."
                         rows={4}
                       />
                     </div>
 
                     {/* Pain Points FR */}
                     <div>
-                      <Label className="text-white/80 mb-2 block">Points de friction (Français)</Label>
+                      <Label className="text-white/80 mb-2 block">Points de friction (FranÃ§ais)</Label>
                       <div className="flex gap-2 mb-2">
                         <Input
                           id="painPointInput_fr"
@@ -1325,7 +1325,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                             addArrayItem("painPoints", input.value, "fr");
                             input.value = "";
                           }}
-                          className="bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30"
+                          className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
                         >
                           <Plus className="h-4 w-4" />
                         </Button>
@@ -1414,7 +1414,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                             addArrayItem("painPoints", input.value, "en");
                             input.value = "";
                           }}
-                          className="bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30"
+                          className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
                         >
                           <Plus className="h-4 w-4" />
                         </Button>
@@ -1449,15 +1449,15 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <TabsList className="grid w-full grid-cols-2 bg-white/5 mb-4">
                     <TabsTrigger 
                       value="fr" 
-                      className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                      className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      🇫🇷 Français
+                      ðŸ‡«ðŸ‡· FranÃ§ais
                     </TabsTrigger>
                     <TabsTrigger 
                       value="en" 
-                      className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                      className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      🇬🇧 English
+                      ðŸ‡¬ðŸ‡§ English
                     </TabsTrigger>
                   </TabsList>
 
@@ -1465,7 +1465,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <TabsContent value="fr" className="space-y-4">
                     <div>
                       <Label htmlFor="solutionTitle_fr" className="text-white/80">
-                        Titre de la solution (Français)
+                        Titre de la solution (FranÃ§ais)
                       </Label>
                       <Input
                         id="solutionTitle_fr"
@@ -1477,13 +1477,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Une refonte complète centrée utilisateur"
+                        placeholder="Une refonte complÃ¨te centrÃ©e utilisateur"
                       />
                     </div>
 
                     <div>
                       <Label htmlFor="solutionDescription_fr" className="text-white/80">
-                        Description de la solution (Français)
+                        Description de la solution (FranÃ§ais)
                       </Label>
                       <Textarea
                         id="solutionDescription_fr"
@@ -1495,18 +1495,18 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Description détaillée de la solution mise en place..."
+                        placeholder="Description dÃ©taillÃ©e de la solution mise en place..."
                         rows={4}
                       />
                     </div>
 
                     {/* Approach FR */}
                     <div>
-                      <Label className="text-white/80 mb-2 block">Approche (Français)</Label>
+                      <Label className="text-white/80 mb-2 block">Approche (FranÃ§ais)</Label>
                       <div className="flex gap-2 mb-2">
                         <Input
                           id="approachInput_fr"
-                          placeholder="Ajouter une étape de l'approche..."
+                          placeholder="Ajouter une Ã©tape de l'approche..."
                           className="bg-white/5 border-white/10 text-white"
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
@@ -1523,7 +1523,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                             addArrayItem("approach", input.value, "fr");
                             input.value = "";
                           }}
-                          className="bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30"
+                          className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
                         >
                           <Plus className="h-4 w-4" />
                         </Button>
@@ -1572,7 +1572,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                             addArrayItem("technologies", input.value);
                             input.value = "";
                           }}
-                          className="bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30"
+                          className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
                         >
                           <Plus className="h-4 w-4" />
                         </Button>
@@ -1581,7 +1581,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                         {formData.solution?.technologies?.map((tech, index) => (
                           <Badge
                             key={index}
-                            className="bg-[#00FFC2]/20 text-[#00FFC2] cursor-pointer hover:bg-red-500/20 hover:text-red-400"
+                            className="bg-[#CCFF00]/20 text-[#CCFF00] cursor-pointer hover:bg-red-500/20 hover:text-red-400"
                             onClick={() => removeArrayItem("technologies", index)}
                           >
                             {tech}
@@ -1654,7 +1654,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                             addArrayItem("approach", input.value, "en");
                             input.value = "";
                           }}
-                          className="bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30"
+                          className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
                         >
                           <Plus className="h-4 w-4" />
                         </Button>
@@ -1689,15 +1689,15 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <TabsList className="grid w-full grid-cols-2 bg-white/5 mb-4">
                     <TabsTrigger 
                       value="fr" 
-                      className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                      className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      🇫🇷 Français
+                      ðŸ‡«ðŸ‡· FranÃ§ais
                     </TabsTrigger>
                     <TabsTrigger 
                       value="en" 
-                      className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                      className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      🇬🇧 English
+                      ðŸ‡¬ðŸ‡§ English
                     </TabsTrigger>
                   </TabsList>
 
@@ -1705,7 +1705,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <TabsContent value="fr" className="space-y-4">
                     <div>
                       <Label htmlFor="resultsTitle_fr" className="text-white/80">
-                        Titre des résultats (Français)
+                        Titre des rÃ©sultats (FranÃ§ais)
                       </Label>
                       <Input
                         id="resultsTitle_fr"
@@ -1717,13 +1717,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Des résultats mesurables et impressionnants"
+                        placeholder="Des rÃ©sultats mesurables et impressionnants"
                       />
                     </div>
 
                     <div>
                       <Label htmlFor="resultsDescription_fr" className="text-white/80">
-                        Description des résultats (Français)
+                        Description des rÃ©sultats (FranÃ§ais)
                       </Label>
                       <Textarea
                         id="resultsDescription_fr"
@@ -1735,7 +1735,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Description détaillée des résultats obtenus..."
+                        placeholder="Description dÃ©taillÃ©e des rÃ©sultats obtenus..."
                         rows={4}
                       />
                     </div>
@@ -1785,15 +1785,15 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                 {/* Metrics (bilingual) */}
                 <div className="border-t border-white/10 pt-4">
                   <div className="flex items-center justify-between mb-4">
-                    <Label className="text-white/80">Métriques (Metrics)</Label>
+                    <Label className="text-white/80">MÃ©triques (Metrics)</Label>
                     <Button
                       type="button"
                       onClick={addMetric}
-                      className="bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30"
+                      className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
                       size="sm"
                     >
                       <Plus className="h-4 w-4 mr-2" />
-                      Ajouter une métrique
+                      Ajouter une mÃ©trique
                     </Button>
                   </div>
                   <div className="space-y-4">
@@ -1842,7 +1842,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                                     : "bg-red-500/10 border-red-500/20 text-red-400"
                                 }`}
                               >
-                                {metric.positive ? "Positif" : "Négatif"}
+                                {metric.positive ? "Positif" : "NÃ©gatif"}
                               </Button>
                               <Button
                                 type="button"
@@ -1867,23 +1867,23 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                 {/* Testimonial */}
                 <div className="border border-white/10 rounded-lg p-4">
                   <h3 className="text-white mb-4 flex items-center gap-2">
-                    <Quote className="h-5 w-5 text-[#00FFC2]" />
-                    Témoignage client
+                    <Quote className="h-5 w-5 text-[#CCFF00]" />
+                    TÃ©moignage client
                   </h3>
                   
                   <Tabs value={editorLang} onValueChange={(v) => setEditorLang(v as "fr" | "en")} className="w-full">
                     <TabsList className="grid w-full grid-cols-2 bg-white/5 mb-4">
                       <TabsTrigger 
                         value="fr" 
-                        className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                        className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                       >
-                        🇫🇷 Français
+                        ðŸ‡«ðŸ‡· FranÃ§ais
                       </TabsTrigger>
                       <TabsTrigger 
                         value="en" 
-                        className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C]"
+                        className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                       >
-                        🇬🇧 English
+                        ðŸ‡¬ðŸ‡§ English
                       </TabsTrigger>
                     </TabsList>
 
@@ -1899,12 +1899,12 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                             })
                           }
                           className="bg-white/5 border-white/10 text-white"
-                          placeholder="L'équipe a dépassé toutes nos attentes..."
+                          placeholder="L'Ã©quipe a dÃ©passÃ© toutes nos attentes..."
                           rows={3}
                         />
                       </div>
                       <div>
-                        <Label className="text-white/60 text-xs">Rôle (FR)</Label>
+                        <Label className="text-white/60 text-xs">RÃ´le (FR)</Label>
                         <Input
                           value={formData.testimonial?.role}
                           onChange={(e) =>
@@ -1988,17 +1988,17 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                 <div className="border border-white/10 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-white flex items-center gap-2">
-                      <ArrowRight className="h-5 w-5 text-[#00FFC2]" />
+                      <ArrowRight className="h-5 w-5 text-[#CCFF00]" />
                       Processus de travail
                     </h3>
                     <Button
                       type="button"
                       onClick={addProcessStep}
-                      className="bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30"
+                      className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
                       size="sm"
                     >
                       <Plus className="h-4 w-4 mr-2" />
-                      Ajouter une étape
+                      Ajouter une Ã©tape
                     </Button>
                   </div>
 
@@ -2006,7 +2006,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                     {formData.process?.map((step, index) => (
                       <Card key={index} className="bg-white/5 border-white/10 p-4">
                         <div className="flex items-start justify-between mb-3">
-                          <span className="text-white/60 text-sm">Étape {index + 1}</span>
+                          <span className="text-white/60 text-sm">Ã‰tape {index + 1}</span>
                           <Button
                             type="button"
                             variant="ghost"
@@ -2022,15 +2022,15 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           <TabsList className="grid w-full grid-cols-2 bg-white/5 mb-3">
                             <TabsTrigger 
                               value="fr" 
-                              className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C] text-xs"
+                              className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C] text-xs"
                             >
-                              🇫🇷 FR
+                              ðŸ‡«ðŸ‡· FR
                             </TabsTrigger>
                             <TabsTrigger 
                               value="en" 
-                              className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-[#0C0C0C] text-xs"
+                              className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C] text-xs"
                             >
-                              🇬🇧 EN
+                              ðŸ‡¬ðŸ‡§ EN
                             </TabsTrigger>
                           </TabsList>
 
@@ -2046,7 +2046,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                                 />
                               </div>
                               <div>
-                                <Label className="text-white/60 text-xs">Durée (FR)</Label>
+                                <Label className="text-white/60 text-xs">DurÃ©e (FR)</Label>
                                 <Input
                                   value={step.duration}
                                   onChange={(e) => updateProcessStep(index, "duration", e.target.value)}
@@ -2061,7 +2061,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                                 value={step.title}
                                 onChange={(e) => updateProcessStep(index, "title", e.target.value)}
                                 className="bg-white/5 border-white/10 text-white text-sm"
-                                placeholder="Découverte"
+                                placeholder="DÃ©couverte"
                               />
                             </div>
                             <div>
@@ -2129,7 +2129,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <div className="flex gap-2 mb-2">
                     <Input
                       id="imageInput"
-                      placeholder="Mots-clés Unsplash..."
+                      placeholder="Mots-clÃ©s Unsplash..."
                       className="bg-white/5 border-white/10 text-white"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
@@ -2146,7 +2146,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                         addArrayItem("images", input.value);
                         input.value = "";
                       }}
-                      className="bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30"
+                      className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
                     >
                       <Plus className="h-4 w-4" />
                     </Button>
@@ -2183,10 +2183,10 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
               </Button>
               <Button
                 onClick={handleSubmit}
-                className="flex-1 bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+                className="flex-1 bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Enregistrement..." : editingCaseStudy ? "Mettre à jour" : "Créer"}
+                {isSubmitting ? "Enregistrement..." : editingCaseStudy ? "Mettre Ã  jour" : "CrÃ©er"}
               </Button>
             </div>
           </div>
@@ -2198,10 +2198,10 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
         open={!!deletingCaseStudy}
         onOpenChange={(open) => !open && setDeletingCaseStudy(null)}
         onConfirm={handleDelete}
-        title="Supprimer l'étude de cas"
-        description="Êtes-vous sûr de vouloir supprimer cette étude de cas ? Cette action est irréversible."
+        title="Supprimer l'Ã©tude de cas"
+        description="ÃŠtes-vous sÃ»r de vouloir supprimer cette Ã©tude de cas ? Cette action est irrÃ©versible."
         itemName={deletingCaseStudy?.title || ""}
-        warningMessage="Toutes les données associées seront définitivement supprimées."
+        warningMessage="Toutes les donnÃ©es associÃ©es seront dÃ©finitivement supprimÃ©es."
       />
     </div>
   );

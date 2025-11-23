@@ -23,7 +23,7 @@ export default function NotFoundPageUltraSimple() {
         <h1 style={{ 
           fontSize: '120px', 
           margin: '0 0 20px 0',
-          color: '#00FFC2',
+          color: '#CCFF00',
           fontWeight: 900 
         }}>
           404
@@ -34,7 +34,7 @@ export default function NotFoundPageUltraSimple() {
           margin: '0 0 20px 0',
           fontWeight: 700 
         }}>
-          Page non trouvée
+          Page non trouvÃ©e
         </h2>
         
         <p style={{ 
@@ -48,7 +48,7 @@ export default function NotFoundPageUltraSimple() {
         <button
           onClick={goHome}
           style={{
-            background: '#00FFC2',
+            background: '#CCFF00',
             color: '#0C0C0C',
             border: 'none',
             padding: '15px 40px',
@@ -58,7 +58,7 @@ export default function NotFoundPageUltraSimple() {
             cursor: 'pointer'
           }}
         >
-          🏠 Retour à l'accueil
+          ðŸ  Retour Ã  l'accueil
         </button>
         
         <div style={{ 

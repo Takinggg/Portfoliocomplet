@@ -1,75 +1,75 @@
-# Documentation — Page Services (Version Premium)
+# Documentation â€” Page Services (Version Premium)
 
-## 📋 Vue d'ensemble
+## ðŸ“‹ Vue d'ensemble
 
-La page Services a été entièrement reworkée selon le cahier des charges premium pour offrir une expérience de conversion optimale. Elle met en valeur le positionnement **UI/UX Designer + Systems Enhancer (IA & Automatisation)**.
+La page Services a Ã©tÃ© entiÃ¨rement reworkÃ©e selon le cahier des charges premium pour offrir une expÃ©rience de conversion optimale. Elle met en valeur le positionnement **UI/UX Designer + Systems Enhancer (IA & Automatisation)**.
 
-## 🎯 Objectifs atteints
+## ðŸŽ¯ Objectifs atteints
 
-✅ **Présentation claire** des services (design, IA, automatisation)  
-✅ **Qualification des visiteurs** pour identifier les clients potentiels  
-✅ **Conversion optimisée** avec multiples CTAs stratégiques  
-✅ **Positionnement premium** orienté ROI et gains mesurables  
+âœ… **PrÃ©sentation claire** des services (design, IA, automatisation)  
+âœ… **Qualification des visiteurs** pour identifier les clients potentiels  
+âœ… **Conversion optimisÃ©e** avec multiples CTAs stratÃ©giques  
+âœ… **Positionnement premium** orientÃ© ROI et gains mesurables  
 
-## 🏗️ Structure de la page
+## ðŸ—ï¸ Structure de la page
 
 ### 1. **Hero Section**
-- Titre accrocheur : "Des expériences qui fonctionnent"
+- Titre accrocheur : "Des expÃ©riences qui fonctionnent"
 - Sous-titre explicatif du positionnement
-- 2 CTAs : "Audit gratuit" (primaire) + "Voir réalisations" (secondaire)
-- Image cover optimisée (fallback si image manquante)
+- 2 CTAs : "Audit gratuit" (primaire) + "Voir rÃ©alisations" (secondaire)
+- Image cover optimisÃ©e (fallback si image manquante)
 - Animation de fond avec orb flottant
 
-### 2. **Pourquoi ça marche** (Value Proposition)
-3 colonnes avec métriques clés :
-- Design centré (+15% conversion)
-- Systèmes actionnables (-20h/mois)
-- Résultats mesurables (ROI 2-4 semaines)
+### 2. **Pourquoi Ã§a marche** (Value Proposition)
+3 colonnes avec mÃ©triques clÃ©s :
+- Design centrÃ© (+15% conversion)
+- SystÃ¨mes actionnables (-20h/mois)
+- RÃ©sultats mesurables (ROI 2-4 semaines)
 
 ### 3. **Packs d'offres** (3 packages)
-#### Starter — 300-500€
+#### Starter â€” 300-500â‚¬
 - Audit UX + 2 automations
-- Durée : 3-5 jours
+- DurÃ©e : 3-5 jours
 - Livrables : Audit, plan d'action, session restitution
 
-#### Pro — 1 000-2 500€ ⭐ (Recommandé)
+#### Pro â€” 1 000-2 500â‚¬ â­ (RecommandÃ©)
 - UI redesign + prototype + 3 automations
 - Dashboard Notion/Airtable
-- Durée : 1-2 semaines
+- DurÃ©e : 1-2 semaines
 - Support 14 jours
 
-#### Scale — 4 000€+ (Sur devis)
+#### Scale â€” 4 000â‚¬+ (Sur devis)
 - Design system complet
-- Multi-pages + IA avancée
+- Multi-pages + IA avancÃ©e
 - Workflows complexes
 - Support 30 jours
 
-**Fonctionnalités :**
+**FonctionnalitÃ©s :**
 - Cards interactives avec hover effects
-- Modals détaillées avec livrables complets
-- Badges "Recommandé" sur pack Pro
-- CTAs "En savoir plus" + "Réserver audit"
+- Modals dÃ©taillÃ©es avec livrables complets
+- Badges "RecommandÃ©" sur pack Pro
+- CTAs "En savoir plus" + "RÃ©server audit"
 
-### 4. **Process Timeline** (5 étapes)
-Méthodologie en 5 phases avec :
-- Numérotation visuelle (01-05)
-- Icônes distinctives
+### 4. **Process Timeline** (5 Ã©tapes)
+MÃ©thodologie en 5 phases avec :
+- NumÃ©rotation visuelle (01-05)
+- IcÃ´nes distinctives
 - Livrables pour chaque phase
-- Durées estimées
-- Ligne de connexion entre étapes (desktop)
+- DurÃ©es estimÃ©es
+- Ligne de connexion entre Ã©tapes (desktop)
 
 ### 5. **Mini Case Studies**
-3 études de cas format rapide :
+3 Ã©tudes de cas format rapide :
 - **E-commerce** : -31% abandon panier
-- **Freelance** : 15h économisées/mois
+- **Freelance** : 15h Ã©conomisÃ©es/mois
 - **SaaS** : +45% engagement
 
-Format : Problème → Action → Résultat (avec métrique visuelle)
+Format : ProblÃ¨me â†’ Action â†’ RÃ©sultat (avec mÃ©trique visuelle)
 
-### 6. **Services Détaillés** (6 blocs)
+### 6. **Services DÃ©taillÃ©s** (6 blocs)
 - UI/UX Design
 - Micro-interactions & Motion Design
-- Intégration Front-end
+- IntÃ©gration Front-end
 - Automatisation (n8n, Make, Zapier)
 - IA & Prompts Engineering
 - Dashboards & Reporting
@@ -78,47 +78,47 @@ Chaque service inclut :
 - Description
 - Features (bullets)
 - Exemple d'usage concret
-- Durée et complexité (badge coloré)
+- DurÃ©e et complexitÃ© (badge colorÃ©)
 
 ### 7. **Triple Engine Demo**
-Widget interactif démontrant le concept **UI → Code → Workflow** :
+Widget interactif dÃ©montrant le concept **UI â†’ Code â†’ Workflow** :
 - 3 blocs cliquables avec hover states
 - Affichage dynamique du contenu selon le bloc actif
 - Explications contextuelles
 
 ### 8. **FAQ Qualifiante**
-8 questions/réponses couvrant :
-- Outils utilisés
+8 questions/rÃ©ponses couvrant :
+- Outils utilisÃ©s
 - Travail international
-- Délais moyens
+- DÃ©lais moyens
 - Support post-livraison
-- Modèle de facturation
-- Confidentialité (RGPD, NDA)
+- ModÃ¨le de facturation
+- ConfidentialitÃ© (RGPD, NDA)
 - Portfolio
 - Stack technique
 
 Format accordion avec animations
 
-### 9. **Pricing & Modèle tarifaire**
+### 9. **Pricing & ModÃ¨le tarifaire**
 Explication transparente :
 - Forfaits fixes vs devis custom
-- Modalités de paiement (30-50% acompte)
+- ModalitÃ©s de paiement (30-50% acompte)
 - Options de paiement (virement, Stripe)
 
 ### 10. **Contact Form**
 Formulaire complet avec :
-- Nom, Email, Société
+- Nom, Email, SociÃ©tÃ©
 - Budget (select avec ranges)
 - Type de projet (select)
-- Message détaillé
-- Checkbox "Souhaite être rappelé"
+- Message dÃ©taillÃ©
+- Checkbox "Souhaite Ãªtre rappelÃ©"
 - Validation front-end
-- Animation de succès
+- Animation de succÃ¨s
 - Note RGPD
 
 **TODO Backend :**
 ```typescript
-// À intégrer :
+// Ã€ intÃ©grer :
 - Sauvegarde dans Notion/Supabase
 - Envoi email via SendGrid/Resend
 - Notification Slack/Telegram
@@ -127,14 +127,14 @@ Formulaire complet avec :
 ### 11. **CTA Final**
 Section de conversion ultime :
 - Titre percutant
-- 2 CTAs : "Réserver audit" + "Envoyer brief"
+- 2 CTAs : "RÃ©server audit" + "Envoyer brief"
 - Smooth scroll vers formulaire
 
 ### 12. **Trust Elements Footer**
 4 badges de confiance :
 - 100% Satisfaction clients
-- < 24h Temps de réponse
-- RGPD Conformité garantie
+- < 24h Temps de rÃ©ponse
+- RGPD ConformitÃ© garantie
 - NDA Sur demande
 
 ### 13. **Sticky CTA Bar** (Bottom)
@@ -143,12 +143,12 @@ Barre fixe persistante avec :
 - 2 CTAs (Audit + Brief)
 - Bouton fermeture
 - Responsive mobile
-- Animation d'entrée (slide up)
+- Animation d'entrÃ©e (slide up)
 
-## 🎨 Design System
+## ðŸŽ¨ Design System
 
 ### Couleurs
-- **Primary (Mint)** : `#00FFC2` pour CTAs et accents
+- **Primary (Mint)** : `#CCFF00` pour CTAs et accents
 - **Background** : `#0C0C0C` (noir profond)
 - **Cards** : `#1A1A1A` / `#neutral-950`
 - **Borders** : `#neutral-900` avec hover `mint/20`
@@ -170,7 +170,7 @@ Barre fixe persistante avec :
 - Glow effects (mint/5 opacity)
 - Smooth transitions (300ms)
 
-## 📱 Responsive
+## ðŸ“± Responsive
 
 Breakpoints :
 - **Mobile** : < 768px (1 colonne)
@@ -178,51 +178,51 @@ Breakpoints :
 - **Desktop** : > 1024px (3+ colonnes)
 
 Points d'attention :
-- Sticky bar adapté mobile (CTAs empilés)
-- Grid ajusté selon viewport
+- Sticky bar adaptÃ© mobile (CTAs empilÃ©s)
+- Grid ajustÃ© selon viewport
 - Images responsive avec fallback
-- Forms optimisés mobile
+- Forms optimisÃ©s mobile
 
-## 🔧 Composants créés
+## ðŸ”§ Composants crÃ©Ã©s
 
 ### Core Components
 ```
 /src/components/services/
-├── ServicePackageCard.tsx       (Cards des packs)
-├── ServicePackageModal.tsx      (Modal détails pack)
-├── ProcessTimeline.tsx          (Timeline 5 étapes)
-├── MiniCaseStudies.tsx          (Mini case studies)
-├── ServiceDetailBlocks.tsx      (Services détaillés)
-├── TripleEngineDemo.tsx         (Demo interactive)
-├── ServicesFAQ.tsx              (FAQ accordion)
-├── StickyCTABar.tsx             (Barre CTA sticky)
-└── ServiceContactForm.tsx       (Formulaire contact)
+â”œâ”€â”€ ServicePackageCard.tsx       (Cards des packs)
+â”œâ”€â”€ ServicePackageModal.tsx      (Modal dÃ©tails pack)
+â”œâ”€â”€ ProcessTimeline.tsx          (Timeline 5 Ã©tapes)
+â”œâ”€â”€ MiniCaseStudies.tsx          (Mini case studies)
+â”œâ”€â”€ ServiceDetailBlocks.tsx      (Services dÃ©taillÃ©s)
+â”œâ”€â”€ TripleEngineDemo.tsx         (Demo interactive)
+â”œâ”€â”€ ServicesFAQ.tsx              (FAQ accordion)
+â”œâ”€â”€ StickyCTABar.tsx             (Barre CTA sticky)
+â””â”€â”€ ServiceContactForm.tsx       (Formulaire contact)
 ```
 
 ### Page principale
 ```
 /src/components/pages/
-└── ServicesPage.tsx             (Page complète)
+â””â”€â”€ ServicesPage.tsx             (Page complÃ¨te)
 ```
 
-## 🚀 Optimisations SEO
+## ðŸš€ Optimisations SEO
 
-### Meta Tags (implémentés)
+### Meta Tags (implÃ©mentÃ©s)
 ```html
-<title>Services — UI/UX Design, Automatisation & IA — Maxence</title>
-<meta name="description" content="UI/UX design + automatisation : j'aide les startups et freelances à créer des interfaces performantes et des systèmes intelligents. Audit gratuit.">
+<title>Services â€” UI/UX Design, Automatisation & IA â€” Maxence</title>
+<meta name="description" content="UI/UX design + automatisation : j'aide les startups et freelances Ã  crÃ©er des interfaces performantes et des systÃ¨mes intelligents. Audit gratuit.">
 ```
 
 ### Structure HTML
 - H1 unique dans hero
 - H2 pour chaque section
 - H3 pour sous-sections
-- Hiérarchie respectée
+- HiÃ©rarchie respectÃ©e
 
-### Mots-clés ciblés
+### Mots-clÃ©s ciblÃ©s
 - UI/UX design
 - Automatisation n8n
-- Intégration GPT
+- IntÃ©gration GPT
 - Dashboard Notion
 - Design system
 - Workflows
@@ -231,38 +231,38 @@ Points d'attention :
 - [ ] Ajouter schema.org Service markup
 - [ ] Optimiser images (lazy load, webp)
 - [ ] Ajouter alt texts descriptifs
-- [ ] Créer sitemap.xml incluant /services
+- [ ] CrÃ©er sitemap.xml incluant /services
 
-## ♿ Accessibilité
+## â™¿ AccessibilitÃ©
 
-### Implémenté
+### ImplÃ©mentÃ©
 - Labels sur tous les inputs
-- Aria-labels sur boutons icône
-- Contraste respecté (WCAG AA minimum)
+- Aria-labels sur boutons icÃ´ne
+- Contraste respectÃ© (WCAG AA minimum)
 - Navigation clavier fonctionnelle
-- Focus visible sur éléments interactifs
+- Focus visible sur Ã©lÃ©ments interactifs
 
-### À améliorer
+### Ã€ amÃ©liorer
 - [ ] Tests avec screen readers
 - [ ] Ajouter skip links
-- [ ] Tester navigation au clavier complète
-- [ ] Vérifier aria-expanded sur accordions
+- [ ] Tester navigation au clavier complÃ¨te
+- [ ] VÃ©rifier aria-expanded sur accordions
 
-## 📊 Performance
+## ðŸ“Š Performance
 
 ### Optimisations
 - Lazy load des images
 - Code splitting par route
 - Framer Motion tree-shakeable
-- CSS-in-JS minimisé (Tailwind)
+- CSS-in-JS minimisÃ© (Tailwind)
 
-### Métriques cibles
-- Lighthouse Desktop : **≥ 85**
-- Lighthouse Mobile : **≥ 70**
+### MÃ©triques cibles
+- Lighthouse Desktop : **â‰¥ 85**
+- Lighthouse Mobile : **â‰¥ 70**
 - First Contentful Paint : **< 1.5s**
 - Time to Interactive : **< 3.5s**
 
-## 🔗 Intégrations à faire
+## ðŸ”— IntÃ©grations Ã  faire
 
 ### Backend
 ```typescript
@@ -294,7 +294,7 @@ await resend.emails.send({
 await fetch(SLACK_WEBHOOK_URL, {
   method: 'POST',
   body: JSON.stringify({
-    text: `🚀 Nouveau lead : ${formData.name} - ${formData.budget}`
+    text: `ðŸš€ Nouveau lead : ${formData.name} - ${formData.budget}`
   })
 });
 ```
@@ -310,71 +310,71 @@ await fetch(SLACK_WEBHOOK_URL, {
 - Interactions Triple Engine Demo
 ```
 
-## 📝 Checklist de mise en production
+## ðŸ“ Checklist de mise en production
 
-### Pré-déploiement
-- [x] Build réussi sans erreurs
+### PrÃ©-dÃ©ploiement
+- [x] Build rÃ©ussi sans erreurs
 - [x] Tous les composants fonctionnels
-- [x] Responsive testé
+- [x] Responsive testÃ©
 - [x] Animations fluides
-- [ ] Images optimisées (webp)
-- [ ] Backend form intégré
-- [ ] Analytics configuré
+- [ ] Images optimisÃ©es (webp)
+- [ ] Backend form intÃ©grÃ©
+- [ ] Analytics configurÃ©
 - [ ] Tests cross-browser
 
-### Post-déploiement
+### Post-dÃ©ploiement
 - [ ] Tester tous les CTAs
-- [ ] Vérifier formulaire envoie
+- [ ] VÃ©rifier formulaire envoie
 - [ ] Checker emails auto
 - [ ] Monitorer Lighthouse score
-- [ ] Tester sur mobile réel
-- [ ] Vérifier sticky bar mobile
+- [ ] Tester sur mobile rÃ©el
+- [ ] VÃ©rifier sticky bar mobile
 
-## 🎯 Conversion Tracking
+## ðŸŽ¯ Conversion Tracking
 
-### KPIs à suivre
+### KPIs Ã  suivre
 1. **Taux de scroll** : Combien vont jusqu'au formulaire ?
 2. **Clicks CTA Audit** : Nombre de clics sur audit gratuit
-3. **Ouverture modals** : Taux d'ouverture détails packs
+3. **Ouverture modals** : Taux d'ouverture dÃ©tails packs
 4. **Soumission form** : Taux de conversion formulaire
-5. **Temps moyen page** : Engagement général
+5. **Temps moyen page** : Engagement gÃ©nÃ©ral
 6. **Interactions demo** : Hover sur Triple Engine
 
 ### Objectifs
-- **Taux de conversion** : 5-8% (visiteurs → leads)
+- **Taux de conversion** : 5-8% (visiteurs â†’ leads)
 - **Temps moyen page** : > 3 minutes
 - **Scroll depth 100%** : > 40%
 - **Mobile bounce rate** : < 50%
 
-## 🔄 Prochaines itérations
+## ðŸ”„ Prochaines itÃ©rations
 
 ### Phase 2 (court terme)
 - [ ] A/B test sur titres CTA
-- [ ] Ajouter témoignages clients
-- [ ] Intégrer calendrier Calendly inline
+- [ ] Ajouter tÃ©moignages clients
+- [ ] IntÃ©grer calendrier Calendly inline
 - [ ] Video demo Triple Engine
 - [ ] Calculateur de prix interactif
 
 ### Phase 3 (moyen terme)
 - [ ] Live chat integration
-- [ ] Case studies détaillées linkées
+- [ ] Case studies dÃ©taillÃ©es linkÃ©es
 - [ ] Blog posts relatifs
 - [ ] Comparison table (packs)
 - [ ] FAQ dynamique (search)
 
-## 🐛 Bugs connus
+## ðŸ› Bugs connus
 
 Aucun bug connu actuellement. Le build est stable.
 
-## 📞 Support
+## ðŸ“ž Support
 
-Pour toute question sur cette implémentation :
+Pour toute question sur cette implÃ©mentation :
 - Code source : `/src/components/services/` et `/src/components/pages/ServicesPage.tsx`
 - Documentation : Ce fichier
-- Tests : `npm run build` pour vérifier la compilation
+- Tests : `npm run build` pour vÃ©rifier la compilation
 
 ---
 
-**Date de création** : 19 novembre 2025  
+**Date de crÃ©ation** : 19 novembre 2025  
 **Version** : 1.0.0 (Premium Rework)  
-**Statut** : ✅ Production Ready (après intégration backend form)
+**Statut** : âœ… Production Ready (aprÃ¨s intÃ©gration backend form)

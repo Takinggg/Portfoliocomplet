@@ -52,7 +52,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
 
   useEffect(() => {
     if (invoice) {
-      // Mode édition
+      // Mode Ã©dition
       setSelectedClientId(invoice.client_id || "");
       setInvoiceNumber(invoice.invoice_number || "");
       setIssueDate(invoice.issue_date || "");
@@ -64,13 +64,13 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
       const client = clients.find(c => c.id === invoice.client_id);
       if (client) setSelectedClient(client);
     } else {
-      // Mode création - générer un numéro auto
+      // Mode crÃ©ation - gÃ©nÃ©rer un numÃ©ro auto
       const now = new Date();
       const invoiceNum = `INV-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
       setInvoiceNumber(invoiceNum);
       setIssueDate(now.toISOString().split('T')[0]);
       
-      // Date d'échéance par défaut : +30 jours
+      // Date d'Ã©chÃ©ance par dÃ©faut : +30 jours
       const due = new Date(now);
       due.setDate(due.getDate() + 30);
       setDueDate(due.toISOString().split('T')[0]);
@@ -112,7 +112,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
 
   const handleSubmit = async () => {
     if (!selectedClientId) {
-      alert("Veuillez sélectionner un client");
+      alert("Veuillez sÃ©lectionner un client");
       return;
     }
 
@@ -124,7 +124,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
     setCreating(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error("Non authentifié");
+      if (!session) throw new Error("Non authentifiÃ©");
 
       const invoiceData = {
         client_id: selectedClientId,
@@ -155,7 +155,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
         body: JSON.stringify(invoiceData)
       });
 
-      if (!response.ok) throw new Error("Erreur lors de la création");
+      if (!response.ok) throw new Error("Erreur lors de la crÃ©ation");
 
       onSuccess();
       onOpenChange(false);
@@ -176,7 +176,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-y-auto bg-[#0C0C0C] border-[#00FFC2]/20">
+      <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-y-auto bg-[#0C0C0C] border-[#CCFF00]/20">
         <DialogHeader>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500/20 to-orange-600/20 flex items-center justify-center">
@@ -184,10 +184,10 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
             </div>
             <div>
               <DialogTitle className="text-white text-lg">
-                {invoice ? "Modifier la facture" : "Créer une nouvelle facture"}
+                {invoice ? "Modifier la facture" : "CrÃ©er une nouvelle facture"}
               </DialogTitle>
               <p className="text-xs text-white/60 mt-0.5">
-                {invoice ? "Modifiez les informations de la facture" : "Générez une facture professionnelle pour votre client"}
+                {invoice ? "Modifiez les informations de la facture" : "GÃ©nÃ©rez une facture professionnelle pour votre client"}
               </p>
             </div>
           </div>
@@ -203,7 +203,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
             
             <Select value={selectedClientId} onValueChange={handleClientChange}>
               <SelectTrigger className="bg-white/5 border-white/10 text-white h-9 text-sm">
-                <SelectValue placeholder="Sélectionnez un client..." />
+                <SelectValue placeholder="SÃ©lectionnez un client..." />
               </SelectTrigger>
               <SelectContent className="bg-[#0C0C0C] border-white/10">
                 {clients.map(client => (
@@ -231,7 +231,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
           {/* Invoice Details */}
           <div className="grid grid-cols-3 gap-3">
             <div className="space-y-1.5">
-              <Label className="text-white/80 text-xs">N° Facture</Label>
+              <Label className="text-white/80 text-xs">NÂ° Facture</Label>
               <Input
                 value={invoiceNumber}
                 onChange={(e) => setInvoiceNumber(e.target.value)}
@@ -241,7 +241,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-white/80 text-xs">Date d'émission</Label>
+              <Label className="text-white/80 text-xs">Date d'Ã©mission</Label>
               <Input
                 type="date"
                 value={issueDate}
@@ -251,7 +251,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-white/80 text-xs">Date d'échéance</Label>
+              <Label className="text-white/80 text-xs">Date d'Ã©chÃ©ance</Label>
               <Input
                 type="date"
                 value={dueDate}
@@ -268,10 +268,10 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-[#0C0C0C] border-white/10">
-                <SelectItem value="draft">📝 Brouillon</SelectItem>
-                <SelectItem value="sent">📤 Envoyée</SelectItem>
-                <SelectItem value="paid">💰 Payée</SelectItem>
-                <SelectItem value="overdue">⏰ En retard</SelectItem>
+                <SelectItem value="draft">ðŸ“ Brouillon</SelectItem>
+                <SelectItem value="sent">ðŸ“¤ EnvoyÃ©e</SelectItem>
+                <SelectItem value="paid">ðŸ’° PayÃ©e</SelectItem>
+                <SelectItem value="overdue">â° En retard</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -319,7 +319,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
 
                   <div className="grid grid-cols-3 gap-2">
                     <div key={`quantity-${item.id}`} className="space-y-1">
-                      <Label className="text-xs text-white/60">Quantité</Label>
+                      <Label className="text-xs text-white/60">QuantitÃ©</Label>
                       <Input
                         type="number"
                         min="1"
@@ -330,7 +330,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
                     </div>
 
                     <div key={`price-${item.id}`} className="space-y-1">
-                      <Label className="text-xs text-white/60">Prix unitaire (€)</Label>
+                      <Label className="text-xs text-white/60">Prix unitaire (â‚¬)</Label>
                       <Input
                         type="number"
                         min="0"
@@ -344,7 +344,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
                     <div key={`total-${item.id}`} className="space-y-1">
                       <Label className="text-xs text-white/60">Total</Label>
                       <div className="h-9 px-3 rounded-md bg-orange-500/10 border border-orange-500/20 flex items-center">
-                        <span className="text-orange-400 font-semibold text-sm">{item.total.toFixed(2)} €</span>
+                        <span className="text-orange-400 font-semibold text-sm">{item.total.toFixed(2)} â‚¬</span>
                       </div>
                     </div>
                   </div>
@@ -357,16 +357,16 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
           <div className="p-3 bg-gradient-to-br from-white/5 to-white/[0.02] rounded-lg border border-white/10 space-y-2">
             <div className="flex items-center justify-between text-white/70 text-sm">
               <span>Sous-total HT</span>
-              <span className="font-semibold">{subtotal.toFixed(2)} €</span>
+              <span className="font-semibold">{subtotal.toFixed(2)} â‚¬</span>
             </div>
             <div className="flex items-center justify-between text-white/70 text-sm">
               <span>TVA (20%)</span>
-              <span className="font-semibold">{tva.toFixed(2)} €</span>
+              <span className="font-semibold">{tva.toFixed(2)} â‚¬</span>
             </div>
             <div className="h-px bg-white/10" />
             <div className="flex items-center justify-between">
               <span className="text-base font-bold text-white">Total TTC</span>
-              <span className="text-xl font-bold text-orange-400">{total.toFixed(2)} €</span>
+              <span className="text-xl font-bold text-orange-400">{total.toFixed(2)} â‚¬</span>
             </div>
           </div>
 
@@ -376,7 +376,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
             <Textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Conditions de paiement, modalités..."
+              placeholder="Conditions de paiement, modalitÃ©s..."
               className="bg-white/5 border-white/10 text-white min-h-[60px] text-sm"
             />
           </div>
@@ -388,7 +388,7 @@ export function InvoiceCreationDialog({ open, onOpenChange, onSuccess, clients, 
               disabled={creating || !selectedClientId}
               className="flex-1 bg-orange-500 text-white hover:bg-orange-600 h-9"
             >
-              {creating ? "Création..." : invoice ? "Mettre à jour" : "Créer la facture"}
+              {creating ? "CrÃ©ation..." : invoice ? "Mettre Ã  jour" : "CrÃ©er la facture"}
             </Button>
             <Button
               type="button"

@@ -10,7 +10,7 @@ export default function NotFoundPageSimple() {
   const location = useLocation();
   const [countdown, setCountdown] = useState(10);
 
-  // Détecter la langue
+  // DÃ©tecter la langue
   const lang = location.pathname.startsWith('/en') ? 'en' : 'fr';
 
   // Countdown et redirection
@@ -31,9 +31,9 @@ export default function NotFoundPageSimple() {
   // Textes
   const text = lang === 'fr' ? {
     title: '404',
-    subtitle: 'Page non trouvée',
+    subtitle: 'Page non trouvÃ©e',
     message: 'La page que vous recherchez n\'existe pas.',
-    home: 'Retour à l\'accueil',
+    home: 'Retour Ã  l\'accueil',
     back: 'Retour',
     projects: 'Projets',
     contact: 'Contact',
@@ -68,7 +68,7 @@ export default function NotFoundPageSimple() {
         <div style={{
           fontSize: 'clamp(100px, 20vw, 180px)',
           fontWeight: 900,
-          background: 'linear-gradient(135deg, #00FFC2 0%, #00CC99 100%)',
+          background: 'linear-gradient(135deg, #CCFF00 0%, #00CC99 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
@@ -109,7 +109,7 @@ export default function NotFoundPageSimple() {
           <button
             onClick={() => navigate(`/${lang}`)}
             style={{
-              background: '#00FFC2',
+              background: '#CCFF00',
               color: '#0C0C0C',
               border: 'none',
               padding: '15px 30px',
@@ -125,19 +125,19 @@ export default function NotFoundPageSimple() {
               e.currentTarget.style.transform = 'translateY(-2px)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#00FFC2';
+              e.currentTarget.style.background = '#CCFF00';
               e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
-            🏠 {text.home}
+            ðŸ  {text.home}
           </button>
 
           <button
             onClick={() => navigate(-1)}
             style={{
               background: 'transparent',
-              color: '#00FFC2',
-              border: '2px solid #00FFC2',
+              color: '#CCFF00',
+              border: '2px solid #CCFF00',
               padding: '15px 30px',
               fontSize: '16px',
               fontWeight: 600,
@@ -147,7 +147,7 @@ export default function NotFoundPageSimple() {
               minWidth: '160px'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(0, 255, 194, 0.1)';
+              e.currentTarget.style.background = 'rgba(204, 255, 0, 0.1)';
               e.currentTarget.style.transform = 'translateY(-2px)';
             }}
             onMouseLeave={(e) => {
@@ -155,7 +155,7 @@ export default function NotFoundPageSimple() {
               e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
-            ← {text.back}
+            â† {text.back}
           </button>
 
           <button
@@ -181,7 +181,7 @@ export default function NotFoundPageSimple() {
               e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
-            📁 {text.projects}
+            ðŸ“ {text.projects}
           </button>
 
           <button
@@ -207,7 +207,7 @@ export default function NotFoundPageSimple() {
               e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
-            ✉️ {text.contact}
+            âœ‰ï¸ {text.contact}
           </button>
         </div>
 
@@ -228,9 +228,9 @@ export default function NotFoundPageSimple() {
               key={item.path}
               onClick={() => navigate(`/${lang}${item.path}`)}
               style={{
-                background: 'rgba(0, 255, 194, 0.1)',
-                color: '#00FFC2',
-                border: '1px solid rgba(0, 255, 194, 0.2)',
+                background: 'rgba(204, 255, 0, 0.1)',
+                color: '#CCFF00',
+                border: '1px solid rgba(204, 255, 0, 0.2)',
                 padding: '8px 16px',
                 fontSize: '14px',
                 borderRadius: '6px',
@@ -238,10 +238,10 @@ export default function NotFoundPageSimple() {
                 transition: 'all 0.2s'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(0, 255, 194, 0.2)';
+                e.currentTarget.style.background = 'rgba(204, 255, 0, 0.2)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(0, 255, 194, 0.1)';
+                e.currentTarget.style.background = 'rgba(204, 255, 0, 0.1)';
               }}
             >
               {item.label}
@@ -259,7 +259,7 @@ export default function NotFoundPageSimple() {
             color: 'rgba(244, 244, 244, 0.4)',
             fontSize: '14px'
           }}>
-            ⏱️ {text.redirect}
+            â±ï¸ {text.redirect}
           </p>
         </div>
 

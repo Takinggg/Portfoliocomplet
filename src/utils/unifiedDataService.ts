@@ -1,10 +1,10 @@
 /**
  * UNIFIED DATA SERVICE - SUPABASE ONLY
  * 
- * Service centralisé pour TOUTES les données du portfolio/CRM
- * ✅ Utilise UNIQUEMENT Supabase (pas de localStorage)
- * ✅ Gère projets, blog, case studies, FAQs, resources
- * ✅ Synchronisation complète dashboard ↔ pages publiques
+ * Service centralisÃ© pour TOUTES les donnÃ©es du portfolio/CRM
+ * âœ… Utilise UNIQUEMENT Supabase (pas de localStorage)
+ * âœ… GÃ¨re projets, blog, case studies, FAQs, resources
+ * âœ… Synchronisation complÃ¨te dashboard â†” pages publiques
  */
 
 import { projectId, publicAnonKey } from "./supabase/info";
@@ -18,8 +18,8 @@ let lastCheck: number = 0;
 const CHECK_INTERVAL = 30000; // Re-check every 30 seconds
 
 /**
- * Vérifie la connexion au serveur (NON-BLOQUANT)
- * Cette fonction vérifie la connexion mais ne bloque PAS les requêtes
+ * VÃ©rifie la connexion au serveur (NON-BLOQUANT)
+ * Cette fonction vÃ©rifie la connexion mais ne bloque PAS les requÃªtes
  */
 export async function checkServerConnection(): Promise<boolean> {
   const now = Date.now();
@@ -32,7 +32,7 @@ export async function checkServerConnection(): Promise<boolean> {
       headers: {
         Authorization: `Bearer ${publicAnonKey}`,
       },
-      signal: AbortSignal.timeout(3000), // Réduit à 3s pour être plus rapide
+      signal: AbortSignal.timeout(3000), // RÃ©duit Ã  3s pour Ãªtre plus rapide
     });
     
     const isConnected = response.ok;
@@ -40,7 +40,7 @@ export async function checkServerConnection(): Promise<boolean> {
     lastCheck = now;
     
     if (isConnected) {
-      console.log("✅ Serveur Supabase connecté");
+      console.log("âœ… Serveur Supabase connectÃ©");
       try {
         const data = await response.json();
         console.log("   Version serveur:", data.version || "unknown");
@@ -48,12 +48,12 @@ export async function checkServerConnection(): Promise<boolean> {
         // Ignore JSON parse errors
       }
     } else {
-      console.warn("⚠️ Serveur Supabase non disponible (Status:", response.status, ")");
+      console.warn("âš ï¸ Serveur Supabase non disponible (Status:", response.status, ")");
     }
     
     return isConnected;
   } catch (error) {
-    console.warn("⚠️ Impossible de contacter le serveur Supabase (ce n'est pas bloquant)");
+    console.warn("âš ï¸ Impossible de contacter le serveur Supabase (ce n'est pas bloquant)");
     currentMode = "disconnected";
     lastCheck = now;
     return false;
@@ -61,7 +61,7 @@ export async function checkServerConnection(): Promise<boolean> {
 }
 
 /**
- * Force la re-vérification du serveur
+ * Force la re-vÃ©rification du serveur
  */
 export function forceRecheck(): void {
   lastCheck = 0;
@@ -133,10 +133,10 @@ export interface BilingualProject {
 }
 
 /**
- * Récupère tous les projets bilingues
+ * RÃ©cupÃ¨re tous les projets bilingues
  */
 export async function fetchProjects(): Promise<BilingualProject[]> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
   
   try {
@@ -154,26 +154,26 @@ export async function fetchProjects(): Promise<BilingualProject[]> {
     const data = await response.json();
     const projects = data.projects || data || [];
     
-    // ⚠️ Si pas un tableau, retourner vide
+    // âš ï¸ Si pas un tableau, retourner vide
     if (!Array.isArray(projects)) {
-      console.warn("⚠️ Projects response is not an array:", projects);
+      console.warn("âš ï¸ Projects response is not an array:", projects);
       return [];
     }
     
-    console.log(`✅ Projets chargés: ${projects.length}`);
+    console.log(`âœ… Projets chargÃ©s: ${projects.length}`);
     currentMode = "connected";
     return projects;
   } catch (error) {
-    console.error("❌ Erreur chargement projets:", error);
+    console.error("âŒ Erreur chargement projets:", error);
     throw error;
   }
 }
 
 /**
- * Récupère un projet par ID
+ * RÃ©cupÃ¨re un projet par ID
  */
 export async function fetchProjectById(id: string): Promise<BilingualProject | null> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try {
@@ -192,19 +192,19 @@ export async function fetchProjectById(id: string): Promise<BilingualProject | n
     const data = await response.json();
     return data.project || null;
   } catch (error) {
-    console.error(`❌ Erreur chargement projet ${id}:`, error);
+    console.error(`âŒ Erreur chargement projet ${id}:`, error);
     throw error;
   }
 }
 
 /**
- * Crée un nouveau projet (auth requise)
+ * CrÃ©e un nouveau projet (auth requise)
  */
 export async function createProject(
   project: Omit<BilingualProject, "id" | "createdAt" | "updatedAt">,
   accessToken: string
 ): Promise<BilingualProject> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try {
@@ -220,27 +220,27 @@ export async function createProject(
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`Erreur création: ${error}`);
+      throw new Error(`Erreur crÃ©ation: ${error}`);
     }
 
     const data = await response.json();
-    console.log("✅ Projet créé:", data.project.id);
+    console.log("âœ… Projet crÃ©Ã©:", data.project.id);
     return data.project;
   } catch (error) {
-    console.error("❌ Erreur création projet:", error);
+    console.error("âŒ Erreur crÃ©ation projet:", error);
     throw error;
   }
 }
 
 /**
- * Met à jour un projet (auth requise)
+ * Met Ã  jour un projet (auth requise)
  */
 export async function updateProject(
   id: string,
   updates: Partial<BilingualProject>,
   accessToken: string
 ): Promise<BilingualProject> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try {
@@ -256,14 +256,14 @@ export async function updateProject(
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`Erreur mise à jour: ${error}`);
+      throw new Error(`Erreur mise Ã  jour: ${error}`);
     }
 
     const data = await response.json();
-    console.log("✅ Projet mis à jour:", id);
+    console.log("âœ… Projet mis Ã  jour:", id);
     return data.project;
   } catch (error) {
-    console.error("❌ Erreur mise à jour projet:", error);
+    console.error("âŒ Erreur mise Ã  jour projet:", error);
     throw error;
   }
 }
@@ -272,7 +272,7 @@ export async function updateProject(
  * Supprime un projet (auth requise)
  */
 export async function deleteProject(id: string, accessToken: string): Promise<void> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try {
@@ -289,9 +289,9 @@ export async function deleteProject(id: string, accessToken: string): Promise<vo
       throw new Error(`Erreur suppression: ${error}`);
     }
 
-    console.log("✅ Projet supprimé:", id);
+    console.log("âœ… Projet supprimÃ©:", id);
   } catch (error) {
-    console.error("❌ Erreur suppression projet:", error);
+    console.error("âŒ Erreur suppression projet:", error);
     throw error;
   }
 }
@@ -357,7 +357,7 @@ export interface BlogPost {
   publishedAt?: string;
   createdAt: string;
   updatedAt: string;
-  // Pour compatibilité avec l'interface existante
+  // Pour compatibilitÃ© avec l'interface existante
   title?: string;
   excerpt?: string;
   content?: string;
@@ -365,10 +365,10 @@ export interface BlogPost {
 }
 
 /**
- * Récupère tous les posts du blog
+ * RÃ©cupÃ¨re tous les posts du blog
  */
 export async function fetchBlogPosts(lang: "fr" | "en" = "fr"): Promise<BlogPost[]> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
   
   try {
@@ -385,16 +385,16 @@ export async function fetchBlogPosts(lang: "fr" | "en" = "fr"): Promise<BlogPost
 
     const data = await response.json();
     
-    // ✅ Extraire le tableau posts de la réponse { success: true, posts: [...] }
+    // âœ… Extraire le tableau posts de la rÃ©ponse { success: true, posts: [...] }
     const posts = data.posts || data || [];
     
-    // ⚠️ Si pas un tableau, retourner vide
+    // âš ï¸ Si pas un tableau, retourner vide
     if (!Array.isArray(posts)) {
-      console.warn("⚠️ Blog posts response is not an array:", posts);
+      console.warn("âš ï¸ Blog posts response is not an array:", posts);
       return [];
     }
     
-    // Normaliser les posts pour la langue demandée
+    // Normaliser les posts pour la langue demandÃ©e
     const normalizedPosts = posts.map((post: BlogPost) => ({
       ...post,
       title: lang === "en" ? post.title_en : post.title_fr,
@@ -403,19 +403,19 @@ export async function fetchBlogPosts(lang: "fr" | "en" = "fr"): Promise<BlogPost
       language: lang,
     }));
     
-    console.log(`✅ Articles chargés: ${normalizedPosts.length} (${lang})`);
+    console.log(`âœ… Articles chargÃ©s: ${normalizedPosts.length} (${lang})`);
     return normalizedPosts;
   } catch (error) {
-    console.error("❌ Erreur chargement articles:", error);
+    console.error("âŒ Erreur chargement articles:", error);
     throw error;
   }
 }
 
 /**
- * Récupère un post par slug
+ * RÃ©cupÃ¨re un post par slug
  */
 export async function fetchBlogPost(slug: string, lang: "fr" | "en" = "fr"): Promise<BlogPost | null> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try {
@@ -436,7 +436,7 @@ export async function fetchBlogPost(slug: string, lang: "fr" | "en" = "fr"): Pro
     
     if (!post) return null;
     
-    // Normaliser le post pour la langue demandée
+    // Normaliser le post pour la langue demandÃ©e
     return {
       ...post,
       title: lang === "en" ? post.title_en : post.title_fr,
@@ -445,19 +445,19 @@ export async function fetchBlogPost(slug: string, lang: "fr" | "en" = "fr"): Pro
       language: lang,
     };
   } catch (error) {
-    console.error(`❌ Erreur chargement article ${slug}:`, error);
+    console.error(`âŒ Erreur chargement article ${slug}:`, error);
     throw error;
   }
 }
 
 /**
- * Crée un nouveau post (auth requise)
+ * CrÃ©e un nouveau post (auth requise)
  */
 export async function createBlogPost(
   post: Omit<BlogPost, "id" | "views" | "createdAt" | "updatedAt">,
   accessToken: string
 ): Promise<BlogPost> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try {
@@ -473,27 +473,27 @@ export async function createBlogPost(
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`Erreur création: ${error}`);
+      throw new Error(`Erreur crÃ©ation: ${error}`);
     }
 
     const data = await response.json();
-    console.log("✅ Article créé:", data.post.slug);
+    console.log("âœ… Article crÃ©Ã©:", data.post.slug);
     return data.post;
   } catch (error) {
-    console.error("❌ Erreur création article:", error);
+    console.error("âŒ Erreur crÃ©ation article:", error);
     throw error;
   }
 }
 
 /**
- * Met à jour un post (auth requise)
+ * Met Ã  jour un post (auth requise)
  */
 export async function updateBlogPost(
   id: string,
   updates: Partial<BlogPost>,
   accessToken: string
 ): Promise<BlogPost> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try{
@@ -509,14 +509,14 @@ export async function updateBlogPost(
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`Erreur mise à jour: ${error}`);
+      throw new Error(`Erreur mise Ã  jour: ${error}`);
     }
 
     const data = await response.json();
-    console.log("✅ Article mis à jour:", id);
+    console.log("âœ… Article mis Ã  jour:", id);
     return data.post;
   } catch (error) {
-    console.error("❌ Erreur mise à jour article:", error);
+    console.error("âŒ Erreur mise Ã  jour article:", error);
     throw error;
   }
 }
@@ -525,7 +525,7 @@ export async function updateBlogPost(
  * Supprime un post (auth requise)
  */
 export async function deleteBlogPost(id: string, accessToken: string): Promise<void> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try {
@@ -542,15 +542,15 @@ export async function deleteBlogPost(id: string, accessToken: string): Promise<v
       throw new Error(`Erreur suppression: ${error}`);
     }
 
-    console.log("✅ Article supprimé:", id);
+    console.log("âœ… Article supprimÃ©:", id);
   } catch (error) {
-    console.error("❌ Erreur suppression article:", error);
+    console.error("âŒ Erreur suppression article:", error);
     throw error;
   }
 }
 
 /**
- * Incrémente les vues d'un post
+ * IncrÃ©mente les vues d'un post
  */
 export async function incrementPostViews(slug: string): Promise<void> {
   try {
@@ -635,10 +635,10 @@ export interface CaseStudy {
 }
 
 /**
- * Récupère toutes les case studies
+ * RÃ©cupÃ¨re toutes les case studies
  */
 export async function fetchCaseStudies(): Promise<CaseStudy[]> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {}); // Fire and forget
   
   try {
@@ -650,27 +650,27 @@ export async function fetchCaseStudies(): Promise<CaseStudy[]> {
     });
 
     if (!response.ok) {
-      console.error(`❌ Erreur serveur case studies: ${response.status}`);
+      console.error(`âŒ Erreur serveur case studies: ${response.status}`);
       throw new Error(`Erreur serveur: ${response.status}`);
     }
 
     const data = await response.json();
     // Le serveur retourne { caseStudies: [...] } ou { success: true, caseStudies: [...] }
     const caseStudies = data.caseStudies || data;
-    console.log(`✅ Études de cas chargées: ${caseStudies.length}`);
-    currentMode = "connected"; // Marquer comme connecté si ça a marché
+    console.log(`âœ… Ã‰tudes de cas chargÃ©es: ${caseStudies.length}`);
+    currentMode = "connected"; // Marquer comme connectÃ© si Ã§a a marchÃ©
     return Array.isArray(caseStudies) ? caseStudies : [];
   } catch (error) {
-    console.error("❌ Erreur chargement case studies:", error);
+    console.error("âŒ Erreur chargement case studies:", error);
     throw error;
   }
 }
 
 /**
- * Récupère une case study par slug
+ * RÃ©cupÃ¨re une case study par slug
  */
 export async function fetchCaseStudy(slug: string): Promise<CaseStudy | null> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try {
@@ -689,19 +689,19 @@ export async function fetchCaseStudy(slug: string): Promise<CaseStudy | null> {
     const caseStudy = await response.json();
     return caseStudy;
   } catch (error) {
-    console.error(`❌ Erreur chargement case study ${slug}:`, error);
+    console.error(`âŒ Erreur chargement case study ${slug}:`, error);
     throw error;
   }
 }
 
 /**
- * Crée une nouvelle case study (auth requise)
+ * CrÃ©e une nouvelle case study (auth requise)
  */
 export async function createCaseStudy(
   caseStudy: Omit<CaseStudy, "id" | "createdAt" | "updatedAt">,
   accessToken: string
 ): Promise<CaseStudy> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try {
@@ -717,27 +717,27 @@ export async function createCaseStudy(
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`Erreur création: ${error}`);
+      throw new Error(`Erreur crÃ©ation: ${error}`);
     }
 
     const data = await response.json();
-    console.log("✅ Case study créée:", data.caseStudy.slug);
+    console.log("âœ… Case study crÃ©Ã©e:", data.caseStudy.slug);
     return data.caseStudy;
   } catch (error) {
-    console.error("❌ Erreur création case study:", error);
+    console.error("âŒ Erreur crÃ©ation case study:", error);
     throw error;
   }
 }
 
 /**
- * Met à jour une case study (auth requise)
+ * Met Ã  jour une case study (auth requise)
  */
 export async function updateCaseStudy(
   id: string,
   updates: Partial<CaseStudy>,
   accessToken: string
 ): Promise<CaseStudy> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try {
@@ -753,14 +753,14 @@ export async function updateCaseStudy(
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`Erreur mise à jour: ${error}`);
+      throw new Error(`Erreur mise Ã  jour: ${error}`);
     }
 
     const data = await response.json();
-    console.log("✅ Case study mise à jour:", id);
+    console.log("âœ… Case study mise Ã  jour:", id);
     return data.caseStudy;
   } catch (error) {
-    console.error("❌ Erreur mise à jour case study:", error);
+    console.error("âŒ Erreur mise Ã  jour case study:", error);
     throw error;
   }
 }
@@ -769,7 +769,7 @@ export async function updateCaseStudy(
  * Supprime une case study (auth requise)
  */
 export async function deleteCaseStudy(id: string, accessToken: string): Promise<void> {
-  // Vérification non-bloquante
+  // VÃ©rification non-bloquante
   checkServerConnection().catch(() => {});
 
   try {
@@ -786,9 +786,9 @@ export async function deleteCaseStudy(id: string, accessToken: string): Promise<
       throw new Error(`Erreur suppression: ${error}`);
     }
 
-    console.log("✅ Case study supprimée:", id);
+    console.log("âœ… Case study supprimÃ©e:", id);
   } catch (error) {
-    console.error("❌ Erreur suppression case study:", error);
+    console.error("âŒ Erreur suppression case study:", error);
     throw error;
   }
 }
@@ -802,34 +802,34 @@ export function getConnectionBadge(): { icon: string; text: string; color: strin
   switch (currentMode) {
     case "connected":
       return { 
-        icon: "🟢", 
-        text: "Connecté", 
-        color: "#00FFC2",
-        details: "Serveur Supabase opérationnel"
+        icon: "ðŸŸ¢", 
+        text: "ConnectÃ©", 
+        color: "#CCFF00",
+        details: "Serveur Supabase opÃ©rationnel"
       };
     case "disconnected":
       return { 
-        icon: "🔴", 
-        text: "Déconnecté", 
+        icon: "ðŸ”´", 
+        text: "DÃ©connectÃ©", 
         color: "#FF0000",
-        details: "Le serveur Edge Function n'est pas déployé. Consultez /DEPLOYMENT_GUIDE_SUPABASE.md"
+        details: "Le serveur Edge Function n'est pas dÃ©ployÃ©. Consultez /DEPLOYMENT_GUIDE_SUPABASE.md"
       };
     case "checking":
       return { 
-        icon: "🔄", 
-        text: "Vérification...", 
+        icon: "ðŸ”„", 
+        text: "VÃ©rification...", 
         color: "#888888",
-        details: "Vérification de la connexion au serveur..."
+        details: "VÃ©rification de la connexion au serveur..."
       };
   }
 }
 
 /**
- * Retourne des instructions pour corriger les problèmes de connexion
+ * Retourne des instructions pour corriger les problÃ¨mes de connexion
  */
 export function getConnectionInstructions(): string {
   return `
-🚀 COMMENT DÉPLOYER LE SERVEUR SUPABASE:
+ðŸš€ COMMENT DÃ‰PLOYER LE SERVEUR SUPABASE:
 
 1. Installez Supabase CLI:
    npm install -g supabase
@@ -840,12 +840,12 @@ export function getConnectionInstructions(): string {
 3. Liez votre projet:
    supabase link --project-ref ${projectId}
 
-4. Déployez le serveur:
+4. DÃ©ployez le serveur:
    supabase functions deploy make-server-04919ac5
 
-5. Vérifiez le déploiement:
+5. VÃ©rifiez le dÃ©ploiement:
    curl https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/health
 
-📖 Guide complet: Consultez /DEPLOYMENT_GUIDE_SUPABASE.md
+ðŸ“– Guide complet: Consultez /DEPLOYMENT_GUIDE_SUPABASE.md
   `;
 }

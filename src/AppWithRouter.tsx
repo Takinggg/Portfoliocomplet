@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
 import "./styles/globals.css";
 import { Home, Briefcase, User, Mail, Calendar, LayoutDashboard } from "lucide-react";
-import HomePage from "./components/pages/HomePage";
 import ProjectsPage from "./components/pages/ProjectsPage";
 import ProjectDetailPage from "./components/pages/ProjectDetailPage";
-import ServicesPage from "./components/pages/ServicesPage";
+import ServicesPage from "./components/pages/ServicesRedesignPage";
 import AboutPage from "./components/pages/AboutPage";
 import ContactPage from "./components/pages/ContactPage";
 import BookingPage from "./components/pages/BookingPage";
@@ -23,10 +22,14 @@ import TestimonialsPage from "./components/pages/TestimonialsPage";
 import SyncDashboardPage from "./components/pages/SyncDashboardPage";
 import InvoiceViewPage from "./components/pages/InvoiceViewPage";
 import InvoiceSuccessPage from "./components/pages/InvoiceSuccessPage";
-import Navigation from "./components/layout/Navigation";
-import Footer from "./components/layout/Footer";
+import LegalPage from "./components/pages/LegalPage";
+import HomeRedesignPage from "./components/pages/HomeRedesignPage";
 import { SkipNavigation } from "./components/layout/SkipNavigation";
-import { NewsletterPopup } from "./components/newsletter/NewsletterPopup";
+import { Navbar as RedesignNavbar } from "./redesign/components/Navbar";
+import { Footer as RedesignFooter } from "./redesign/components/Footer";
+import { CustomCursor } from "./redesign/components/CustomCursor";
+import { RedesignNewsletterPopup } from "./redesign/components/NewsletterPopup";
+import type { PageView } from "./redesign/types";
 import { BackToTop } from "./components/BackToTop";
 import { ScrollProgress } from "./components/ScrollProgress";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -430,7 +433,7 @@ function AppContent() {
         <Route path="/" element={<Navigate to="/fr" replace />} />
         
         {/* Public routes with navigation and footer - French */}
-        <Route path="/fr" element={<PublicLayout currentPage="home"><RouteWrapper component={HomePage} currentPage="home" /></PublicLayout>} />
+        <Route path="/fr" element={<PublicLayout currentPage="home"><RouteWrapper component={HomeRedesignPage} currentPage="home" /></PublicLayout>} />
         <Route path="/fr/projects" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectsPage} currentPage="projects" /></PublicLayout>} />
         <Route path="/fr/projects/:projectId" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectDetailPage} currentPage="project-detail" /></PublicLayout>} />
         <Route path="/fr/services" element={<PublicLayout currentPage="services"><RouteWrapper component={ServicesPage} currentPage="services" /></PublicLayout>} />
@@ -444,9 +447,10 @@ function AppContent() {
         <Route path="/fr/faq" element={<PublicLayout currentPage="faq"><RouteWrapper component={FAQPage} currentPage="faq" /></PublicLayout>} />
         <Route path="/fr/resources" element={<PublicLayout currentPage="resources"><RouteWrapper component={ResourcesPage} currentPage="resources" /></PublicLayout>} />
         <Route path="/fr/testimonials" element={<PublicLayout currentPage="testimonials"><RouteWrapper component={TestimonialsPage} currentPage="testimonials" /></PublicLayout>} />
+        <Route path="/fr/legal/:section" element={<PublicLayout currentPage="legal"><RouteWrapper component={LegalPage} currentPage="legal" /></PublicLayout>} />
         
         {/* Public routes with navigation and footer - English */}
-        <Route path="/en" element={<PublicLayout currentPage="home"><RouteWrapper component={HomePage} currentPage="home" /></PublicLayout>} />
+        <Route path="/en" element={<PublicLayout currentPage="home"><RouteWrapper component={HomeRedesignPage} currentPage="home" /></PublicLayout>} />
         <Route path="/en/projects" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectsPage} currentPage="projects" /></PublicLayout>} />
         <Route path="/en/projects/:projectId" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectDetailPage} currentPage="project-detail" /></PublicLayout>} />
         <Route path="/en/services" element={<PublicLayout currentPage="services"><RouteWrapper component={ServicesPage} currentPage="services" /></PublicLayout>} />
@@ -460,6 +464,7 @@ function AppContent() {
         <Route path="/en/faq" element={<PublicLayout currentPage="faq"><RouteWrapper component={FAQPage} currentPage="faq" /></PublicLayout>} />
         <Route path="/en/resources" element={<PublicLayout currentPage="resources"><RouteWrapper component={ResourcesPage} currentPage="resources" /></PublicLayout>} />
         <Route path="/en/testimonials" element={<PublicLayout currentPage="testimonials"><RouteWrapper component={TestimonialsPage} currentPage="testimonials" /></PublicLayout>} />
+        <Route path="/en/legal/:section" element={<PublicLayout currentPage="legal"><RouteWrapper component={LegalPage} currentPage="legal" /></PublicLayout>} />
       </Routes>
       
       {/* PWA Components */}
@@ -480,64 +485,59 @@ function AppContent() {
   );
 }
 
-// Public page layout with Navigation and Footer
-function PublicLayout({ children, currentPage }: { children: React.ReactNode; currentPage: string }) {
+// Public page layout with redesigned shell
+function PublicLayout({ children }: { children: React.ReactNode; currentPage: string }) {
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // Get current language from URL
-  const getLanguageFromPath = (): string => {
-    const match = location.pathname.match(/^\/(en|fr)(\/|$)/);
-    return match ? match[1] : 'fr';
-  };
-  
-  // Build navigation path with language
-  const buildNavPath = (page: string): string => {
-    const lang = getLanguageFromPath();
-    // Special routes without language prefix
-    if (page === 'dashboard' || page === 'login') {
-      return `/${page}`;
-    }
-    // Home page
-    if (page === 'home') {
-      return `/${lang}`;
-    }
-    // All other pages with language prefix
-    return `/${lang}/${page}`;
-  };
+  const match = location.pathname.match(/^\/(en|fr)(\/|$)/);
+  const lang = (match ? (match[1] as 'fr' | 'en') : 'fr');
 
-  // Get current page from URL
-  const getCurrentPage = (): any => {
+  const getCurrentView = (): PageView => {
     const path = location.pathname;
-    if (path.includes('/projects')) return 'projects';
     if (path.includes('/services')) return 'services';
-    if (path.includes('/about')) return 'about';
-    if (path.includes('/contact')) return 'contact';
-    if (path.includes('/booking')) return 'booking';
-    if (path.includes('/blog')) return 'blog';
-    if (path.includes('/case-studies')) return 'case-studies';
-    if (path.includes('/faq')) return 'faq';
-    if (path.includes('/resources')) return 'resources';
-    if (path.includes('/testimonials')) return 'testimonials';
-    if (path.includes('/dashboard')) return 'dashboard';
+    if (path.includes('/projects')) return 'portfolio';
+    if (path.includes('/case-studies')) return 'casestudies';
+    if (path.includes('/contact') || path.includes('/booking')) return 'contact';
     return 'home';
   };
-  
+
+  const getPathForView = (view: PageView): string => {
+    switch (view) {
+      case 'services':
+        return `/${lang}/services`;
+      case 'portfolio':
+        return `/${lang}/projects`;
+      case 'casestudies':
+        return `/${lang}/case-studies`;
+      case 'contact':
+        return `/${lang}/contact`;
+      case 'admin':
+        return '/dashboard';
+      case 'home':
+      default:
+        return `/${lang}`;
+    }
+  };
+
+  const handleNavigate = (view: PageView) => {
+    navigate(getPathForView(view));
+  };
+
+  const currentView = getCurrentView();
+
   return (
-    <>
+    <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+      <div className="bg-noise" aria-hidden="true" />
+      <CustomCursor />
       <ScrollProgress />
-      <Navigation 
-        currentPage={getCurrentPage() as any} 
-        onNavigate={(page) => navigate(buildNavPath(page))}
-        isAuthenticated={false}
-      />
-      <main id="main-content" className="flex-1" tabIndex={-1}>
+      <RedesignNavbar currentPage={currentView} onNavigate={handleNavigate} />
+      <main id="main-content" className="flex-1 pt-24" tabIndex={-1}>
         {children}
       </main>
-      <Footer onNavigate={(page) => navigate(buildNavPath(page))} />
-      <NewsletterPopup />
+      <RedesignFooter onNavigate={handleNavigate} language={lang} />
+      <RedesignNewsletterPopup />
       <BackToTop />
-    </>
+    </div>
   );
 }
 

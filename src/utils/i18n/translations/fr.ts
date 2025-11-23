@@ -1059,6 +1059,7 @@ export default {
         "🎯 Tendances web & design",
         "🚀 Nouveaux projets en avant-première"
       ],
+      "cta": "S'abonner",
       "close": "Fermer"
     },
     "cta": {

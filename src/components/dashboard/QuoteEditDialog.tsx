@@ -58,7 +58,7 @@ export function QuoteEditDialog({ quote, open, onOpenChange, onSave }: QuoteEdit
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -80,16 +80,16 @@ export function QuoteEditDialog({ quote, open, onOpenChange, onSave }: QuoteEdit
       );
 
       if (response.ok) {
-        toast.success("Devis mis à jour avec succès");
+        toast.success("Devis mis Ã  jour avec succÃ¨s");
         onSave();
         onOpenChange(false);
       } else {
         const error = await response.json();
-        toast.error(error.error || "Erreur lors de la mise à jour");
+        toast.error(error.error || "Erreur lors de la mise Ã  jour");
       }
     } catch (error) {
       console.error("Error updating quote:", error);
-      toast.error("Erreur lors de la mise à jour");
+      toast.error("Erreur lors de la mise Ã  jour");
     } finally {
       setSaving(false);
     }
@@ -97,7 +97,7 @@ export function QuoteEditDialog({ quote, open, onOpenChange, onSave }: QuoteEdit
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20 text-white">
+      <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 text-white">
         <DialogHeader>
           <DialogTitle>Modifier le devis {quote.number}</DialogTitle>
           <DialogDescription className="text-gray-400">
@@ -116,7 +116,7 @@ export function QuoteEditDialog({ quote, open, onOpenChange, onSave }: QuoteEdit
           </div>
 
           <div>
-            <Label className="text-gray-300">Montant (€) *</Label>
+            <Label className="text-gray-300">Montant (â‚¬) *</Label>
             <Input
               type="number"
               value={formData.amount}
@@ -159,7 +159,7 @@ export function QuoteEditDialog({ quote, open, onOpenChange, onSave }: QuoteEdit
             <Button
               onClick={handleSave}
               disabled={saving}
-              className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+              className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
             >
               {saving ? "Enregistrement..." : "Enregistrer"}
             </Button>

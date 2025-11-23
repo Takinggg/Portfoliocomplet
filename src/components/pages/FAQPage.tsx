@@ -57,7 +57,7 @@ interface FAQQuestion {
 const FAQ_CATEGORIES: FAQCategory[] = [
   {
     id: "general",
-    name: "Général",
+    name: "GÃ©nÃ©ral",
     name_en: "General",
     icon: "User",
     color: "text-blue-400",
@@ -105,7 +105,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
   },
   {
     id: "security",
-    name: "Technique & confidentialité",
+    name: "Technique & confidentialitÃ©",
     name_en: "Technical & Confidentiality",
     icon: "Shield",
     color: "text-red-400",
@@ -122,12 +122,12 @@ const FAQ_CATEGORIES: FAQCategory[] = [
 ];
 
 const FAQ_QUESTIONS: FAQQuestion[] = [
-  // ==================== GÉNÉRAL ====================
+  // ==================== GÃ‰NÃ‰RAL ====================
   {
     id: "general_1",
-    question: "Qui êtes-vous ?",
+    question: "Qui Ãªtes-vous ?",
     question_en: "Who are you?",
-    answer: "Je m'appelle Maxence, freelance spécialisé en design, automatisation et IA. J'aide les entreprises à créer des systèmes intelligents et des interfaces performantes.",
+    answer: "Je m'appelle Maxence, freelance spÃ©cialisÃ© en design, automatisation et IA. J'aide les entreprises Ã  crÃ©er des systÃ¨mes intelligents et des interfaces performantes.",
     answer_en: "I'm Maxence, a freelance designer and automation specialist. I help companies build smart systems and efficient interfaces.",
     categoryId: "general",
     order: 1,
@@ -139,31 +139,31 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "general_2",
     question: "Avec qui travaillez-vous ?",
     question_en: "Who do you work with?",
-    answer: "Je collabore avec des startups, PME et indépendants qui souhaitent professionnaliser leur image et optimiser leurs process.",
+    answer: "Je collabore avec des startups, PME et indÃ©pendants qui souhaitent professionnaliser leur image et optimiser leurs process.",
     answer_en: "I collaborate with startups, SMEs, and independent creators.",
     categoryId: "general",
     order: 2,
-    keywords: ["clients", "startups", "pme", "indépendants", "collaboration"],
+    keywords: ["clients", "startups", "pme", "indÃ©pendants", "collaboration"],
     keywords_en: ["clients", "startups", "sme", "independent", "collaboration"],
     isPublished: true,
   },
   {
     id: "general_3",
-    question: "Où êtes-vous basé ?",
+    question: "OÃ¹ Ãªtes-vous basÃ© ?",
     question_en: "Where are you based?",
     answer: "Je travaille en full remote, depuis la France.",
     answer_en: "I work fully remote from France.",
     categoryId: "general",
     order: 3,
-    keywords: ["localisation", "france", "remote", "télétravail", "où"],
+    keywords: ["localisation", "france", "remote", "tÃ©lÃ©travail", "oÃ¹"],
     keywords_en: ["location", "france", "remote", "where", "based"],
     isPublished: true,
   },
   {
     id: "general_4",
-    question: "Travaillez-vous à l'international ?",
+    question: "Travaillez-vous Ã  l'international ?",
     question_en: "Do you work internationally?",
-    answer: "Oui, j'accompagne des clients dans plusieurs pays (Europe, États-Unis, Asie).",
+    answer: "Oui, j'accompagne des clients dans plusieurs pays (Europe, Ã‰tats-Unis, Asie).",
     answer_en: "Yes, I work with clients from Europe, the U.S., and Asia.",
     categoryId: "general",
     order: 4,
@@ -175,11 +175,11 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "general_5",
     question: "Quelle est votre langue de travail ?",
     question_en: "What languages do you work in?",
-    answer: "Je travaille en français et en anglais.",
+    answer: "Je travaille en franÃ§ais et en anglais.",
     answer_en: "French and English.",
     categoryId: "general",
     order: 5,
-    keywords: ["langue", "français", "anglais", "bilingue"],
+    keywords: ["langue", "franÃ§ais", "anglais", "bilingue"],
     keywords_en: ["language", "french", "english", "bilingual"],
     isPublished: true,
   },
@@ -189,7 +189,7 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "design_1",
     question: "Quels types de design proposez-vous ?",
     question_en: "What kind of design services do you offer?",
-    answer: "Web design, UI/UX design, maquettes complètes de site, et création de dashboards personnalisés.",
+    answer: "Web design, UI/UX design, maquettes complÃ¨tes de site, et crÃ©ation de dashboards personnalisÃ©s.",
     answer_en: "Web design, UI/UX design, full site mockups, and custom dashboard creation.",
     categoryId: "design",
     order: 1,
@@ -201,7 +201,7 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "design_2",
     question: "Utilisez-vous Figma pour vos projets ?",
     question_en: "Do you use Figma?",
-    answer: "Oui, Figma est mon outil principal. Je l'utilise aussi avec Figma AI pour accélérer la conception.",
+    answer: "Oui, Figma est mon outil principal. Je l'utilise aussi avec Figma AI pour accÃ©lÃ©rer la conception.",
     answer_en: "Yes, Figma (and Figma AI) is my main design tool.",
     categoryId: "design",
     order: 2,
@@ -211,25 +211,25 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
   },
   {
     id: "design_3",
-    question: "Pouvez-vous refaire entièrement un site existant ?",
+    question: "Pouvez-vous refaire entiÃ¨rement un site existant ?",
     question_en: "Can you redesign an existing website?",
-    answer: "Oui, je peux effectuer une refonte complète, que ce soit sur le plan visuel ou structurel.",
-    answer_en: "Absolutely — I can fully redesign and optimize your current site.",
+    answer: "Oui, je peux effectuer une refonte complÃ¨te, que ce soit sur le plan visuel ou structurel.",
+    answer_en: "Absolutely â€” I can fully redesign and optimize your current site.",
     categoryId: "design",
     order: 3,
-    keywords: ["refonte", "redesign", "existant", "amélioration", "rénovation"],
+    keywords: ["refonte", "redesign", "existant", "amÃ©lioration", "rÃ©novation"],
     keywords_en: ["redesign", "existing", "improve", "renovation", "optimize"],
     isPublished: true,
   },
   {
     id: "design_4",
-    question: "Proposez-vous des identités visuelles complètes ?",
+    question: "Proposez-vous des identitÃ©s visuelles complÃ¨tes ?",
     question_en: "Do you create full visual identities?",
-    answer: "Oui, je peux concevoir un système visuel complet : couleurs, typographie, logo et composants.",
+    answer: "Oui, je peux concevoir un systÃ¨me visuel complet : couleurs, typographie, logo et composants.",
     answer_en: "Yes, including colors, typography, logos, and components.",
     categoryId: "design",
     order: 4,
-    keywords: ["identité", "branding", "logo", "charte", "graphique"],
+    keywords: ["identitÃ©", "branding", "logo", "charte", "graphique"],
     keywords_en: ["identity", "branding", "logo", "charter", "visual"],
     isPublished: true,
   },
@@ -237,7 +237,7 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "design_5",
     question: "Offrez-vous des prototypes interactifs ?",
     question_en: "Do you provide interactive prototypes?",
-    answer: "Oui, chaque projet est livré avec un prototype cliquable pour valider les interactions avant développement.",
+    answer: "Oui, chaque projet est livrÃ© avec un prototype cliquable pour valider les interactions avant dÃ©veloppement.",
     answer_en: "Yes, every project includes a clickable prototype before development.",
     categoryId: "design",
     order: 5,
@@ -251,7 +251,7 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "automation_1",
     question: "Qu'est-ce que l'automatisation d'entreprise ?",
     question_en: "What is business automation?",
-    answer: "C'est la mise en place de processus qui se déclenchent automatiquement (envoi d'emails, génération de factures, synchronisation de données, etc.).",
+    answer: "C'est la mise en place de processus qui se dÃ©clenchent automatiquement (envoi d'emails, gÃ©nÃ©ration de factures, synchronisation de donnÃ©es, etc.).",
     answer_en: "It's about creating workflows that run automatically (emails, invoices, data sync, etc.).",
     categoryId: "automation",
     order: 1,
@@ -263,7 +263,7 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "automation_2",
     question: "Quels outils d'automatisation utilisez-vous ?",
     question_en: "What tools do you use for automation?",
-    answer: "J'utilise principalement n8n, Zapier et des solutions maison codées directement dans vos systèmes.",
+    answer: "J'utilise principalement n8n, Zapier et des solutions maison codÃ©es directement dans vos systÃ¨mes.",
     answer_en: "Mainly n8n, Zapier, and custom-coded automations.",
     categoryId: "automation",
     order: 2,
@@ -273,9 +273,9 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
   },
   {
     id: "automation_3",
-    question: "Proposez-vous des intégrations IA ?",
+    question: "Proposez-vous des intÃ©grations IA ?",
     question_en: "Do you integrate AI?",
-    answer: "Oui, j'intègre des modèles d'IA pour améliorer la productivité : génération de contenu, réponses automatiques, analyse de données, etc.",
+    answer: "Oui, j'intÃ¨gre des modÃ¨les d'IA pour amÃ©liorer la productivitÃ© : gÃ©nÃ©ration de contenu, rÃ©ponses automatiques, analyse de donnÃ©es, etc.",
     answer_en: "Yes, I use AI for productivity: content generation, analysis, smart notifications.",
     categoryId: "automation",
     order: 3,
@@ -285,13 +285,13 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
   },
   {
     id: "automation_4",
-    question: "Pouvez-vous créer un système entièrement personnalisé sans no-code ?",
+    question: "Pouvez-vous crÃ©er un systÃ¨me entiÃ¨rement personnalisÃ© sans no-code ?",
     question_en: "Can you build custom systems from scratch (no no-code)?",
-    answer: "Oui, je code les systèmes à la main si nécessaire, notamment pour les dashboards internes.",
+    answer: "Oui, je code les systÃ¨mes Ã  la main si nÃ©cessaire, notamment pour les dashboards internes.",
     answer_en: "Yes, I develop everything directly when necessary.",
     categoryId: "automation",
     order: 4,
-    keywords: ["code", "personnalisé", "sur mesure", "développement", "custom"],
+    keywords: ["code", "personnalisÃ©", "sur mesure", "dÃ©veloppement", "custom"],
     keywords_en: ["code", "custom", "tailored", "development", "scratch"],
     isPublished: true,
   },
@@ -299,8 +299,8 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "automation_5",
     question: "L'IA remplace-t-elle le design humain ?",
     question_en: "Does AI replace human design?",
-    answer: "Non, elle l'accélère. L'IA m'aide à prototyper et tester plus vite, mais le design final reste 100 % humain.",
-    answer_en: "No, it speeds it up — design decisions remain human.",
+    answer: "Non, elle l'accÃ©lÃ¨re. L'IA m'aide Ã  prototyper et tester plus vite, mais le design final reste 100 % humain.",
+    answer_en: "No, it speeds it up â€” design decisions remain human.",
     categoryId: "automation",
     order: 5,
     keywords: ["ia", "humain", "design", "remplacement", "automatisation"],
@@ -311,13 +311,13 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
   // ==================== PROCESS CLIENT ====================
   {
     id: "process_1",
-    question: "Comment se déroule un projet typique ?",
+    question: "Comment se dÃ©roule un projet typique ?",
     question_en: "What's your typical workflow?",
-    answer: "Étape 1 : Appel découverte → Étape 2 : Proposition → Étape 3 : Design / Développement → Étape 4 : Livraison & suivi.",
-    answer_en: "Step 1: Discovery call → Step 2: Proposal → Step 3: Design/Build → Step 4: Delivery & follow-up.",
+    answer: "Ã‰tape 1 : Appel dÃ©couverte â†’ Ã‰tape 2 : Proposition â†’ Ã‰tape 3 : Design / DÃ©veloppement â†’ Ã‰tape 4 : Livraison & suivi.",
+    answer_en: "Step 1: Discovery call â†’ Step 2: Proposal â†’ Step 3: Design/Build â†’ Step 4: Delivery & follow-up.",
     categoryId: "process",
     order: 1,
-    keywords: ["process", "étapes", "workflow", "déroulement", "projet"],
+    keywords: ["process", "Ã©tapes", "workflow", "dÃ©roulement", "projet"],
     keywords_en: ["process", "steps", "workflow", "stages", "project"],
     isPublished: true,
   },
@@ -325,11 +325,11 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "process_2",
     question: "Combien de temps dure un projet en moyenne ?",
     question_en: "How long does a project take?",
-    answer: "Entre 1 à 4 semaines selon la complexité.",
+    answer: "Entre 1 Ã  4 semaines selon la complexitÃ©.",
     answer_en: "Between 1 and 4 weeks depending on complexity.",
     categoryId: "process",
     order: 2,
-    keywords: ["délai", "temps", "durée", "semaines", "planning"],
+    keywords: ["dÃ©lai", "temps", "durÃ©e", "semaines", "planning"],
     keywords_en: ["timeline", "time", "duration", "weeks", "planning"],
     isPublished: true,
   },
@@ -337,7 +337,7 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "process_3",
     question: "Comment se fait la communication pendant le projet ?",
     question_en: "How do you communicate during a project?",
-    answer: "Principalement par e-mail ou via un espace client dédié (dashboard).",
+    answer: "Principalement par e-mail ou via un espace client dÃ©diÃ© (dashboard).",
     answer_en: "Mainly via email or the client dashboard.",
     categoryId: "process",
     order: 3,
@@ -347,25 +347,25 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
   },
   {
     id: "process_4",
-    question: "Proposez-vous des suivis après livraison ?",
+    question: "Proposez-vous des suivis aprÃ¨s livraison ?",
     question_en: "Do you offer post-delivery support?",
     answer: "Oui, un suivi de 30 jours est inclus pour ajuster et corriger si besoin.",
     answer_en: "Yes, a 30-day follow-up is included.",
     categoryId: "process",
     order: 4,
-    keywords: ["suivi", "support", "après", "livraison", "garantie"],
+    keywords: ["suivi", "support", "aprÃ¨s", "livraison", "garantie"],
     keywords_en: ["support", "follow-up", "after", "delivery", "warranty"],
     isPublished: true,
   },
   {
     id: "process_5",
-    question: "Puis-je demander des ajustements après livraison ?",
+    question: "Puis-je demander des ajustements aprÃ¨s livraison ?",
     question_en: "Can I request revisions?",
-    answer: "Oui, chaque projet comprend plusieurs itérations prévues dès le départ.",
+    answer: "Oui, chaque projet comprend plusieurs itÃ©rations prÃ©vues dÃ¨s le dÃ©part.",
     answer_en: "Yes, multiple iterations are included.",
     categoryId: "process",
     order: 5,
-    keywords: ["ajustements", "révisions", "modifications", "itérations"],
+    keywords: ["ajustements", "rÃ©visions", "modifications", "itÃ©rations"],
     keywords_en: ["adjustments", "revisions", "modifications", "iterations"],
     isPublished: true,
   },
@@ -373,19 +373,19 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
   // ==================== PRICING ====================
   {
     id: "pricing_1",
-    question: "Comment sont calculés vos tarifs ?",
+    question: "Comment sont calculÃ©s vos tarifs ?",
     question_en: "How do you price projects?",
-    answer: "Les tarifs dépendent du périmètre, de la complexité et du délai. Chaque projet est chiffré sur mesure.",
+    answer: "Les tarifs dÃ©pendent du pÃ©rimÃ¨tre, de la complexitÃ© et du dÃ©lai. Chaque projet est chiffrÃ© sur mesure.",
     answer_en: "Based on scope, complexity, and deadlines.",
     categoryId: "pricing",
     order: 1,
-    keywords: ["tarifs", "prix", "coût", "calcul", "budget"],
+    keywords: ["tarifs", "prix", "coÃ»t", "calcul", "budget"],
     keywords_en: ["pricing", "price", "cost", "calculation", "budget"],
     isPublished: true,
   },
   {
     id: "pricing_2",
-    question: "Travaillez-vous à l'heure ou au forfait ?",
+    question: "Travaillez-vous Ã  l'heure ou au forfait ?",
     question_en: "Do you charge hourly or per project?",
     answer: "Les deux sont possibles selon la nature du projet.",
     answer_en: "Both options are available.",
@@ -399,11 +399,11 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "pricing_3",
     question: "Demandez-vous un acompte ?",
     question_en: "Do you require a deposit?",
-    answer: "Oui, 30 à 50 % à la signature, le reste à la livraison.",
-    answer_en: "Yes, usually 30–50% upfront.",
+    answer: "Oui, 30 Ã  50 % Ã  la signature, le reste Ã  la livraison.",
+    answer_en: "Yes, usually 30â€“50% upfront.",
     categoryId: "pricing",
     order: 3,
-    keywords: ["acompte", "avance", "paiement", "dépôt"],
+    keywords: ["acompte", "avance", "paiement", "dÃ©pÃ´t"],
     keywords_en: ["deposit", "advance", "payment", "upfront"],
     isPublished: true,
   },
@@ -411,7 +411,7 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "pricing_4",
     question: "Fournissez-vous des factures officielles ?",
     question_en: "Do you provide official invoices?",
-    answer: "Oui, toutes les prestations sont facturées de manière conforme.",
+    answer: "Oui, toutes les prestations sont facturÃ©es de maniÃ¨re conforme.",
     answer_en: "Yes, all invoices are compliant.",
     categoryId: "pricing",
     order: 4,
@@ -423,7 +423,7 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "pricing_5",
     question: "Acceptez-vous les paiements internationaux ?",
     question_en: "Do you accept international payments?",
-    answer: "Oui, via virement ou plateformes sécurisées (Stripe, PayPal).",
+    answer: "Oui, via virement ou plateformes sÃ©curisÃ©es (Stripe, PayPal).",
     answer_en: "Yes, via bank transfer, Stripe, or PayPal.",
     categoryId: "pricing",
     order: 5,
@@ -437,11 +437,11 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "contact_1",
     question: "Comment vous contacter ?",
     question_en: "How can I contact you?",
-    answer: "Via le formulaire de contact ou en réservant un créneau directement sur mon calendrier.",
+    answer: "Via le formulaire de contact ou en rÃ©servant un crÃ©neau directement sur mon calendrier.",
     answer_en: "Via the contact form or by booking a slot in the calendar.",
     categoryId: "contact",
     order: 1,
-    keywords: ["contact", "formulaire", "email", "calendrier", "réservation"],
+    keywords: ["contact", "formulaire", "email", "calendrier", "rÃ©servation"],
     keywords_en: ["contact", "form", "email", "calendar", "booking"],
     isPublished: true,
   },
@@ -449,23 +449,23 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "contact_2",
     question: "Proposez-vous des appels gratuits ?",
     question_en: "Do you offer free calls?",
-    answer: "Oui, un premier échange de 20 minutes est offert.",
+    answer: "Oui, un premier Ã©change de 20 minutes est offert.",
     answer_en: "Yes, a free 20-minute call to discuss your project.",
     categoryId: "contact",
     order: 2,
-    keywords: ["appel", "gratuit", "consultation", "découverte"],
+    keywords: ["appel", "gratuit", "consultation", "dÃ©couverte"],
     keywords_en: ["call", "free", "consultation", "discovery"],
     isPublished: true,
   },
   {
     id: "contact_3",
-    question: "Quels sont vos horaires de disponibilité ?",
+    question: "Quels sont vos horaires de disponibilitÃ© ?",
     question_en: "What are your working hours?",
-    answer: "Du lundi au vendredi, 9h–18h (CET).",
-    answer_en: "Monday to Friday, 9AM–6PM (CET).",
+    answer: "Du lundi au vendredi, 9hâ€“18h (CET).",
+    answer_en: "Monday to Friday, 9AMâ€“6PM (CET).",
     categoryId: "contact",
     order: 3,
-    keywords: ["horaires", "disponibilité", "heures", "ouverture"],
+    keywords: ["horaires", "disponibilitÃ©", "heures", "ouverture"],
     keywords_en: ["hours", "availability", "schedule", "opening"],
     isPublished: true,
   },
@@ -477,19 +477,19 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     answer_en: "Yes, both are available on the contact page.",
     categoryId: "contact",
     order: 4,
-    keywords: ["whatsapp", "linkedin", "réseaux", "social"],
+    keywords: ["whatsapp", "linkedin", "rÃ©seaux", "social"],
     keywords_en: ["whatsapp", "linkedin", "social", "networks"],
     isPublished: true,
   },
   {
     id: "contact_5",
-    question: "Combien de temps prenez-vous pour répondre ?",
+    question: "Combien de temps prenez-vous pour rÃ©pondre ?",
     question_en: "How fast do you reply?",
-    answer: "En général, sous 24h ouvrées.",
+    answer: "En gÃ©nÃ©ral, sous 24h ouvrÃ©es.",
     answer_en: "Usually within 24 working hours.",
     categoryId: "contact",
     order: 5,
-    keywords: ["réponse", "délai", "temps", "rapidité"],
+    keywords: ["rÃ©ponse", "dÃ©lai", "temps", "rapiditÃ©"],
     keywords_en: ["response", "time", "delay", "speed"],
     isPublished: true,
   },
@@ -497,25 +497,25 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
   // ==================== SECURITY ====================
   {
     id: "security_1",
-    question: "Mes données sont-elles sécurisées ?",
+    question: "Mes donnÃ©es sont-elles sÃ©curisÃ©es ?",
     question_en: "Are my data secure?",
-    answer: "Oui, toutes les informations échangées sont confidentielles et stockées de manière sécurisée.",
+    answer: "Oui, toutes les informations Ã©changÃ©es sont confidentielles et stockÃ©es de maniÃ¨re sÃ©curisÃ©e.",
     answer_en: "Yes, all communications and data are protected.",
     categoryId: "security",
     order: 1,
-    keywords: ["sécurité", "données", "confidentialité", "protection"],
+    keywords: ["sÃ©curitÃ©", "donnÃ©es", "confidentialitÃ©", "protection"],
     keywords_en: ["security", "data", "confidentiality", "protection"],
     isPublished: true,
   },
   {
     id: "security_2",
-    question: "Utilisez-vous des services externes pour héberger mes données ?",
+    question: "Utilisez-vous des services externes pour hÃ©berger mes donnÃ©es ?",
     question_en: "Do you use third-party services?",
     answer: "Oui, uniquement des solutions fiables (Vercel, Supabase, Notion API, etc.).",
     answer_en: "Only trusted ones (Vercel, Supabase, Notion API).",
     categoryId: "security",
     order: 2,
-    keywords: ["hébergement", "services", "vercel", "supabase", "données"],
+    keywords: ["hÃ©bergement", "services", "vercel", "supabase", "donnÃ©es"],
     keywords_en: ["hosting", "services", "vercel", "supabase", "data"],
     isPublished: true,
   },
@@ -524,7 +524,7 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     question: "Faites-vous signer un contrat avant chaque mission ?",
     question_en: "Do you sign contracts before projects?",
     answer: "Oui, chaque collaboration commence par une proposition et un contrat clair.",
-    answer_en: "Always — clarity first.",
+    answer_en: "Always â€” clarity first.",
     categoryId: "security",
     order: 3,
     keywords: ["contrat", "juridique", "accord", "signature"],
@@ -547,11 +547,11 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "security_5",
     question: "Proposez-vous des NDA ?",
     question_en: "Can you sign an NDA?",
-    answer: "Bien sûr, je signe des accords de confidentialité sur demande.",
+    answer: "Bien sÃ»r, je signe des accords de confidentialitÃ© sur demande.",
     answer_en: "Of course.",
     categoryId: "security",
     order: 5,
-    keywords: ["nda", "confidentialité", "accord", "secret"],
+    keywords: ["nda", "confidentialitÃ©", "accord", "secret"],
     keywords_en: ["nda", "confidentiality", "agreement", "secret"],
     isPublished: true,
   },
@@ -561,7 +561,7 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "misc_1",
     question: "Proposez-vous des formations ou ateliers ?",
     question_en: "Do you offer training or workshops?",
-    answer: "Oui, sur Figma, automatisation et IA appliquée au business.",
+    answer: "Oui, sur Figma, automatisation et IA appliquÃ©e au business.",
     answer_en: "Yes, on Figma, automation, and AI for businesses.",
     categoryId: "misc",
     order: 1,
@@ -573,11 +573,11 @@ const FAQ_QUESTIONS: FAQQuestion[] = [
     id: "misc_2",
     question: "Quels sont vos prochains projets ?",
     question_en: "What are your upcoming projects?",
-    answer: "Lancer une plateforme complète dédiée à la création de systèmes automatisés et IA pour freelances et entreprises.",
+    answer: "Lancer une plateforme complÃ¨te dÃ©diÃ©e Ã  la crÃ©ation de systÃ¨mes automatisÃ©s et IA pour freelances et entreprises.",
     answer_en: "A platform dedicated to building automated and AI-driven systems for freelancers and companies.",
     categoryId: "misc",
     order: 2,
-    keywords: ["projets", "futur", "plateforme", "développement"],
+    keywords: ["projets", "futur", "plateforme", "dÃ©veloppement"],
     keywords_en: ["projects", "future", "platform", "development"],
     isPublished: true,
   },
@@ -680,9 +680,9 @@ export function FAQPage() {
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-4 overflow-hidden">
         {/* Background effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#00FFC2]/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#CCFF00]/5 to-transparent pointer-events-none" />
         <motion.div
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00FFC2]/10 rounded-full blur-3xl"
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#CCFF00]/10 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.3, 0.5, 0.3],
@@ -700,7 +700,7 @@ export function FAQPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Badge className="mb-6 bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/20">
+            <Badge className="mb-6 bg-[#CCFF00]/10 text-[#CCFF00] border-[#CCFF00]/20">
               <HelpCircle className="w-3 h-3 mr-2" />
               {t("faq.badge")}
             </Badge>
@@ -721,7 +721,7 @@ export function FAQPage() {
                 placeholder={t("faq.searchPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 pr-4 py-6 bg-[#F4F4F4]/5 border-[#F4F4F4]/10 text-[#F4F4F4] placeholder:text-[#F4F4F4]/40 focus:border-[#00FFC2]/50 focus:ring-[#00FFC2]/20"
+                className="pl-12 pr-4 py-6 bg-[#F4F4F4]/5 border-[#F4F4F4]/10 text-[#F4F4F4] placeholder:text-[#F4F4F4]/40 focus:border-[#CCFF00]/50 focus:ring-[#CCFF00]/20"
               />
             </div>
           </motion.div>
@@ -741,7 +741,7 @@ export function FAQPage() {
             >
               <span className={`relative z-10 flex items-center gap-2 transition-colors ${
                 selectedCategory === null
-                  ? "text-[#00FFC2]"
+                  ? "text-[#CCFF00]"
                   : "text-[#F4F4F4]/50 group-hover:text-[#F4F4F4]"
               }`}>
                 <HelpCircle className="w-4 h-4" />
@@ -752,7 +752,7 @@ export function FAQPage() {
               {selectedCategory === null && (
                 <motion.div
                   layoutId="activeCategory"
-                  className="absolute inset-0 bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-full"
+                  className="absolute inset-0 bg-[#CCFF00]/10 border border-[#CCFF00]/30 rounded-full"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
@@ -784,7 +784,7 @@ export function FAQPage() {
                 >
                   <span className={`relative z-10 flex items-center gap-2 transition-colors ${
                     isActive
-                      ? "text-[#00FFC2]"
+                      ? "text-[#CCFF00]"
                       : "text-[#F4F4F4]/50 group-hover:text-[#F4F4F4]"
                   }`}>
                     <Icon className="w-4 h-4" />
@@ -795,7 +795,7 @@ export function FAQPage() {
                   {isActive && (
                     <motion.div
                       layoutId="activeCategory"
-                      className="absolute inset-0 bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-full"
+                      className="absolute inset-0 bg-[#CCFF00]/10 border border-[#CCFF00]/30 rounded-full"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
@@ -824,7 +824,7 @@ export function FAQPage() {
                 </p>
                 <Button
                   variant="outline"
-                  className="mt-6 border-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                  className="mt-6 border-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/10"
                   onClick={() => {
                     setSearchQuery("");
                     setSelectedCategory(null);
@@ -852,7 +852,7 @@ export function FAQPage() {
                     <div className="flex items-center gap-3 mb-4">
                       <Icon className={`w-5 h-5 ${category.color}`} />
                       <h2 className="text-2xl">{getCategoryName(category)}</h2>
-                      <Badge className="bg-[#00FFC2]/10 text-[#00FFC2]">
+                      <Badge className="bg-[#CCFF00]/10 text-[#CCFF00]">
                         {questions.length}
                       </Badge>
                     </div>
@@ -889,8 +889,8 @@ export function FAQPage() {
       {/* CTA Section */}
       <section className="px-4 pb-20">
         <div className="max-w-4xl mx-auto">
-          <Card className="bg-gradient-to-br from-[#00FFC2]/10 to-[#00FFC2]/5 border-[#00FFC2]/20 overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#00FFC2]/5 to-transparent" />
+          <Card className="bg-gradient-to-br from-[#CCFF00]/10 to-[#CCFF00]/5 border-[#CCFF00]/20 overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#CCFF00]/5 to-transparent" />
             <CardContent className="p-8 md:p-12 text-center relative z-10">
               <h2 className="mb-4">{t("faq.stillHaveQuestions")}</h2>
               <p className="text-[#F4F4F4]/70 mb-8 max-w-2xl mx-auto">
@@ -898,7 +898,7 @@ export function FAQPage() {
               </p>
               <Button
                 size="lg"
-                className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
                 onClick={() => window.location.href = "/contact"}
               >
                 {t("faq.contactButton")}

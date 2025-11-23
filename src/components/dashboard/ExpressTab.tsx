@@ -1,5 +1,5 @@
 /**
- * Express Tab - Vue rapide des analytics & métriques clés
+ * Express Tab - Vue rapide des analytics & mÃ©triques clÃ©s
  * Affiche les KPIs essentiels dans une interface compacte
  */
 
@@ -81,7 +81,7 @@ export function ExpressTab({
     };
   }, [leads, clients, projects, invoices]);
 
-  // Analytics Web - Données réelles depuis le serveur
+  // Analytics Web - DonnÃ©es rÃ©elles depuis le serveur
   const [webAnalytics, setWebAnalytics] = useState({
     visitors: 0,
     pageviews: 0,
@@ -93,7 +93,7 @@ export function ExpressTab({
   });
   const [analyticsLoading, setAnalyticsLoading] = useState(true);
 
-  // Récupérer les analytics depuis le serveur
+  // RÃ©cupÃ©rer les analytics depuis le serveur
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
@@ -106,12 +106,12 @@ export function ExpressTab({
           return;
         }
 
-        // Utiliser des données de démo en mode local
+        // Utiliser des donnÃ©es de dÃ©mo en mode local
         const { checkServerAvailability } = await import("../../utils/serverService");
         const isServerAvailable = await checkServerAvailability();
         
         if (!isServerAvailable) {
-          console.log("📊 Using demo analytics data (server not available)");
+          console.log("ðŸ“Š Using demo analytics data (server not available)");
           setWebAnalytics({
             visitors: 1250,
             pageviews: 3420,
@@ -178,7 +178,7 @@ export function ExpressTab({
     value, 
     subtitle,
     icon: Icon,
-    color = "#00FFC2",
+    color = "#CCFF00",
     trend,
   }: { 
     title: string; 
@@ -205,11 +205,11 @@ export function ExpressTab({
             {trend !== undefined && (
               <div className="flex items-center gap-1">
                 {trend >= 0 ? (
-                  <TrendingUp className="h-3 w-3 text-[#00FFC2]" />
+                  <TrendingUp className="h-3 w-3 text-[#CCFF00]" />
                 ) : (
                   <TrendingDown className="h-3 w-3 text-red-400" />
                 )}
-                <span className={`text-xs ${trend >= 0 ? 'text-[#00FFC2]' : 'text-red-400'}`}>
+                <span className={`text-xs ${trend >= 0 ? 'text-[#CCFF00]' : 'text-red-400'}`}>
                   {trend >= 0 ? '+' : ''}{trend.toFixed(0)}%
                 </span>
               </div>
@@ -233,12 +233,12 @@ export function ExpressTab({
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00FFC2]/20 to-[#00FFC2]/5 border border-[#00FFC2]/30 flex items-center justify-center">
-            <Sparkles className="h-5 w-5 text-[#00FFC2]" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#CCFF00]/20 to-[#CCFF00]/5 border border-[#CCFF00]/30 flex items-center justify-center">
+            <Sparkles className="h-5 w-5 text-[#CCFF00]" />
           </div>
           <div>
             <h2 className="text-2xl text-white">Vue Express</h2>
-            <p className="text-sm text-white/60">Vos métriques essentielles en un coup d'œil</p>
+            <p className="text-sm text-white/60">Vos mÃ©triques essentielles en un coup d'Å“il</p>
           </div>
         </div>
       </motion.div>
@@ -246,7 +246,7 @@ export function ExpressTab({
       {/* CRM Performance */}
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <Activity className="h-4 w-4 text-[#00FFC2]" />
+          <Activity className="h-4 w-4 text-[#CCFF00]" />
           <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wide">
             Performance CRM (30 derniers jours)
           </h3>
@@ -258,7 +258,7 @@ export function ExpressTab({
             value={crmKpis.recentLeads}
             subtitle="ce mois"
             icon={Users}
-            color="#00FFC2"
+            color="#CCFF00"
             trend={12}
           />
           <MetricCard
@@ -266,13 +266,13 @@ export function ExpressTab({
             value={crmKpis.recentClients}
             subtitle="ce mois"
             icon={Target}
-            color="#00D9A6"
+            color="#DAFF40"
             trend={8}
           />
           <MetricCard
             title="Revenus Mensuels"
-            value={`${crmKpis.recentRevenue.toLocaleString('fr-FR')} €`}
-            subtitle={`Total: ${crmKpis.totalRevenue.toLocaleString('fr-FR')} €`}
+            value={`${crmKpis.recentRevenue.toLocaleString('fr-FR')} â‚¬`}
+            subtitle={`Total: ${crmKpis.totalRevenue.toLocaleString('fr-FR')} â‚¬`}
             icon={DollarSign}
             color="#00B38A"
             trend={15}
@@ -323,15 +323,15 @@ export function ExpressTab({
       <div>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <BarChart3 className="h-4 w-4 text-[#00FFC2]" />
+            <BarChart3 className="h-4 w-4 text-[#CCFF00]" />
             <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wide">
               Analytics Web (30 derniers jours)
             </h3>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#00FFC2]/10 border border-[#00FFC2]/20">
-            <div className="w-2 h-2 rounded-full bg-[#00FFC2] animate-pulse" />
-            <span className="text-xs text-[#00FFC2]">
-              {analyticsLoading ? "Chargement..." : webAnalytics.visitors === 0 ? "En attente de données" : "Live"}
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#CCFF00]/10 border border-[#CCFF00]/20">
+            <div className="w-2 h-2 rounded-full bg-[#CCFF00] animate-pulse" />
+            <span className="text-xs text-[#CCFF00]">
+              {analyticsLoading ? "Chargement..." : webAnalytics.visitors === 0 ? "En attente de donnÃ©es" : "Live"}
             </span>
           </div>
         </div>
@@ -343,11 +343,11 @@ export function ExpressTab({
                 <Info className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="text-sm text-white/90 mb-1">
-                    <strong>Aucune donnée de tracking disponible</strong>
+                    <strong>Aucune donnÃ©e de tracking disponible</strong>
                   </p>
                   <p className="text-xs text-white/70">
-                    Les visiteurs du site public seront automatiquement trackés. Les données apparaîtront ici 
-                    dès les premières visites. Le système est actif et enregistre les événements en temps réel.
+                    Les visiteurs du site public seront automatiquement trackÃ©s. Les donnÃ©es apparaÃ®tront ici 
+                    dÃ¨s les premiÃ¨res visites. Le systÃ¨me est actif et enregistre les Ã©vÃ©nements en temps rÃ©el.
                   </p>
                 </div>
               </div>
@@ -407,12 +407,12 @@ export function ExpressTab({
               <div>
                 <p className="text-xs text-white/60 mb-1">Conversions Web</p>
                 <p className="text-xl text-white">{webAnalytics.conversions}</p>
-                <p className="text-xs text-[#00FFC2] mt-0.5">
+                <p className="text-xs text-[#CCFF00] mt-0.5">
                   +{webAnalytics.conversionRate}% taux
                 </p>
               </div>
-              <div className="w-10 h-10 bg-[#00FFC2]/10 rounded-lg flex items-center justify-center">
-                <Target className="h-5 w-5 text-[#00FFC2]" />
+              <div className="w-10 h-10 bg-[#CCFF00]/10 rounded-lg flex items-center justify-center">
+                <Target className="h-5 w-5 text-[#CCFF00]" />
               </div>
             </div>
           </CardContent>
@@ -444,39 +444,39 @@ export function ExpressTab({
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-        <Card className="bg-gradient-to-br from-[#00FFC2]/10 to-[#00FFC2]/5 border-[#00FFC2]/20">
+        <Card className="bg-gradient-to-br from-[#CCFF00]/10 to-[#CCFF00]/5 border-[#CCFF00]/20">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#00FFC2]/20 border border-[#00FFC2]/30 flex items-center justify-center flex-shrink-0">
-                <Sparkles className="h-6 w-6 text-[#00FFC2]" />
+              <div className="w-12 h-12 rounded-xl bg-[#CCFF00]/20 border border-[#CCFF00]/30 flex items-center justify-center flex-shrink-0">
+                <Sparkles className="h-6 w-6 text-[#CCFF00]" />
               </div>
               <div>
                 <h4 className="text-white font-semibold mb-2 flex items-center gap-2">
                   Analytics Complet Disponible
-                  <span className="text-xs bg-[#00FFC2] text-black px-2 py-0.5 rounded-full font-bold">
+                  <span className="text-xs bg-[#CCFF00] text-black px-2 py-0.5 rounded-full font-bold">
                     NEW
                   </span>
                 </h4>
                 <p className="text-sm text-white/70 mb-3">
-                  Système d'analytics professionnel avec Google Analytics 4, Microsoft Clarity (heatmaps), 
-                  et Sentry (error tracking) maintenant intégré !
+                  SystÃ¨me d'analytics professionnel avec Google Analytics 4, Microsoft Clarity (heatmaps), 
+                  et Sentry (error tracking) maintenant intÃ©grÃ© !
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <span className="inline-flex items-center gap-1 text-xs bg-white/10 text-white/80 px-2 py-1 rounded">
-                    📊 GA4 Ready
+                    ðŸ“Š GA4 Ready
                   </span>
                   <span className="inline-flex items-center gap-1 text-xs bg-white/10 text-white/80 px-2 py-1 rounded">
-                    🔥 Heatmaps
+                    ðŸ”¥ Heatmaps
                   </span>
                   <span className="inline-flex items-center gap-1 text-xs bg-white/10 text-white/80 px-2 py-1 rounded">
-                    🐛 Error Tracking
+                    ðŸ› Error Tracking
                   </span>
                   <span className="inline-flex items-center gap-1 text-xs bg-white/10 text-white/80 px-2 py-1 rounded">
-                    ⚡ Auto-tracking
+                    âš¡ Auto-tracking
                   </span>
                 </div>
                 <p className="text-xs text-white/50 mt-3">
-                  Configuration : 5 minutes • Documentation : ANALYTICS_SETUP_GUIDE.md
+                  Configuration : 5 minutes â€¢ Documentation : ANALYTICS_SETUP_GUIDE.md
                 </p>
               </div>
             </div>
@@ -489,12 +489,12 @@ export function ExpressTab({
         <Card className="bg-white/5 border-white/10 hover:bg-white/[0.07] transition-all cursor-pointer group">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-[#00FFC2]/10 flex items-center justify-center group-hover:bg-[#00FFC2]/20 transition-colors">
-                <BarChart3 className="h-5 w-5 text-[#00FFC2]" />
+              <div className="w-10 h-10 rounded-lg bg-[#CCFF00]/10 flex items-center justify-center group-hover:bg-[#CCFF00]/20 transition-colors">
+                <BarChart3 className="h-5 w-5 text-[#CCFF00]" />
               </div>
               <div>
-                <p className="text-sm text-white group-hover:text-[#00FFC2] transition-colors">
-                  Voir Analytics Détaillés
+                <p className="text-sm text-white group-hover:text-[#CCFF00] transition-colors">
+                  Voir Analytics DÃ©taillÃ©s
                 </p>
                 <p className="text-xs text-white/40">Graphiques & rapports complets</p>
               </div>

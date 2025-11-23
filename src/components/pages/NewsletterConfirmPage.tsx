@@ -67,7 +67,7 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
         {status === "loading" && (
           <div className="space-y-6">
             <div className="w-16 h-16 mx-auto rounded-full bg-white/5 flex items-center justify-center">
-              <Loader2 className="h-8 w-8 text-[#00FFC2] animate-spin" />
+              <Loader2 className="h-8 w-8 text-[#CCFF00] animate-spin" />
             </div>
             <div>
               <h1 className="text-white mb-3">{confirmTexts.loading?.title}</h1>
@@ -82,9 +82,9 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring" }}
-              className="w-16 h-16 mx-auto rounded-full bg-[#00FFC2]/10 flex items-center justify-center"
+              className="w-16 h-16 mx-auto rounded-full bg-[#CCFF00]/10 flex items-center justify-center"
             >
-              <CheckCircle2 className="h-8 w-8 text-[#00FFC2]" />
+              <CheckCircle2 className="h-8 w-8 text-[#CCFF00]" />
             </motion.div>
             <div>
               <h1 className="text-white mb-3">{confirmTexts.success?.title}</h1>
@@ -99,7 +99,7 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
                 <ul className="text-white/60 text-sm space-y-2 text-left max-w-xs mx-auto">
                   {(confirmTexts.success?.items || []).map((item: string, index: number) => (
                     <li className="flex items-start gap-2" key={`${item}-${index}`}>
-                      <span className="text-[#00FFC2] mt-1">•</span>
+                      <span className="text-[#CCFF00] mt-1">â€¢</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -108,7 +108,7 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
             </div>
             <Button 
               onClick={() => onNavigate("home")}
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+              className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
             >
               {confirmTexts.success?.button}
             </Button>
@@ -126,7 +126,7 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
             </div>
             <Button 
               onClick={() => onNavigate("home")}
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+              className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
             >
               {confirmTexts.success?.button}
             </Button>
@@ -152,7 +152,7 @@ export function NewsletterConfirmPage({ token, onNavigate }: NewsletterConfirmPa
               </Button>
               <Button 
                 onClick={() => onNavigate("contact")}
-                className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
               >
                 {confirmTexts.error?.contact}
               </Button>

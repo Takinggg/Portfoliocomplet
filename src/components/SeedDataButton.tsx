@@ -18,13 +18,13 @@ export function SeedDataButton() {
       const success = await seedDemoData();
       if (success) {
         setIsSeeded(true);
-        toast.success("✨ Données de démonstration ajoutées avec succès !");
+        toast.success("âœ¨ DonnÃ©es de dÃ©monstration ajoutÃ©es avec succÃ¨s !");
       } else {
-        toast.error("Erreur lors de l'ajout des données");
+        toast.error("Erreur lors de l'ajout des donnÃ©es");
       }
     } catch (error) {
       console.error("Error seeding data:", error);
-      toast.error("Erreur lors de l'ajout des données");
+      toast.error("Erreur lors de l'ajout des donnÃ©es");
     } finally {
       setIsSeeding(false);
     }
@@ -36,13 +36,13 @@ export function SeedDataButton() {
       const result = await seedTestimonials();
       if (result.success) {
         setTestimonialsSeeded(true);
-        toast.success(`✨ ${result.created} témoignages ajoutés avec succès !`);
+        toast.success(`âœ¨ ${result.created} tÃ©moignages ajoutÃ©s avec succÃ¨s !`);
       } else {
-        toast.error("Erreur lors de l'ajout des témoignages");
+        toast.error("Erreur lors de l'ajout des tÃ©moignages");
       }
     } catch (error) {
       console.error("Error seeding testimonials:", error);
-      toast.error("Erreur lors de l'ajout des témoignages");
+      toast.error("Erreur lors de l'ajout des tÃ©moignages");
     } finally {
       setIsSeedingTestimonials(false);
     }
@@ -50,34 +50,34 @@ export function SeedDataButton() {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-gradient-to-br from-[#00FFC2]/5 to-transparent border-[#00FFC2]/20">
+      <Card className="bg-gradient-to-br from-[#CCFF00]/5 to-transparent border-[#CCFF00]/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-[#00FFC2]" />
-            Données de démonstration
+            <Sparkles className="h-5 w-5 text-[#CCFF00]" />
+            DonnÃ©es de dÃ©monstration
           </CardTitle>
           <CardDescription className="text-white/60">
-            Initialisez votre CRM avec des données de test pour explorer toutes les fonctionnalités
+            Initialisez votre CRM avec des donnÃ©es de test pour explorer toutes les fonctionnalitÃ©s
           </CardDescription>
         </CardHeader>
         <CardContent>
           {isSeeded ? (
             <div className="flex items-center gap-2 text-green-400">
               <Check className="h-5 w-5" />
-              <span>Données ajoutées avec succès</span>
+              <span>DonnÃ©es ajoutÃ©es avec succÃ¨s</span>
             </div>
           ) : (
             <>
-              <div className="mb-4 p-3 bg-[#00FFC2]/10 border border-[#00FFC2]/20 rounded-lg">
+              <div className="mb-4 p-3 bg-[#CCFF00]/10 border border-[#CCFF00]/20 rounded-lg">
                 <div className="flex items-start gap-2">
-                  <AlertCircle className="h-5 w-5 text-[#00FFC2] mt-0.5 flex-shrink-0" />
+                  <AlertCircle className="h-5 w-5 text-[#CCFF00] mt-0.5 flex-shrink-0" />
                   <div className="text-sm text-white/80">
-                    <p className="font-medium text-[#00FFC2] mb-1">Ce qui sera ajouté :</p>
+                    <p className="font-medium text-[#CCFF00] mb-1">Ce qui sera ajoutÃ© :</p>
                     <ul className="space-y-1 text-white/70">
-                      <li>• 5 leads de démonstration</li>
-                      <li>• 3 projets portfolio épinglés</li>
-                      <li>• 2 factures exemples</li>
-                      <li>• 5 réservations calendrier</li>
+                      <li>â€¢ 5 leads de dÃ©monstration</li>
+                      <li>â€¢ 3 projets portfolio Ã©pinglÃ©s</li>
+                      <li>â€¢ 2 factures exemples</li>
+                      <li>â€¢ 5 rÃ©servations calendrier</li>
                     </ul>
                   </div>
                 </div>
@@ -85,7 +85,7 @@ export function SeedDataButton() {
               <Button
                 onClick={handleSeed}
                 disabled={isSeeding}
-                className="w-full bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="w-full bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               >
                 {isSeeding ? (
                   <>
@@ -95,7 +95,7 @@ export function SeedDataButton() {
                 ) : (
                   <>
                     <Sparkles className="mr-2 h-4 w-4" />
-                    Ajouter les données de démo
+                    Ajouter les donnÃ©es de dÃ©mo
                   </>
                 )}
               </Button>
@@ -108,17 +108,17 @@ export function SeedDataButton() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Star className="h-5 w-5 text-yellow-500" />
-            Témoignages clients
+            TÃ©moignages clients
           </CardTitle>
           <CardDescription className="text-white/60">
-            Ajoutez 8 témoignages clients authentiques avec des notes 5 étoiles
+            Ajoutez 8 tÃ©moignages clients authentiques avec des notes 5 Ã©toiles
           </CardDescription>
         </CardHeader>
         <CardContent>
           {testimonialsSeeded ? (
             <div className="flex items-center gap-2 text-green-400">
               <Check className="h-5 w-5" />
-              <span>Témoignages ajoutés avec succès</span>
+              <span>TÃ©moignages ajoutÃ©s avec succÃ¨s</span>
             </div>
           ) : (
             <>
@@ -126,13 +126,13 @@ export function SeedDataButton() {
                 <div className="flex items-start gap-2">
                   <AlertCircle className="h-5 w-5 text-yellow-500 mt-0.5 flex-shrink-0" />
                   <div className="text-sm text-white/80">
-                    <p className="font-medium text-yellow-500 mb-1">Ce qui sera ajouté :</p>
+                    <p className="font-medium text-yellow-500 mb-1">Ce qui sera ajoutÃ© :</p>
                     <ul className="space-y-1 text-white/70">
-                      <li>• 8 témoignages clients variés</li>
-                      <li>• Notes 5 étoiles authentiques</li>
-                      <li>• Différents types de projets</li>
-                      <li>• 3 témoignages mis en avant</li>
-                      <li>• Profils LinkedIn pour certains</li>
+                      <li>â€¢ 8 tÃ©moignages clients variÃ©s</li>
+                      <li>â€¢ Notes 5 Ã©toiles authentiques</li>
+                      <li>â€¢ DiffÃ©rents types de projets</li>
+                      <li>â€¢ 3 tÃ©moignages mis en avant</li>
+                      <li>â€¢ Profils LinkedIn pour certains</li>
                     </ul>
                   </div>
                 </div>
@@ -150,7 +150,7 @@ export function SeedDataButton() {
                 ) : (
                   <>
                     <Star className="mr-2 h-4 w-4" />
-                    Ajouter les témoignages
+                    Ajouter les tÃ©moignages
                   </>
                 )}
               </Button>

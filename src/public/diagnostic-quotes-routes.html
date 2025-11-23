@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🔍 Diagnostic Routes Devis</title>
+  <title>ðŸ” Diagnostic Routes Devis</title>
   <style>
     * {
       margin: 0;
@@ -27,10 +27,10 @@
     .header {
       text-align: center;
       padding: 40px 20px;
-      background: linear-gradient(135deg, #00FFC2 0%, #00cc9a 100%);
+      background: linear-gradient(135deg, #CCFF00 0%, #C6FF1A 100%);
       border-radius: 20px;
       margin-bottom: 40px;
-      box-shadow: 0 10px 40px rgba(0, 255, 194, 0.3);
+      box-shadow: 0 10px 40px rgba(204, 255, 0, 0.3);
     }
 
     .header h1 {
@@ -41,7 +41,7 @@
 
     .card {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(0, 255, 194, 0.2);
+      border: 1px solid rgba(204, 255, 0, 0.2);
       border-radius: 15px;
       padding: 30px;
       margin-bottom: 30px;
@@ -49,14 +49,14 @@
     }
 
     .card h2 {
-      color: #00FFC2;
+      color: #CCFF00;
       margin-bottom: 20px;
       font-size: 1.6em;
     }
 
     .button {
       display: inline-block;
-      background: #00FFC2;
+      background: #CCFF00;
       color: #0C0C0C;
       padding: 15px 30px;
       border-radius: 30px;
@@ -71,18 +71,18 @@
 
     .button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 5px 20px rgba(0, 255, 194, 0.4);
+      box-shadow: 0 5px 20px rgba(204, 255, 0, 0.4);
     }
 
     .button.secondary {
       background: rgba(255, 255, 255, 0.1);
-      color: #00FFC2;
-      border: 2px solid #00FFC2;
+      color: #CCFF00;
+      border: 2px solid #CCFF00;
     }
 
     .log-container {
       background: #1a1a1a;
-      border: 1px solid #00FFC2;
+      border: 1px solid #CCFF00;
       border-radius: 10px;
       padding: 20px;
       margin: 20px 0;
@@ -110,7 +110,7 @@
     }
 
     .log-info {
-      color: #00FFC2;
+      color: #CCFF00;
     }
 
     .status-badge {
@@ -164,9 +164,9 @@
       display: inline-block;
       width: 20px;
       height: 20px;
-      border: 3px solid rgba(0, 255, 194, 0.3);
+      border: 3px solid rgba(204, 255, 0, 0.3);
       border-radius: 50%;
-      border-top-color: #00FFC2;
+      border-top-color: #CCFF00;
       animation: spin 1s ease-in-out infinite;
       margin-right: 10px;
     }
@@ -211,12 +211,12 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>🔍 Diagnostic Routes Devis</h1>
-      <p>Vérification automatique de la connectivité backend</p>
+      <h1>ðŸ” Diagnostic Routes Devis</h1>
+      <p>VÃ©rification automatique de la connectivitÃ© backend</p>
     </div>
 
     <div class="card">
-      <h2>État du Diagnostic</h2>
+      <h2>Ã‰tat du Diagnostic</h2>
       <div id="status-container">
         <div class="test-result pending" id="auth-status">
           <span class="spinner"></span>
@@ -236,13 +236,13 @@
     <div class="card">
       <h2>Actions</h2>
       <button class="button" onclick="runDiagnostic()">
-        🔍 Lancer le Diagnostic
+        ðŸ” Lancer le Diagnostic
       </button>
       <button class="button secondary" onclick="clearLogs()">
-        🗑️ Effacer les Logs
+        ðŸ—‘ï¸ Effacer les Logs
       </button>
       <button class="button secondary" onclick="window.open('https://supabase.com/dashboard', '_blank')">
-        🌐 Ouvrir Supabase
+        ðŸŒ Ouvrir Supabase
       </button>
     </div>
 
@@ -250,36 +250,36 @@
       <h2>Logs du Diagnostic</h2>
       <div class="log-container" id="log-container">
         <div class="log-line log-info">
-          💡 Cliquez sur "Lancer le Diagnostic" pour commencer...
+          ðŸ’¡ Cliquez sur "Lancer le Diagnostic" pour commencer...
         </div>
       </div>
     </div>
 
     <div class="card hidden" id="solution-card">
       <div class="solution-box">
-        <h3>🚨 Problème Détecté : Erreur 404</h3>
-        <p><strong>Les routes ne sont pas déployées correctement sur Supabase.</strong></p>
+        <h3>ðŸš¨ ProblÃ¨me DÃ©tectÃ© : Erreur 404</h3>
+        <p><strong>Les routes ne sont pas dÃ©ployÃ©es correctement sur Supabase.</strong></p>
         
-        <h4 style="margin-top: 20px;">📋 Solution :</h4>
+        <h4 style="margin-top: 20px;">ðŸ“‹ Solution :</h4>
         <ol>
           <li>Ouvrez <a href="https://supabase.com/dashboard" target="_blank" style="color: white; text-decoration: underline;">Supabase Dashboard</a></li>
-          <li>Allez dans <strong>Edge Functions</strong> → <strong>make-server-04919ac5</strong></li>
+          <li>Allez dans <strong>Edge Functions</strong> â†’ <strong>make-server-04919ac5</strong></li>
           <li>Cliquez sur l'onglet <strong>Editor</strong></li>
           <li>Ouvrez le fichier <code>/supabase/functions/server/index.tsx</code> dans votre projet</li>
           <li><strong>Copiez TOUT le contenu</strong> (Ctrl+A puis Ctrl+C)</li>
-          <li>Dans l'éditeur Supabase, <strong>supprimez tout</strong> le code existant</li>
+          <li>Dans l'Ã©diteur Supabase, <strong>supprimez tout</strong> le code existant</li>
           <li><strong>Collez</strong> le nouveau code (Ctrl+V)</li>
           <li>Cliquez sur <strong>"Deploy"</strong></li>
           <li>Attendez 30 secondes</li>
           <li>Relancez ce diagnostic</li>
         </ol>
 
-        <h4 style="margin-top: 20px;">⚠️ Points Importants :</h4>
+        <h4 style="margin-top: 20px;">âš ï¸ Points Importants :</h4>
         <ul style="margin-left: 20px;">
           <li>Vous devez copier <strong>TOUT</strong> le fichier, pas seulement une partie</li>
           <li>Le fichier fait environ <strong>4000+ lignes</strong></li>
-          <li>Assurez-vous que les routes <code>/quotes</code> sont présentes</li>
-          <li>Vérifiez qu'il n'y a pas d'erreurs de syntaxe</li>
+          <li>Assurez-vous que les routes <code>/quotes</code> sont prÃ©sentes</li>
+          <li>VÃ©rifiez qu'il n'y a pas d'erreurs de syntaxe</li>
         </ul>
       </div>
     </div>
@@ -320,7 +320,7 @@
         document.getElementById('config-info').textContent = 
           `Project ID: ${projectId}\n` +
           `Base URL: https://${projectId}.supabase.co/functions/v1/make-server-04919ac5\n` +
-          `Note: Assurez-vous d'être connecté au dashboard`;
+          `Note: Assurez-vous d'Ãªtre connectÃ© au dashboard`;
       }
     }
 
@@ -335,7 +335,7 @@
 
     function clearLogs() {
       document.getElementById('log-container').innerHTML = '';
-      log('💡 Logs effacés. Prêt pour un nouveau diagnostic.', 'info');
+      log('ðŸ’¡ Logs effacÃ©s. PrÃªt pour un nouveau diagnostic.', 'info');
     }
 
     function updateStatus(id, status, message) {
@@ -345,14 +345,14 @@
     }
 
     async function getAccessToken() {
-      // Essayer de récupérer le token depuis le localStorage
+      // Essayer de rÃ©cupÃ©rer le token depuis le localStorage
       const supabaseAuth = localStorage.getItem('sb-ptcxeqtjlxittxayffgu-auth-token');
       if (supabaseAuth) {
         try {
           const parsed = JSON.parse(supabaseAuth);
           return parsed.access_token;
         } catch (e) {
-          log('⚠️ Impossible de parser le token d\'authentification', 'warning');
+          log('âš ï¸ Impossible de parser le token d\'authentification', 'warning');
         }
       }
       return null;
@@ -360,32 +360,32 @@
 
     window.runDiagnostic = async function() {
       clearLogs();
-      log('🔍 DÉMARRAGE DU DIAGNOSTIC', 'info');
+      log('ðŸ” DÃ‰MARRAGE DU DIAGNOSTIC', 'info');
       log('=====================================', 'info');
       
       document.getElementById('solution-card').classList.add('hidden');
 
       // Test 1: Authentification
-      log('\n1️⃣ Vérification de l\'authentification...', 'info');
+      log('\n1ï¸âƒ£ VÃ©rification de l\'authentification...', 'info');
       accessToken = await getAccessToken();
       
       if (!accessToken) {
-        updateStatus('auth-status', 'error', '<strong>Authentification</strong> : ❌ Non connecté');
-        log('❌ Vous n\'êtes pas authentifié !', 'error');
-        log('💡 Veuillez vous connecter au dashboard d\'abord', 'warning');
+        updateStatus('auth-status', 'error', '<strong>Authentification</strong> : âŒ Non connectÃ©');
+        log('âŒ Vous n\'Ãªtes pas authentifiÃ© !', 'error');
+        log('ðŸ’¡ Veuillez vous connecter au dashboard d\'abord', 'warning');
         log('   1. Ouvrez votre application', 'info');
         log('   2. Connectez-vous au dashboard', 'info');
         log('   3. Relancez ce diagnostic', 'info');
         return;
       }
       
-      updateStatus('auth-status', 'success', '<strong>Authentification</strong> : ✅ Connecté');
-      log('✅ Authentifié avec succès', 'success');
+      updateStatus('auth-status', 'success', '<strong>Authentification</strong> : âœ… ConnectÃ©');
+      log('âœ… AuthentifiÃ© avec succÃ¨s', 'success');
 
       const baseUrl = `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5`;
 
       // Test 2: GET /quotes
-      log('\n2️⃣ Test GET /quotes (Lister les devis)...', 'info');
+      log('\n2ï¸âƒ£ Test GET /quotes (Lister les devis)...', 'info');
       try {
         const response = await fetch(`${baseUrl}/quotes`, {
           method: 'GET',
@@ -398,29 +398,29 @@
         log(`   Status: ${response.status} ${response.statusText}`, 'info');
         
         if (response.status === 404) {
-          updateStatus('get-status', 'error', '<strong>GET /quotes</strong> : ❌ 404 Not Found');
-          log('❌ ERREUR 404 - La route n\'existe pas !', 'error');
+          updateStatus('get-status', 'error', '<strong>GET /quotes</strong> : âŒ 404 Not Found');
+          log('âŒ ERREUR 404 - La route n\'existe pas !', 'error');
           document.getElementById('solution-card').classList.remove('hidden');
           return;
         }
 
         const data = await response.json();
-        log(`   Réponse: ${JSON.stringify(data, null, 2)}`, 'info');
+        log(`   RÃ©ponse: ${JSON.stringify(data, null, 2)}`, 'info');
         
         if (response.ok) {
-          updateStatus('get-status', 'success', '<strong>GET /quotes</strong> : ✅ Fonctionne');
-          log('✅ Route GET /quotes fonctionne !', 'success');
+          updateStatus('get-status', 'success', '<strong>GET /quotes</strong> : âœ… Fonctionne');
+          log('âœ… Route GET /quotes fonctionne !', 'success');
         } else {
-          updateStatus('get-status', 'error', `<strong>GET /quotes</strong> : ⚠️ ${data.error || 'Erreur'}`);
-          log(`⚠️ Route accessible mais erreur: ${data.error || 'Unknown'}`, 'warning');
+          updateStatus('get-status', 'error', `<strong>GET /quotes</strong> : âš ï¸ ${data.error || 'Erreur'}`);
+          log(`âš ï¸ Route accessible mais erreur: ${data.error || 'Unknown'}`, 'warning');
         }
       } catch (error) {
-        updateStatus('get-status', 'error', '<strong>GET /quotes</strong> : ❌ Erreur réseau');
-        log(`❌ Erreur lors du test: ${error.message}`, 'error');
+        updateStatus('get-status', 'error', '<strong>GET /quotes</strong> : âŒ Erreur rÃ©seau');
+        log(`âŒ Erreur lors du test: ${error.message}`, 'error');
       }
 
       // Test 3: POST /quotes
-      log('\n3️⃣ Test POST /quotes (Créer un devis)...', 'info');
+      log('\n3ï¸âƒ£ Test POST /quotes (CrÃ©er un devis)...', 'info');
       try {
         const testQuote = {
           number: `TEST-${Date.now()}`,
@@ -446,41 +446,41 @@
         log(`   Status: ${response.status} ${response.statusText}`, 'info');
         
         if (response.status === 404) {
-          updateStatus('post-status', 'error', '<strong>POST /quotes</strong> : ❌ 404 Not Found');
-          log('❌ ERREUR 404 - La route POST n\'existe pas !', 'error');
+          updateStatus('post-status', 'error', '<strong>POST /quotes</strong> : âŒ 404 Not Found');
+          log('âŒ ERREUR 404 - La route POST n\'existe pas !', 'error');
           document.getElementById('solution-card').classList.remove('hidden');
           return;
         }
 
         const data = await response.json();
-        log(`   Réponse: ${JSON.stringify(data, null, 2)}`, 'info');
+        log(`   RÃ©ponse: ${JSON.stringify(data, null, 2)}`, 'info');
         
         if (response.ok) {
-          updateStatus('post-status', 'success', '<strong>POST /quotes</strong> : ✅ Fonctionne');
-          log('✅ Route POST /quotes fonctionne !', 'success');
+          updateStatus('post-status', 'success', '<strong>POST /quotes</strong> : âœ… Fonctionne');
+          log('âœ… Route POST /quotes fonctionne !', 'success');
           
           // Nettoyer
           if (data.quote?.id) {
-            log('   🧹 Nettoyage du devis de test...', 'info');
+            log('   ðŸ§¹ Nettoyage du devis de test...', 'info');
             await fetch(`${baseUrl}/quotes/${encodeURIComponent(data.quote.id)}`, {
               method: 'DELETE',
               headers: {
                 'Authorization': `Bearer ${accessToken}`
               }
             });
-            log('   ✅ Devis de test supprimé', 'success');
+            log('   âœ… Devis de test supprimÃ©', 'success');
           }
         } else {
-          updateStatus('post-status', 'error', `<strong>POST /quotes</strong> : ⚠️ ${data.error || 'Erreur'}`);
-          log(`⚠️ Route accessible mais erreur: ${data.error || 'Unknown'}`, 'warning');
+          updateStatus('post-status', 'error', `<strong>POST /quotes</strong> : âš ï¸ ${data.error || 'Erreur'}`);
+          log(`âš ï¸ Route accessible mais erreur: ${data.error || 'Unknown'}`, 'warning');
         }
       } catch (error) {
-        updateStatus('post-status', 'error', '<strong>POST /quotes</strong> : ❌ Erreur réseau');
-        log(`❌ Erreur lors du test: ${error.message}`, 'error');
+        updateStatus('post-status', 'error', '<strong>POST /quotes</strong> : âŒ Erreur rÃ©seau');
+        log(`âŒ Erreur lors du test: ${error.message}`, 'error');
       }
 
       log('\n=====================================', 'info');
-      log('📊 DIAGNOSTIC TERMINÉ', 'info');
+      log('ðŸ“Š DIAGNOSTIC TERMINÃ‰', 'info');
       log('=====================================', 'info');
     };
 

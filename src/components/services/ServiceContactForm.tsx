@@ -44,7 +44,7 @@ export function ServiceContactForm({ onSuccess }: ServiceContactFormProps) {
     
     // Validation
     if (!formData.name || !formData.email || !formData.message || selectedReasons.length === 0) {
-      toast.error(language === 'en' ? 'Please fill in all required fields and select at least one interest' : 'Veuillez remplir tous les champs requis et sélectionner au moins un intérêt');
+      toast.error(language === 'en' ? 'Please fill in all required fields and select at least one interest' : 'Veuillez remplir tous les champs requis et sÃ©lectionner au moins un intÃ©rÃªt');
       return;
     }
 
@@ -82,10 +82,10 @@ export function ServiceContactForm({ onSuccess }: ServiceContactFormProps) {
           particleCount: 100,
           spread: 70,
           origin: { y: 0.6 },
-          colors: ["#00FFC2", "#0C0C0C", "#F4F4F4"],
+          colors: ["#CCFF00", "#0C0C0C", "#F4F4F4"],
         });
 
-        toast.success(language === 'en' ? 'Message sent successfully! I will respond within 24h.' : 'Message envoyé avec succès ! Je vous réponds sous 24h.');
+        toast.success(language === 'en' ? 'Message sent successfully! I will respond within 24h.' : 'Message envoyÃ© avec succÃ¨s ! Je vous rÃ©ponds sous 24h.');
         setIsSuccess(true);
         
         if (onSuccess) onSuccess();
@@ -108,7 +108,7 @@ export function ServiceContactForm({ onSuccess }: ServiceContactFormProps) {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error(language === 'en' ? 'Error sending message. Please try again.' : 'Erreur lors de l\'envoi. Veuillez réessayer.');
+      toast.error(language === 'en' ? 'Error sending message. Please try again.' : 'Erreur lors de l\'envoi. Veuillez rÃ©essayer.');
     } finally {
       setIsSubmitting(false);
     }
@@ -128,10 +128,10 @@ export function ServiceContactForm({ onSuccess }: ServiceContactFormProps) {
           {language === 'en' ? 'Thank you!' : 'Merci !'}
         </h3>
         <p className="text-xl text-neutral-400 mb-2">
-          {language === 'en' ? 'Your request has been received.' : 'Votre demande a bien été reçue.'}
+          {language === 'en' ? 'Your request has been received.' : 'Votre demande a bien Ã©tÃ© reÃ§ue.'}
         </p>
         <p className="text-neutral-500">
-          {language === 'en' ? 'I will respond within 24h.' : 'Je vous réponds sous 24h.'}
+          {language === 'en' ? 'I will respond within 24h.' : 'Je vous rÃ©ponds sous 24h.'}
         </p>
       </motion.div>
     );
@@ -180,7 +180,7 @@ export function ServiceContactForm({ onSuccess }: ServiceContactFormProps) {
       {/* Company */}
       <div>
         <Label htmlFor="company" className="text-white mb-2">
-          {language === 'en' ? 'Company / Project' : 'Société / Projet'}
+          {language === 'en' ? 'Company / Project' : 'SociÃ©tÃ© / Projet'}
         </Label>
         <Input
           id="company"
@@ -195,7 +195,7 @@ export function ServiceContactForm({ onSuccess }: ServiceContactFormProps) {
       {/* Budget range */}
       <div>
         <Label htmlFor="budget" className="text-white mb-2">
-          {language === 'en' ? 'Estimated budget' : 'Budget estimé'} <span className="text-red-400">*</span>
+          {language === 'en' ? 'Estimated budget' : 'Budget estimÃ©'} <span className="text-red-400">*</span>
         </Label>
         <Select
           required
@@ -203,13 +203,13 @@ export function ServiceContactForm({ onSuccess }: ServiceContactFormProps) {
           onValueChange={(value) => setFormData({ ...formData, budget: value })}
         >
           <SelectTrigger className="bg-neutral-900 border-neutral-800 focus:border-mint">
-            <SelectValue placeholder={language === 'en' ? 'Select a range' : 'Sélectionnez une fourchette'} />
+            <SelectValue placeholder={language === 'en' ? 'Select a range' : 'SÃ©lectionnez une fourchette'} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="300-500">300 - 500 € (Starter)</SelectItem>
-            <SelectItem value="1000-2500">1 000 - 2 500 € (Pro)</SelectItem>
-            <SelectItem value="4000+">4 000+ € (Scale)</SelectItem>
-            <SelectItem value="custom">{language === 'en' ? 'Custom quote' : 'Sur devis personnalisé'}</SelectItem>
+            <SelectItem value="300-500">300 - 500 â‚¬ (Starter)</SelectItem>
+            <SelectItem value="1000-2500">1 000 - 2 500 â‚¬ (Pro)</SelectItem>
+            <SelectItem value="4000+">4 000+ â‚¬ (Scale)</SelectItem>
+            <SelectItem value="custom">{language === 'en' ? 'Custom quote' : 'Sur devis personnalisÃ©'}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -217,12 +217,12 @@ export function ServiceContactForm({ onSuccess }: ServiceContactFormProps) {
       {/* Interests - Multiple checkboxes */}
       <div className="space-y-3">
         <Label className="text-white">
-          {language === 'en' ? 'I\'m interested in' : 'Je suis intéressé(e) par'} <span className="text-red-400">*</span>
+          {language === 'en' ? 'I\'m interested in' : 'Je suis intÃ©ressÃ©(e) par'} <span className="text-red-400">*</span>
         </Label>
         <div className="grid md:grid-cols-2 gap-3">
           {(language === 'en' 
             ? ["UI/UX Design", "Automation & AI", "Front-end Integration", "Full Project", "Audit & Consulting", "Dashboards & Reporting"]
-            : ["UI/UX Design", "Automatisation & IA", "Intégration Front-end", "Projet complet", "Audit & Consultation", "Dashboards & Reporting"]
+            : ["UI/UX Design", "Automatisation & IA", "IntÃ©gration Front-end", "Projet complet", "Audit & Consultation", "Dashboards & Reporting"]
           ).map((reason, index) => {
             const isSelected = selectedReasons.includes(reason);
             return (
@@ -270,7 +270,7 @@ export function ServiceContactForm({ onSuccess }: ServiceContactFormProps) {
       {/* Message */}
       <div>
         <Label htmlFor="message" className="text-white mb-2">
-          {language === 'en' ? 'Describe your project' : 'Décrivez votre projet'} <span className="text-red-400">*</span>
+          {language === 'en' ? 'Describe your project' : 'DÃ©crivez votre projet'} <span className="text-red-400">*</span>
         </Label>
         <Textarea
           id="message"
@@ -306,7 +306,7 @@ export function ServiceContactForm({ onSuccess }: ServiceContactFormProps) {
       <p className="text-xs text-neutral-500 text-center">
         {language === 'en' 
           ? 'By submitting this form, you agree that your data will be used to contact you. Your information is treated confidentially and in compliance with GDPR.'
-          : 'En soumettant ce formulaire, vous acceptez que vos données soient utilisées pour vous recontacter. Vos informations sont traitées de manière confidentielle et conformément au RGPD.'}
+          : 'En soumettant ce formulaire, vous acceptez que vos donnÃ©es soient utilisÃ©es pour vous recontacter. Vos informations sont traitÃ©es de maniÃ¨re confidentielle et conformÃ©ment au RGPD.'}
       </p>
     </motion.form>
   );

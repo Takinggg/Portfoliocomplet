@@ -13,7 +13,7 @@ export function CopyServerCodeButton() {
 
   const handleCopy = async () => {
     try {
-      // Le code du serveur consolidé avec CORS corrigé
+      // Le code du serveur consolidÃ© avec CORS corrigÃ©
       const response = await fetch('/supabase/functions/server/index.tsx');
       const serverCode = await response.text();
       
@@ -36,7 +36,7 @@ export function CopyServerCodeButton() {
   };
 
   const createNewFunction = () => {
-    // Ouvrir la page pour créer une nouvelle fonction
+    // Ouvrir la page pour crÃ©er une nouvelle fonction
     window.open(
       'https://supabase.com/dashboard/project/ptcxeqtjlxittxayffgu/functions',
       '_blank'
@@ -44,13 +44,13 @@ export function CopyServerCodeButton() {
     
     // Afficher les instructions
     setTimeout(() => {
-      alert(`📝 Instructions pour créer la fonction :
+      alert(`ðŸ“ Instructions pour crÃ©er la fonction :
 
 1. Cliquez sur "+ New Function" (bouton vert)
 2. Nom de la fonction : make-server-04919ac5
 3. Cliquez "Create function"
-4. Dans l'éditeur, SUPPRIMEZ tout le code exemple
-5. COLLEZ le code que vous avez copié
+4. Dans l'Ã©diteur, SUPPRIMEZ tout le code exemple
+5. COLLEZ le code que vous avez copiÃ©
 6. Cliquez "Deploy"
 
 Attendez 30-60 secondes, puis revenez ici !`);
@@ -66,28 +66,28 @@ Attendez 30-60 secondes, puis revenez ici !`);
         
         <div className="flex-1">
           <h3 className="text-lg text-white mb-2">
-            🚀 Déployer le Serveur (CORS Corrigé)
+            ðŸš€ DÃ©ployer le Serveur (CORS CorrigÃ©)
           </h3>
           <p className="text-sm text-white/60 mb-4">
-            Serveur consolidé avec CORS fixé, prêt pour Figma Make et synchronisation Supabase :
+            Serveur consolidÃ© avec CORS fixÃ©, prÃªt pour Figma Make et synchronisation Supabase :
           </p>
 
           <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-4">
             <div className="text-sm text-blue-200 space-y-3">
               <div>
-                <p className="font-medium mb-2">📍 Si la fonction existe déjà :</p>
+                <p className="font-medium mb-2">ðŸ“ Si la fonction existe dÃ©jÃ  :</p>
                 <ol className="list-decimal list-inside space-y-1 text-xs ml-2">
                   <li>Copier le code ci-dessous</li>
-                  <li>Ouvrir le Dashboard → Cliquer sur "make-server-04919ac5"</li>
-                  <li>Cliquer "Edit" → Supprimer tout → Coller → Deploy</li>
+                  <li>Ouvrir le Dashboard â†’ Cliquer sur "make-server-04919ac5"</li>
+                  <li>Cliquer "Edit" â†’ Supprimer tout â†’ Coller â†’ Deploy</li>
                 </ol>
               </div>
               
               <div>
-                <p className="font-medium mb-2">🆕 Si la fonction n'existe PAS encore :</p>
+                <p className="font-medium mb-2">ðŸ†• Si la fonction n'existe PAS encore :</p>
                 <ol className="list-decimal list-inside space-y-1 text-xs ml-2">
                   <li>Copier le code ci-dessous</li>
-                  <li>Cliquer "Créer la Fonction" → Suivre les instructions</li>
+                  <li>Cliquer "CrÃ©er la Fonction" â†’ Suivre les instructions</li>
                   <li>Nom : <code className="bg-white/10 px-1 rounded">make-server-04919ac5</code></li>
                 </ol>
               </div>
@@ -95,9 +95,9 @@ Attendez 30-60 secondes, puis revenez ici !`);
           </div>
 
           <div className="space-y-3">
-            {/* Étape 1 : Copier le code */}
+            {/* Ã‰tape 1 : Copier le code */}
             <div>
-              <p className="text-xs text-white/60 mb-2">Étape 1 : Copier le code</p>
+              <p className="text-xs text-white/60 mb-2">Ã‰tape 1 : Copier le code</p>
               <Button
                 onClick={handleCopy}
                 variant="default"
@@ -110,7 +110,7 @@ Attendez 30-60 secondes, puis revenez ici !`);
                 {copied ? (
                   <>
                     <CheckCircle className="h-4 w-4 mr-2" />
-                    Code Copié !
+                    Code CopiÃ© !
                   </>
                 ) : (
                   <>
@@ -121,10 +121,10 @@ Attendez 30-60 secondes, puis revenez ici !`);
               </Button>
             </div>
 
-            {/* Étape 2 : Aller sur Supabase */}
+            {/* Ã‰tape 2 : Aller sur Supabase */}
             {copied && (
               <div className="animate-in fade-in slide-in-from-top-2 duration-300">
-                <p className="text-xs text-white/60 mb-2">Étape 2 : Ouvrir Supabase</p>
+                <p className="text-xs text-white/60 mb-2">Ã‰tape 2 : Ouvrir Supabase</p>
                 <div className="flex flex-wrap gap-2">
                   <Button
                     onClick={openDashboard}
@@ -138,10 +138,10 @@ Attendez 30-60 secondes, puis revenez ici !`);
                   <Button
                     onClick={createNewFunction}
                     variant="outline"
-                    className="border-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                    className="border-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/10"
                   >
                     <ExternalLink className="h-4 w-4 mr-2" />
-                    Créer la Fonction (si n'existe pas)
+                    CrÃ©er la Fonction (si n'existe pas)
                   </Button>
                 </div>
               </div>
@@ -151,18 +151,18 @@ Attendez 30-60 secondes, puis revenez ici !`);
           {copied && (
             <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
               <p className="text-sm text-green-200">
-                ✅ Code copié ! Maintenant allez dans le Supabase Dashboard et collez-le.
+                âœ… Code copiÃ© ! Maintenant allez dans le Supabase Dashboard et collez-le.
               </p>
             </div>
           )}
 
           <div className="mt-4 pt-4 border-t border-white/10">
             <p className="text-xs text-white/40">
-              💡 <strong>Guide rapide :</strong> Consultez{" "}
-              <code className="bg-white/10 px-1 py-0.5 rounded text-[#00FFC2]">
+              ðŸ’¡ <strong>Guide rapide :</strong> Consultez{" "}
+              <code className="bg-white/10 px-1 py-0.5 rounded text-[#CCFF00]">
                 /DEPLOIEMENT_RAPIDE_CORS_CORRIGE.md
               </code>{" "}
-              pour le guide de déploiement complet
+              pour le guide de dÃ©ploiement complet
             </p>
           </div>
         </div>

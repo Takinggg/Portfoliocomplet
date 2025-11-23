@@ -19,7 +19,7 @@ interface SEOProps {
 
 export function SEO({
   title = "Portfolio Freelance & CRM - Solutions Web sur mesure",
-  description = "Création de sites web, applications et automatisations pour entreprises ambitieuses. Dashboard CRM intégré pour gérer votre activité.",
+  description = "CrÃ©ation de sites web, applications et automatisations pour entreprises ambitieuses. Dashboard CRM intÃ©grÃ© pour gÃ©rer votre activitÃ©.",
   ogTitle,
   ogDescription,
   ogImage = "/og-image.jpg",
@@ -137,7 +137,7 @@ export function SEO({
     setMeta("viewport", "width=device-width, initial-scale=1, maximum-scale=5");
 
     // Theme color
-    setMeta("theme-color", "#00FFC2");
+    setMeta("theme-color", "#CCFF00");
 
   }, [title, description, ogTitle, ogDescription, ogImage, ogType, canonical, keywords, author, publishedTime, modifiedTime, noindex, language]);
 

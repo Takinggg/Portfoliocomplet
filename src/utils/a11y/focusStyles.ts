@@ -1,40 +1,40 @@
 /**
- * Accessibilité - Focus Styles
- * Styles de focus cohérents et visibles pour tous les éléments interactifs
+ * AccessibilitÃ© - Focus Styles
+ * Styles de focus cohÃ©rents et visibles pour tous les Ã©lÃ©ments interactifs
  */
 
-// Focus visible universel pour tous les éléments interactifs
+// Focus visible universel pour tous les Ã©lÃ©ments interactifs
 export const focusClasses = {
   // Focus principal avec ring mint
-  default: "focus:outline-none focus:ring-4 focus:ring-[#00FFC2]/50 focus:ring-offset-2 focus:ring-offset-[#0C0C0C]",
+  default: "focus:outline-none focus:ring-4 focus:ring-[#CCFF00]/50 focus:ring-offset-2 focus:ring-offset-[#0C0C0C]",
   
-  // Focus pour éléments sur fond clair
-  onLight: "focus:outline-none focus:ring-4 focus:ring-[#00FFC2]/50 focus:ring-offset-2 focus:ring-offset-white",
+  // Focus pour Ã©lÃ©ments sur fond clair
+  onLight: "focus:outline-none focus:ring-4 focus:ring-[#CCFF00]/50 focus:ring-offset-2 focus:ring-offset-white",
   
-  // Focus pour éléments sur fond sombre
-  onDark: "focus:outline-none focus:ring-4 focus:ring-[#00FFC2]/50 focus:ring-offset-2 focus:ring-offset-[#0C0C0C]",
+  // Focus pour Ã©lÃ©ments sur fond sombre
+  onDark: "focus:outline-none focus:ring-4 focus:ring-[#CCFF00]/50 focus:ring-offset-2 focus:ring-offset-[#0C0C0C]",
   
   // Focus pour boutons primaires (mint)
-  primary: "focus:outline-none focus:ring-4 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-[#00FFC2]",
+  primary: "focus:outline-none focus:ring-4 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-[#CCFF00]",
   
   // Focus pour liens inline
-  inline: "focus:outline-none focus:underline focus:underline-offset-4 focus:decoration-2 focus:decoration-[#00FFC2]",
+  inline: "focus:outline-none focus:underline focus:underline-offset-4 focus:decoration-2 focus:decoration-[#CCFF00]",
   
   // Focus pour cartes et zones cliquables
-  card: "focus:outline-none focus:ring-4 focus:ring-[#00FFC2]/40 focus:ring-offset-2 focus:ring-offset-[#0C0C0C]",
+  card: "focus:outline-none focus:ring-4 focus:ring-[#CCFF00]/40 focus:ring-offset-2 focus:ring-offset-[#0C0C0C]",
   
   // Focus pour inputs
-  input: "focus:outline-none focus:ring-2 focus:ring-[#00FFC2] focus:border-[#00FFC2]",
+  input: "focus:outline-none focus:ring-2 focus:ring-[#CCFF00] focus:border-[#CCFF00]",
   
   // Focus pour navigation
-  nav: "focus:outline-none focus:bg-[#00FFC2]/10 focus:text-[#00FFC2]",
+  nav: "focus:outline-none focus:bg-[#CCFF00]/10 focus:text-[#CCFF00]",
 };
 
 // Classe CSS pour ajouter automatiquement le focus visible
 export const focusVisibleClass = `
-  /* Focus visible automatique pour tous les éléments interactifs */
+  /* Focus visible automatique pour tous les Ã©lÃ©ments interactifs */
   *:focus-visible {
-    outline: 2px solid #00FFC2;
+    outline: 2px solid #CCFF00;
     outline-offset: 2px;
   }
   
@@ -72,7 +72,7 @@ export function trapFocus(element: HTMLElement) {
   
   element.addEventListener('keydown', handleTabKey);
   
-  // Focus le premier élément
+  // Focus le premier Ã©lÃ©ment
   firstFocusable?.focus();
   
   // Retourne une fonction pour nettoyer
@@ -81,7 +81,7 @@ export function trapFocus(element: HTMLElement) {
   };
 }
 
-// Restore focus après fermeture de modal
+// Restore focus aprÃ¨s fermeture de modal
 export function createFocusManager() {
   let previousFocus: HTMLElement | null = null;
   

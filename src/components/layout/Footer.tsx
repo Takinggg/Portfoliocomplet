@@ -65,7 +65,7 @@ export default function Footer({ onNavigate }: FooterProps) {
             <div className="flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={() => onNavigate?.("contact")}
-                className="inline-flex items-center justify-center rounded-2xl bg-mint px-6 py-3 text-sm font-semibold text-black shadow-[0_10px_40px_rgba(0,255,194,0.35)] transition hover:scale-[1.02]"
+                className="inline-flex items-center justify-center rounded-2xl bg-mint px-6 py-3 text-sm font-semibold text-black shadow-[0_10px_40px_rgba(204, 255, 0,0.35)] transition hover:scale-[1.02]"
               >
                 {ctaTexts.primary}
                 <ArrowUpRight className="ml-2 h-4 w-4" />
@@ -244,7 +244,7 @@ export default function Footer({ onNavigate }: FooterProps) {
           className="flex flex-col sm:flex-row justify-between items-center gap-6 pt-8 border-t border-neutral-900"
         >
           <div className="text-sm text-neutral-500">
-            © {currentYear} Maxence. {t("footer.rights")}.
+            Â© {currentYear} Maxence. {t("footer.rights")}.
           </div>
 
           {/* Social Links */}

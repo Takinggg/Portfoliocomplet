@@ -164,13 +164,13 @@ export function CRMFlowTab() {
 
     } catch (error) {
       console.error("Error fetching data:", error);
-      toast.error("Erreur lors du chargement des données");
+      toast.error("Erreur lors du chargement des donnÃ©es");
     } finally {
       setLoading(false);
     }
   };
 
-  // LEAD → CLIENT
+  // LEAD â†’ CLIENT
   const handleConvertLeadToClient = async () => {
     if (!convertLeadModal) return;
 
@@ -200,7 +200,7 @@ export function CRMFlowTab() {
       );
 
       if (res.ok) {
-        toast.success("✅ Lead converti en client !");
+        toast.success("âœ… Lead converti en client !");
         setConvertLeadModal(null);
         fetchAllData();
       } else {
@@ -208,11 +208,11 @@ export function CRMFlowTab() {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Erreur réseau");
+      toast.error("Erreur rÃ©seau");
     }
   };
 
-  // CLIENT → QUOTE
+  // CLIENT â†’ QUOTE
   const handleCreateQuote = async () => {
     if (!createQuoteModal) return;
 
@@ -237,7 +237,7 @@ export function CRMFlowTab() {
 
       if (error) throw error;
 
-      toast.success("✅ Devis créé !");
+      toast.success("âœ… Devis crÃ©Ã© !");
       setCreateQuoteModal(null);
       fetchAllData();
       
@@ -250,7 +250,7 @@ export function CRMFlowTab() {
       });
     } catch (error) {
       console.error(error);
-      toast.error("Erreur lors de la création du devis");
+      toast.error("Erreur lors de la crÃ©ation du devis");
     }
   };
 
@@ -264,14 +264,14 @@ export function CRMFlowTab() {
       await (supabase.from("quotes") as any).update({ status: "sent" }).eq("id", quote.id);
 
       // TODO: Send email via your email service
-      toast.success(`📧 Devis envoyé à ${quote.client_name} !`);
+      toast.success(`ðŸ“§ Devis envoyÃ© Ã  ${quote.client_name} !`);
       fetchAllData();
     } catch (error) {
       toast.error("Erreur lors de l'envoi");
     }
   };
 
-  // QUOTE → INVOICE
+  // QUOTE â†’ INVOICE
   const handleConvertQuoteToInvoice = async () => {
     if (!convertQuoteModal) return;
 
@@ -298,12 +298,12 @@ export function CRMFlowTab() {
       // Update quote status
       await (supabase.from("quotes") as any).update({ status: "accepted" }).eq("id", convertQuoteModal.id);
 
-      toast.success("✅ Facture créée depuis le devis !");
+      toast.success("âœ… Facture crÃ©Ã©e depuis le devis !");
       setConvertQuoteModal(null);
       fetchAllData();
     } catch (error) {
       console.error(error);
-      toast.error("Erreur lors de la création de la facture");
+      toast.error("Erreur lors de la crÃ©ation de la facture");
     }
   };
 
@@ -360,10 +360,10 @@ export function CRMFlowTab() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-            <Sparkles className="w-8 h-8 text-[#00FFC2]" />
+            <Sparkles className="w-8 h-8 text-[#CCFF00]" />
             Pipeline CRM Complet
           </h1>
-          <p className="text-white/60 mt-1">Lead → Client → Devis → Facture</p>
+          <p className="text-white/60 mt-1">Lead â†’ Client â†’ Devis â†’ Facture</p>
         </div>
       </div>
 
@@ -398,7 +398,7 @@ export function CRMFlowTab() {
       {/* Pipeline Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* LEADS */}
-        <Panel title="🎯 Leads" icon={<Users className="w-5 h-5" />} variant="default">
+        <Panel title="ðŸŽ¯ Leads" icon={<Users className="w-5 h-5" />} variant="default">
           <div className="space-y-3">
             {leads.slice(0, 5).map((lead) => (
               <motion.div
@@ -411,7 +411,7 @@ export function CRMFlowTab() {
                     <h4 className="font-semibold text-white">{lead.name}</h4>
                     <p className="text-xs text-white/60">{lead.email}</p>
                     {lead.company && (
-                      <p className="text-xs text-[#00FFC2] mt-1">{lead.company}</p>
+                      <p className="text-xs text-[#CCFF00] mt-1">{lead.company}</p>
                     )}
                   </div>
                   <Badge variant="outline" className="text-xs">
@@ -421,7 +421,7 @@ export function CRMFlowTab() {
                 <Button
                   size="sm"
                   onClick={() => openConvertLead(lead)}
-                  className="w-full mt-2 bg-[#00FFC2]/10 hover:bg-[#00FFC2]/20 text-[#00FFC2]"
+                  className="w-full mt-2 bg-[#CCFF00]/10 hover:bg-[#CCFF00]/20 text-[#CCFF00]"
                 >
                   <ArrowRight className="w-4 h-4 mr-2" />
                   Convertir en client
@@ -432,7 +432,7 @@ export function CRMFlowTab() {
         </Panel>
 
         {/* CLIENTS */}
-        <Panel title="👥 Clients" icon={<UserCheck className="w-5 h-5" />} variant="elevated">
+        <Panel title="ðŸ‘¥ Clients" icon={<UserCheck className="w-5 h-5" />} variant="elevated">
           <div className="space-y-3">
             {clients.slice(0, 5).map((client) => (
               <motion.div
@@ -445,7 +445,7 @@ export function CRMFlowTab() {
                     <h4 className="font-semibold text-white">{client.name}</h4>
                     <p className="text-xs text-white/60">{client.email}</p>
                     {client.company && (
-                      <p className="text-xs text-[#00FFC2] mt-1 flex items-center gap-1">
+                      <p className="text-xs text-[#CCFF00] mt-1 flex items-center gap-1">
                         <Building className="w-3 h-3" />
                         {client.company}
                       </p>
@@ -455,10 +455,10 @@ export function CRMFlowTab() {
                 <Button
                   size="sm"
                   onClick={() => openCreateQuote(client)}
-                  className="w-full mt-2 bg-[#00FFC2]/10 hover:bg-[#00FFC2]/20 text-[#00FFC2]"
+                  className="w-full mt-2 bg-[#CCFF00]/10 hover:bg-[#CCFF00]/20 text-[#CCFF00]"
                 >
                   <FileText className="w-4 h-4 mr-2" />
-                  Créer un devis
+                  CrÃ©er un devis
                 </Button>
               </motion.div>
             ))}
@@ -466,7 +466,7 @@ export function CRMFlowTab() {
         </Panel>
 
         {/* QUOTES */}
-        <Panel title="📄 Devis" icon={<FileText className="w-5 h-5" />} variant="accent">
+        <Panel title="ðŸ“„ Devis" icon={<FileText className="w-5 h-5" />} variant="accent">
           <div className="space-y-3">
             {quotes.slice(0, 5).map((quote) => (
               <motion.div
@@ -478,8 +478,8 @@ export function CRMFlowTab() {
                   <div className="flex-1">
                     <h4 className="font-semibold text-white">{quote.title}</h4>
                     <p className="text-xs text-white/60">{quote.client_name}</p>
-                    <p className="text-lg font-bold text-[#00FFC2] mt-1">
-                      {quote.amount.toLocaleString()}€
+                    <p className="text-lg font-bold text-[#CCFF00] mt-1">
+                      {quote.amount.toLocaleString()}â‚¬
                     </p>
                   </div>
                   <Badge
@@ -504,10 +504,10 @@ export function CRMFlowTab() {
                     <Button
                       size="sm"
                       onClick={() => setConvertQuoteModal(quote)}
-                      className="flex-1 bg-[#00FFC2]/10 hover:bg-[#00FFC2]/20 text-[#00FFC2]"
+                      className="flex-1 bg-[#CCFF00]/10 hover:bg-[#CCFF00]/20 text-[#CCFF00]"
                     >
                       <Receipt className="w-4 h-4 mr-1" />
-                      → Facture
+                      â†’ Facture
                     </Button>
                   )}
                 </div>
@@ -517,7 +517,7 @@ export function CRMFlowTab() {
         </Panel>
 
         {/* INVOICES */}
-        <Panel title="💰 Factures" icon={<Receipt className="w-5 h-5" />} variant="default">
+        <Panel title="ðŸ’° Factures" icon={<Receipt className="w-5 h-5" />} variant="default">
           <div className="space-y-3">
             {invoices.slice(0, 5).map((invoice) => (
               <motion.div
@@ -529,8 +529,8 @@ export function CRMFlowTab() {
                   <div className="flex-1">
                     <h4 className="font-semibold text-white">{invoice.invoice_number}</h4>
                     <p className="text-xs text-white/60">{invoice.client_name}</p>
-                    <p className="text-lg font-bold text-[#00FFC2] mt-1">
-                      {invoice.amount.toLocaleString()}€
+                    <p className="text-lg font-bold text-[#CCFF00] mt-1">
+                      {invoice.amount.toLocaleString()}â‚¬
                     </p>
                   </div>
                   <Badge
@@ -542,7 +542,7 @@ export function CRMFlowTab() {
                 </div>
                 <div className="flex items-center gap-2 mt-2 text-xs text-white/60">
                   <Calendar className="w-3 h-3" />
-                  Échéance: {new Date(invoice.due_date).toLocaleDateString()}
+                  Ã‰chÃ©ance: {new Date(invoice.due_date).toLocaleDateString()}
                 </div>
               </motion.div>
             ))}
@@ -555,7 +555,7 @@ export function CRMFlowTab() {
         <DialogContent className="max-w-2xl" style={{ background: colors.surface, border: `1px solid ${colors.border}` }}>
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
-              <ArrowRight className="w-5 h-5 text-[#00FFC2]" />
+              <ArrowRight className="w-5 h-5 text-[#CCFF00]" />
               Convertir le lead en client
             </DialogTitle>
           </DialogHeader>
@@ -579,7 +579,7 @@ export function CRMFlowTab() {
                 />
               </div>
               <div>
-                <Label className="text-white">Téléphone</Label>
+                <Label className="text-white">TÃ©lÃ©phone</Label>
                 <Input
                   value={clientForm.phone}
                   onChange={(e) => setClientForm({ ...clientForm, phone: e.target.value })}
@@ -596,7 +596,7 @@ export function CRMFlowTab() {
               </div>
             </div>
             <div>
-              <Label className="text-white">Adresse complète</Label>
+              <Label className="text-white">Adresse complÃ¨te</Label>
               <Textarea
                 value={clientForm.address}
                 onChange={(e) => setClientForm({ ...clientForm, address: e.target.value })}
@@ -610,10 +610,10 @@ export function CRMFlowTab() {
               </Button>
               <Button
                 onClick={handleConvertLeadToClient}
-                className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               >
                 <UserCheck className="w-4 h-4 mr-2" />
-                Créer le client
+                CrÃ©er le client
               </Button>
             </div>
           </div>
@@ -625,8 +625,8 @@ export function CRMFlowTab() {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" style={{ background: colors.surface, border: `1px solid ${colors.border}` }}>
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
-              <FileText className="w-5 h-5 text-[#00FFC2]" />
-              Créer un devis pour {createQuoteModal?.name}
+              <FileText className="w-5 h-5 text-[#CCFF00]" />
+              CrÃ©er un devis pour {createQuoteModal?.name}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
@@ -682,14 +682,14 @@ export function CRMFlowTab() {
                       <div className="grid grid-cols-2 gap-2">
                         <Input
                           type="number"
-                          placeholder="Quantité"
+                          placeholder="QuantitÃ©"
                           value={item.quantity}
                           onChange={(e) => updateQuoteItem(index, "quantity", parseInt(e.target.value) || 1)}
                           className="bg-white/5 border-white/10 text-white"
                         />
                         <Input
                           type="number"
-                          placeholder="Prix unitaire (€)"
+                          placeholder="Prix unitaire (â‚¬)"
                           value={item.price}
                           onChange={(e) => updateQuoteItem(index, "price", parseFloat(e.target.value) || 0)}
                           className="bg-white/5 border-white/10 text-white"
@@ -709,11 +709,11 @@ export function CRMFlowTab() {
               </div>
               
               {/* Total */}
-              <div className="mt-4 p-4 rounded-lg bg-[#00FFC2]/10 border border-[#00FFC2]/20">
+              <div className="mt-4 p-4 rounded-lg bg-[#CCFF00]/10 border border-[#CCFF00]/20">
                 <div className="flex items-center justify-between">
                   <span className="text-white font-semibold">Total HT</span>
-                  <span className="text-2xl font-bold text-[#00FFC2]">
-                    {calculateQuoteTotal().toLocaleString()}€
+                  <span className="text-2xl font-bold text-[#CCFF00]">
+                    {calculateQuoteTotal().toLocaleString()}â‚¬
                   </span>
                 </div>
               </div>
@@ -725,10 +725,10 @@ export function CRMFlowTab() {
               </Button>
               <Button
                 onClick={handleCreateQuote}
-                className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               >
                 <FileText className="w-4 h-4 mr-2" />
-                Créer le devis
+                CrÃ©er le devis
               </Button>
             </div>
           </div>
@@ -740,7 +740,7 @@ export function CRMFlowTab() {
         <DialogContent style={{ background: colors.surface, border: `1px solid ${colors.border}` }}>
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
-              <Receipt className="w-5 h-5 text-[#00FFC2]" />
+              <Receipt className="w-5 h-5 text-[#CCFF00]" />
               Transformer en facture
             </DialogTitle>
           </DialogHeader>
@@ -750,13 +750,13 @@ export function CRMFlowTab() {
               <p className="text-white/60 text-sm mb-3">{convertQuoteModal?.client_name}</p>
               <div className="flex items-center justify-between">
                 <span className="text-white/80">Montant</span>
-                <span className="text-2xl font-bold text-[#00FFC2]">
-                  {convertQuoteModal?.amount.toLocaleString()}€
+                <span className="text-2xl font-bold text-[#CCFF00]">
+                  {convertQuoteModal?.amount.toLocaleString()}â‚¬
                 </span>
               </div>
             </div>
             <p className="text-white/60 text-sm">
-              Une facture sera créée automatiquement avec un numéro unique et une échéance de 30 jours.
+              Une facture sera crÃ©Ã©e automatiquement avec un numÃ©ro unique et une Ã©chÃ©ance de 30 jours.
             </p>
             <div className="flex gap-3 justify-end">
               <Button variant="outline" onClick={() => setConvertQuoteModal(null)}>
@@ -764,10 +764,10 @@ export function CRMFlowTab() {
               </Button>
               <Button
                 onClick={handleConvertQuoteToInvoice}
-                className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               >
                 <CheckCircle className="w-4 h-4 mr-2" />
-                Créer la facture
+                CrÃ©er la facture
               </Button>
             </div>
           </div>

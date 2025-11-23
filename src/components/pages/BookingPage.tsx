@@ -209,7 +209,7 @@ export default function BookingPage() {
           duration: duration,
         };
         
-        console.log("📧 Sending booking confirmation email:", emailPayload);
+        console.log("ðŸ“§ Sending booking confirmation email:", emailPayload);
         
         const emailResponse = await fetch(
           `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/emails/booking-confirmation`,
@@ -225,14 +225,14 @@ export default function BookingPage() {
 
         if (!emailResponse.ok) {
           const errorData = await emailResponse.json();
-          console.error("❌ Failed to send booking confirmation:", errorData);
+          console.error("âŒ Failed to send booking confirmation:", errorData);
           toast.error(t("booking.flow.toast.emailWarning"));
         } else {
           const emailData = await emailResponse.json();
-          console.log("✅ Booking confirmation email sent:", emailData);
+          console.log("âœ… Booking confirmation email sent:", emailData);
         }
       } catch (emailError) {
-        console.error("❌ Error sending confirmation email:", emailError);
+        console.error("âŒ Error sending confirmation email:", emailError);
         // Don't block the flow if email fails
       }
 
@@ -253,15 +253,15 @@ export default function BookingPage() {
             className="absolute inset-0 opacity-20"
             style={{
               backgroundImage: `
-                linear-gradient(to right, rgba(0, 255, 194, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 255, 194, 0.03) 1px, transparent 1px)
+                linear-gradient(to right, rgba(204, 255, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(204, 255, 0, 0.03) 1px, transparent 1px)
               `,
               backgroundSize: '80px 80px',
             }}
           />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <Badge variant="secondary" className="mb-4 bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/30">
+          <Badge variant="secondary" className="mb-4 bg-[#CCFF00]/10 text-[#CCFF00] border-[#CCFF00]/30">
             <CalendarIcon className="h-4 w-4 mr-2" />
             {t("booking.flow.badge")}
           </Badge>
@@ -283,18 +283,18 @@ export default function BookingPage() {
               ].map((s) => (
                 <div key={s.num} className="flex items-center">
                   <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                    step >= s.num ? "bg-[#00FFC2] text-black" : "bg-neutral-800 text-neutral-500"
+                    step >= s.num ? "bg-[#CCFF00] text-black" : "bg-neutral-800 text-neutral-500"
                   }`}>
                     {step > s.num ? <CheckCircle2 className="h-5 w-5" /> : s.num}
                   </div>
                   <span className={`ml-2 text-sm hidden sm:inline ${
-                    step >= s.num ? "text-[#00FFC2]" : "text-neutral-500"
+                    step >= s.num ? "text-[#CCFF00]" : "text-neutral-500"
                   }`}>
                     {s.label}
                   </span>
                   {s.num < 3 && (
                     <div className={`w-12 sm:w-24 h-0.5 mx-2 ${
-                      step > s.num ? "bg-[#00FFC2]" : "bg-neutral-800"
+                      step > s.num ? "bg-[#CCFF00]" : "bg-neutral-800"
                     }`} />
                   )}
                 </div>
@@ -323,7 +323,7 @@ export default function BookingPage() {
                         className={`
                           p-4 rounded-lg border-2 transition-all duration-200 text-left
                           ${duration === opt.value 
-                            ? 'border-[#00FFC2] bg-[#00FFC2]/5' 
+                            ? 'border-[#CCFF00] bg-[#CCFF00]/5' 
                             : 'border-neutral-700 hover:border-neutral-600'
                           }
                         `}
@@ -332,16 +332,16 @@ export default function BookingPage() {
                           <div className={`
                             w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5
                             ${duration === opt.value 
-                              ? 'border-[#00FFC2]' 
+                              ? 'border-[#CCFF00]' 
                               : 'border-neutral-600'
                             }
                           `}>
                             {duration === opt.value && (
-                              <div className="w-2.5 h-2.5 rounded-full bg-[#00FFC2]" />
+                              <div className="w-2.5 h-2.5 rounded-full bg-[#CCFF00]" />
                             )}
                           </div>
                           <div className="flex-1">
-                            <div className={`font-medium ${duration === opt.value ? 'text-[#00FFC2]' : 'text-white'}`}>
+                            <div className={`font-medium ${duration === opt.value ? 'text-[#CCFF00]' : 'text-white'}`}>
                               {opt.label}
                             </div>
                             <div className="text-xs text-neutral-400 mt-1">
@@ -360,7 +360,7 @@ export default function BookingPage() {
                   <CardHeader>
                     <CardTitle className="text-white">{t("booking.flow.calendar.title")}</CardTitle>
                     <p className="text-sm text-neutral-400 mt-2 flex items-center gap-2">
-                      <span className="inline-block w-2 h-2 rounded-full bg-[#00FFC2]"></span>
+                      <span className="inline-block w-2 h-2 rounded-full bg-[#CCFF00]"></span>
                       {`${t("booking.flow.calendar.hintPrefix")} ${duration}${t("booking.flow.calendar.hintSuffix")}`}
                     </p>
                   </CardHeader>
@@ -460,9 +460,9 @@ export default function BookingPage() {
                                   : 'text-white hover:bg-neutral-800 cursor-pointer'
                                 }
                                 ${isSelected 
-                                  ? 'bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90' 
+                                  ? 'bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90' 
                                   : slotsCount > 0 
-                                    ? 'border border-neutral-700 hover:border-[#00FFC2]/40' 
+                                    ? 'border border-neutral-700 hover:border-[#CCFF00]/40' 
                                     : ''
                                 }
                                 ${isToday && !isSelected ? 'border border-neutral-600' : ''}
@@ -472,7 +472,7 @@ export default function BookingPage() {
                                 {day}
                               </span>
                               {slotsCount > 0 && (
-                                <span className={`text-[10px] ${isSelected ? 'text-black' : 'text-[#00FFC2]'} font-semibold mt-0.5`}>
+                                <span className={`text-[10px] ${isSelected ? 'text-black' : 'text-[#CCFF00]'} font-semibold mt-0.5`}>
                                   {slotsCount} {calendarTexts.slotShort ?? (language === 'en' ? 'slots' : 'dispo')}
                                 </span>
                               )}
@@ -509,8 +509,8 @@ export default function BookingPage() {
                               variant={selectedTime === slot ? "default" : "outline"}
                               onClick={() => setSelectedTime(slot)}
                               className={selectedTime === slot 
-                                ? "w-full bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90" 
-                                : "w-full border-neutral-800 hover:border-[#00FFC2]/40 bg-black/80 text-white"
+                                ? "w-full bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90" 
+                                : "w-full border-neutral-800 hover:border-[#CCFF00]/40 bg-black/80 text-white"
                               }
                             >
                               <Clock className="h-4 w-4 mr-2" />
@@ -526,8 +526,8 @@ export default function BookingPage() {
                       )}
 
                       {selectedTime && (
-                        <div className="mt-6 p-4 bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-lg">
-                          <div className="flex items-center text-[#00FFC2] mb-2">
+                        <div className="mt-6 p-4 bg-[#CCFF00]/10 border border-[#CCFF00]/30 rounded-lg">
+                          <div className="flex items-center text-[#CCFF00] mb-2">
                             <Video className="h-5 w-5 mr-2" />
                             <span>{t("booking.flow.time.callType")}</span>
                           </div>
@@ -539,7 +539,7 @@ export default function BookingPage() {
 
                       <Button
                         size="lg"
-                        className="w-full mt-6 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                        className="w-full mt-6 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
                         onClick={() => setStep(2)}
                         disabled={!selectedTime}
                       >
@@ -566,9 +566,9 @@ export default function BookingPage() {
                 <CardTitle className="text-white">{t("booking.flow.form.title")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="p-4 bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-lg">
+                <div className="p-4 bg-[#CCFF00]/10 border border-[#CCFF00]/30 rounded-lg">
                   <p className="text-sm text-neutral-400">
-                    {t("booking.flow.meeting.label")}: <span className="text-[#00FFC2]">
+                    {t("booking.flow.meeting.label")}: <span className="text-[#CCFF00]">
                       {selectedDate?.toLocaleDateString(locale)} {t("booking.flow.time.at")} {selectedTime}
                     </span>
                   </p>
@@ -627,7 +627,7 @@ export default function BookingPage() {
                   </Button>
                   <Button 
                     onClick={handleSubmit} 
-                    className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                    className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
                   >
                     {t("booking.flow.form.submit")}
                   </Button>
@@ -640,21 +640,21 @@ export default function BookingPage() {
           {step === 3 && (
             <Card className="max-w-2xl mx-auto text-center bg-neutral-950/50 border-neutral-800 backdrop-blur-xl">
               <CardContent className="pt-12 pb-12">
-                <div className="w-20 h-20 bg-[#00FFC2]/20 border-2 border-[#00FFC2] rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle2 className="h-10 w-10 text-[#00FFC2]" />
+                <div className="w-20 h-20 bg-[#CCFF00]/20 border-2 border-[#CCFF00] rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle2 className="h-10 w-10 text-[#CCFF00]" />
                 </div>
                 <h2 className="mb-4 text-white">{t("booking.flow.confirmation.title")}</h2>
                 <p className="text-neutral-400 mb-8">
                   {t("booking.flow.confirmation.description")} {bookingData.email && (
-                    <span className="text-[#00FFC2]">
+                    <span className="text-[#CCFF00]">
                       {` ${t("booking.flow.confirmation.emailNotice")} ${bookingData.email}`}
                     </span>
                   )}
                 </p>
                 
-                <div className="bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-lg p-6 mb-8">
+                <div className="bg-[#CCFF00]/10 border border-[#CCFF00]/30 rounded-lg p-6 mb-8">
                   <div className="flex items-center justify-center mb-4">
-                    <CalendarIcon className="h-6 w-6 text-[#00FFC2] mr-2" />
+                    <CalendarIcon className="h-6 w-6 text-[#CCFF00] mr-2" />
                     <h3 className="text-white">{t("booking.flow.confirmation.detailsTitle")}</h3>
                   </div>
                   <div className="space-y-2 text-left max-w-sm mx-auto">
@@ -682,7 +682,7 @@ export default function BookingPage() {
                 <Button 
                   size="lg" 
                   onClick={() => window.location.href = '/'}
-                  className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                  className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
                 >
                   {t("booking.flow.confirmation.backHome")}
                 </Button>

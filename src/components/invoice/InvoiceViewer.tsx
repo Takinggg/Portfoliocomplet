@@ -43,10 +43,10 @@ interface InvoiceViewerProps {
 
 const getStatusConfig = (status: string, labels: Record<string, string>) => {
   const config: Record<string, { label: string; bgColor: string; textColor: string; icon: string }> = {
-    draft: { label: labels.draft ?? 'Draft', bgColor: 'bg-gray-900/50', textColor: 'text-gray-300', icon: '📝' },
-    sent: { label: labels.sent ?? 'Sent', bgColor: 'bg-blue-900/50', textColor: 'text-blue-200', icon: '📤' },
-    paid: { label: labels.paid ?? 'Paid', bgColor: 'bg-green-900/50', textColor: 'text-green-200', icon: '✅' },
-    overdue: { label: labels.overdue ?? 'Overdue', bgColor: 'bg-red-900/50', textColor: 'text-red-200', icon: '⚠️' },
+    draft: { label: labels.draft ?? 'Draft', bgColor: 'bg-gray-900/50', textColor: 'text-gray-300', icon: 'ðŸ“' },
+    sent: { label: labels.sent ?? 'Sent', bgColor: 'bg-blue-900/50', textColor: 'text-blue-200', icon: 'ðŸ“¤' },
+    paid: { label: labels.paid ?? 'Paid', bgColor: 'bg-green-900/50', textColor: 'text-green-200', icon: 'âœ…' },
+    overdue: { label: labels.overdue ?? 'Overdue', bgColor: 'bg-red-900/50', textColor: 'text-red-200', icon: 'âš ï¸' },
   };
 
   return config[status as keyof typeof config] || config.draft;
@@ -80,14 +80,14 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
         ? parseFloat(invoice.amount) 
         : invoice.amount;
       
-      console.log('💰 Invoice payment details:', {
+      console.log('ðŸ’° Invoice payment details:', {
         originalAmount: invoice.amount,
         convertedAmount: amountNumber,
         type: typeof invoice.amount,
         convertedType: typeof amountNumber
       });
       
-      // Validate minimum amount (Stripe requires €0.50 minimum)
+      // Validate minimum amount (Stripe requires â‚¬0.50 minimum)
       if (amountNumber < 0.50) {
         toast.error(invoiceTexts.toast?.minAmountTitle, {
           description: invoiceTexts.toast?.minAmountDescription,
@@ -153,7 +153,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
           className="text-center space-y-4"
         >
           <div className="flex justify-center">
-            <Loader2 className="w-10 h-10 animate-spin text-[#00FFC2]" />
+            <Loader2 className="w-10 h-10 animate-spin text-[#CCFF00]" />
           </div>
           <p className="text-[#888888]">{invoiceTexts.loading}</p>
         </motion.div>
@@ -180,7 +180,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
           </div>
           <div className="pt-4">
             <p className="text-sm text-[#666666]">
-              {invoiceTexts.error?.support} <a href="mailto:contact@maxence.design" className="text-[#00FFC2] hover:underline">{invoiceTexts.labels?.contactUs}</a>
+              {invoiceTexts.error?.support} <a href="mailto:contact@maxence.design" className="text-[#CCFF00] hover:underline">{invoiceTexts.labels?.contactUs}</a>
             </p>
           </div>
         </motion.div>
@@ -230,7 +230,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
             <Button
               onClick={handlePayment}
               disabled={isProcessing}
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00E5AD] font-semibold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#00E5AD] font-semibold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isProcessing ? (
                 <>
@@ -253,7 +253,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
           {/* Header Section - Dark with mint accent */}
           <div className="relative overflow-hidden bg-gradient-to-br from-[#0C0C0C] via-[#0C0C0C] to-[#1A1A1A] px-8 py-12 sm:px-12 sm:py-16 print:bg-white print:text-black print:py-8">
             {/* Accent line */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00FFC2] to-transparent print:hidden"></div>
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#CCFF00] to-transparent print:hidden"></div>
 
             <div className="relative z-10 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
@@ -291,7 +291,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
                 transition={{ delay: 0.1 }}
                 className="space-y-4"
               >
-                <p className="text-xs font-semibold text-[#00FFC2] uppercase tracking-widest print:text-black">
+                <p className="text-xs font-semibold text-[#CCFF00] uppercase tracking-widest print:text-black">
                   {invoiceTexts.labels?.provider}
                 </p>
                 <div className="space-y-3">
@@ -328,7 +328,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
                 transition={{ delay: 0.1 }}
                 className="space-y-4"
               >
-                <p className="text-xs font-semibold text-[#00FFC2] uppercase tracking-widest print:text-black">
+                <p className="text-xs font-semibold text-[#CCFF00] uppercase tracking-widest print:text-black">
                   {invoiceTexts.labels?.billTo}
                 </p>
                 <div className="space-y-3">
@@ -354,7 +354,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.15 }}
               >
-                <p className="text-xs font-semibold text-[#00FFC2] uppercase tracking-widest mb-2 print:text-black">
+                <p className="text-xs font-semibold text-[#CCFF00] uppercase tracking-widest mb-2 print:text-black">
                   {invoiceTexts.labels?.issueDate}
                 </p>
                 <p className="text-lg font-semibold text-[#F4F4F4] print:text-black">
@@ -371,7 +371,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.15 }}
               >
-                <p className="text-xs font-semibold text-[#00FFC2] uppercase tracking-widest mb-2 print:text-black">
+                <p className="text-xs font-semibold text-[#CCFF00] uppercase tracking-widest mb-2 print:text-black">
                   {invoiceTexts.labels?.dueDate}
                 </p>
                 <p className={`text-lg font-semibold ${isOverdue ? 'text-red-500/80 print:text-red-600' : 'text-[#F4F4F4] print:text-black'}`}>
@@ -391,7 +391,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
               transition={{ delay: 0.2 }}
               className="space-y-4"
             >
-              <p className="text-xs font-semibold text-[#00FFC2] uppercase tracking-widest print:text-black">
+              <p className="text-xs font-semibold text-[#CCFF00] uppercase tracking-widest print:text-black">
                 {invoiceTexts.labels?.details}
               </p>
               <div className="overflow-x-auto">
@@ -429,10 +429,10 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
                             {item.quantity}
                           </td>
                           <td className="py-4 text-right text-[#888888] print:text-gray-700">
-                            {item.unitPrice.toFixed(2)} €
+                            {item.unitPrice.toFixed(2)} â‚¬
                           </td>
                           <td className="py-4 text-right font-semibold text-[#F4F4F4] print:text-black">
-                            {item.amount.toFixed(2)} €
+                            {item.amount.toFixed(2)} â‚¬
                           </td>
                         </motion.tr>
                       ))
@@ -458,21 +458,21 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
               <div className="w-full sm:w-96 space-y-3 text-sm">
                 <div className="flex justify-between text-[#888888] print:text-gray-700">
                   <span>{invoiceTexts.labels?.subtotal}</span>
-                  <span className="font-mono">{(invoice.subtotal || 0).toFixed(2)} €</span>
+                  <span className="font-mono">{(invoice.subtotal || 0).toFixed(2)} â‚¬</span>
                 </div>
 
                 {(invoice.tax || 0) > 0 && (
                   <div className="flex justify-between text-[#888888] print:text-gray-700">
                     <span>{invoiceTexts.labels?.tax}</span>
-                    <span className="font-mono">{(invoice.tax || 0).toFixed(2)} €</span>
+                    <span className="font-mono">{(invoice.tax || 0).toFixed(2)} â‚¬</span>
                   </div>
                 )}
 
-                <div className="bg-[#00FFC2]/10 border border-[#00FFC2]/30 rounded-lg px-4 py-3 mt-4 print:bg-[#00FFC2]/20 print:border-[#00FFC2]">
+                <div className="bg-[#CCFF00]/10 border border-[#CCFF00]/30 rounded-lg px-4 py-3 mt-4 print:bg-[#CCFF00]/20 print:border-[#CCFF00]">
                   <div className="flex justify-between items-center">
                     <span className="text-[#F4F4F4] font-bold print:text-black">{invoiceTexts.labels?.total}</span>
-                    <span className="text-2xl font-bold text-[#00FFC2] font-mono print:text-black">
-                      {totalAmount.toFixed(2)} €
+                    <span className="text-2xl font-bold text-[#CCFF00] font-mono print:text-black">
+                      {totalAmount.toFixed(2)} â‚¬
                     </span>
                   </div>
                 </div>
@@ -484,10 +484,10 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.35 }}
-              className="bg-[#00FFC2]/5 border border-[#00FFC2]/20 rounded-lg p-6 space-y-4 print:bg-gray-50 print:border-gray-300"
+              className="bg-[#CCFF00]/5 border border-[#CCFF00]/20 rounded-lg p-6 space-y-4 print:bg-gray-50 print:border-gray-300"
             >
               <div className="flex items-start gap-3">
-                <span className="text-2xl flex-shrink-0">💳</span>
+                <span className="text-2xl flex-shrink-0">ðŸ’³</span>
                 <div className="flex-1">
                   <h3 className="font-bold text-[#F4F4F4] mb-3 print:text-black">
                     {invoiceTexts.labels?.paymentMethods}
@@ -499,7 +499,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
                   {invoice.freelance?.iban && (
                     <div className="bg-[#0C0C0C] border border-[#222222] rounded p-4 font-mono text-sm print:bg-white print:border-gray-300">
                       <p className="text-xs text-[#666666] mb-2 print:text-gray-600">{invoiceTexts.labels?.iban}</p>
-                      <p className="text-[#00FFC2] break-all print:text-black">
+                      <p className="text-[#CCFF00] break-all print:text-black">
                         {invoice.freelance.iban}
                       </p>
                     </div>
@@ -543,14 +543,14 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
           {/* Footer - Dark with mint accent */}
           <div className="relative bg-gradient-to-r from-[#0C0C0C] to-[#1A1A1A] px-8 sm:px-12 py-8 border-t border-[#222222] text-center print:bg-gray-100 print:border-gray-300 print:text-black">
             {/* Accent line */}
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent to-[#00FFC2] print:hidden"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent to-[#CCFF00] print:hidden"></div>
 
             <p className="text-sm text-[#F4F4F4] mb-2 font-semibold print:text-black">
               {invoiceTexts.labels?.thanks}
             </p>
             <p className="text-xs text-[#888888] print:text-gray-700">
-              {invoice.freelance?.name} • {invoice.freelance?.email}
-              {invoice.freelance?.siret && ` • SIRET: ${invoice.freelance.siret}`}
+              {invoice.freelance?.name} â€¢ {invoice.freelance?.email}
+              {invoice.freelance?.siret && ` â€¢ SIRET: ${invoice.freelance.siret}`}
             </p>
           </div>
 
@@ -568,7 +568,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
               onClick={handlePayment}
               disabled={isProcessing}
               size="lg"
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00E5AD] font-bold text-lg px-8 shadow-xl hover:shadow-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#00E5AD] font-bold text-lg px-8 shadow-xl hover:shadow-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isProcessing ? (
                 <>
@@ -600,7 +600,7 @@ export default function InvoiceViewer({ invoice, loading, error }: InvoiceViewer
           </p>
           <a
             href="mailto:contact@maxence.design"
-            className="inline-flex items-center gap-2 text-[#00FFC2] hover:text-[#00E5AD] transition-colors text-sm font-medium"
+            className="inline-flex items-center gap-2 text-[#CCFF00] hover:text-[#00E5AD] transition-colors text-sm font-medium"
           >
             {invoiceTexts.labels?.contactUs}
             <ExternalLink className="w-4 h-4" />

@@ -1,7 +1,7 @@
 /**
- * NotFoundPage - Page 404 personnalisée
+ * NotFoundPage - Page 404 personnalisÃ©e
  * 
- * Affichée quand l'utilisateur essaie d'accéder à une route qui n'existe pas.
+ * AffichÃ©e quand l'utilisateur essaie d'accÃ©der Ã  une route qui n'existe pas.
  */
 
 import { useEffect, useMemo } from 'react';
@@ -23,10 +23,10 @@ export default function NotFoundPage() {
     return language ?? 'fr';
   }, [location.pathname, language]);
 
-  // Redirection automatique après 10 secondes
+  // Redirection automatique aprÃ¨s 10 secondes
   useEffect(() => {
     const timer = setTimeout(() => {
-      console.log('⏰ Auto-redirect to home after 10s');
+      console.log('â° Auto-redirect to home after 10s');
       navigate(`/${lang}`);
     }, 10000);
 
@@ -36,13 +36,13 @@ export default function NotFoundPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-[#0C0C0C] via-[#1a1a1a] to-[#0C0C0C]">
       <div className="max-w-2xl w-full text-center">
-        {/* Code 404 animé */}
+        {/* Code 404 animÃ© */}
         <div className="mb-8 relative">
           <h1 
             className="text-[150px] md:text-[200px] leading-none tracking-tighter opacity-10 select-none"
             style={{ 
               fontWeight: 900,
-              background: 'linear-gradient(135deg, #00FFC2 0%, #00CC99 100%)',
+              background: 'linear-gradient(135deg, #CCFF00 0%, #00CC99 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
@@ -52,7 +52,7 @@ export default function NotFoundPage() {
           </h1>
           
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-6xl md:text-8xl" style={{ fontWeight: 800, color: '#00FFC2' }}>
+            <div className="text-6xl md:text-8xl" style={{ fontWeight: 800, color: '#CCFF00' }}>
               {notFoundTexts.title}
             </div>
           </div>
@@ -76,7 +76,7 @@ export default function NotFoundPage() {
             size="lg"
             className="w-full sm:w-auto"
             style={{
-              background: '#00FFC2',
+              background: '#CCFF00',
               color: '#0C0C0C',
             }}
           >
@@ -90,8 +90,8 @@ export default function NotFoundPage() {
             variant="outline"
             className="w-full sm:w-auto"
             style={{
-              borderColor: '#00FFC2',
-              color: '#00FFC2',
+              borderColor: '#CCFF00',
+              color: '#CCFF00',
             }}
           >
             <ArrowLeft className="mr-2 h-5 w-5" />
@@ -124,9 +124,9 @@ export default function NotFoundPage() {
               onClick={() => navigate(`/${lang}/services`)}
               className="px-4 py-2 rounded-lg transition-colors"
               style={{
-                background: 'rgba(0, 255, 194, 0.1)',
-                color: '#00FFC2',
-                border: '1px solid rgba(0, 255, 194, 0.2)',
+                background: 'rgba(204, 255, 0, 0.1)',
+                color: '#CCFF00',
+                border: '1px solid rgba(204, 255, 0, 0.2)',
               }}
             >
               {notFoundTexts.actions?.services}
@@ -136,9 +136,9 @@ export default function NotFoundPage() {
               onClick={() => navigate(`/${lang}/about`)}
               className="px-4 py-2 rounded-lg transition-colors"
               style={{
-                background: 'rgba(0, 255, 194, 0.1)',
-                color: '#00FFC2',
-                border: '1px solid rgba(0, 255, 194, 0.2)',
+                background: 'rgba(204, 255, 0, 0.1)',
+                color: '#CCFF00',
+                border: '1px solid rgba(204, 255, 0, 0.2)',
               }}
             >
               {notFoundTexts.actions?.about}
@@ -148,9 +148,9 @@ export default function NotFoundPage() {
               onClick={() => navigate(`/${lang}/contact`)}
               className="px-4 py-2 rounded-lg transition-colors"
               style={{
-                background: 'rgba(0, 255, 194, 0.1)',
-                color: '#00FFC2',
-                border: '1px solid rgba(0, 255, 194, 0.2)',
+                background: 'rgba(204, 255, 0, 0.1)',
+                color: '#CCFF00',
+                border: '1px solid rgba(204, 255, 0, 0.2)',
               }}
             >
               {notFoundTexts.actions?.contact}
@@ -160,9 +160,9 @@ export default function NotFoundPage() {
               onClick={() => navigate(`/${lang}/blog`)}
               className="px-4 py-2 rounded-lg transition-colors"
               style={{
-                background: 'rgba(0, 255, 194, 0.1)',
-                color: '#00FFC2',
-                border: '1px solid rgba(0, 255, 194, 0.2)',
+                background: 'rgba(204, 255, 0, 0.1)',
+                color: '#CCFF00',
+                border: '1px solid rgba(204, 255, 0, 0.2)',
               }}
             >
               {notFoundTexts.actions?.blog}
@@ -173,7 +173,7 @@ export default function NotFoundPage() {
         {/* Hint */}
         <div className="mt-12 pt-8 border-t" style={{ borderColor: 'rgba(244, 244, 244, 0.1)' }}>
           <p className="text-sm" style={{ color: 'rgba(244, 244, 244, 0.4)' }}>
-            💡 {notFoundTexts.hint}
+            ðŸ’¡ {notFoundTexts.hint}
           </p>
           
           <p className="text-xs mt-4" style={{ color: 'rgba(244, 244, 244, 0.3)' }}>

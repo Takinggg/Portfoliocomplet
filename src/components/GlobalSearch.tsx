@@ -19,24 +19,24 @@ interface GlobalSearchProps {
   onNavigate: (page: string, id?: string) => void;
 }
 
-// Données de recherche (à adapter selon votre contenu)
+// DonnÃ©es de recherche (Ã  adapter selon votre contenu)
 const searchableContent: Omit<SearchResult, "id">[] = [
   // Pages principales
   { title: "Accueil", description: "Page d'accueil - Portfolio et services", category: "page", url: "home", icon: Info },
-  { title: "Services", description: "Mes services de développement web", category: "page", url: "services", icon: Briefcase },
-  { title: "Projets", description: "Portfolio de mes réalisations", category: "page", url: "projects", icon: Briefcase },
+  { title: "Services", description: "Mes services de dÃ©veloppement web", category: "page", url: "services", icon: Briefcase },
+  { title: "Projets", description: "Portfolio de mes rÃ©alisations", category: "page", url: "projects", icon: Briefcase },
   { title: "Blog", description: "Articles et tutoriels", category: "page", url: "blog", icon: BookOpen },
-  { title: "Case Studies", description: "Études de cas détaillées", category: "page", url: "case-studies", icon: FileText },
-  { title: "À propos", description: "En savoir plus sur moi", category: "page", url: "about", icon: Info },
+  { title: "Case Studies", description: "Ã‰tudes de cas dÃ©taillÃ©es", category: "page", url: "case-studies", icon: FileText },
+  { title: "Ã€ propos", description: "En savoir plus sur moi", category: "page", url: "about", icon: Info },
   { title: "Contact", description: "Me contacter", category: "page", url: "contact", icon: Info },
-  { title: "Réserver un appel", description: "Prendre rendez-vous", category: "page", url: "booking", icon: Calendar },
-  { title: "Ressources", description: "Ressources gratuites à télécharger", category: "page", url: "resources", icon: FileText },
-  { title: "Témoignages", description: "Avis clients", category: "page", url: "testimonials", icon: Info },
-  { title: "FAQ", description: "Questions fréquentes", category: "page", url: "faq", icon: Info },
+  { title: "RÃ©server un appel", description: "Prendre rendez-vous", category: "page", url: "booking", icon: Calendar },
+  { title: "Ressources", description: "Ressources gratuites Ã  tÃ©lÃ©charger", category: "page", url: "resources", icon: FileText },
+  { title: "TÃ©moignages", description: "Avis clients", category: "page", url: "testimonials", icon: Info },
+  { title: "FAQ", description: "Questions frÃ©quentes", category: "page", url: "faq", icon: Info },
 ];
 
 const categoryConfig = {
-  page: { label: "Page", color: "#00FFC2", icon: FileText },
+  page: { label: "Page", color: "#CCFF00", icon: FileText },
   blog: { label: "Blog", color: "#3B82F6", icon: BookOpen },
   project: { label: "Projet", color: "#8B5CF6", icon: Briefcase },
   "case-study": { label: "Case Study", color: "#EC4899", icon: FileText },
@@ -186,7 +186,7 @@ export function GlobalSearch({ onNavigate }: GlobalSearchProps) {
                   exit={{ opacity: 0, y: -10 }}
                   className="p-8 text-center text-neutral-400"
                 >
-                  Aucun résultat pour "{query}"
+                  Aucun rÃ©sultat pour "{query}"
                 </motion.div>
               ) : results.length > 0 ? (
                 <motion.div
@@ -221,7 +221,7 @@ export function GlobalSearch({ onNavigate }: GlobalSearchProps) {
                           <Icon
                             className="h-5 w-5"
                             style={{
-                              color: isSelected ? "#00FFC2" : config.color,
+                              color: isSelected ? "#CCFF00" : config.color,
                             }}
                           />
                         </div>
@@ -247,7 +247,7 @@ export function GlobalSearch({ onNavigate }: GlobalSearchProps) {
 
                         {isSelected && (
                           <kbd className="px-2 py-1 text-xs bg-neutral-900 rounded border border-neutral-700 text-neutral-500">
-                            ↵
+                            â†µ
                           </kbd>
                         )}
                       </motion.button>
@@ -263,14 +263,14 @@ export function GlobalSearch({ onNavigate }: GlobalSearchProps) {
                   <div className="text-center text-neutral-400 mb-6">
                     <Search className="h-12 w-12 mx-auto mb-2 opacity-50" />
                     <p className="text-sm">
-                      Commencez à taper pour rechercher
+                      Commencez Ã  taper pour rechercher
                     </p>
                   </div>
 
                   {/* Quick Links */}
                   <div className="space-y-2">
                     <p className="text-xs uppercase tracking-wider text-neutral-500 mb-3">
-                      Accès rapide
+                      AccÃ¨s rapide
                     </p>
                     {searchableContent.slice(0, 5).map((item, index) => {
                       const config = categoryConfig[item.category];
@@ -298,18 +298,18 @@ export function GlobalSearch({ onNavigate }: GlobalSearchProps) {
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
                 <kbd className="px-1.5 py-0.5 bg-neutral-900 rounded border border-neutral-700">
-                  ↑
+                  â†‘
                 </kbd>
                 <kbd className="px-1.5 py-0.5 bg-neutral-900 rounded border border-neutral-700">
-                  ↓
+                  â†“
                 </kbd>
                 naviguer
               </span>
               <span className="flex items-center gap-1">
                 <kbd className="px-1.5 py-0.5 bg-neutral-900 rounded border border-neutral-700">
-                  ↵
+                  â†µ
                 </kbd>
-                sélectionner
+                sÃ©lectionner
               </span>
             </div>
             <span className="flex items-center gap-1">

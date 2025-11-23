@@ -1,19 +1,19 @@
 // ============================================================================
-// 🚀 PORTFOLIO CRM SERVER - SUPABASE EDGE FUNCTION
+// ðŸš€ PORTFOLIO CRM SERVER - SUPABASE EDGE FUNCTION
 // ============================================================================
 //
-// 📋 DESCRIPTION:
+// ðŸ“‹ DESCRIPTION:
 //     Complete backend API for Portfolio CRM application
 //     Includes: Projects, Clients, Invoices, Quotes, Blog, Auth, Payments
 //
-// 🎯 DEPLOYMENT INSTRUCTIONS:
+// ðŸŽ¯ DEPLOYMENT INSTRUCTIONS:
 //     1. Copy this entire file
 //     2. Go to Supabase Dashboard > Edge Functions
 //     3. Create new function named: make-server-04919ac5
 //     4. Paste this code
 //     5. Deploy
 //
-// ⚙️ REQUIRED ENVIRONMENT VARIABLES (Supabase Secrets):
+// âš™ï¸ REQUIRED ENVIRONMENT VARIABLES (Supabase Secrets):
 //     SUPABASE_URL=https://ptcxeqtjlxittxayffgu.supabase.co
 //     SUPABASE_SERVICE_ROLE_KEY=eyJ... (service role key)
 //     SUPABASE_ANON_KEY=eyJ... (public anon key)
@@ -23,7 +23,7 @@
 //     STRIPE_WEBHOOK_SECRET=whsec_... (webhooks)
 //     FRONTEND_URL=https://your-domain.com
 //
-// 🔗 ENDPOINTS:
+// ðŸ”— ENDPOINTS:
 //     GET  /projects - List all projects
 //     POST /projects - Create new project
 //     GET  /clients - List all clients
@@ -52,7 +52,7 @@ import { sendQuoteEmail, sendInvoiceLink } from "./email_service.tsx";
 import aj, { arcjetMiddleware, protectAuthRoute, validateEmailWithArcjet, checkForBot } from "./arcjet-config.ts";
 
 // Type definitions for Hono (inline to avoid import issues)
-type HonoContext = any; // Simplifié pour Deno
+type HonoContext = any; // SimplifiÃ© pour Deno
 type HonoNext = () => Promise<void> | void;
 
 // Utility to get error message from unknown error
@@ -63,27 +63,27 @@ function getErrorMessage(error: unknown): string {
   return typeof error === "string" ? error : JSON.stringify(error);
 }
 
-console.log("🚀 Portfolio CRM Server starting...");
-console.log("📅 Deployment:", new Date().toISOString());
+console.log("ðŸš€ Portfolio CRM Server starting...");
+console.log("ðŸ“… Deployment:", new Date().toISOString());
 
 const app = new Hono();
 
 // ===========================================================================
-// 🔧 CONFIGURATION & CLIENTS
+// ðŸ”§ CONFIGURATION & CLIENTS
 // ===========================================================================
 
-// Supabase client avec service role pour accès complet
+// Supabase client avec service role pour accÃ¨s complet
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "https://ptcxeqtjlxittxayffgu.supabase.co";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
 if (!SUPABASE_SERVICE_ROLE_KEY) {
-  console.error("❌ SUPABASE_SERVICE_ROLE_KEY is required!");
+  console.error("âŒ SUPABASE_SERVICE_ROLE_KEY is required!");
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 const FRONTEND_BASE_URL = Deno.env.get("FRONTEND_URL") || "https://maxence.design";
 
-// Client KV pour le stockage de données
+// Client KV pour le stockage de donnÃ©es
 const kvClient = () => createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 const kv = {
   set: async (key: string, value: any): Promise<void> => {
@@ -174,7 +174,7 @@ const kv = {
     return data ?? [];
   }
 };
-console.log("✅ KV store configured");
+console.log("âœ… KV store configured");
 // ===========================================================================
 // LANGUAGE DETECTION
 // ===========================================================================
@@ -254,15 +254,15 @@ async function sendEmail(params: EmailParams): Promise<{ success: boolean; error
     };
   }
 }
-console.log("✅ Email service configured");
+console.log("âœ… Email service configured");
 // ===========================================================================
-// 🔧 MIDDLEWARE CONFIGURATION
+// ðŸ”§ MIDDLEWARE CONFIGURATION
 // ===========================================================================
 
-// Logging middleware pour débugger les requêtes
+// Logging middleware pour dÃ©bugger les requÃªtes
 app.use('*', logger(console.log));
 
-// CORS middleware - Permet les requêtes depuis le frontend
+// CORS middleware - Permet les requÃªtes depuis le frontend
 app.use("*", cors({
   origin: "*", // Accepte toutes les origines (permet localhost:3000 et production)
   allowHeaders: [
@@ -284,7 +284,7 @@ app.use("*", cors({
 app.use("*", async (c: HonoContext, next: HonoNext) => {
   await next();
   
-  // Content Security Policy - Empêche XSS, injection de scripts malveillants
+  // Content Security Policy - EmpÃªche XSS, injection de scripts malveillants
   c.header("Content-Security-Policy", 
     "default-src 'self'; " +
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; " +
@@ -294,16 +294,16 @@ app.use("*", async (c: HonoContext, next: HonoNext) => {
     "connect-src 'self' https://*.supabase.co;"
   );
   
-  // Empêche le site d'être intégré dans une iframe (protection clickjacking)
+  // EmpÃªche le site d'Ãªtre intÃ©grÃ© dans une iframe (protection clickjacking)
   c.header("X-Frame-Options", "DENY");
   
-  // Force le navigateur à respecter le Content-Type (anti-MIME sniffing)
+  // Force le navigateur Ã  respecter le Content-Type (anti-MIME sniffing)
   c.header("X-Content-Type-Options", "nosniff");
   
-  // Contrôle les informations de référence envoyées
+  // ContrÃ´le les informations de rÃ©fÃ©rence envoyÃ©es
   c.header("Referrer-Policy", "strict-origin-when-cross-origin");
   
-  // Désactive les features browser dangereuses
+  // DÃ©sactive les features browser dangereuses
   c.header("Permissions-Policy", 
     "geolocation=(), microphone=(), camera=(), payment=()"
   );
@@ -314,7 +314,7 @@ app.use("*", async (c: HonoContext, next: HonoNext) => {
   }
 });
 
-console.log("✅ Security headers configured");
+console.log("âœ… Security headers configured");
 
 const requireAuth = async (c: HonoContext, next: HonoNext): Promise<Response | void> => {
   const authHeader = c.req.header("Authorization");
@@ -344,32 +344,32 @@ const requireAuth = async (c: HonoContext, next: HonoNext): Promise<Response | v
 // Arcjet global middleware
 app.use(arcjetMiddleware(aj));
 
-console.log("✅ Middleware configured (CORS, Logger, Auth, Arcjet)");
+console.log("âœ… Middleware configured (CORS, Logger, Auth, Arcjet)");
 
 // =============================================================================
-// 📋 COMPLETE API ENDPOINTS DOCUMENTATION
+// ðŸ“‹ COMPLETE API ENDPOINTS DOCUMENTATION
 // =============================================================================
 /*
   
-  🔗 BASE URL: https://your-project.supabase.co/functions/v1/make-server-04919ac5
+  ðŸ”— BASE URL: https://your-project.supabase.co/functions/v1/make-server-04919ac5
   
-  📊 HEALTH & SYSTEM
-  ─────────────────────
+  ðŸ“Š HEALTH & SYSTEM
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   GET    /health                               - Server health check
   POST   /auth/init-admin                      - Initialize admin user
   POST   /auth/login                           - Admin authentication
   POST   /seed-data                           - Seed initial data (Auth required)
   
-  👥 CLIENTS MANAGEMENT
-  ─────────────────────
+  ðŸ‘¥ CLIENTS MANAGEMENT
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   GET    /clients                              - List all clients (Auth required)
   POST   /clients                              - Create new client (Auth required)  
   GET    /clients/:id                          - Get client by ID (Auth required)
   PUT    /clients/:id                          - Update client (Auth required)
   DELETE /clients/:id                          - Delete client (Auth required)
   
-  🎯 LEADS & CONVERSIONS
-  ──────────────────────
+  ðŸŽ¯ LEADS & CONVERSIONS
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   GET    /leads                                - List all leads (Auth required)
   POST   /leads                                - Create new lead (Public)
   GET    /leads/:id                            - Get lead by ID (Auth required)
@@ -377,8 +377,8 @@ console.log("✅ Middleware configured (CORS, Logger, Auth, Arcjet)");
   DELETE /leads/:id                            - Delete lead (Auth required)
   POST   /leads/:id/convert                    - Convert lead to client (Auth required)
   
-  📅 BOOKING SYSTEM  
-  ─────────────────
+  ðŸ“… BOOKING SYSTEM  
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   GET    /bookings                             - List all bookings (Auth required)
   POST   /bookings                             - Create new booking (Public)
   PUT    /bookings/:id                         - Update booking (Auth required)
@@ -388,17 +388,17 @@ console.log("✅ Middleware configured (CORS, Logger, Auth, Arcjet)");
   GET    /events                               - List calendar events (Auth required)
   POST   /events                               - Create calendar event (Auth required)
   
-  📧 EMAIL SERVICES
-  ─────────────────
+  ðŸ“§ EMAIL SERVICES
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   POST   /emails/booking-confirmation          - Send booking confirmation (Public)
   POST   /emails/lead-confirmation             - Send lead confirmation (Public)
   
-  📊 DASHBOARD & STATS
-  ────────────────────
+  ðŸ“Š DASHBOARD & STATS
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   GET    /dashboard/stats                      - Get dashboard statistics (Auth required)
   
-  💰 QUOTES MANAGEMENT
-  ────────────────────
+  ðŸ’° QUOTES MANAGEMENT
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   GET    /quotes                               - List all quotes (Auth required)
   POST   /quotes                               - Create new quote (Auth required)
   GET    /quotes/:id                           - Get quote by ID (Auth required)
@@ -407,8 +407,8 @@ console.log("✅ Middleware configured (CORS, Logger, Auth, Arcjet)");
   POST   /quotes/:id/convert                   - Convert quote to invoice (Auth required)
   POST   /quotes/:id/send-reminder             - Send quote reminder (Auth required)
   
-  🧾 INVOICES MANAGEMENT
-  ──────────────────────
+  ðŸ§¾ INVOICES MANAGEMENT
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   GET    /invoices                             - List all invoices (Auth required)
   POST   /invoices                             - Create new invoice (Auth required)
   GET    /invoices/:id                         - Get invoice by ID (Auth required)
@@ -418,32 +418,32 @@ console.log("✅ Middleware configured (CORS, Logger, Auth, Arcjet)");
   GET    /invoices/view/:token                 - View public invoice (Public)
   POST   /invoices/:id/send-reminder           - Send invoice reminder (Auth required)
   
-  🎨 PROJECTS PORTFOLIO
-  ─────────────────────
+  ðŸŽ¨ PROJECTS PORTFOLIO
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   GET    /projects                             - List all projects (Public)
   POST   /projects                             - Create new project (Auth required)
   GET    /projects/:id                         - Get project by ID (Public)
   PUT    /projects/:id                         - Update project (Auth required)
   DELETE /projects/:id                         - Delete project (Auth required)
   
-  📬 NEWSLETTER SYSTEM
-  ────────────────────
+  ðŸ“¬ NEWSLETTER SYSTEM
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   POST   /newsletter/subscribe                 - Subscribe to newsletter (Public)
   GET    /newsletter/stats                     - Get newsletter statistics (Public)
   GET    /newsletter/subscribers               - List subscribers (Auth required)
   DELETE /newsletter/subscribers/:id           - Remove subscriber (Auth required)
   POST   /newsletter/send-campaign             - Send email campaign (Auth required)
   
-  ⭐ TESTIMONIALS
-  ──────────────
+  â­ TESTIMONIALS
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   GET    /testimonials                         - List public testimonials (Public)
   GET    /testimonials/admin                   - List all testimonials (Auth required)
   POST   /testimonials                         - Create testimonial (Public)
   PUT    /testimonials/:id                     - Update testimonial (Auth required)
   DELETE /testimonials/:id                     - Delete testimonial (Auth required)
   
-  📝 ENHANCED BILINGUAL BLOG SYSTEM
-  ─────────────────────────────────
+  ðŸ“ ENHANCED BILINGUAL BLOG SYSTEM
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   GET    /blog/posts                           - List posts (Public, supports ?lang=fr/en, ?category, ?tag, ?status)
   POST   /blog/posts                           - Create post with bilingual support (Auth required)
   GET    /blog/posts/:slug                     - Get post by slug (Public, supports ?lang=fr/en)
@@ -453,27 +453,27 @@ console.log("✅ Middleware configured (CORS, Logger, Auth, Arcjet)");
   GET    /blog/categories                      - Get available categories (Public, supports ?lang=fr/en)
   GET    /blog/stats                           - Get blog statistics (Public)
   
-  💳 STRIPE PAYMENTS
-  ──────────────────
+  ðŸ’³ STRIPE PAYMENTS
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   POST   /stripe/create-checkout-session       - Create payment session (Public)
   POST   /stripe/webhook                       - Stripe webhook handler (Public)
   
-  📝 AUTHENTICATION NOTES
-  ───────────────────────
-  • Public endpoints: No authentication required
-  • Auth required: Send "Authorization: Bearer <token>" header
-  • Admin token: Use SUPABASE_ANON_KEY for admin access
-  • User tokens: Valid Supabase auth tokens from frontend
+  ðŸ“ AUTHENTICATION NOTES
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  â€¢ Public endpoints: No authentication required
+  â€¢ Auth required: Send "Authorization: Bearer <token>" header
+  â€¢ Admin token: Use SUPABASE_ANON_KEY for admin access
+  â€¢ User tokens: Valid Supabase auth tokens from frontend
   
-  📄 REQUEST/RESPONSE FORMAT
-  ─────────────────────────
-  • All requests: Content-Type: application/json
-  • Success response: { success: true, data: {...} }
-  • Error response: { success: false, error: "message" }
-  • List responses: { success: true, data: [...], total?: number }
+  ðŸ“„ REQUEST/RESPONSE FORMAT
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  â€¢ All requests: Content-Type: application/json
+  â€¢ Success response: { success: true, data: {...} }
+  â€¢ Error response: { success: false, error: "message" }
+  â€¢ List responses: { success: true, data: [...], total?: number }
   
-  🔧 TESTING COMMANDS
-  ───────────────────
+  ðŸ”§ TESTING COMMANDS
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   curl -X GET "https://your-project.supabase.co/functions/v1/make-server-04919ac5/health"
   curl -X GET "https://your-project.supabase.co/functions/v1/make-server-04919ac5/projects"
   curl -X POST "https://your-project.supabase.co/functions/v1/make-server-04919ac5/leads" \
@@ -483,7 +483,7 @@ console.log("✅ Middleware configured (CORS, Logger, Auth, Arcjet)");
 */
 
 // =============================================================================
-// 🛣️  API ROUTES IMPLEMENTATION
+// ðŸ›£ï¸  API ROUTES IMPLEMENTATION
 // =============================================================================
 
 // ===========================================================================
@@ -496,7 +496,7 @@ app.get("/make-server-04919ac5/health", (c: HonoContext) =>{
     timestamp: new Date().toISOString()
   });
 });
-console.log("✅ Health check added");
+console.log("âœ… Health check added");
 
 // Test KV Store endpoint
 app.get("/make-server-04919ac5/test-kv", async (c: HonoContext) => {
@@ -506,31 +506,31 @@ app.get("/make-server-04919ac5/test-kv", async (c: HonoContext) => {
     
     // Test 1: Import KV
     const kvModule = await import("./kv_store.tsx");
-    console.log("✅ KV module imported");
+    console.log("âœ… KV module imported");
     
     // Test 2: Write
-    console.log("📝 Writing to KV:", testKey);
+    console.log("ðŸ“ Writing to KV:", testKey);
     await kvModule.set(testKey, { count: 1, ts: Date.now() });
-    console.log("✅ KV SET success");
+    console.log("âœ… KV SET success");
     
     // Wait 100ms for write to propagate
     await new Promise(resolve => setTimeout(resolve, 100));
     
     // Test 3: Read
-    console.log("📖 Reading from KV:", testKey);
+    console.log("ðŸ“– Reading from KV:", testKey);
     const value = await kvModule.get(testKey);
-    console.log("✅ KV GET result:", value);
+    console.log("âœ… KV GET result:", value);
     
     // Test 4: Rate limit test
     const rateLimitKey = `ratelimit:auth:${ip}`;
-    console.log("📝 Writing rate limit:", rateLimitKey);
+    console.log("ðŸ“ Writing rate limit:", rateLimitKey);
     await kvModule.set(rateLimitKey, { count: 3, firstRequest: Date.now(), windowMs: 300000 });
     
     await new Promise(resolve => setTimeout(resolve, 100));
     
-    console.log("📖 Reading rate limit:", rateLimitKey);
+    console.log("ðŸ“– Reading rate limit:", rateLimitKey);
     const rateLimitValue = await kvModule.get(rateLimitKey);
-    console.log("✅ Rate limit result:", rateLimitValue);
+    console.log("âœ… Rate limit result:", rateLimitValue);
     
     return c.json({
       success: true,
@@ -542,7 +542,7 @@ app.get("/make-server-04919ac5/test-kv", async (c: HonoContext) => {
       }
     });
   } catch (error) {
-    console.error("❌ KV Store test failed:", error);
+    console.error("âŒ KV Store test failed:", error);
     const err = error as Error;
     return c.json({
       success: false,
@@ -551,7 +551,7 @@ app.get("/make-server-04919ac5/test-kv", async (c: HonoContext) => {
     }, 500);
   }
 });
-console.log("✅ KV test endpoint added");
+console.log("âœ… KV test endpoint added");
 
 // ===========================================================================
 // CUSTOM DATA (KV STORE)
@@ -591,7 +591,7 @@ app.get("/make-server-04919ac5/custom-data/:key", async (c: HonoContext) => {
       metadata: metadata ?? null
     });
   } catch (error) {
-    console.error("❌ Custom data GET error:", error);
+    console.error("âŒ Custom data GET error:", error);
     return c.json({ success: false, error: getErrorMessage(error) }, 500);
   }
 });
@@ -623,7 +623,7 @@ app.put("/make-server-04919ac5/custom-data/:key", async (c: HonoContext) => {
     await kv.set(scoped.storageKey, record);
     return c.json({ success: true, key: keyParam, owner: scoped.userId, value, metadata: { updatedAt: record.updatedAt } });
   } catch (error) {
-    console.error("❌ Custom data PUT error:", error);
+    console.error("âŒ Custom data PUT error:", error);
     return c.json({ success: false, error: getErrorMessage(error) }, 500);
   }
 });
@@ -642,11 +642,11 @@ app.delete("/make-server-04919ac5/custom-data/:key", async (c: HonoContext) => {
     await kv.del(scoped.storageKey);
     return c.json({ success: true, key: keyParam, owner: scoped.userId });
   } catch (error) {
-    console.error("❌ Custom data DELETE error:", error);
+    console.error("âŒ Custom data DELETE error:", error);
     return c.json({ success: false, error: getErrorMessage(error) }, 500);
   }
 });
-console.log("✅ Custom data KV endpoints added");
+console.log("âœ… Custom data KV endpoints added");
 
 // ===========================================================================
 // AUTH ROUTES
@@ -695,7 +695,7 @@ app.post("/make-server-04919ac5/auth/login", async (c: HonoContext) =>{
     if (!canProceed) {
       return c.json({
         success: false,
-        error: "Trop de tentatives de connexion. Veuillez réessayer dans 5 minutes."
+        error: "Trop de tentatives de connexion. Veuillez rÃ©essayer dans 5 minutes."
       }, 429);
     }
 
@@ -744,7 +744,7 @@ app.post("/make-server-04919ac5/auth/login", async (c: HonoContext) =>{
     }, 500);
   }
 });
-console.log("✅ Auth routes added");
+console.log("âœ… Auth routes added");
 // ===========================================================================
 // CLIENTS ROUTES
 // ===========================================================================
@@ -866,7 +866,7 @@ app.delete("/make-server-04919ac5/clients/:id", requireAuth, async (c: HonoConte
     }, 500);
   }
 });
-console.log("✅ Clients routes added");
+console.log("âœ… Clients routes added");
 // ===========================================================================
 // LEADS ROUTES
 // ===========================================================================
@@ -909,13 +909,13 @@ app.get("/make-server-04919ac5/leads/:id", requireAuth, async (c: HonoContext) =
 });
 app.post("/make-server-04919ac5/leads", async (c: HonoContext) =>{
   try {
-    // Détection de bots avec Arcjet
+    // DÃ©tection de bots avec Arcjet
     const isBot = await checkForBot(c);
     if (isBot) {
       console.warn("Bot detected attempting lead submission");
       return c.json({
         success: false,
-        error: "Bot détecté"
+        error: "Bot dÃ©tectÃ©"
       }, 403);
     }
 
@@ -929,7 +929,7 @@ app.post("/make-server-04919ac5/leads", async (c: HonoContext) =>{
       }, 400);
     }
 
-    // Validation email avancée avec Arcjet
+    // Validation email avancÃ©e avec Arcjet
     const emailValidation = await validateEmailWithArcjet(email);
     if (!emailValidation.valid) {
       return c.json({
@@ -1058,7 +1058,7 @@ app.post("/make-server-04919ac5/leads/:id/convert", requireAuth, async (c: HonoC
     };
     await kv.set(leadId, updatedLead);
     
-    console.log(`✅ Converted lead ${leadId} to client ${clientId}`);
+    console.log(`âœ… Converted lead ${leadId} to client ${clientId}`);
     
     return c.json({
       success: true,
@@ -1066,7 +1066,7 @@ app.post("/make-server-04919ac5/leads/:id/convert", requireAuth, async (c: HonoC
       lead: updatedLead
     });
   } catch (error) {
-    console.error("❌ Error converting lead:", error);
+    console.error("âŒ Error converting lead:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -1074,7 +1074,7 @@ app.post("/make-server-04919ac5/leads/:id/convert", requireAuth, async (c: HonoC
   }
 });
 
-console.log("✅ Leads routes added");
+console.log("âœ… Leads routes added");
 // ===========================================================================
 // BOOKINGS ROUTES
 // ===========================================================================
@@ -1095,20 +1095,20 @@ app.get("/make-server-04919ac5/bookings", requireAuth, async (c: HonoContext) =>
 });
 app.post("/make-server-04919ac5/bookings", async (c: HonoContext) =>{
   try {
-    // Détection de bots avec Arcjet
+    // DÃ©tection de bots avec Arcjet
     const isBot = await checkForBot(c);
     if (isBot) {
       console.warn("Bot detected attempting booking submission");
       return c.json({
         success: false,
-        error: "Bot détecté"
+        error: "Bot dÃ©tectÃ©"
       }, 403);
     }
 
     const body = await c.req.json();
     const { name, email, phone, date, time, service, message } = body;
 
-    // Validation email avancée avec Arcjet
+    // Validation email avancÃ©e avec Arcjet
     if (email) {
       const emailValidation = await validateEmailWithArcjet(email);
       if (!emailValidation.valid) {
@@ -1172,40 +1172,40 @@ app.put("/make-server-04919ac5/bookings/:id", requireAuth, async (c: HonoContext
 app.delete("/make-server-04919ac5/bookings/:id", requireAuth, async (c: HonoContext) =>{
   try {
     const bookingId = c.req.param("id");
-    console.log("🗑️ DELETE booking request - ID received:", bookingId);
+    console.log("ðŸ—‘ï¸ DELETE booking request - ID received:", bookingId);
     
-    // Essayer de trouver le booking avec différents formats d'ID
+    // Essayer de trouver le booking avec diffÃ©rents formats d'ID
     let found = await kv.get(bookingId);
     let keyToDelete = bookingId;
-    console.log("🔍 Trying exact ID:", bookingId, "- Found:", !!found);
+    console.log("ðŸ” Trying exact ID:", bookingId, "- Found:", !!found);
     
-    // Si pas trouvé et que l'ID ne commence pas par "booking:", essayer avec le préfixe
+    // Si pas trouvÃ© et que l'ID ne commence pas par "booking:", essayer avec le prÃ©fixe
     if (!found && !bookingId.startsWith("booking:")) {
       const withPrefix = `booking:${bookingId}`;
       found = await kv.get(withPrefix);
-      console.log("🔍 Trying with prefix:", withPrefix, "- Found:", !!found);
+      console.log("ðŸ” Trying with prefix:", withPrefix, "- Found:", !!found);
       if (found) keyToDelete = withPrefix;
     }
     
-    // Si toujours pas trouvé et que l'ID commence par "booking:", essayer sans le préfixe
+    // Si toujours pas trouvÃ© et que l'ID commence par "booking:", essayer sans le prÃ©fixe
     if (!found && bookingId.startsWith("booking:")) {
       const withoutPrefix = bookingId.replace("booking:", "");
       found = await kv.get(withoutPrefix);
-      console.log("🔍 Trying without prefix:", withoutPrefix, "- Found:", !!found);
+      console.log("ðŸ” Trying without prefix:", withoutPrefix, "- Found:", !!found);
       if (found) keyToDelete = withoutPrefix;
     }
     
     if (!found) {
-      console.log("❌ Booking not found in KV with any format");
+      console.log("âŒ Booking not found in KV with any format");
       // Essayons de lister tous les bookings pour voir ce qui existe
       const allBookings = await kv.getByPrefix("booking:");
-      console.log("📋 All bookings in KV:", allBookings.map((b: any) => ({ id: b.id, email: b.email })));
+      console.log("ðŸ“‹ All bookings in KV:", allBookings.map((b: any) => ({ id: b.id, email: b.email })));
     }
     
-    // Supprimer avec la clé correcte
-    console.log("🗑️ Deleting key:", keyToDelete);
+    // Supprimer avec la clÃ© correcte
+    console.log("ðŸ—‘ï¸ Deleting key:", keyToDelete);
     await kv.del(keyToDelete);
-    console.log("✅ Deleted successfully");
+    console.log("âœ… Deleted successfully");
     
     return c.json({
       success: true,
@@ -1214,7 +1214,7 @@ app.delete("/make-server-04919ac5/bookings/:id", requireAuth, async (c: HonoCont
       wasFound: !!found
     });
   } catch (error: any) {
-    console.error("❌ DELETE booking error:", error);
+    console.error("âŒ DELETE booking error:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -1225,21 +1225,21 @@ app.delete("/make-server-04919ac5/bookings/:id", requireAuth, async (c: HonoCont
 // Route ADMIN pour supprimer TOUS les bookings (nettoyage)
 app.delete("/make-server-04919ac5/bookings", requireAuth, async (c: HonoContext) =>{
   try {
-    console.log("🗑️ DELETE ALL bookings request");
+    console.log("ðŸ—‘ï¸ DELETE ALL bookings request");
     
-    // Récupérer tous les bookings AVEC leurs clés
+    // RÃ©cupÃ©rer tous les bookings AVEC leurs clÃ©s
     const allBookingsWithKeys = await kv.getByPrefixWithKeys("booking:");
-    console.log(`📋 Found ${allBookingsWithKeys.length} bookings to delete`);
+    console.log(`ðŸ“‹ Found ${allBookingsWithKeys.length} bookings to delete`);
     
-    // Supprimer chaque booking en utilisant la CLÉ, pas l'ID
+    // Supprimer chaque booking en utilisant la CLÃ‰, pas l'ID
     let deleted = 0;
     for (const item of allBookingsWithKeys) {
-      console.log(`🗑️ Deleting key: ${item.key}`);
+      console.log(`ðŸ—‘ï¸ Deleting key: ${item.key}`);
       await kv.del(item.key);
       deleted++;
     }
     
-    console.log(`✅ Deleted ${deleted} bookings`);
+    console.log(`âœ… Deleted ${deleted} bookings`);
     
     return c.json({
       success: true,
@@ -1247,7 +1247,7 @@ app.delete("/make-server-04919ac5/bookings", requireAuth, async (c: HonoContext)
       count: deleted
     });
   } catch (error: any) {
-    console.error("❌ DELETE ALL bookings error:", error);
+    console.error("âŒ DELETE ALL bookings error:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -1255,10 +1255,10 @@ app.delete("/make-server-04919ac5/bookings", requireAuth, async (c: HonoContext)
   }
 });
 
-console.log("✅ Bookings routes added");
+console.log("âœ… Bookings routes added");
 
 // =============================================================================
-// 📧 EMAIL STYLES & NOTIFICATIONS
+// ðŸ“§ EMAIL STYLES & NOTIFICATIONS
 // =============================================================================
 
 // Style commun pour tous les emails (DA maxence.design)
@@ -1279,19 +1279,19 @@ const commonStyles = `
     max-width: 600px; 
     margin: 0 auto; 
     background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-    border: 1px solid #00FFC2;
+    border: 1px solid #CCFF00;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 255, 194, 0.15);
+    box-shadow: 0 8px 32px rgba(204, 255, 0, 0.15);
   }
   .header { 
     background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
     padding: 30px;
     text-align: center;
-    border-bottom: 2px solid #00FFC2;
+    border-bottom: 2px solid #CCFF00;
   }
   .logo { 
-    color: #00FFC2; 
+    color: #CCFF00; 
     font-size: 28px; 
     font-weight: 700; 
     letter-spacing: -1px;
@@ -1309,14 +1309,14 @@ const commonStyles = `
     padding: 40px 30px; 
   }
   h1 { 
-    color: #00FFC2; 
+    color: #CCFF00; 
     font-size: 24px; 
     margin: 0 0 20px 0;
     font-weight: 600;
   }
   .info-box {
-    background: rgba(0, 255, 194, 0.05);
-    border: 1px solid rgba(0, 255, 194, 0.2);
+    background: rgba(204, 255, 0, 0.05);
+    border: 1px solid rgba(204, 255, 0, 0.2);
     border-radius: 8px;
     padding: 20px;
     margin: 20px 0;
@@ -1340,7 +1340,7 @@ const commonStyles = `
   }
   .button { 
     display: inline-block;
-    background: linear-gradient(135deg, #00FFC2 0%, #00CC9A 100%);
+    background: linear-gradient(135deg, #CCFF00 0%, #C6FF1A 100%);
     color: #000000;
     padding: 14px 32px;
     border-radius: 8px;
@@ -1348,12 +1348,12 @@ const commonStyles = `
     font-weight: 600;
     margin: 20px 0;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 255, 194, 0.3);
+    box-shadow: 0 4px 15px rgba(204, 255, 0, 0.3);
     transition: all 0.3s ease;
   }
   .button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 255, 194, 0.4);
+    box-shadow: 0 6px 20px rgba(204, 255, 0, 0.4);
   }
   .footer { 
     background: rgba(255, 255, 255, 0.02);
@@ -1367,7 +1367,7 @@ const commonStyles = `
     margin: 5px 0;
   }
   .footer-link {
-    color: #00FFC2;
+    color: #CCFF00;
     text-decoration: none;
   }
   .footer-link:hover {
@@ -1383,9 +1383,9 @@ const commonStyles = `
     letter-spacing: 1px;
   }
   .status-confirmed {
-    background: rgba(0, 255, 194, 0.1);
-    color: #00FFC2;
-    border: 1px solid rgba(0, 255, 194, 0.3);
+    background: rgba(204, 255, 0, 0.1);
+    color: #CCFF00;
+    border: 1px solid rgba(204, 255, 0, 0.3);
   }
   .status-cancelled {
     background: rgba(255, 68, 68, 0.1);
@@ -1394,7 +1394,7 @@ const commonStyles = `
   }
   .divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0, 255, 194, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(204, 255, 0, 0.3), transparent);
     margin: 30px 0;
   }
 `;
@@ -1412,7 +1412,7 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
 
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (!resendKey) {
-      console.error("❌ RESEND_API_KEY not configured");
+      console.error("âŒ RESEND_API_KEY not configured");
       return c.json({ success: false, error: "Email service not configured" }, 500);
     }
 
@@ -1424,7 +1424,7 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
       day: 'numeric'
     });
 
-    // Déterminer le sujet et le contenu selon le statut
+    // DÃ©terminer le sujet et le contenu selon le statut
     let subject = '';
     let html = '';
     
@@ -1448,26 +1448,26 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
         background: #0C0C0C;
         border-radius: 16px;
         overflow: hidden;
-        border: 1px solid rgba(0, 255, 194, 0.1);
-        box-shadow: 0 8px 32px rgba(0, 255, 194, 0.05);
+        border: 1px solid rgba(204, 255, 0, 0.1);
+        box-shadow: 0 8px 32px rgba(204, 255, 0, 0.05);
       }
       .header { 
         background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
         padding: 40px 30px;
         text-align: center;
-        border-bottom: 2px solid rgba(0, 255, 194, 0.2);
+        border-bottom: 2px solid rgba(204, 255, 0, 0.2);
       }
       .logo {
         font-size: 28px;
         font-weight: 700;
-        color: #00FFC2;
+        color: #CCFF00;
         margin-bottom: 10px;
         letter-spacing: -0.5px;
       }
       .header-icon { 
         font-size: 48px; 
         margin-bottom: 15px;
-        filter: drop-shadow(0 4px 12px rgba(0, 255, 194, 0.3));
+        filter: drop-shadow(0 4px 12px rgba(204, 255, 0, 0.3));
       }
       h1 {
         color: #ffffff;
@@ -1489,12 +1489,12 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
         padding: 18px 20px;
         margin: 12px 0;
         border-radius: 8px;
-        border-left: 3px solid #00FFC2;
+        border-left: 3px solid #CCFF00;
         backdrop-filter: blur(10px);
         color: #d0d0d0;
       }
       .detail strong {
-        color: #00FFC2;
+        color: #CCFF00;
         font-weight: 600;
         display: block;
         margin-bottom: 4px;
@@ -1518,14 +1518,14 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
       }
       .cta-button {
         display: inline-block;
-        background: linear-gradient(135deg, #00FFC2 0%, #00d9a5 100%);
+        background: linear-gradient(135deg, #CCFF00 0%, #DAFF40 100%);
         color: #000000;
         padding: 14px 32px;
         border-radius: 8px;
         text-decoration: none;
         font-weight: 600;
         margin: 20px 0;
-        box-shadow: 0 4px 16px rgba(0, 255, 194, 0.3);
+        box-shadow: 0 4px 16px rgba(204, 255, 0, 0.3);
         transition: transform 0.2s;
       }
       .footer { 
@@ -1540,18 +1540,18 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
         margin: 5px 0;
       }
       .footer a {
-        color: #00FFC2;
+        color: #CCFF00;
         text-decoration: none;
       }
       .divider {
         height: 1px;
-        background: linear-gradient(90deg, transparent 0%, rgba(0, 255, 194, 0.2) 50%, transparent 100%);
+        background: linear-gradient(90deg, transparent 0%, rgba(204, 255, 0, 0.2) 50%, transparent 100%);
         margin: 30px 0;
       }
     `;
     
     if (status === 'confirmed') {
-      subject = `✅ Rendez-vous confirmé - ${formattedDate} à ${time}`;
+      subject = `âœ… Rendez-vous confirmÃ© - ${formattedDate} Ã  ${time}`;
       html = `
         <!DOCTYPE html>
         <html>
@@ -1565,33 +1565,33 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
             <div class="container">
               <div class="header">
                 <div class="logo">maxence.design</div>
-                <div class="header-icon">✅</div>
-                <h1>Rendez-vous Confirmé</h1>
+                <div class="header-icon">âœ…</div>
+                <h1>Rendez-vous ConfirmÃ©</h1>
               </div>
               <div class="content">
                 <p>Bonjour <strong style="color: #fff;">${name}</strong>,</p>
-                <p>Votre rendez-vous a été <strong style="color: #00FFC2;">confirmé</strong> avec succès.</p>
+                <p>Votre rendez-vous a Ã©tÃ© <strong style="color: #CCFF00;">confirmÃ©</strong> avec succÃ¨s.</p>
                 
                 <div class="divider"></div>
                 
                 <div class="detail">
-                  <strong>📅 Date</strong><br>
+                  <strong>ðŸ“… Date</strong><br>
                   <span style="color: #ffffff; font-size: 16px;">${formattedDate}</span>
                 </div>
                 <div class="detail">
-                  <strong>🕐 Heure</strong><br>
+                  <strong>ðŸ• Heure</strong><br>
                   <span style="color: #ffffff; font-size: 16px;">${time}</span>
                 </div>
-                ${service ? `<div class="detail"><strong>💼 Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
-                ${message ? `<div class="detail"><strong>📝 Note</strong><br><span style="color: #ffffff;">${message}</span></div>` : ''}
+                ${service ? `<div class="detail"><strong>ðŸ’¼ Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
+                ${message ? `<div class="detail"><strong>ðŸ“ Note</strong><br><span style="color: #ffffff;">${message}</span></div>` : ''}
                 
                 <div class="divider"></div>
                 
-                <p style="color: #00FFC2; font-weight: 600; margin-top: 25px;">Nous vous attendons avec plaisir !</p>
-                <p style="font-size: 14px;">Si vous avez besoin de modifier ou d'annuler ce rendez-vous, merci de nous contacter au plus tôt.</p>
+                <p style="color: #CCFF00; font-weight: 600; margin-top: 25px;">Nous vous attendons avec plaisir !</p>
+                <p style="font-size: 14px;">Si vous avez besoin de modifier ou d'annuler ce rendez-vous, merci de nous contacter au plus tÃ´t.</p>
                 
                 <div class="footer">
-                  <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                  <p style="margin: 0 0 10px 0;">maxence.design | Design & DÃ©veloppement Web</p>
                   <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
                 </div>
               </div>
@@ -1601,7 +1601,7 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
         </html>
       `;
     } else if (status === 'cancelled') {
-      subject = `❌ Rendez-vous annulé - ${formattedDate} à ${time}`;
+      subject = `âŒ Rendez-vous annulÃ© - ${formattedDate} Ã  ${time}`;
       html = `
         <!DOCTYPE html>
         <html>
@@ -1615,32 +1615,32 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
             <div class="container">
               <div class="header">
                 <div class="logo">maxence.design</div>
-                <div class="header-icon">❌</div>
-                <h1>Rendez-vous Annulé</h1>
+                <div class="header-icon">âŒ</div>
+                <h1>Rendez-vous AnnulÃ©</h1>
               </div>
               <div class="content">
                 <p>Bonjour <strong style="color: #fff;">${name}</strong>,</p>
-                <p>Votre rendez-vous a été <strong style="color: #ff6b6b;">annulé</strong>.</p>
+                <p>Votre rendez-vous a Ã©tÃ© <strong style="color: #ff6b6b;">annulÃ©</strong>.</p>
                 
                 <div class="divider"></div>
                 
                 <div class="detail">
-                  <strong>📅 Date</strong><br>
+                  <strong>ðŸ“… Date</strong><br>
                   <span style="color: #ffffff; font-size: 16px;">${formattedDate}</span>
                 </div>
                 <div class="detail">
-                  <strong>🕐 Heure</strong><br>
+                  <strong>ðŸ• Heure</strong><br>
                   <span style="color: #ffffff; font-size: 16px;">${time}</span>
                 </div>
-                ${service ? `<div class="detail"><strong>💼 Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
-                ${message ? `<div class="alert-box"><strong>📝 Raison</strong><br>${message}</div>` : ''}
+                ${service ? `<div class="detail"><strong>ðŸ’¼ Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
+                ${message ? `<div class="alert-box"><strong>ðŸ“ Raison</strong><br>${message}</div>` : ''}
                 
                 <div class="divider"></div>
                 
-                <p style="margin-top: 25px;">Si vous souhaitez reprendre un nouveau rendez-vous, n'hésitez pas à nous contacter.</p>
+                <p style="margin-top: 25px;">Si vous souhaitez reprendre un nouveau rendez-vous, n'hÃ©sitez pas Ã  nous contacter.</p>
                 
                 <div class="footer">
-                  <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                  <p style="margin: 0 0 10px 0;">maxence.design | Design & DÃ©veloppement Web</p>
                   <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
                 </div>
               </div>
@@ -1650,7 +1650,7 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
         </html>
       `;
     } else if (status === 'modified') {
-      subject = `🔄 Rendez-vous modifié - ${formattedDate} à ${time}`;
+      subject = `ðŸ”„ Rendez-vous modifiÃ© - ${formattedDate} Ã  ${time}`;
       html = `
         <!DOCTYPE html>
         <html>
@@ -1664,35 +1664,35 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
             <div class="container">
               <div class="header">
                 <div class="logo">maxence.design</div>
-                <div class="header-icon">🔄</div>
-                <h1>Rendez-vous Modifié</h1>
+                <div class="header-icon">ðŸ”„</div>
+                <h1>Rendez-vous ModifiÃ©</h1>
               </div>
               <div class="content">
                 <p>Bonjour <strong style="color: #fff;">${name}</strong>,</p>
-                <p>Votre rendez-vous a été <strong style="color: #ffc107;">modifié</strong>.</p>
+                <p>Votre rendez-vous a Ã©tÃ© <strong style="color: #ffc107;">modifiÃ©</strong>.</p>
                 
-                ${message ? `<div class="alert-box"><strong>⚠️ Changement</strong><br>${message}</div>` : ''}
+                ${message ? `<div class="alert-box"><strong>âš ï¸ Changement</strong><br>${message}</div>` : ''}
                 
                 <div class="divider"></div>
                 
-                <h3 style="color: #00FFC2; font-size: 18px; margin: 20px 0 15px 0;">📅 Nouvelles informations</h3>
+                <h3 style="color: #CCFF00; font-size: 18px; margin: 20px 0 15px 0;">ðŸ“… Nouvelles informations</h3>
                 
                 <div class="detail">
-                  <strong>📅 Nouvelle date</strong><br>
+                  <strong>ðŸ“… Nouvelle date</strong><br>
                   <span style="color: #ffffff; font-size: 16px;">${formattedDate}</span>
                 </div>
                 <div class="detail">
-                  <strong>🕐 Nouvelle heure</strong><br>
+                  <strong>ðŸ• Nouvelle heure</strong><br>
                   <span style="color: #ffffff; font-size: 16px;">${time}</span>
                 </div>
-                ${service ? `<div class="detail"><strong>💼 Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
+                ${service ? `<div class="detail"><strong>ðŸ’¼ Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
                 
                 <div class="divider"></div>
                 
-                <p style="margin-top: 25px;">Si ces nouvelles informations ne vous conviennent pas, merci de nous contacter au plus tôt.</p>
+                <p style="margin-top: 25px;">Si ces nouvelles informations ne vous conviennent pas, merci de nous contacter au plus tÃ´t.</p>
                 
                 <div class="footer">
-                  <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                  <p style="margin: 0 0 10px 0;">maxence.design | Design & DÃ©veloppement Web</p>
                   <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
                 </div>
               </div>
@@ -1703,7 +1703,7 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
       `;
     } else {
       // Status = pending (nouveau RDV)
-      subject = `⏳ Nouveau rendez-vous - ${formattedDate} à ${time}`;
+      subject = `â³ Nouveau rendez-vous - ${formattedDate} Ã  ${time}`;
       html = `
         <!DOCTYPE html>
         <html>
@@ -1717,32 +1717,32 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
             <div class="container">
               <div class="header">
                 <div class="logo">maxence.design</div>
-                <div class="header-icon">⏳</div>
-                <h1>Demande de Rendez-vous Reçue</h1>
+                <div class="header-icon">â³</div>
+                <h1>Demande de Rendez-vous ReÃ§ue</h1>
               </div>
               <div class="content">
                 <p>Bonjour <strong style="color: #fff;">${name}</strong>,</p>
-                <p>Nous avons bien reçu votre demande de rendez-vous.</p>
+                <p>Nous avons bien reÃ§u votre demande de rendez-vous.</p>
                 
                 <div class="divider"></div>
                 
                 <div class="detail">
-                  <strong>📅 Date souhaitée</strong><br>
+                  <strong>ðŸ“… Date souhaitÃ©e</strong><br>
                   <span style="color: #ffffff; font-size: 16px;">${formattedDate}</span>
                 </div>
                 <div class="detail">
-                  <strong>🕐 Heure souhaitée</strong><br>
+                  <strong>ðŸ• Heure souhaitÃ©e</strong><br>
                   <span style="color: #ffffff; font-size: 16px;">${time}</span>
                 </div>
-                ${service ? `<div class="detail"><strong>💼 Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
-                ${message ? `<div class="detail"><strong>📝 Message</strong><br><span style="color: #ffffff; font-size: 16px;">${message}</span></div>` : ''}
+                ${service ? `<div class="detail"><strong>ðŸ’¼ Service</strong><br><span style="color: #ffffff; font-size: 16px;">${service}</span></div>` : ''}
+                ${message ? `<div class="detail"><strong>ðŸ“ Message</strong><br><span style="color: #ffffff; font-size: 16px;">${message}</span></div>` : ''}
                 
                 <div class="divider"></div>
                 
-                <p style="color: #ffc107; font-weight: 600; margin-top: 25px;">Votre demande est en attente de confirmation. Nous vous contacterons très prochainement pour valider ce rendez-vous.</p>
+                <p style="color: #ffc107; font-weight: 600; margin-top: 25px;">Votre demande est en attente de confirmation. Nous vous contacterons trÃ¨s prochainement pour valider ce rendez-vous.</p>
                 
                 <div class="footer">
-                  <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                  <p style="margin: 0 0 10px 0;">maxence.design | Design & DÃ©veloppement Web</p>
                   <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
                 </div>
               </div>
@@ -1771,29 +1771,29 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
     const result = await response.json();
 
     if (response.ok) {
-      console.log(`✅ Email ${status} sent to ${to}`);
+      console.log(`âœ… Email ${status} sent to ${to}`);
       return c.json({ success: true, message: `Email sent to ${to}`, emailId: result.id });
     } else {
-      console.error("❌ Resend API error:", result);
+      console.error("âŒ Resend API error:", result);
       return c.json({ success: false, error: result.message || "Failed to send email" }, 500);
     }
   } catch (error: any) {
-    console.error("❌ Email sending error:", error);
+    console.error("âŒ Email sending error:", error);
     return c.json({ success: false, error: getErrorMessage(error) }, 500);
   }
 });
 
-console.log("✅ Booking email notifications added");
+console.log("âœ… Booking email notifications added");
 
 // ===========================================================================
 // CRON ROUTES - AUTOMATED TASKS
 // ===========================================================================
-console.log("⏰ Adding CRON routes for automation...");
+console.log("â° Adding CRON routes for automation...");
 
-// Route pour relances automatiques des factures impayées
+// Route pour relances automatiques des factures impayÃ©es
 app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c: HonoContext) => {
   try {
-    console.log("🔔 Running invoice reminders cron job...");
+    console.log("ðŸ”” Running invoice reminders cron job...");
     
     const invoices = await kv.getByPrefix("invoice:");
     const now = new Date();
@@ -1812,7 +1812,7 @@ app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c: HonoCont
       const dueDate = invoice.dueDate ? new Date(invoice.dueDate) : new Date(invoice.createdAt);
       const daysPastDue = Math.floor((now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24));
       
-      // Vérifier si on doit envoyer un reminder
+      // VÃ©rifier si on doit envoyer un reminder
       const shouldRemind = remindersConfig.some(config => 
         daysPastDue === config.days || 
         (daysPastDue > config.days && daysPastDue < config.days + 1)
@@ -1821,7 +1821,7 @@ app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c: HonoCont
       if (shouldRemind && invoice.clientEmail) {
         const reminderType = daysPastDue >= 30 ? 'urgent' : daysPastDue >= 15 ? 'second' : 'first';
         
-        const subject = `${reminderType === 'urgent' ? '🚨 URGENT' : '💼'} Rappel Facture N°${invoice.id.substring(0, 8).toUpperCase()}`;
+        const subject = `${reminderType === 'urgent' ? 'ðŸš¨ URGENT' : 'ðŸ’¼'} Rappel Facture NÂ°${invoice.id.substring(0, 8).toUpperCase()}`;
         const html = `
           <!DOCTYPE html>
           <html>
@@ -1835,7 +1835,7 @@ app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c: HonoCont
               <div class="container">
                 <div class="header">
                   <div class="logo">maxence.design</div>
-                  <div class="header-icon">${reminderType === 'urgent' ? '🚨' : '💼'}</div>
+                  <div class="header-icon">${reminderType === 'urgent' ? 'ðŸš¨' : 'ðŸ’¼'}</div>
                   <h1>Rappel de Paiement</h1>
                 </div>
                 <div class="content">
@@ -1845,30 +1845,30 @@ app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c: HonoCont
                   <div class="divider"></div>
                   
                   <div class="detail">
-                    <strong>📄 Facture</strong><br>
-                    <span style="color: #ffffff; font-size: 16px;">N°${invoice.id.substring(0, 8).toUpperCase()}</span>
+                    <strong>ðŸ“„ Facture</strong><br>
+                    <span style="color: #ffffff; font-size: 16px;">NÂ°${invoice.id.substring(0, 8).toUpperCase()}</span>
                   </div>
                   <div class="detail">
-                    <strong>💰 Montant</strong><br>
-                    <span style="color: #ffffff; font-size: 18px; font-weight: bold;">${invoice.amount.toLocaleString('fr-FR')} €</span>
+                    <strong>ðŸ’° Montant</strong><br>
+                    <span style="color: #ffffff; font-size: 18px; font-weight: bold;">${invoice.amount.toLocaleString('fr-FR')} â‚¬</span>
                   </div>
                   <div class="detail">
-                    <strong>📅 Date d'échéance</strong><br>
+                    <strong>ðŸ“… Date d'Ã©chÃ©ance</strong><br>
                     <span style="color: #ff6b6b; font-size: 16px;">${dueDate.toLocaleDateString('fr-FR')}</span>
                   </div>
                   
                   ${reminderType === 'urgent' ? `
                     <div class="alert-box" style="background: rgba(255, 107, 107, 0.1); border-color: rgba(255, 107, 107, 0.3); color: #ff6b6b;">
-                      <strong>⚠️ Action Requise</strong><br>
-                      Cette facture est en retard de plus de 30 jours. Merci de régulariser votre situation dans les plus brefs délais pour éviter toute interruption de service.
+                      <strong>âš ï¸ Action Requise</strong><br>
+                      Cette facture est en retard de plus de 30 jours. Merci de rÃ©gulariser votre situation dans les plus brefs dÃ©lais pour Ã©viter toute interruption de service.
                     </div>
                   ` : `
                     <div class="divider"></div>
-                    <p style="margin-top: 25px;">Merci de procéder au règlement dans les meilleurs délais. Si vous avez déjà effectué le paiement, veuillez ignorer ce message.</p>
+                    <p style="margin-top: 25px;">Merci de procÃ©der au rÃ¨glement dans les meilleurs dÃ©lais. Si vous avez dÃ©jÃ  effectuÃ© le paiement, veuillez ignorer ce message.</p>
                   `}
                   
                   <div class="footer">
-                    <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                    <p style="margin: 0 0 10px 0;">maxence.design | Design & DÃ©veloppement Web</p>
                     <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
                   </div>
                 </div>
@@ -1893,7 +1893,7 @@ app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c: HonoCont
         });
         
         if (response.ok) {
-          console.log(`✅ Reminder sent for invoice ${invoice.id} (${daysPastDue} days overdue)`);
+          console.log(`âœ… Reminder sent for invoice ${invoice.id} (${daysPastDue} days overdue)`);
           sentCount++;
         }
       }
@@ -1905,7 +1905,7 @@ app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c: HonoCont
       sentCount 
     });
   } catch (error: any) {
-    console.error("❌ Error sending invoice reminders:", error);
+    console.error("âŒ Error sending invoice reminders:", error);
     return c.json({ success: false, error: getErrorMessage(error) }, 500);
   }
 });
@@ -1913,7 +1913,7 @@ app.post("/make-server-04919ac5/cron/send-invoice-reminders", async (c: HonoCont
 // Route pour rappels de rendez-vous (24h avant)
 app.post("/make-server-04919ac5/cron/send-booking-reminders", async (c: HonoContext) => {
   try {
-    console.log("🔔 Running booking reminders cron job...");
+    console.log("ðŸ”” Running booking reminders cron job...");
     
     const bookings = await kv.getByPrefix("booking:");
     const now = new Date();
@@ -1936,7 +1936,7 @@ app.post("/make-server-04919ac5/cron/send-booking-reminders", async (c: HonoCont
           day: 'numeric'
         });
         
-        const subject = `🔔 Rappel: Votre RDV demain à ${booking.time}`;
+        const subject = `ðŸ”” Rappel: Votre RDV demain Ã  ${booking.time}`;
         const html = `
           <!DOCTYPE html>
           <html>
@@ -1950,39 +1950,39 @@ app.post("/make-server-04919ac5/cron/send-booking-reminders", async (c: HonoCont
               <div class="container">
                 <div class="header">
                   <div class="logo">maxence.design</div>
-                  <div class="header-icon">🔔</div>
+                  <div class="header-icon">ðŸ””</div>
                   <h1>Rappel de Rendez-vous</h1>
                 </div>
                 <div class="content">
                   <p>Bonjour <strong style="color: #fff;">${booking.name}</strong>,</p>
-                  <p>Nous vous rappelons que vous avez un rendez-vous <strong style="color: #00FFC2;">demain</strong>.</p>
+                  <p>Nous vous rappelons que vous avez un rendez-vous <strong style="color: #CCFF00;">demain</strong>.</p>
                   
                   <div class="divider"></div>
                   
                   <div class="detail">
-                    <strong>📅 Date</strong><br>
+                    <strong>ðŸ“… Date</strong><br>
                     <span style="color: #ffffff; font-size: 16px;">${formattedDate}</span>
                   </div>
                   <div class="detail">
-                    <strong>🕐 Heure</strong><br>
-                    <span style="color: #00FFC2; font-size: 20px; font-weight: bold;">${booking.time}</span>
+                    <strong>ðŸ• Heure</strong><br>
+                    <span style="color: #CCFF00; font-size: 20px; font-weight: bold;">${booking.time}</span>
                   </div>
                   ${booking.service ? `
                     <div class="detail">
-                      <strong>💼 Service</strong><br>
+                      <strong>ðŸ’¼ Service</strong><br>
                       <span style="color: #ffffff; font-size: 16px;">${booking.service}</span>
                     </div>
                   ` : ''}
                   
                   <div class="divider"></div>
                   
-                  <p style="color: #00FFC2; font-weight: 600; margin-top: 25px;">À demain ! 👋</p>
+                  <p style="color: #CCFF00; font-weight: 600; margin-top: 25px;">Ã€ demain ! ðŸ‘‹</p>
                   <p style="color: #b0b0b0; font-size: 14px; margin-top: 15px;">
-                    Si vous avez besoin de modifier ou d'annuler ce rendez-vous, merci de nous contacter dès que possible.
+                    Si vous avez besoin de modifier ou d'annuler ce rendez-vous, merci de nous contacter dÃ¨s que possible.
                   </p>
                   
                   <div class="footer">
-                    <p style="margin: 0 0 10px 0;">maxence.design | Design & Développement Web</p>
+                    <p style="margin: 0 0 10px 0;">maxence.design | Design & DÃ©veloppement Web</p>
                     <p style="margin: 0;"><a href="https://maxence.design">maxence.design</a> | <a href="mailto:contact@maxence.design">contact@maxence.design</a></p>
                   </div>
                 </div>
@@ -2007,7 +2007,7 @@ app.post("/make-server-04919ac5/cron/send-booking-reminders", async (c: HonoCont
         });
         
         if (response.ok) {
-          console.log(`✅ Reminder sent for booking ${booking.id} (${booking.name})`);
+          console.log(`âœ… Reminder sent for booking ${booking.id} (${booking.name})`);
           sentCount++;
         }
       }
@@ -2019,12 +2019,12 @@ app.post("/make-server-04919ac5/cron/send-booking-reminders", async (c: HonoCont
       sentCount 
     });
   } catch (error: any) {
-    console.error("❌ Error sending booking reminders:", error);
+    console.error("âŒ Error sending booking reminders:", error);
     return c.json({ success: false, error: getErrorMessage(error) }, 500);
   }
 });
 
-console.log("✅ CRON routes added");
+console.log("âœ… CRON routes added");
 
 // ===========================================================================
 // CALENDAR ROUTES - AVAILABILITIES & EVENTS
@@ -2101,7 +2101,7 @@ app.post("/make-server-04919ac5/events", requireAuth, async (c: HonoContext) =>{
   }
 });
 
-console.log("✅ Calendar routes added (availabilities & events)");
+console.log("âœ… Calendar routes added (availabilities & events)");
 
 // ===========================================================================
 // EMAIL ROUTES - BOOKING CONFIRMATION
@@ -2131,27 +2131,27 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
     });
     
     if (emailResult.success) {
-      console.log(`📧 Booking confirmation email sent to ${email}`);
+      console.log(`ðŸ“§ Booking confirmation email sent to ${email}`);
       return c.json({
         success: true,
         message: "Booking confirmation email sent successfully"
       });
     } else {
-      console.error(`❌ Failed to send booking confirmation email: ${emailResult.error}`);
+      console.error(`âŒ Failed to send booking confirmation email: ${emailResult.error}`);
       return c.json({
         success: false,
         error: emailResult.error || "Failed to send booking confirmation email"
       }, 500);
     }
   } catch (error) {
-    console.error("❌ Error sending booking confirmation:", error);
+    console.error("âŒ Error sending booking confirmation:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
     }, 500);
   }
 });
-console.log("✅ Booking confirmation email route added");
+console.log("âœ… Booking confirmation email route added");
 // ===========================================================================
 // EMAIL ROUTES - LEAD CONFIRMATION
 // ===========================================================================
@@ -2178,27 +2178,27 @@ app.post("/make-server-04919ac5/emails/lead-confirmation", async (c: HonoContext
     });
     
     if (emailResult.success) {
-      console.log(`📧 Lead confirmation email sent to ${email}`);
+      console.log(`ðŸ“§ Lead confirmation email sent to ${email}`);
       return c.json({
         success: true,
         message: "Lead confirmation email sent successfully"
       });
     } else {
-      console.error(`❌ Failed to send lead confirmation email: ${emailResult.error}`);
+      console.error(`âŒ Failed to send lead confirmation email: ${emailResult.error}`);
       return c.json({
         success: false,
         error: emailResult.error || "Failed to send lead confirmation email"
       }, 500);
     }
   } catch (error) {
-    console.error("❌ Error sending lead confirmation:", error);
+    console.error("âŒ Error sending lead confirmation:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
     }, 500);
   }
 });
-console.log("✅ Lead confirmation email route added");
+console.log("âœ… Lead confirmation email route added");
 // ===========================================================================
 // DASHBOARD STATS
 // ===========================================================================
@@ -2221,30 +2221,30 @@ app.get("/make-server-04919ac5/dashboard/stats", requireAuth, async (c: HonoCont
       bookings: sortedBookings
     });
   } catch (error) {
-    console.error("❌ Error fetching dashboard stats:", error);
+    console.error("âŒ Error fetching dashboard stats:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
     }, 500);
   }
 });
-console.log("✅ Dashboard stats route added");
+console.log("âœ… Dashboard stats route added");
 // ===========================================================================
 // QUOTES ROUTES - THE 6 ROUTES THAT WORK
 // ===========================================================================
-console.log("📋 Adding QUOTES routes...");
+console.log("ðŸ“‹ Adding QUOTES routes...");
 // 1. Get all quotes
 app.get("/make-server-04919ac5/quotes", requireAuth, async (c: HonoContext) =>{
   try {
     const quotes = await kv.getByPrefix("quote:");
     const sorted = quotes.sort((a, b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    console.log(`✅ Fetched ${quotes.length} quotes`);
+    console.log(`âœ… Fetched ${quotes.length} quotes`);
     return c.json({
       success: true,
       quotes: sorted
     });
   } catch (error) {
-    console.error("❌ Error fetching quotes:", error);
+    console.error("âŒ Error fetching quotes:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2267,7 +2267,7 @@ app.get("/make-server-04919ac5/quotes/:id", requireAuth, async (c: HonoContext) 
       quote
     });
   } catch (error) {
-    console.error("❌ Error fetching quote:", error);
+    console.error("âŒ Error fetching quote:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2303,13 +2303,13 @@ app.post("/make-server-04919ac5/quotes", requireAuth, async (c: HonoContext) =>{
       updatedAt: new Date().toISOString()
     };
     await kv.set(quoteId, quoteData);
-    console.log(`✅ Quote created: ${quoteId}`);
+    console.log(`âœ… Quote created: ${quoteId}`);
     return c.json({
       success: true,
       quote: quoteData
     });
   } catch (error) {
-    console.error("❌ Error creating quote:", error);
+    console.error("âŒ Error creating quote:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2332,14 +2332,14 @@ app.put("/make-server-04919ac5/quotes/:id", requireAuth, async (c: HonoContext) 
       updatedAt: new Date().toISOString()
     };
     await kv.set(quoteId, updatedQuote);
-    console.log(`✅ Quote updated: ${quoteId}`);
+    console.log(`âœ… Quote updated: ${quoteId}`);
     return c.json({
       success: true,
       quote: updatedQuote,
       emailSent: false
     });
   } catch (error) {
-    console.error("❌ Error updating quote:", error);
+    console.error("âŒ Error updating quote:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2356,13 +2356,13 @@ app.delete("/make-server-04919ac5/quotes/:id", requireAuth, async (c: HonoContex
       error: "Quote not found"
     }, 404);
     await kv.del(quoteId);
-    console.log(`✅ Quote deleted: ${quoteId}`);
+    console.log(`âœ… Quote deleted: ${quoteId}`);
     return c.json({
       success: true,
       message: "Quote deleted successfully"
     });
   } catch (error) {
-    console.error("❌ Error deleting quote:", error);
+    console.error("âŒ Error deleting quote:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2412,14 +2412,14 @@ app.post("/make-server-04919ac5/quotes/:id/convert", requireAuth, async (c: Hono
       updatedAt: new Date().toISOString()
     };
     await kv.set(quoteId, updatedQuote);
-    console.log(`✅ Converted ${quoteId} to ${invoiceId}`);
+    console.log(`âœ… Converted ${quoteId} to ${invoiceId}`);
     return c.json({
       success: true,
       invoice: invoiceData,
       quote: updatedQuote
     });
   } catch (error) {
-    console.error("❌ Error converting:", error);
+    console.error("âŒ Error converting:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2438,7 +2438,7 @@ app.post("/make-server-04919ac5/quotes/:id/send-reminder", requireAuth, async (c
     
     // Send quote email using email service
     if (!quote.clientEmail) {
-      console.error(`❌ No email for client in quote ${quoteId}`);
+      console.error(`âŒ No email for client in quote ${quoteId}`);
       return c.json({
         success: false,
         error: "Client email not found"
@@ -2454,44 +2454,44 @@ app.post("/make-server-04919ac5/quotes/:id/send-reminder", requireAuth, async (c
     });
     
     if (emailResult.success) {
-      console.log(`📧 Quote email sent for ${quoteId} to ${quote.clientEmail}`);
+      console.log(`ðŸ“§ Quote email sent for ${quoteId} to ${quote.clientEmail}`);
       return c.json({
         success: true,
         message: "Quote email sent successfully",
         emailSent: true
       });
     } else {
-      console.error(`❌ Failed to send quote email: ${emailResult.error}`);
+      console.error(`âŒ Failed to send quote email: ${emailResult.error}`);
       return c.json({
         success: false,
         error: emailResult.error || "Failed to send email"
       }, 500);
     }
   } catch (error) {
-    console.error("❌ Error sending reminder:", error);
+    console.error("âŒ Error sending reminder:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
     }, 500);
   }
 });
-console.log("✅ ALL 6 QUOTES ROUTES ADDED!");
+console.log("âœ… ALL 6 QUOTES ROUTES ADDED!");
 // ===========================================================================
 // INVOICES ROUTES - NEW!
 // ===========================================================================
-console.log("💰 Adding INVOICES routes...");
+console.log("ðŸ’° Adding INVOICES routes...");
 // 1. Get all invoices
 app.get("/make-server-04919ac5/invoices", requireAuth, async (c: HonoContext) =>{
   try {
     const invoices = await kv.getByPrefix("invoice:");
     const sorted = invoices.sort((a, b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    console.log(`✅ Fetched ${invoices.length} invoices`);
+    console.log(`âœ… Fetched ${invoices.length} invoices`);
     return c.json({
       success: true,
       invoices: sorted
     });
   } catch (error) {
-    console.error("❌ Error fetching invoices:", error);
+    console.error("âŒ Error fetching invoices:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2507,13 +2507,13 @@ app.get("/make-server-04919ac5/invoices/:id", requireAuth, async (c: HonoContext
       success: false,
       error: "Invoice not found"
     }, 404);
-    console.log(`✅ Invoice found: ${invoiceId}`);
+    console.log(`âœ… Invoice found: ${invoiceId}`);
     return c.json({
       success: true,
       invoice
     });
   } catch (error) {
-    console.error("❌ Error fetching invoice:", error);
+    console.error("âŒ Error fetching invoice:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2566,14 +2566,14 @@ app.post("/make-server-04919ac5/invoices", requireAuth, async (c: HonoContext) =
     };
 
     await kv.set(invoiceId, invoiceData);
-    console.log(`✅ Invoice created: ${invoiceId} - ${invoiceNumber} - ${total}€`);
+    console.log(`âœ… Invoice created: ${invoiceId} - ${invoiceNumber} - ${total}â‚¬`);
 
     return c.json({
       success: true,
       invoice: invoiceData
     });
   } catch (error) {
-    console.error("❌ Error creating invoice:", error);
+    console.error("âŒ Error creating invoice:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2597,13 +2597,13 @@ app.put("/make-server-04919ac5/invoices/:id", requireAuth, async (c: HonoContext
       updatedAt: new Date().toISOString()
     };
     await kv.set(invoiceId, updatedInvoice);
-    console.log(`✅ Invoice updated: ${invoiceId}`);
+    console.log(`âœ… Invoice updated: ${invoiceId}`);
     return c.json({
       success: true,
       invoice: updatedInvoice
     });
   } catch (error) {
-    console.error("❌ Error updating invoice:", error);
+    console.error("âŒ Error updating invoice:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2620,13 +2620,13 @@ app.delete("/make-server-04919ac5/invoices/:id", requireAuth, async (c: HonoCont
       error: "Invoice not found"
     }, 404);
     await kv.del(invoiceId);
-    console.log(`✅ Invoice deleted: ${invoiceId}`);
+    console.log(`âœ… Invoice deleted: ${invoiceId}`);
     return c.json({
       success: true,
       message: "Invoice deleted successfully"
     });
   } catch (error) {
-    console.error("❌ Error deleting invoice:", error);
+    console.error("âŒ Error deleting invoice:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2663,7 +2663,7 @@ app.post("/make-server-04919ac5/invoices/:id/generate-link", requireAuth, async 
     invoice.viewLink = `${Deno.env.get('FRONTEND_URL') || 'https://maxence.design'}/invoice/${token}`;
     await kv.set(invoiceId, invoice);
     
-    console.log(`🔐 Generated secure link for invoice ${invoice.number}: ${invoice.viewLink}`);
+    console.log(`ðŸ” Generated secure link for invoice ${invoice.number}: ${invoice.viewLink}`);
     
     return c.json({
       success: true,
@@ -2672,7 +2672,7 @@ app.post("/make-server-04919ac5/invoices/:id/generate-link", requireAuth, async 
     });
     
   } catch (error) {
-    console.error("❌ Error generating invoice link:", error);
+    console.error("âŒ Error generating invoice link:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2715,7 +2715,7 @@ app.get("/make-server-04919ac5/invoices/view/:token", async (c: HonoContext) =>{
       }, 404);
     }
     
-    console.log(`👁️ Invoice ${invoice.number} viewed via secure link`);
+    console.log(`ðŸ‘ï¸ Invoice ${invoice.number} viewed via secure link`);
     
     // Return invoice data (sanitized - no internal IDs)
     return c.json({
@@ -2745,7 +2745,7 @@ app.get("/make-server-04919ac5/invoices/view/:token", async (c: HonoContext) =>{
     });
     
   } catch (error) {
-    console.error("❌ Error viewing invoice:", error);
+    console.error("âŒ Error viewing invoice:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2765,7 +2765,7 @@ app.post("/make-server-04919ac5/invoices/:id/send-reminder", requireAuth, async 
     
     // Check if email exists
     if (!invoice.clientEmail) {
-      console.error(`❌ No email for client in invoice ${invoiceId}`);
+      console.error(`âŒ No email for client in invoice ${invoiceId}`);
       return c.json({
         success: false,
         error: "Client email not found"
@@ -2801,9 +2801,9 @@ app.post("/make-server-04919ac5/invoices/:id/send-reminder", requireAuth, async 
       invoice.viewLink = viewLink;
       await kv.set(invoiceId, invoice);
       
-      console.log(`🔐 Generated new secure link for invoice ${invoice.invoiceNumber || invoice.number}`);
+      console.log(`ðŸ” Generated new secure link for invoice ${invoice.invoiceNumber || invoice.number}`);
     } else {
-      console.log(`🔗 Using existing secure link for invoice ${invoice.invoiceNumber || invoice.number}`);
+      console.log(`ðŸ”— Using existing secure link for invoice ${invoice.invoiceNumber || invoice.number}`);
     }
     
     // Send email with secure link (no PDF)
@@ -2819,7 +2819,7 @@ app.post("/make-server-04919ac5/invoices/:id/send-reminder", requireAuth, async 
     });
     
     if (emailResult.success) {
-      console.log(`📧 Invoice email sent for ${invoiceId} to ${invoice.clientEmail}${isOverdue ? ` (${daysOverdue} days overdue)` : ''}`);
+      console.log(`ðŸ“§ Invoice email sent for ${invoiceId} to ${invoice.clientEmail}${isOverdue ? ` (${daysOverdue} days overdue)` : ''}`);
       return c.json({
         success: true,
         message: isOverdue ? "Overdue reminder sent successfully" : "Invoice email sent successfully",
@@ -2828,21 +2828,21 @@ app.post("/make-server-04919ac5/invoices/:id/send-reminder", requireAuth, async 
         isOverdue
       });
     } else {
-      console.error(`❌ Failed to send invoice email: ${emailResult.error}`);
+      console.error(`âŒ Failed to send invoice email: ${emailResult.error}`);
       return c.json({
         success: false,
         error: emailResult.error || "Failed to send email"
       }, 500);
     }
   } catch (error) {
-    console.error("❌ Error sending invoice reminder:", error);
+    console.error("âŒ Error sending invoice reminder:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
     }, 500);
   }
 });
-console.log("✅ ALL 5 INVOICES ROUTES ADDED (including send-reminder)!");
+console.log("âœ… ALL 5 INVOICES ROUTES ADDED (including send-reminder)!");
 // ===========================================================================
 // PROJECTS ROUTES
 // ===========================================================================
@@ -2887,13 +2887,13 @@ app.get("/make-server-04919ac5/projects", async (c: HonoContext) =>{
     });
     
     const sorted = normalizedProjects.sort((a, b)=>new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
-    console.log(`✅ Found ${sorted.length} bilingual projects (normalized for ${lang})`);
+    console.log(`âœ… Found ${sorted.length} bilingual projects (normalized for ${lang})`);
     return c.json({
       success: true,
       projects: sorted
     });
   } catch (error) {
-    console.error("❌ Error fetching projects:", error);
+    console.error("âŒ Error fetching projects:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -2904,14 +2904,14 @@ app.get("/make-server-04919ac5/projects/:id", async (c: HonoContext) =>{
   try {
     const identifier = decodeURIComponent(c.req.param("id"));
     const lang = c.req.query("lang") || "fr";
-    console.log(`🔍 Fetching project: ${identifier} (lang: ${lang})`);
+    console.log(`ðŸ” Fetching project: ${identifier} (lang: ${lang})`);
     
     // Try to get by ID first
     let project = await kv.get(identifier);
     
     // If not found by ID, search by slug
     if (!project) {
-      console.log(`🔎 Not found by ID, searching by slug...`);
+      console.log(`ðŸ”Ž Not found by ID, searching by slug...`);
       const allProjects = await kv.getByPrefix("project:");
       project = allProjects.find((p: any) => 
         p.slug === identifier || 
@@ -2921,7 +2921,7 @@ app.get("/make-server-04919ac5/projects/:id", async (c: HonoContext) =>{
     }
     
     if (!project) {
-      console.log(`❌ Project not found: ${identifier}`);
+      console.log(`âŒ Project not found: ${identifier}`);
       return c.json({
         success: false,
         error: "Project not found"
@@ -2960,13 +2960,13 @@ app.get("/make-server-04919ac5/projects/:id", async (c: HonoContext) =>{
       imageUrl: project.imageUrl || project.coverImage || project.image || ""
     };
     
-    console.log(`✅ Project found and normalized for ${lang}: ${normalizedProject.id}`);
+    console.log(`âœ… Project found and normalized for ${lang}: ${normalizedProject.id}`);
     return c.json({
       success: true,
       project: normalizedProject
     });
   } catch (error) {
-    console.error(`❌ Error fetching project:`, error);
+    console.error(`âŒ Error fetching project:`, error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3037,14 +3037,14 @@ app.post("/make-server-04919ac5/projects", requireAuth, async (c: HonoContext) =
     };
     
     await kv.set(projectId, projectData);
-    console.log(`✅ Project created: ${projectId}`);
+    console.log(`âœ… Project created: ${projectId}`);
     
     return c.json({
       success: true,
       project: projectData
     });
   } catch (error) {
-    console.error("❌ Error creating project:", error);
+    console.error("âŒ Error creating project:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3076,14 +3076,14 @@ app.put("/make-server-04919ac5/projects/:id", requireAuth, async (c: HonoContext
     };
     
     await kv.set(projectId, updatedProject);
-    console.log(`✅ Project updated: ${projectId}`);
+    console.log(`âœ… Project updated: ${projectId}`);
     
     return c.json({
       success: true,
       project: updatedProject
     });
   } catch (error) {
-    console.error("❌ Error updating project:", error);
+    console.error("âŒ Error updating project:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3105,14 +3105,14 @@ app.delete("/make-server-04919ac5/projects/:id", requireAuth, async (c: HonoCont
     }
     
     await kv.del(projectId);
-    console.log(`✅ Project deleted: ${projectId}`);
+    console.log(`âœ… Project deleted: ${projectId}`);
     
     return c.json({
       success: true,
       message: "Project deleted successfully"
     });
   } catch (error) {
-    console.error("❌ Error deleting project:", error);
+    console.error("âŒ Error deleting project:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3120,19 +3120,19 @@ app.delete("/make-server-04919ac5/projects/:id", requireAuth, async (c: HonoCont
   }
 });
 
-console.log("✅ Projects CRUD routes added (GET, POST, PUT, DELETE)");
+console.log("âœ… Projects CRUD routes added (GET, POST, PUT, DELETE)");
 // ===========================================================================
 // NEWSLETTER ROUTES
 // ===========================================================================
 app.post("/make-server-04919ac5/newsletter/subscribe", async (c: HonoContext) =>{
   try {
-    // Détection de bots avec Arcjet
+    // DÃ©tection de bots avec Arcjet
     const isBot = await checkForBot(c);
     if (isBot) {
       console.warn("Bot detected attempting newsletter subscription");
       return c.json({
         success: false,
-        error: "Activité suspecte détectée"
+        error: "ActivitÃ© suspecte dÃ©tectÃ©e"
       }, 403);
     }
 
@@ -3149,7 +3149,7 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c: HonoContext) =>
     // Normalize email to lowercase to prevent duplicates with case variations
     const email = rawEmail.toLowerCase().trim();
     
-    // Validation email avancée avec Arcjet (emails jetables, typos, etc.)
+    // Validation email avancÃ©e avec Arcjet (emails jetables, typos, etc.)
     const emailValidation = await validateEmailWithArcjet(email);
     if (!emailValidation.valid) {
       return c.json({
@@ -3175,10 +3175,10 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c: HonoContext) =>
     );
     
     if (alreadySubscribed) {
-      console.log(`⚠️ Email already subscribed: ${email}`);
+      console.log(`âš ï¸ Email already subscribed: ${email}`);
       return c.json({
         success: false, // Changed to false so frontend shows error toast
-        message: lang === 'en' ? "You are already subscribed to the newsletter" : "Vous êtes déjà inscrit à la newsletter",
+        message: lang === 'en' ? "You are already subscribed to the newsletter" : "Vous Ãªtes dÃ©jÃ  inscrit Ã  la newsletter",
         alreadySubscribed: true
       });
     }
@@ -3193,11 +3193,11 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c: HonoContext) =>
       language: lang
     };
     await kv.set(subscriberId, subscriberData);
-    console.log(`✅ New subscriber: ${email} (${lang})`);
+    console.log(`âœ… New subscriber: ${email} (${lang})`);
     
     // Send welcome email in the correct language
     const emailContent = lang === 'en' ? {
-      subject: "✨ Welcome to the newsletter!",
+      subject: "âœ¨ Welcome to the newsletter!",
       html: `
         <!DOCTYPE html>
         <html>
@@ -3206,33 +3206,33 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c: HonoContext) =>
             <style>
               body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
               .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-              .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+              .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #CCFF00; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
               .content { background: #F4F4F4; padding: 40px 30px; }
-              .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
-              .button { display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
-              .highlight { background: #00FFC2; color: #0C0C0C; padding: 2px 8px; border-radius: 4px; }
-              .benefits-box { background: white; padding: 20px; border-left: 4px solid #00FFC2; margin: 20px 0; border-radius: 4px; }
+              .footer { background: #0C0C0C; color: #CCFF00; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+              .button { display: inline-block; background: #CCFF00; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
+              .highlight { background: #CCFF00; color: #0C0C0C; padding: 2px 8px; border-radius: 4px; }
+              .benefits-box { background: white; padding: 20px; border-left: 4px solid #CCFF00; margin: 20px 0; border-radius: 4px; }
               .benefit-item { padding: 8px 0; }
             </style>
           </head>
           <body>
             <div class="container">
               <div class="header">
-                <h1 style="margin: 0; font-size: 28px;">✨ Welcome to the newsletter!</h1>
+                <h1 style="margin: 0; font-size: 28px;">âœ¨ Welcome to the newsletter!</h1>
               </div>
               <div class="content">
                 <p>Hello,</p>
                 
-                <p>Thank you for subscribing to the newsletter! 🚀</p>
+                <p>Thank you for subscribing to the newsletter! ðŸš€</p>
                 
                 <p>You will regularly receive exclusive content:</p>
                 
                 <div class="benefits-box">
-                  <div class="benefit-item">💡 <strong>Tips & tricks</strong> for web development</div>
-                  <div class="benefit-item">🎨 <strong>My latest projects</strong> and achievements</div>
-                  <div class="benefit-item">📚 <strong>Exclusive resources</strong> for developers</div>
-                  <div class="benefit-item">🚀 <strong>Tech trends</strong> and innovations</div>
-                  <div class="benefit-item">💼 <strong>Freelance advice</strong> and business tips</div>
+                  <div class="benefit-item">ðŸ’¡ <strong>Tips & tricks</strong> for web development</div>
+                  <div class="benefit-item">ðŸŽ¨ <strong>My latest projects</strong> and achievements</div>
+                  <div class="benefit-item">ðŸ“š <strong>Exclusive resources</strong> for developers</div>
+                  <div class="benefit-item">ðŸš€ <strong>Tech trends</strong> and innovations</div>
+                  <div class="benefit-item">ðŸ’¼ <strong>Freelance advice</strong> and business tips</div>
                 </div>
                 
                 <p>Also find all my projects and services on my portfolio:</p>
@@ -3242,13 +3242,13 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c: HonoContext) =>
                 </center>
                 
                 <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                  See you soon in your mailbox! 📬<br>
+                  See you soon in your mailbox! ðŸ“¬<br>
                   <strong>Maxence FOULON</strong><br>
                   <span style="color: #999;">Full-Stack Freelance Developer</span>
                 </p>
               </div>
               <div class="footer">
-                <p style="margin: 0;">© 2025 FOULON Maxence - Freelance Web Developer</p>
+                <p style="margin: 0;">Â© 2025 FOULON Maxence - Freelance Web Developer</p>
                 <p style="margin: 5px 0 0 0; opacity: 0.8;">To unsubscribe, contact me at contact@maxence.design</p>
               </div>
             </div>
@@ -3256,31 +3256,31 @@ app.post("/make-server-04919ac5/newsletter/subscribe", async (c: HonoContext) =>
         </html>
       `,
       text: `
-✨ Welcome to the newsletter!
+âœ¨ Welcome to the newsletter!
 
 Hello,
 
-Thank you for subscribing to the newsletter! 🚀
+Thank you for subscribing to the newsletter! ðŸš€
 
 You will regularly receive:
-💡 Tips & tricks for web development
-🎨 My latest projects and achievements
-📚 Exclusive resources for developers
-🚀 Tech trends and innovations
-💼 Freelance advice and business tips
+ðŸ’¡ Tips & tricks for web development
+ðŸŽ¨ My latest projects and achievements
+ðŸ“š Exclusive resources for developers
+ðŸš€ Tech trends and innovations
+ðŸ’¼ Freelance advice and business tips
 
 Visit my portfolio: ${Deno.env.get("FRONTEND_URL") || "https://maxence.design"}
 
-See you soon in your mailbox! 📬
+See you soon in your mailbox! ðŸ“¬
 
 Maxence FOULON
 Full-Stack Freelance Developer
 
-© 2025 FOULON Maxence - Freelance Web Developer
+Â© 2025 FOULON Maxence - Freelance Web Developer
 To unsubscribe, contact me at contact@maxence.design
       `
     } : {
-      subject: "✨ Bienvenue dans la newsletter !",
+      subject: "âœ¨ Bienvenue dans la newsletter !",
       html: `
         <!DOCTYPE html>
         <html>
@@ -3289,78 +3289,78 @@ To unsubscribe, contact me at contact@maxence.design
             <style>
               body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
               .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-              .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #00FFC2; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+              .header { background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%); color: #CCFF00; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
               .content { background: #F4F4F4; padding: 40px 30px; }
-              .footer { background: #0C0C0C; color: #00FFC2; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
-              .button { display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
-              .highlight { background: #00FFC2; color: #0C0C0C; padding: 2px 8px; border-radius: 4px; }
-              .benefits-box { background: white; padding: 20px; border-left: 4px solid #00FFC2; margin: 20px 0; border-radius: 4px; }
+              .footer { background: #0C0C0C; color: #CCFF00; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+              .button { display: inline-block; background: #CCFF00; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
+              .highlight { background: #CCFF00; color: #0C0C0C; padding: 2px 8px; border-radius: 4px; }
+              .benefits-box { background: white; padding: 20px; border-left: 4px solid #CCFF00; margin: 20px 0; border-radius: 4px; }
               .benefit-item { padding: 8px 0; }
             </style>
           </head>
           <body>
             <div class="container">
               <div class="header">
-                <h1 style="margin: 0; font-size: 28px;">✨ Bienvenue dans la newsletter !</h1>
+                <h1 style="margin: 0; font-size: 28px;">âœ¨ Bienvenue dans la newsletter !</h1>
               </div>
               <div class="content">
                 <p>Bonjour,</p>
                 
-                <p>Merci de vous être inscrit à la newsletter ! 🚀</p>
+                <p>Merci de vous Ãªtre inscrit Ã  la newsletter ! ðŸš€</p>
                 
-                <p>Vous recevrez régulièrement des contenus exclusifs :</p>
+                <p>Vous recevrez rÃ©guliÃ¨rement des contenus exclusifs :</p>
                 
                 <div class="benefits-box">
-                  <div class="benefit-item">💡 <strong>Conseils & astuces</strong> en développement web</div>
-                  <div class="benefit-item">🎨 <strong>Mes derniers projets</strong> et réalisations</div>
-                  <div class="benefit-item">📚 <strong>Ressources exclusives</strong> pour développeurs</div>
-                  <div class="benefit-item">🚀 <strong>Tendances tech</strong> et innovations</div>
-                  <div class="benefit-item">💼 <strong>Conseils freelance</strong> et business</div>
+                  <div class="benefit-item">ðŸ’¡ <strong>Conseils & astuces</strong> en dÃ©veloppement web</div>
+                  <div class="benefit-item">ðŸŽ¨ <strong>Mes derniers projets</strong> et rÃ©alisations</div>
+                  <div class="benefit-item">ðŸ“š <strong>Ressources exclusives</strong> pour dÃ©veloppeurs</div>
+                  <div class="benefit-item">ðŸš€ <strong>Tendances tech</strong> et innovations</div>
+                  <div class="benefit-item">ðŸ’¼ <strong>Conseils freelance</strong> et business</div>
                 </div>
                 
-                <p>Retrouvez également tous mes projets et services sur mon portfolio :</p>
+                <p>Retrouvez Ã©galement tous mes projets et services sur mon portfolio :</p>
                 
                 <center>
                   <a href="${Deno.env.get("FRONTEND_URL") || "https://maxence.design"}" class="button">Voir le portfolio</a>
                 </center>
                 
                 <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                  À très bientôt dans votre boîte mail ! 📬<br>
+                  Ã€ trÃ¨s bientÃ´t dans votre boÃ®te mail ! ðŸ“¬<br>
                   <strong>Maxence FOULON</strong><br>
-                  <span style="color: #999;">Développeur Full-Stack Freelance</span>
+                  <span style="color: #999;">DÃ©veloppeur Full-Stack Freelance</span>
                 </p>
               </div>
               <div class="footer">
-                <p style="margin: 0;">© 2025 FOULON Maxence - Développeur Web Freelance</p>
-                <p style="margin: 5px 0 0 0; opacity: 0.8;">Pour vous désinscrire, contactez-moi à contact@maxence.design</p>
+                <p style="margin: 0;">Â© 2025 FOULON Maxence - DÃ©veloppeur Web Freelance</p>
+                <p style="margin: 5px 0 0 0; opacity: 0.8;">Pour vous dÃ©sinscrire, contactez-moi Ã  contact@maxence.design</p>
               </div>
             </div>
           </body>
         </html>
       `,
       text: `
-✨ Bienvenue dans la newsletter !
+âœ¨ Bienvenue dans la newsletter !
 
 Bonjour,
 
-Merci de vous être inscrit à la newsletter ! 🚀
+Merci de vous Ãªtre inscrit Ã  la newsletter ! ðŸš€
 
-Vous recevrez régulièrement :
-💡 Conseils & astuces en développement web
-🎨 Mes derniers projets et réalisations
-📚 Ressources exclusives pour développeurs
-🚀 Tendances tech et innovations
-💼 Conseils freelance et business
+Vous recevrez rÃ©guliÃ¨rement :
+ðŸ’¡ Conseils & astuces en dÃ©veloppement web
+ðŸŽ¨ Mes derniers projets et rÃ©alisations
+ðŸ“š Ressources exclusives pour dÃ©veloppeurs
+ðŸš€ Tendances tech et innovations
+ðŸ’¼ Conseils freelance et business
 
 Visitez mon portfolio : ${Deno.env.get("FRONTEND_URL") || "https://maxence.design"}
 
-À très bientôt dans votre boîte mail ! 📬
+Ã€ trÃ¨s bientÃ´t dans votre boÃ®te mail ! ðŸ“¬
 
 Maxence FOULON
-Développeur Full-Stack Freelance
+DÃ©veloppeur Full-Stack Freelance
 
-© 2025 FOULON Maxence - Développeur Web Freelance
-Pour vous désinscrire, contactez-moi à contact@maxence.design
+Â© 2025 FOULON Maxence - DÃ©veloppeur Web Freelance
+Pour vous dÃ©sinscrire, contactez-moi Ã  contact@maxence.design
       `
     };
     
@@ -3370,19 +3370,19 @@ Pour vous désinscrire, contactez-moi à contact@maxence.design
     });
     
     if (emailResult.success) {
-      console.log(`� Welcome email sent to ${email} (${lang})`);
+      console.log(`ï¿½ Welcome email sent to ${email} (${lang})`);
     } else {
-      console.error(`⚠️ Failed to send welcome email to ${email}:`, emailResult.error);
+      console.error(`âš ï¸ Failed to send welcome email to ${email}:`, emailResult.error);
     }
     
     return c.json({
       success: true,
-      message: lang === 'en' ? "Successfully subscribed!" : "Inscription réussie !",
+      message: lang === 'en' ? "Successfully subscribed!" : "Inscription rÃ©ussie !",
       alreadySubscribed: false,
       emailSent: emailResult.success
     });
   } catch (error) {
-    console.error("❌ Error subscribing:", error);
+    console.error("âŒ Error subscribing:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3440,14 +3440,14 @@ app.delete("/make-server-04919ac5/newsletter/subscriber/:email", requireAuth, as
     }
     
     await kv.del(subscriber.key);
-    console.log(`✅ Subscriber deleted: ${email}`);
+    console.log(`âœ… Subscriber deleted: ${email}`);
     
     return c.json({
       success: true,
       message: "Subscriber deleted successfully"
     });
   } catch (error) {
-    console.error("❌ Error deleting subscriber:", error);
+    console.error("âŒ Error deleting subscriber:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3483,7 +3483,7 @@ app.post("/make-server-04919ac5/newsletter/send-campaign", requireAuth, async (c
     }
     
     // Send emails to all subscribers
-    console.log(`📧 Sending campaign "${subject}" to ${targetSubscribers.length} subscribers`);
+    console.log(`ðŸ“§ Sending campaign "${subject}" to ${targetSubscribers.length} subscribers`);
     
     let successCount = 0;
     let errorCount = 0;
@@ -3508,7 +3508,7 @@ app.post("/make-server-04919ac5/newsletter/send-campaign", requireAuth, async (c
       }
     }
     
-    console.log(`✅ Campaign sent: ${successCount} success, ${errorCount} errors`);
+    console.log(`âœ… Campaign sent: ${successCount} success, ${errorCount} errors`);
     
     return c.json({
       success: true,
@@ -3517,7 +3517,7 @@ app.post("/make-server-04919ac5/newsletter/send-campaign", requireAuth, async (c
       message: `Campaign sent to ${successCount}/${targetSubscribers.length} subscriber(s)`
     });
   } catch (error) {
-    console.error("❌ Error sending campaign:", error);
+    console.error("âŒ Error sending campaign:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3525,7 +3525,7 @@ app.post("/make-server-04919ac5/newsletter/send-campaign", requireAuth, async (c
   }
 });
 
-console.log("✅ Newsletter routes added");
+console.log("âœ… Newsletter routes added");
 
 const TESTIMONIAL_PREFIX = "testimonial:";
 const TESTIMONIAL_REQUEST_PREFIX = "testimonial_request:";
@@ -3730,7 +3730,7 @@ app.post("/make-server-04919ac5/testimonials", requireAuth, async (c: HonoContex
       testimonial
     });
   } catch (error) {
-    console.error("❌ Error creating testimonial:", error);
+    console.error("âŒ Error creating testimonial:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3757,7 +3757,7 @@ app.put("/make-server-04919ac5/testimonials/:id", requireAuth, async (c: HonoCon
       testimonial
     });
   } catch (error) {
-    console.error("❌ Error updating testimonial:", error);
+    console.error("âŒ Error updating testimonial:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3782,7 +3782,7 @@ app.delete("/make-server-04919ac5/testimonials/:id", requireAuth, async (c: Hono
       deletedId: storageId
     });
   } catch (error) {
-    console.error("❌ Error deleting testimonial:", error);
+    console.error("âŒ Error deleting testimonial:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3815,7 +3815,7 @@ app.post("/make-server-04919ac5/testimonials/request", requireAuth, async (c: Ho
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #0C0C0C; }
             .container { max-width: 640px; margin: 0 auto; padding: 32px; background: #0C0C0C; color: white; border-radius: 18px; }
             .card { background: rgba(255,255,255,0.05); padding: 24px; border-radius: 16px; margin-top: 24px; }
-            .button { display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 14px 32px; text-decoration: none; border-radius: 999px; font-weight: 600; margin-top: 24px; }
+            .button { display: inline-block; background: #CCFF00; color: #0C0C0C; padding: 14px 32px; text-decoration: none; border-radius: 999px; font-weight: 600; margin-top: 24px; }
             .footer { margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.6); }
           </style>
         </head>
@@ -3828,8 +3828,8 @@ app.post("/make-server-04919ac5/testimonials/request", requireAuth, async (c: Ho
               <p style="margin:0; font-size:18px; font-weight:600;">${requestRecord.projectType || requestRecord.projectName}</p>
               ${requestRecord.message ? `<p style="margin-top:12px; opacity:0.8;">${requestRecord.message}</p>` : ""}
             </div>
-            <p>Votre témoignage sera affiché sur ma page références pour aider d'autres dirigeants à se projeter.</p>
-            <a href="${formUrl}" class="button">✍️ Laisser mon témoignage</a>
+            <p>Votre tÃ©moignage sera affichÃ© sur ma page rÃ©fÃ©rences pour aider d'autres dirigeants Ã  se projeter.</p>
+            <a href="${formUrl}" class="button">âœï¸ Laisser mon tÃ©moignage</a>
             <p style="font-size:14px; color:rgba(255,255,255,0.7); margin-top:24px;">Merci infiniment,<br/>Maxence</p>
             <div class="footer">
               Ce lien est personnel et valable pendant 30 jours.
@@ -3838,7 +3838,7 @@ app.post("/make-server-04919ac5/testimonials/request", requireAuth, async (c: Ho
         </body>
       </html>
     `;
-    const emailText = `Bonjour ${requestRecord.clientName},\n\nMerci encore pour votre confiance. Pouvez-vous partager un court témoignage sur notre projet ${requestRecord.projectName} ?\n\nFormulaire sécurisé : ${formUrl}\n\nMerci !`;
+    const emailText = `Bonjour ${requestRecord.clientName},\n\nMerci encore pour votre confiance. Pouvez-vous partager un court tÃ©moignage sur notre projet ${requestRecord.projectName} ?\n\nFormulaire sÃ©curisÃ© : ${formUrl}\n\nMerci !`;
 
     const emailResult = await sendEmail({
       to: requestRecord.clientEmail,
@@ -3864,7 +3864,7 @@ app.post("/make-server-04919ac5/testimonials/request", requireAuth, async (c: Ho
       }
     });
   } catch (error) {
-    console.error("❌ Error sending testimonial request:", error);
+    console.error("âŒ Error sending testimonial request:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3905,7 +3905,7 @@ app.get("/make-server-04919ac5/testimonials/request/:token", async (c: HonoConte
       request: mapRequestPublic(request)
     });
   } catch (error) {
-    console.error("❌ Error fetching testimonial request:", error);
+    console.error("âŒ Error fetching testimonial request:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3967,7 +3967,7 @@ app.post("/make-server-04919ac5/testimonials/request/:token/submit", async (c: H
       testimonial: mapTestimonialForLang(testimonial, "fr")
     });
   } catch (error) {
-    console.error("❌ Error submitting testimonial form:", error);
+    console.error("âŒ Error submitting testimonial form:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -3975,7 +3975,7 @@ app.post("/make-server-04919ac5/testimonials/request/:token/submit", async (c: H
   }
 });
 
-console.log("✅ Testimonials routes added");
+console.log("âœ… Testimonials routes added");
 // ===========================================================================
 // BLOG ROUTES
 // ===========================================================================
@@ -4037,7 +4037,7 @@ app.get("/make-server-04919ac5/blog/posts", async (c: HonoContext) =>{
       return dateB - dateA;
     });
     
-    console.log(`✅ Found ${sorted.length} blog posts (lang: ${lang}, status: ${status || 'published'})`);
+    console.log(`âœ… Found ${sorted.length} blog posts (lang: ${lang}, status: ${status || 'published'})`);
     
     return c.json({
       success: true,
@@ -4051,7 +4051,7 @@ app.get("/make-server-04919ac5/blog/posts", async (c: HonoContext) =>{
       }
     });
   } catch (error) {
-    console.error("❌ Error fetching blog posts:", error);
+    console.error("âŒ Error fetching blog posts:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -4093,7 +4093,7 @@ app.get("/make-server-04919ac5/blog/posts/:slug", async (c: HonoContext) =>{
     // Update the post with new view count
     await kv.set(post.id, post);
     
-    console.log(`✅ Blog post viewed: ${post.id} (${lang})`);
+    console.log(`âœ… Blog post viewed: ${post.id} (${lang})`);
     
     return c.json({
       success: true,
@@ -4102,7 +4102,7 @@ app.get("/make-server-04919ac5/blog/posts/:slug", async (c: HonoContext) =>{
       url: lang === 'en' ? post.url_en : post.url_fr
     });
   } catch (error) {
-    console.error("❌ Error fetching blog post:", error);
+    console.error("âŒ Error fetching blog post:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -4139,14 +4139,14 @@ app.post("/make-server-04919ac5/blog/posts", requireAuth, async (c: HonoContext)
     const generateSlug = (title: string): string => {
       return title
         .toLowerCase()
-        .replace(/[àáâãäå]/g, 'a')
-        .replace(/[èéêë]/g, 'e')
-        .replace(/[ìíîï]/g, 'i')
-        .replace(/[òóôõö]/g, 'o')
-        .replace(/[ùúûü]/g, 'u')
-        .replace(/[ýÿ]/g, 'y')
-        .replace(/[ñ]/g, 'n')
-        .replace(/[ç]/g, 'c')
+        .replace(/[Ã Ã¡Ã¢Ã£Ã¤Ã¥]/g, 'a')
+        .replace(/[Ã¨Ã©ÃªÃ«]/g, 'e')
+        .replace(/[Ã¬Ã­Ã®Ã¯]/g, 'i')
+        .replace(/[Ã²Ã³Ã´ÃµÃ¶]/g, 'o')
+        .replace(/[Ã¹ÃºÃ»Ã¼]/g, 'u')
+        .replace(/[Ã½Ã¿]/g, 'y')
+        .replace(/[Ã±]/g, 'n')
+        .replace(/[Ã§]/g, 'c')
         .replace(/[^a-z0-9]/g, '-')
         .replace(/-+/g, '-')
         .replace(/^-|-$/g, '');
@@ -4196,7 +4196,7 @@ app.post("/make-server-04919ac5/blog/posts", requireAuth, async (c: HonoContext)
       url_en: `/en/blog/${finalSlugEn}`,
       
       // Bilingual categories and tags
-      category_fr: category_fr || "développement",
+      category_fr: category_fr || "dÃ©veloppement",
       category_en: category_en || category_fr || "development",
       tags_fr: tags_fr || [],
       tags_en: tags_en || tags_fr || [],
@@ -4222,13 +4222,13 @@ app.post("/make-server-04919ac5/blog/posts", requireAuth, async (c: HonoContext)
       excerpt: excerpt_fr,
       content: content_fr,
       slug: finalSlugFr, // Primary slug in French
-      category: category_fr || "développement",
+      category: category_fr || "dÃ©veloppement",
       tags: tags_fr || [],
       readTime: readTime_fr || Math.ceil((content_fr || "").split(' ').length / 200)
     };
 
     await kv.set(postId, postData);
-    console.log(`✅ Bilingual blog post created: ${postId}`);
+    console.log(`âœ… Bilingual blog post created: ${postId}`);
     console.log(`   FR: /fr/blog/${finalSlugFr}`);
     console.log(`   EN: /en/blog/${finalSlugEn}`);
     
@@ -4237,7 +4237,7 @@ app.post("/make-server-04919ac5/blog/posts", requireAuth, async (c: HonoContext)
       post: postData
     });
   } catch (error) {
-    console.error("❌ Error creating blog post:", error);
+    console.error("âŒ Error creating blog post:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -4266,14 +4266,14 @@ app.put("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c: HonoConte
     const generateSlug = (title: string): string => {
       return title
         .toLowerCase()
-        .replace(/[àáâãäå]/g, 'a')
-        .replace(/[èéêë]/g, 'e')
-        .replace(/[ìíîï]/g, 'i')
-        .replace(/[òóôõö]/g, 'o')
-        .replace(/[ùúûü]/g, 'u')
-        .replace(/[ýÿ]/g, 'y')
-        .replace(/[ñ]/g, 'n')
-        .replace(/[ç]/g, 'c')
+        .replace(/[Ã Ã¡Ã¢Ã£Ã¤Ã¥]/g, 'a')
+        .replace(/[Ã¨Ã©ÃªÃ«]/g, 'e')
+        .replace(/[Ã¬Ã­Ã®Ã¯]/g, 'i')
+        .replace(/[Ã²Ã³Ã´ÃµÃ¶]/g, 'o')
+        .replace(/[Ã¹ÃºÃ»Ã¼]/g, 'u')
+        .replace(/[Ã½Ã¿]/g, 'y')
+        .replace(/[Ã±]/g, 'n')
+        .replace(/[Ã§]/g, 'c')
         .replace(/[^a-z0-9]/g, '-')
         .replace(/-+/g, '-')
         .replace(/^-|-$/g, '');
@@ -4351,13 +4351,13 @@ app.put("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c: HonoConte
       readTime: readTimeFr
     };
     await kv.set(postId, updatedPost);
-    console.log(`✅ Blog post updated: ${postId}`);
+    console.log(`âœ… Blog post updated: ${postId}`);
     return c.json({
       success: true,
       post: updatedPost
     });
   } catch (error) {
-    console.error("❌ Error updating blog post:", error);
+    console.error("âŒ Error updating blog post:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -4374,13 +4374,13 @@ app.delete("/make-server-04919ac5/blog/posts/:id", requireAuth, async (c: HonoCo
       error: "Post not found"
     }, 404);
     await kv.del(postId);
-    console.log(`✅ Blog post deleted: ${postId}`);
+    console.log(`âœ… Blog post deleted: ${postId}`);
     return c.json({
       success: true,
       message: "Post deleted successfully"
     });
   } catch (error) {
-    console.error("❌ Error deleting blog post:", error);
+    console.error("âŒ Error deleting blog post:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
@@ -4484,7 +4484,7 @@ app.get("/make-server-04919ac5/blog/stats", async (c: HonoContext) => {
   }
 });
 
-console.log("✅ ALL Enhanced Bilingual Blog routes added (GET/POST/PUT/DELETE + tags/categories/stats)");
+console.log("âœ… ALL Enhanced Bilingual Blog routes added (GET/POST/PUT/DELETE + tags/categories/stats)");
 // ===========================================================================
 // CASE STUDIES ROUTES
 // ===========================================================================
@@ -4502,7 +4502,7 @@ app.get("/make-server-04919ac5/case-studies", async (c: HonoContext) =>{
     }, 500);
   }
 });
-console.log("✅ Case studies routes added");
+console.log("âœ… Case studies routes added");
 // ===========================================================================
 // RESOURCES ROUTES
 // ===========================================================================
@@ -4520,7 +4520,7 @@ app.get("/make-server-04919ac5/resources", async (c: HonoContext) =>{
     }, 500);
   }
 });
-console.log("✅ Resources routes added");
+console.log("âœ… Resources routes added");
 // ===========================================================================
 // FAQ ROUTES
 // ===========================================================================
@@ -4538,20 +4538,20 @@ app.get("/make-server-04919ac5/faq", async (c: HonoContext) =>{
     }, 500);
   }
 });
-console.log("✅ FAQ routes added");
+console.log("âœ… FAQ routes added");
 // ===========================================================================
 // SEED DATA ROUTE - Initialize all data
 // ===========================================================================
 app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) =>{
   try {
-    console.log("🌱 Starting data seeding...");
+    console.log("ðŸŒ± Starting data seeding...");
     // Seed 3 test projects
     const projects = [
       {
         id: `project:ecommerce-${Date.now()}`,
         name_fr: "Plateforme E-commerce Moderne",
         name_en: "Modern E-commerce Platform",
-        description_fr: "Développement d'une plateforme e-commerce complète avec gestion des stocks, paiement en ligne et tableau de bord analytique.",
+        description_fr: "DÃ©veloppement d'une plateforme e-commerce complÃ¨te avec gestion des stocks, paiement en ligne et tableau de bord analytique.",
         description_en: "Development of a complete e-commerce platform with inventory management, online payment and analytics dashboard.",
         tags_fr: [
           "E-commerce",
@@ -4587,7 +4587,7 @@ app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) 
         id: `project:fitness-${Date.now() + 1}`,
         name_fr: "Application Mobile Fitness",
         name_en: "Fitness Mobile App",
-        description_fr: "Application mobile iOS/Android pour le suivi d'entraînements avec coach virtuel IA.",
+        description_fr: "Application mobile iOS/Android pour le suivi d'entraÃ®nements avec coach virtuel IA.",
         description_en: "iOS/Android mobile app for workout tracking with AI virtual coach.",
         tags_fr: [
           "Mobile",
@@ -4619,7 +4619,7 @@ app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) 
         id: `project:dashboard-${Date.now() + 2}`,
         name_fr: "Dashboard Analytique SaaS",
         name_en: "SaaS Analytics Dashboard",
-        description_fr: "Tableau de bord temps réel pour une plateforme SaaS avec visualisations avancées.",
+        description_fr: "Tableau de bord temps rÃ©el pour une plateforme SaaS avec visualisations avancÃ©es.",
         description_en: "Real-time dashboard for a SaaS platform with advanced visualizations.",
         tags_fr: [
           "Dashboard",
@@ -4653,7 +4653,7 @@ app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) 
         id: `case-study:fintech-${Date.now()}`,
         title: "Plateforme FinTech B2B",
         slug: "fintech-b2b-platform",
-        description: "Transformation digitale complète d'une plateforme de paiement B2B.",
+        description: "Transformation digitale complÃ¨te d'une plateforme de paiement B2B.",
         imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&h=600&fit=crop",
         category: "fintech",
         duration: "6 mois",
@@ -4667,9 +4667,9 @@ app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) 
       },
       {
         id: `case-study:health-${Date.now() + 1}`,
-        title: "Application Santé Mobile",
+        title: "Application SantÃ© Mobile",
         slug: "health-mobile-app",
-        description: "Application mobile pour le suivi médical avec téléconsultation intégrée.",
+        description: "Application mobile pour le suivi mÃ©dical avec tÃ©lÃ©consultation intÃ©grÃ©e.",
         imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=600&fit=crop",
         category: "health",
         duration: "8 mois",
@@ -4688,9 +4688,9 @@ app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) 
         title_fr: "Les tendances React en 2024",
         title_en: "React trends in 2024",
         slug: "react-trends-2024",
-        excerpt_fr: "Découvrez les dernières tendances et best practices React pour cette année.",
+        excerpt_fr: "DÃ©couvrez les derniÃ¨res tendances et best practices React pour cette annÃ©e.",
         excerpt_en: "Discover the latest React trends and best practices for this year.",
-        content_fr: "React continue d'évoluer rapidement en 2024...",
+        content_fr: "React continue d'Ã©voluer rapidement en 2024...",
         content_en: "React continues to evolve rapidly in 2024...",
         category: "development",
         tags: [
@@ -4728,9 +4728,9 @@ app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) 
         title_fr: "Guide freelance 2024",
         title_en: "Freelance guide 2024",
         slug: "freelance-guide-2024",
-        excerpt_fr: "Tout ce qu'il faut savoir pour réussir en freelance.",
+        excerpt_fr: "Tout ce qu'il faut savoir pour rÃ©ussir en freelance.",
         excerpt_en: "Everything you need to know to succeed as a freelancer.",
-        content_fr: "Le freelancing continue de croître...",
+        content_fr: "Le freelancing continue de croÃ®tre...",
         content_en: "Freelancing continues to grow...",
         category: "business",
         tags: [
@@ -4751,7 +4751,7 @@ app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) 
         name: "Marie Dubois",
         role: "CEO, TechStart",
         company: "TechStart",
-        text_fr: "Excellent travail ! La plateforme dépasse toutes nos attentes.",
+        text_fr: "Excellent travail ! La plateforme dÃ©passe toutes nos attentes.",
         text_en: "Excellent work! The platform exceeds all our expectations.",
         rating: 5,
         imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
@@ -4763,7 +4763,7 @@ app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) 
         name: "Jean Martin",
         role: "CTO, InnovateLab",
         company: "InnovateLab",
-        text_fr: "Collaboration exceptionnelle, résultats au-delà de nos attentes.",
+        text_fr: "Collaboration exceptionnelle, rÃ©sultats au-delÃ  de nos attentes.",
         text_en: "Exceptional collaboration, results beyond our expectations.",
         rating: 5,
         imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
@@ -4775,19 +4775,19 @@ app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) 
     for (const project of projects){
       await kv.set(project.id, project);
     }
-    console.log(`✅ ${projects.length} projects seeded`);
+    console.log(`âœ… ${projects.length} projects seeded`);
     for (const cs of caseStudies){
       await kv.set(cs.id, cs);
     }
-    console.log(`✅ ${caseStudies.length} case studies seeded`);
+    console.log(`âœ… ${caseStudies.length} case studies seeded`);
     for (const post of blogPosts){
       await kv.set(post.id, post);
     }
-    console.log(`✅ ${blogPosts.length} blog posts seeded`);
+    console.log(`âœ… ${blogPosts.length} blog posts seeded`);
     for (const testimonial of testimonials){
       await kv.set(testimonial.id, testimonial);
     }
-    console.log(`✅ ${testimonials.length} testimonials seeded`);
+    console.log(`âœ… ${testimonials.length} testimonials seeded`);
     return c.json({
       success: true,
       message: "Data seeded successfully",
@@ -4799,36 +4799,36 @@ app.post("/make-server-04919ac5/seed-data", requireAuth, async (c: HonoContext) 
       }
     });
   } catch (error) {
-    console.error("❌ Error seeding data:", error);
+    console.error("âŒ Error seeding data:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error)
     }, 500);
   }
 });
-console.log("✅ Seed data route added");
+console.log("âœ… Seed data route added");
 // ===========================================================================
 // PRINT AVAILABLE ROUTES
 // ===========================================================================
-console.log("📍 Available routes:");
+console.log("ðŸ“ Available routes:");
 console.log("   AUTH: /auth/init-admin, /auth/login");
 console.log("   CLIENTS: /clients (GET/POST), /clients/:id (PUT/DELETE)");
-console.log("   LEADS: /leads (GET/POST), /leads/:id (PUT/DELETE), /leads/:id/convert (POST) ✨ NEW!");
+console.log("   LEADS: /leads (GET/POST), /leads/:id (PUT/DELETE), /leads/:id/convert (POST) âœ¨ NEW!");
 console.log("   BOOKINGS: /bookings (GET/POST/PUT/DELETE)");
-console.log("   EMAILS: /emails/booking-confirmation (POST), /emails/lead-confirmation (POST) ✨ NEW!");
+console.log("   EMAILS: /emails/booking-confirmation (POST), /emails/lead-confirmation (POST) âœ¨ NEW!");
 console.log("   DASHBOARD: /dashboard/stats");
 console.log("   QUOTES: /quotes (GET/POST), /quotes/:id (PUT/DELETE/convert/send-reminder)");
-console.log("   INVOICES: /invoices (GET), /invoices/:id (GET/PUT/DELETE/send-reminder) ✨ NEW!");
+console.log("   INVOICES: /invoices (GET), /invoices/:id (GET/PUT/DELETE/send-reminder) âœ¨ NEW!");
 console.log("   PROJECTS: /projects (GET), /projects/:id (GET)");
 console.log("   NEWSLETTER: /newsletter/subscribe (POST), /newsletter/stats (GET)");
 console.log("   TESTIMONIALS: /testimonials (GET/POST/PUT/DELETE)");
-console.log("   BLOG: /blog/posts (GET/POST), /blog/posts/:id (GET/PUT/DELETE) ✨ UPDATED!");
+console.log("   BLOG: /blog/posts (GET/POST), /blog/posts/:id (GET/PUT/DELETE) âœ¨ UPDATED!");
 console.log("   CASE STUDIES: /case-studies (GET)");
 console.log("   RESOURCES: /resources (GET)");
 console.log("   FAQ: /faq (GET)");
 console.log("   SEED: /seed-data (POST) - Initialize demo data");
-console.log("   STRIPE: /stripe/create-checkout-session (POST) - Create Stripe payment session ✨ NEW!");
-console.log("✅ COMPLETE server configured with ALL routes including QUOTES + INVOICES + BLOG CRUD + EMAIL CONFIRMATIONS");
+console.log("   STRIPE: /stripe/create-checkout-session (POST) - Create Stripe payment session âœ¨ NEW!");
+console.log("âœ… COMPLETE server configured with ALL routes including QUOTES + INVOICES + BLOG CRUD + EMAIL CONFIRMATIONS");
 // ===========================================================================
 // STRIPE PAYMENT ROUTES
 // ===========================================================================
@@ -4847,7 +4847,7 @@ app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c: HonoC
     // Convert amount to number (in case it's a string)
     const amountNumber = typeof amount === 'string' ? parseFloat(amount) : amount;
     
-    console.log(`💰 Payment request for invoice ${invoiceNumber}:`, {
+    console.log(`ðŸ’° Payment request for invoice ${invoiceNumber}:`, {
       receivedAmount: amount,
       receivedType: typeof amount,
       convertedAmount: amountNumber,
@@ -4856,26 +4856,26 @@ app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c: HonoC
     
     const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY");
     if (!STRIPE_SECRET_KEY) {
-      console.error("❌ STRIPE_SECRET_KEY not configured");
+      console.error("âŒ STRIPE_SECRET_KEY not configured");
       return c.json({
         success: false,
         error: "Payment processing is not configured"
       }, 500);
     }
     
-    // Validate minimum amount for Stripe (€0.50 minimum)
+    // Validate minimum amount for Stripe (â‚¬0.50 minimum)
     if (amountNumber < 0.50) {
-      console.error(`❌ Amount too small: ${amountNumber}€ (minimum €0.50)`);
+      console.error(`âŒ Amount too small: ${amountNumber}â‚¬ (minimum â‚¬0.50)`);
       return c.json({
         success: false,
-        error: "Le montant minimum pour un paiement est de €0.50"
+        error: "Le montant minimum pour un paiement est de â‚¬0.50"
       }, 400);
     }
     
     // Convert amount to cents for Stripe (amount is in euros, Stripe expects cents)
     const amountInCents = Math.round(amountNumber * 100);
     
-    console.log(`💰 Creating Stripe session for invoice ${invoiceNumber}: ${amountNumber}€ (${amountInCents} cents)`);
+    console.log(`ðŸ’° Creating Stripe session for invoice ${invoiceNumber}: ${amountNumber}â‚¬ (${amountInCents} cents)`);
     
     // Create Stripe checkout session
     const checkoutResponse = await fetch("https://api.stripe.com/v1/checkout/sessions", {
@@ -4904,7 +4904,7 @@ app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c: HonoC
     
     if (!checkoutResponse.ok) {
       const error = await checkoutResponse.text();
-      console.error("❌ Stripe API error:", error);
+      console.error("âŒ Stripe API error:", error);
       return c.json({
         success: false,
         error: `Stripe API error: ${error}`
@@ -4913,7 +4913,7 @@ app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c: HonoC
     
     const session = await checkoutResponse.json();
     
-    console.log(`✅ Stripe checkout session created: ${session.id}`);
+    console.log(`âœ… Stripe checkout session created: ${session.id}`);
     
     // Store session data in KV for reference
     await kv.set(`stripe_session:${session.id}`, {
@@ -4934,7 +4934,7 @@ app.post("/make-server-04919ac5/stripe/create-checkout-session", async (c: HonoC
     });
     
   } catch (error) {
-    console.error("❌ Error creating checkout session:", error);
+    console.error("âŒ Error creating checkout session:", error);
     return c.json({
       success: false,
       error: getErrorMessage(error) || "Failed to create checkout session"
@@ -4954,13 +4954,13 @@ app.post("/make-server-04919ac5/stripe/webhook", async (c: HonoContext) =>{
     }
     
     // Verify webhook signature (simplified - in production use stripe.webhooks.constructEvent)
-    console.log(`📨 Webhook received with signature: ${signature}`);
+    console.log(`ðŸ“¨ Webhook received with signature: ${signature}`);
     
     const event = JSON.parse(body);
     
     switch (event.type) {
       case "checkout.session.completed":
-        console.log(`✅ Payment completed for session: ${event.data.object.id}`);
+        console.log(`âœ… Payment completed for session: ${event.data.object.id}`);
         
         // Update invoice status to paid
         const sessionData = await kv.get(`stripe_session:${event.data.object.id}`);
@@ -4971,42 +4971,42 @@ app.post("/make-server-04919ac5/stripe/webhook", async (c: HonoContext) =>{
             invoice.paidAt = new Date().toISOString();
             invoice.stripeSessionId = event.data.object.id;
             await kv.set(sessionData.invoiceId, invoice);
-            console.log(`✅ Invoice ${invoice.number} marked as paid`);
+            console.log(`âœ… Invoice ${invoice.number} marked as paid`);
           }
         }
         break;
         
       case "checkout.session.expired":
-        console.log(`⏰ Checkout session expired: ${event.data.object.id}`);
+        console.log(`â° Checkout session expired: ${event.data.object.id}`);
         break;
         
       case "charge.refunded":
-        console.log(`💸 Payment refunded: ${event.data.object.id}`);
+        console.log(`ðŸ’¸ Payment refunded: ${event.data.object.id}`);
         break;
     }
     
     return c.json({ received: true });
     
   } catch (error) {
-    console.error("❌ Webhook error:", error);
+    console.error("âŒ Webhook error:", error);
     return c.json({ success: false, error: getErrorMessage(error) }, 500);
   }
 });
 
-console.log("✅ Stripe payment routes added");
+console.log("âœ… Stripe payment routes added");
 
 // =============================================================================
-// 🚀 START SERVER & DEPLOYMENT VERIFICATION  
+// ðŸš€ START SERVER & DEPLOYMENT VERIFICATION  
 // =============================================================================
-console.log("🚀 Starting Portfolio CRM Server...");
-console.log("📊 Features: Clients, Leads, Bookings, Quotes, Invoices, Blog, Payments");
-console.log("🔗 Base URL: /functions/v1/make-server-04919ac5");
+console.log("ðŸš€ Starting Portfolio CRM Server...");
+console.log("ðŸ“Š Features: Clients, Leads, Bookings, Quotes, Invoices, Blog, Payments");
+console.log("ðŸ”— Base URL: /functions/v1/make-server-04919ac5");
 
 // Start the Deno server
 Deno.serve(app.fetch);
 
-console.log("✅ Server started successfully!");
-console.log("📋 Next steps after deployment:");
+console.log("âœ… Server started successfully!");
+console.log("ðŸ“‹ Next steps after deployment:");
 console.log("   1. Test health: GET /make-server-04919ac5/health");
 console.log("   2. Initialize admin: POST /make-server-04919ac5/auth/init-admin");
 console.log("   3. Test projects: GET /make-server-04919ac5/projects");
@@ -5014,18 +5014,18 @@ console.log("   4. Check dashboard: GET /make-server-04919ac5/dashboard/stats");
 
 /*
 ============================================================================
-🎯 POST-DEPLOYMENT CHECKLIST
+ðŸŽ¯ POST-DEPLOYMENT CHECKLIST
 ============================================================================
 
-□ 1. DEPLOY TO SUPABASE
-   • Go to Supabase Dashboard > Edge Functions
-   • Create new function named: make-server-04919ac5  
-   • Copy this entire file content and paste it
-   • Click "Deploy"
+â–¡ 1. DEPLOY TO SUPABASE
+   â€¢ Go to Supabase Dashboard > Edge Functions
+   â€¢ Create new function named: make-server-04919ac5  
+   â€¢ Copy this entire file content and paste it
+   â€¢ Click "Deploy"
 
-□ 2. CONFIGURE ENVIRONMENT VARIABLES
-   • Go to Settings > Edge Functions > Environment Variables
-   • Add all 8 required variables:
+â–¡ 2. CONFIGURE ENVIRONMENT VARIABLES
+   â€¢ Go to Settings > Edge Functions > Environment Variables
+   â€¢ Add all 8 required variables:
      - SUPABASE_URL
      - SUPABASE_SERVICE_ROLE_KEY  
      - SUPABASE_ANON_KEY
@@ -5035,25 +5035,25 @@ console.log("   4. Check dashboard: GET /make-server-04919ac5/dashboard/stats");
      - STRIPE_WEBHOOK_SECRET
      - FRONTEND_URL
 
-□ 3. TEST DEPLOYMENT
+â–¡ 3. TEST DEPLOYMENT
    curl -X GET "https://your-project.supabase.co/functions/v1/make-server-04919ac5/health"
    Expected: {"success": true, "message": "Server is healthy", "timestamp": "..."}
 
-□ 4. INITIALIZE DATA
+â–¡ 4. INITIALIZE DATA
    curl -X POST "https://your-project.supabase.co/functions/v1/make-server-04919ac5/auth/init-admin"
    Expected: {"success": true, "message": "Admin initialized"}
 
-□ 5. VERIFY FRONTEND CONNECTION
-   • Update frontend serverService.ts with deployed URL
-   • Set PRODUCTION_MODE = true
-   • Test from portfolio website
+â–¡ 5. VERIFY FRONTEND CONNECTION
+   â€¢ Update frontend serverService.ts with deployed URL
+   â€¢ Set PRODUCTION_MODE = true
+   â€¢ Test from portfolio website
 
-□ 6. SETUP CRON JOBS (Optional - for automation)
-   • Go to Dashboard > Database > Cron Jobs (pg_cron extension)
-   • Add daily job for invoice reminders:
+â–¡ 6. SETUP CRON JOBS (Optional - for automation)
+   â€¢ Go to Dashboard > Database > Cron Jobs (pg_cron extension)
+   â€¢ Add daily job for invoice reminders:
      SELECT cron.schedule('invoice-reminders', '0 9 * * *', 
        'SELECT net.http_post(url := ''https://your-project.supabase.co/functions/v1/make-server-04919ac5/cron/send-invoice-reminders'')');
-   • Add daily job for booking reminders:
+   â€¢ Add daily job for booking reminders:
      SELECT cron.schedule('booking-reminders', '0 10 * * *',
        'SELECT net.http_post(url := ''https://your-project.supabase.co/functions/v1/make-server-04919ac5/cron/send-booking-reminders'')');
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🔍 Vérification Déploiement Supabase</title>
+  <title>ðŸ” VÃ©rification DÃ©ploiement Supabase</title>
   <style>
     * {
       margin: 0;
@@ -40,14 +40,14 @@
 
     .step-box {
       background: rgba(255, 255, 255, 0.05);
-      border: 2px solid #00FFC2;
+      border: 2px solid #CCFF00;
       border-radius: 15px;
       padding: 25px;
       margin: 20px 0;
     }
 
     .step-box h2 {
-      color: #00FFC2;
+      color: #CCFF00;
       font-size: 1.6em;
       margin-bottom: 20px;
     }
@@ -67,15 +67,15 @@
     }
 
     .solution {
-      background: rgba(0, 255, 194, 0.1);
-      border: 2px solid #00FFC2;
+      background: rgba(204, 255, 0, 0.1);
+      border: 2px solid #CCFF00;
       border-radius: 10px;
       padding: 20px;
       margin: 15px 0;
     }
 
     .solution h3 {
-      color: #00FFC2;
+      color: #CCFF00;
       margin-bottom: 15px;
       font-size: 1.3em;
     }
@@ -85,12 +85,12 @@
       padding: 15px;
       margin: 10px 0;
       border-radius: 8px;
-      border-left: 4px solid #00FFC2;
+      border-left: 4px solid #CCFF00;
     }
 
     .step-number {
       display: inline-block;
-      background: #00FFC2;
+      background: #CCFF00;
       color: #0C0C0C;
       width: 35px;
       height: 35px;
@@ -103,8 +103,8 @@
     }
 
     code {
-      background: rgba(0, 255, 194, 0.1);
-      color: #00FFC2;
+      background: rgba(204, 255, 0, 0.1);
+      color: #CCFF00;
       padding: 3px 8px;
       border-radius: 5px;
       font-family: 'Courier New', monospace;
@@ -112,7 +112,7 @@
 
     .button {
       display: inline-block;
-      background: #00FFC2;
+      background: #CCFF00;
       color: #0C0C0C;
       padding: 12px 25px;
       border-radius: 25px;
@@ -127,7 +127,7 @@
 
     .button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(0, 255, 194, 0.4);
+      box-shadow: 0 10px 25px rgba(204, 255, 0, 0.4);
     }
 
     .button.danger {
@@ -145,11 +145,11 @@
       margin: 8px 0;
       background: rgba(255, 255, 255, 0.05);
       border-radius: 8px;
-      border-left: 4px solid #00FFC2;
+      border-left: 4px solid #CCFF00;
     }
 
     .checklist li::before {
-      content: '⚠️';
+      content: 'âš ï¸';
       margin-right: 10px;
       font-size: 1.2em;
     }
@@ -160,7 +160,7 @@
       border-radius: 8px;
       overflow-x: auto;
       margin: 10px 0;
-      border: 1px solid #00FFC2;
+      border: 1px solid #CCFF00;
     }
 
     .warning {
@@ -185,7 +185,7 @@
     }
 
     .highlight {
-      background: rgba(0, 255, 194, 0.2);
+      background: rgba(204, 255, 0, 0.2);
       padding: 2px 6px;
       border-radius: 4px;
       font-weight: bold;
@@ -196,46 +196,46 @@
   <div class="container">
     <!-- Alert -->
     <div class="alert-box">
-      <h1>🚨 Le déploiement a réussi MAIS l'erreur 404 persiste</h1>
+      <h1>ðŸš¨ Le dÃ©ploiement a rÃ©ussi MAIS l'erreur 404 persiste</h1>
       <p style="font-size: 1.2em; margin-top: 10px;">
-        Cela signifie que <strong>le code n'a pas été copié en entier</strong> ou qu'il y a une <strong>erreur de syntaxe</strong>.
+        Cela signifie que <strong>le code n'a pas Ã©tÃ© copiÃ© en entier</strong> ou qu'il y a une <strong>erreur de syntaxe</strong>.
       </p>
     </div>
 
-    <!-- Diagnostic du problème -->
+    <!-- Diagnostic du problÃ¨me -->
     <div class="step-box">
-      <h2>🔍 Diagnostic du Problème</h2>
+      <h2>ðŸ” Diagnostic du ProblÃ¨me</h2>
       
       <div class="problem">
-        <h3>❌ Problème Identifié</h3>
-        <p>Vous avez bien cliqué sur "Deploy" et vu "Successfully updated edge function", MAIS :</p>
+        <h3>âŒ ProblÃ¨me IdentifiÃ©</h3>
+        <p>Vous avez bien cliquÃ© sur "Deploy" et vu "Successfully updated edge function", MAIS :</p>
         <ul class="checklist">
-          <li>Les routes <code>/quotes</code> ne sont pas enregistrées</li>
-          <li>Le serveur démarre sans ces routes</li>
+          <li>Les routes <code>/quotes</code> ne sont pas enregistrÃ©es</li>
+          <li>Le serveur dÃ©marre sans ces routes</li>
           <li>L'erreur 404 persiste</li>
         </ul>
       </div>
 
       <div class="warning">
-        <h3>⚠️ Cause Probable</h3>
-        <p><strong>Le fichier n'a pas été copié en entier.</strong></p>
-        <p style="margin-top: 10px;">Même si vous pensez avoir tout copié, il est très probable qu'il manque une partie du code. Le fichier fait <span class="highlight">4071 lignes</span>, et si vous avez copié manuellement ou si l'éditeur Supabase a coupé le code, les routes ne seront pas présentes.</p>
+        <h3>âš ï¸ Cause Probable</h3>
+        <p><strong>Le fichier n'a pas Ã©tÃ© copiÃ© en entier.</strong></p>
+        <p style="margin-top: 10px;">MÃªme si vous pensez avoir tout copiÃ©, il est trÃ¨s probable qu'il manque une partie du code. Le fichier fait <span class="highlight">4071 lignes</span>, et si vous avez copiÃ© manuellement ou si l'Ã©diteur Supabase a coupÃ© le code, les routes ne seront pas prÃ©sentes.</p>
       </div>
     </div>
 
-    <!-- Solution Étape par Étape -->
+    <!-- Solution Ã‰tape par Ã‰tape -->
     <div class="step-box">
-      <h2>✅ Solution Garantie (Méthode Infaillible)</h2>
+      <h2>âœ… Solution Garantie (MÃ©thode Infaillible)</h2>
 
       <div class="step">
         <span class="step-number">1</span>
-        <strong>Vérifier ce qui est VRAIMENT déployé</strong>
+        <strong>VÃ©rifier ce qui est VRAIMENT dÃ©ployÃ©</strong>
         <div style="margin-top: 10px; padding-left: 45px;">
           <p>Dans Supabase Dashboard :</p>
           <ol>
-            <li>Allez dans Edge Functions → make-server-04919ac5</li>
+            <li>Allez dans Edge Functions â†’ make-server-04919ac5</li>
             <li>Cliquez sur l'onglet <strong>"Editor"</strong></li>
-            <li>Regardez en BAS à DROITE : combien de lignes ?</li>
+            <li>Regardez en BAS Ã  DROITE : combien de lignes ?</li>
             <li>Si c'est moins de <strong>4000 lignes</strong>, le code n'est PAS complet</li>
           </ol>
         </div>
@@ -243,14 +243,14 @@
 
       <div class="step">
         <span class="step-number">2</span>
-        <strong>Chercher les routes dans l'éditeur Supabase</strong>
+        <strong>Chercher les routes dans l'Ã©diteur Supabase</strong>
         <div style="margin-top: 10px; padding-left: 45px;">
-          <p>Dans l'éditeur Supabase :</p>
+          <p>Dans l'Ã©diteur Supabase :</p>
           <ol>
             <li>Appuyez sur <strong>Ctrl+F</strong> (ou Cmd+F)</li>
             <li>Cherchez : <code>/make-server-04919ac5/quotes</code></li>
-            <li>Vous devez trouver <span class="highlight">6 résultats</span></li>
-            <li>Si vous en trouvez 0, le code n'a PAS été copié</li>
+            <li>Vous devez trouver <span class="highlight">6 rÃ©sultats</span></li>
+            <li>Si vous en trouvez 0, le code n'a PAS Ã©tÃ© copiÃ©</li>
           </ol>
         </div>
       </div>
@@ -260,60 +260,60 @@
         <strong>Recommencer la copie CORRECTEMENT</strong>
         <div style="margin-top: 10px; padding-left: 45px;">
           <div class="warning">
-            <h3>⚠️ MÉTHODE INFAILLIBLE</h3>
-            <p>Ne copiez PAS en scrollant ou en sélectionnant à la souris !</p>
+            <h3>âš ï¸ MÃ‰THODE INFAILLIBLE</h3>
+            <p>Ne copiez PAS en scrollant ou en sÃ©lectionnant Ã  la souris !</p>
           </div>
           
-          <p><strong>Dans votre éditeur de code (VS Code, etc.) :</strong></p>
+          <p><strong>Dans votre Ã©diteur de code (VS Code, etc.) :</strong></p>
           <ol>
             <li>Ouvrez <code>/supabase/functions/server/index.tsx</code></li>
-            <li>Cliquez n'importe où dans le fichier</li>
-            <li><strong>Ctrl+A</strong> (sélectionner TOUT)</li>
-            <li>Vérifiez que TOUT est bleu/sélectionné (jusqu'en bas)</li>
+            <li>Cliquez n'importe oÃ¹ dans le fichier</li>
+            <li><strong>Ctrl+A</strong> (sÃ©lectionner TOUT)</li>
+            <li>VÃ©rifiez que TOUT est bleu/sÃ©lectionnÃ© (jusqu'en bas)</li>
             <li><strong>Ctrl+C</strong> (copier)</li>
           </ol>
           
-          <p style="margin-top: 15px;"><strong>Dans l'éditeur Supabase :</strong></p>
+          <p style="margin-top: 15px;"><strong>Dans l'Ã©diteur Supabase :</strong></p>
           <ol>
-            <li><strong>Ctrl+A</strong> (sélectionner tout le code actuel)</li>
+            <li><strong>Ctrl+A</strong> (sÃ©lectionner tout le code actuel)</li>
             <li><strong>Delete</strong> ou <strong>Backspace</strong> (supprimer tout)</li>
-            <li>L'éditeur doit être complètement vide</li>
+            <li>L'Ã©diteur doit Ãªtre complÃ¨tement vide</li>
             <li><strong>Ctrl+V</strong> (coller le nouveau code)</li>
-            <li><strong>ATTENDEZ 5-10 secondes</strong> que l'éditeur affiche tout</li>
+            <li><strong>ATTENDEZ 5-10 secondes</strong> que l'Ã©diteur affiche tout</li>
           </ol>
         </div>
       </div>
 
       <div class="step">
         <span class="step-number">4</span>
-        <strong>VÉRIFIER AVANT de déployer</strong>
+        <strong>VÃ‰RIFIER AVANT de dÃ©ployer</strong>
         <div style="margin-top: 10px; padding-left: 45px;">
           <div class="warning">
-            <h3>⚠️ VÉRIFICATION OBLIGATOIRE</h3>
-            <p>NE CLIQUEZ PAS SUR "DEPLOY" AVANT D'AVOIR VÉRIFIÉ !</p>
+            <h3>âš ï¸ VÃ‰RIFICATION OBLIGATOIRE</h3>
+            <p>NE CLIQUEZ PAS SUR "DEPLOY" AVANT D'AVOIR VÃ‰RIFIÃ‰ !</p>
           </div>
           
           <ul class="checklist">
-            <li>Regardez en bas à droite : Il doit y avoir <strong>~4071 lignes</strong></li>
+            <li>Regardez en bas Ã  droite : Il doit y avoir <strong>~4071 lignes</strong></li>
             <li>Cherchez (Ctrl+F) : <code>/make-server-04919ac5/quotes</code></li>
             <li>Vous devez voir <strong>"6 of 6"</strong> ou <strong>"6 results"</strong></li>
-            <li>Scrollez tout en bas : La dernière ligne doit être <code>Deno.serve(app.fetch);</code></li>
+            <li>Scrollez tout en bas : La derniÃ¨re ligne doit Ãªtre <code>Deno.serve(app.fetch);</code></li>
           </ul>
           
           <p style="margin-top: 15px; color: #ff5252; font-weight: bold;">
-            ⚠️ Si vous ne trouvez PAS 6 occurrences, recommencez l'étape 3 !
+            âš ï¸ Si vous ne trouvez PAS 6 occurrences, recommencez l'Ã©tape 3 !
           </p>
         </div>
       </div>
 
       <div class="step">
         <span class="step-number">5</span>
-        <strong>Déployer</strong>
+        <strong>DÃ©ployer</strong>
         <div style="margin-top: 10px; padding-left: 45px;">
           <ol>
             <li>Cliquez sur <strong>"Deploy"</strong></li>
             <li>Attendez le message "Successfully updated edge function"</li>
-            <li><strong>Attendez 1-2 minutes COMPLÈTES</strong> (important !)</li>
+            <li><strong>Attendez 1-2 minutes COMPLÃˆTES</strong> (important !)</li>
           </ol>
         </div>
       </div>
@@ -323,51 +323,51 @@
         <strong>Vider le cache et tester</strong>
         <div style="margin-top: 10px; padding-left: 45px;">
           <ol>
-            <li>Fermez complètement votre navigateur</li>
+            <li>Fermez complÃ¨tement votre navigateur</li>
             <li>Rouvrez-le</li>
             <li>Allez sur votre app</li>
-            <li>Appuyez sur <strong>Ctrl+Shift+R</strong> (rechargement forcé)</li>
+            <li>Appuyez sur <strong>Ctrl+Shift+R</strong> (rechargement forcÃ©)</li>
             <li>Connectez-vous au dashboard</li>
-            <li>Essayez de créer un devis</li>
+            <li>Essayez de crÃ©er un devis</li>
           </ol>
         </div>
       </div>
     </div>
 
-    <!-- Vérification Alternative -->
+    <!-- VÃ©rification Alternative -->
     <div class="step-box">
-      <h2>🔧 Méthode Alternative : Copie Fichier par Fichier</h2>
+      <h2>ðŸ”§ MÃ©thode Alternative : Copie Fichier par Fichier</h2>
       
       <div class="solution">
         <h3>Si le fichier est vraiment trop gros :</h3>
         
-        <p><strong>Option 1 : Utiliser le Terminal (Recommandé si vous avez Supabase CLI)</strong></p>
+        <p><strong>Option 1 : Utiliser le Terminal (RecommandÃ© si vous avez Supabase CLI)</strong></p>
         <pre>supabase functions deploy make-server-04919ac5</pre>
         
-        <p style="margin-top: 20px;"><strong>Option 2 : Créer un fichier temporaire plus petit</strong></p>
+        <p style="margin-top: 20px;"><strong>Option 2 : CrÃ©er un fichier temporaire plus petit</strong></p>
         <ol>
-          <li>Créez un nouveau fichier <code>quotes-routes.tsx</code></li>
+          <li>CrÃ©ez un nouveau fichier <code>quotes-routes.tsx</code></li>
           <li>Copiez UNIQUEMENT la section QUOTES ROUTES (lignes 3844-4066)</li>
-          <li>Ajoutez cette section dans l'éditeur Supabase AVANT <code>Deno.serve(app.fetch);</code></li>
+          <li>Ajoutez cette section dans l'Ã©diteur Supabase AVANT <code>Deno.serve(app.fetch);</code></li>
         </ol>
       </div>
     </div>
 
-    <!-- Vérification Logs -->
+    <!-- VÃ©rification Logs -->
     <div class="step-box">
-      <h2>🔍 Vérifier les Logs Supabase</h2>
+      <h2>ðŸ” VÃ©rifier les Logs Supabase</h2>
       
       <div class="step">
-        <strong>Checker si le serveur démarre correctement :</strong>
+        <strong>Checker si le serveur dÃ©marre correctement :</strong>
         <div style="margin-top: 10px;">
           <ol>
-            <li>Dans Supabase Dashboard → Edge Functions → make-server-04919ac5</li>
+            <li>Dans Supabase Dashboard â†’ Edge Functions â†’ make-server-04919ac5</li>
             <li>Cliquez sur l'onglet <strong>"Logs"</strong></li>
             <li>Vous devriez voir :
               <ul>
-                <li>✅ "🚀 Server started successfully"</li>
-                <li>✅ "📊 Analytics routes loaded"</li>
-                <li>❌ Si vous voyez des erreurs, il y a un problème de syntaxe</li>
+                <li>âœ… "ðŸš€ Server started successfully"</li>
+                <li>âœ… "ðŸ“Š Analytics routes loaded"</li>
+                <li>âŒ Si vous voyez des erreurs, il y a un problÃ¨me de syntaxe</li>
               </ul>
             </li>
           </ol>
@@ -375,57 +375,57 @@
       </div>
 
       <div class="warning">
-        <h3>⚠️ Si vous voyez des erreurs dans les logs</h3>
-        <p>Cela signifie qu'il y a une erreur de syntaxe dans le code. Le serveur démarre mais certaines routes ne se chargent pas.</p>
-        <p style="margin-top: 10px;"><strong>Solution :</strong> Copiez l'erreur exacte et corrigez-la dans votre fichier local avant de redéployer.</p>
+        <h3>âš ï¸ Si vous voyez des erreurs dans les logs</h3>
+        <p>Cela signifie qu'il y a une erreur de syntaxe dans le code. Le serveur dÃ©marre mais certaines routes ne se chargent pas.</p>
+        <p style="margin-top: 10px;"><strong>Solution :</strong> Copiez l'erreur exacte et corrigez-la dans votre fichier local avant de redÃ©ployer.</p>
       </div>
     </div>
 
     <!-- Test Manuel -->
     <div class="step-box">
-      <h2>🧪 Test Manuel avec Curl</h2>
+      <h2>ðŸ§ª Test Manuel avec Curl</h2>
       
-      <p>Si vous avez curl installé, testez directement :</p>
+      <p>Si vous avez curl installÃ©, testez directement :</p>
       
       <pre>curl -X GET \
   "https://ptcxeqtjlxittxayffgu.supabase.co/functions/v1/make-server-04919ac5/quotes" \
   -H "Authorization: Bearer VOTRE_TOKEN_ICI"</pre>
       
-      <p style="margin-top: 15px;"><strong>Résultat attendu :</strong></p>
+      <p style="margin-top: 15px;"><strong>RÃ©sultat attendu :</strong></p>
       <ul>
-        <li>✅ Si ça marche : <code>{"success":true,"quotes":[]}</code></li>
-        <li>❌ Si 404 : Le code n'est pas déployé correctement</li>
+        <li>âœ… Si Ã§a marche : <code>{"success":true,"quotes":[]}</code></li>
+        <li>âŒ Si 404 : Le code n'est pas dÃ©ployÃ© correctement</li>
       </ul>
     </div>
 
     <!-- Checklist Finale -->
     <div class="step-box">
-      <h2>✅ Checklist de Vérification Finale</h2>
+      <h2>âœ… Checklist de VÃ©rification Finale</h2>
       
       <ul class="checklist">
-        <li>J'ai vérifié que l'éditeur Supabase affiche <strong>~4071 lignes</strong></li>
-        <li>J'ai cherché <code>/quotes</code> et trouvé <strong>6 occurrences</strong></li>
-        <li>La dernière ligne est <code>Deno.serve(app.fetch);</code></li>
-        <li>J'ai attendu <strong>2 minutes complètes</strong> après le déploiement</li>
-        <li>J'ai fermé et rouvert mon navigateur</li>
+        <li>J'ai vÃ©rifiÃ© que l'Ã©diteur Supabase affiche <strong>~4071 lignes</strong></li>
+        <li>J'ai cherchÃ© <code>/quotes</code> et trouvÃ© <strong>6 occurrences</strong></li>
+        <li>La derniÃ¨re ligne est <code>Deno.serve(app.fetch);</code></li>
+        <li>J'ai attendu <strong>2 minutes complÃ¨tes</strong> aprÃ¨s le dÃ©ploiement</li>
+        <li>J'ai fermÃ© et rouvert mon navigateur</li>
         <li>J'ai fait <strong>Ctrl+Shift+R</strong> pour vider le cache</li>
-        <li>J'ai vérifié les logs Supabase (pas d'erreur)</li>
+        <li>J'ai vÃ©rifiÃ© les logs Supabase (pas d'erreur)</li>
       </ul>
     </div>
 
     <!-- Boutons -->
     <div style="text-align: center; margin: 40px 0;">
       <a href="https://supabase.com/dashboard/project/ptcxeqtjlxittxayffgu/functions/make-server-04919ac5/details" target="_blank" class="button danger">
-        🚀 Ouvrir Supabase Editor
+        ðŸš€ Ouvrir Supabase Editor
       </a>
       <a href="https://supabase.com/dashboard/project/ptcxeqtjlxittxayffgu/functions/make-server-04919ac5/logs" target="_blank" class="button">
-        📋 Voir les Logs
+        ðŸ“‹ Voir les Logs
       </a>
     </div>
 
-    <div style="text-align: center; padding: 40px 20px; color: #888; border-top: 1px solid rgba(0, 255, 194, 0.2); margin-top: 40px;">
-      <p><strong>🔥 LE PROBLÈME : Le code n'a PAS été copié en entier</strong></p>
-      <p style="margin-top: 10px;"><strong>✅ LA SOLUTION : Recommencer avec Ctrl+A, Ctrl+C, Ctrl+V</strong></p>
+    <div style="text-align: center; padding: 40px 20px; color: #888; border-top: 1px solid rgba(204, 255, 0, 0.2); margin-top: 40px;">
+      <p><strong>ðŸ”¥ LE PROBLÃˆME : Le code n'a PAS Ã©tÃ© copiÃ© en entier</strong></p>
+      <p style="margin-top: 10px;"><strong>âœ… LA SOLUTION : Recommencer avec Ctrl+A, Ctrl+C, Ctrl+V</strong></p>
       <p style="margin-top: 10px;">Date : 10 novembre 2024</p>
     </div>
   </div>

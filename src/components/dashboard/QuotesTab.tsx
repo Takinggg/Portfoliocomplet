@@ -86,7 +86,7 @@ export function QuotesTab() {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -132,14 +132,14 @@ export function QuotesTab() {
 
     const selectedClient = clients.find(c => c.id === newQuote.clientId);
     if (!selectedClient) {
-      toast.error("Client non trouvé");
+      toast.error("Client non trouvÃ©");
       return;
     }
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -167,14 +167,14 @@ export function QuotesTab() {
       );
 
       if (response.ok) {
-        toast.success("Devis créé avec succès");
+        toast.success("Devis crÃ©Ã© avec succÃ¨s");
         setShowCreateDialog(false);
         setNewQuote({ clientId: "", amount: "", description: "", validUntil: "" });
         fetchData();
       }
     } catch (error) {
       console.error("Error creating quote:", error);
-      toast.error("Erreur lors de la création du devis");
+      toast.error("Erreur lors de la crÃ©ation du devis");
     }
   };
 
@@ -188,7 +188,7 @@ export function QuotesTab() {
       }
       
       const confirmed = window.confirm(
-        `Êtes-vous sûr de vouloir envoyer ce devis par email à ${quote.clientEmail} ?\n\nLe devis sera marqué comme "envoyé" et un email sera envoyé au client.`
+        `ÃŠtes-vous sÃ»r de vouloir envoyer ce devis par email Ã  ${quote.clientEmail} ?\n\nLe devis sera marquÃ© comme "envoyÃ©" et un email sera envoyÃ© au client.`
       );
       
       if (!confirmed) return;
@@ -197,7 +197,7 @@ export function QuotesTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -216,12 +216,12 @@ export function QuotesTab() {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success(`Devis ${newStatus === "sent" ? "envoyé" : "mis à jour"} avec succès${result.emailSent ? " 📧" : ""}`);
+        toast.success(`Devis ${newStatus === "sent" ? "envoyÃ©" : "mis Ã  jour"} avec succÃ¨s${result.emailSent ? " ðŸ“§" : ""}`);
         fetchData();
       }
     } catch (error) {
       console.error("Error updating quote:", error);
-      toast.error("Erreur lors de la mise à jour");
+      toast.error("Erreur lors de la mise Ã  jour");
     }
   };
 
@@ -229,7 +229,7 @@ export function QuotesTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -247,7 +247,7 @@ export function QuotesTab() {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success("Devis converti en facture avec succès !");
+        toast.success("Devis converti en facture avec succÃ¨s !");
         fetchData();
       } else {
         toast.error(result.error || "Erreur lors de la conversion");
@@ -264,7 +264,7 @@ export function QuotesTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -277,7 +277,7 @@ export function QuotesTab() {
       );
 
       if (response.ok) {
-        toast.success("Devis supprimé avec succès");
+        toast.success("Devis supprimÃ© avec succÃ¨s");
         setShowDeleteDialog(false);
         setSelectedQuote(null);
         fetchData();
@@ -297,8 +297,8 @@ export function QuotesTab() {
       `Renvoyer le devis ${quote.number} par email ?\n\n` +
       `Client : ${quote.clientName}\n` +
       `Email : ${quote.clientEmail}\n` +
-      `Montant : ${quote.amount.toLocaleString('fr-FR')} €\n\n` +
-      `Un email de rappel sera envoyé au client.`
+      `Montant : ${quote.amount.toLocaleString('fr-FR')} â‚¬\n\n` +
+      `Un email de rappel sera envoyÃ© au client.`
     );
     
     if (!confirmed) return;
@@ -306,7 +306,7 @@ export function QuotesTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -322,7 +322,7 @@ export function QuotesTab() {
       );
 
       if (response.ok) {
-        toast.success(`📧 Email de rappel envoyé à ${quote.clientEmail}`);
+        toast.success(`ðŸ“§ Email de rappel envoyÃ© Ã  ${quote.clientEmail}`);
       } else {
         const result = await response.json();
         toast.error(result.error || "Erreur lors de l'envoi de l'email");
@@ -351,9 +351,9 @@ export function QuotesTab() {
     
     const labels = {
       draft: "Brouillon",
-      sent: "Envoyé",
-      accepted: "Accepté",
-      declined: "Refusé",
+      sent: "EnvoyÃ©",
+      accepted: "AcceptÃ©",
+      declined: "RefusÃ©",
       converted: "Converti",
     };
 
@@ -381,12 +381,12 @@ export function QuotesTab() {
     >
       {/* Header Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-black/40 border-[#00FFC2]/20">
+        <Card className="bg-black/40 border-[#CCFF00]/20">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm text-gray-400">Total Devis</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl text-[#00FFC2]">{stats.total}</div>
+            <div className="text-2xl text-[#CCFF00]">{stats.total}</div>
           </CardContent>
         </Card>
         
@@ -401,25 +401,25 @@ export function QuotesTab() {
 
         <Card className="bg-black/40 border-green-500/20">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-gray-400">Acceptés</CardTitle>
+            <CardTitle className="text-sm text-gray-400">AcceptÃ©s</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl text-green-400">{stats.accepted}</div>
           </CardContent>
         </Card>
 
-        <Card className="bg-black/40 border-[#00FFC2]/20">
+        <Card className="bg-black/40 border-[#CCFF00]/20">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm text-gray-400">Montant total</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl text-[#00FFC2]">{stats.totalAmount.toLocaleString('fr-FR')} €</div>
+            <div className="text-2xl text-[#CCFF00]">{stats.totalAmount.toLocaleString('fr-FR')} â‚¬</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Actions Bar */}
-      <Card className="bg-black/40 border-[#00FFC2]/10">
+      <Card className="bg-black/40 border-[#CCFF00]/10">
         <CardContent className="p-4">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="flex gap-2 w-full md:w-auto">
@@ -440,9 +440,9 @@ export function QuotesTab() {
                 <SelectContent>
                   <SelectItem value="all">Tous</SelectItem>
                   <SelectItem value="draft">Brouillon</SelectItem>
-                  <SelectItem value="sent">Envoyés</SelectItem>
-                  <SelectItem value="accepted">Acceptés</SelectItem>
-                  <SelectItem value="declined">Refusés</SelectItem>
+                  <SelectItem value="sent">EnvoyÃ©s</SelectItem>
+                  <SelectItem value="accepted">AcceptÃ©s</SelectItem>
+                  <SelectItem value="declined">RefusÃ©s</SelectItem>
                   <SelectItem value="converted">Convertis</SelectItem>
                 </SelectContent>
               </Select>
@@ -450,7 +450,7 @@ export function QuotesTab() {
             
             <Button 
               onClick={() => setShowCreateDialog(true)}
-              className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+              className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
             >
               <Plus className="h-4 w-4 mr-2" />
               Nouveau devis
@@ -460,18 +460,18 @@ export function QuotesTab() {
       </Card>
 
       {/* Quotes Table */}
-      <Card className="bg-black/40 border-[#00FFC2]/10">
+      <Card className="bg-black/40 border-[#CCFF00]/10">
         <CardContent className="p-6">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="border-white/10 hover:bg-transparent">
-                  <TableHead className="text-[#00FFC2] text-base py-4 min-w-[140px]">N° Devis</TableHead>
-                  <TableHead className="text-[#00FFC2] text-base py-4 min-w-[180px]">Client</TableHead>
-                  <TableHead className="text-[#00FFC2] text-base py-4 min-w-[130px]">Montant</TableHead>
-                  <TableHead className="text-[#00FFC2] text-base py-4 min-w-[150px]">Valide jusqu'au</TableHead>
-                  <TableHead className="text-[#00FFC2] text-base py-4 min-w-[130px]">Statut</TableHead>
-                  <TableHead className="text-[#00FFC2] text-base py-4 text-right min-w-[220px]">Actions</TableHead>
+                  <TableHead className="text-[#CCFF00] text-base py-4 min-w-[140px]">NÂ° Devis</TableHead>
+                  <TableHead className="text-[#CCFF00] text-base py-4 min-w-[180px]">Client</TableHead>
+                  <TableHead className="text-[#CCFF00] text-base py-4 min-w-[130px]">Montant</TableHead>
+                  <TableHead className="text-[#CCFF00] text-base py-4 min-w-[150px]">Valide jusqu'au</TableHead>
+                  <TableHead className="text-[#CCFF00] text-base py-4 min-w-[130px]">Statut</TableHead>
+                  <TableHead className="text-[#CCFF00] text-base py-4 text-right min-w-[220px]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -484,7 +484,7 @@ export function QuotesTab() {
                 ) : filteredQuotes.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center text-gray-400 py-12 text-base">
-                      Aucun devis trouvé
+                      Aucun devis trouvÃ©
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -492,8 +492,8 @@ export function QuotesTab() {
                     <TableRow key={quote.id} className="border-white/10 hover:bg-white/5">
                       <TableCell className="py-4 text-base font-medium text-white">{quote.number}</TableCell>
                       <TableCell className="py-4 text-base text-gray-200">{quote.clientName}</TableCell>
-                      <TableCell className="py-4 text-[#00FFC2] text-base font-semibold">
-                        {quote.amount.toLocaleString('fr-FR')} €
+                      <TableCell className="py-4 text-[#CCFF00] text-base font-semibold">
+                        {quote.amount.toLocaleString('fr-FR')} â‚¬
                       </TableCell>
                       <TableCell className="py-4 text-base text-gray-200">
                         {new Date(quote.validUntil).toLocaleDateString('fr-FR')}
@@ -509,7 +509,7 @@ export function QuotesTab() {
                             setShowPreviewDialog(true);
                           }}
                           className="hover:bg-white/10 text-gray-300 hover:text-white h-9 w-9 p-0"
-                          title="Prévisualiser"
+                          title="PrÃ©visualiser"
                         >
                           <Eye className="h-5 w-5" />
                         </Button>
@@ -556,7 +556,7 @@ export function QuotesTab() {
                               variant="ghost"
                               onClick={() => handleUpdateQuoteStatus(quote.id, "accepted")}
                               className="hover:bg-green-500/20 text-green-400 h-9 w-9 p-0"
-                              title="Marquer comme accepté"
+                              title="Marquer comme acceptÃ©"
                             >
                               <CheckCircle className="h-5 w-5" />
                             </Button>
@@ -565,7 +565,7 @@ export function QuotesTab() {
                               variant="ghost"
                               onClick={() => handleUpdateQuoteStatus(quote.id, "declined")}
                               className="hover:bg-red-500/20 text-red-400 h-9 w-9 p-0"
-                              title="Marquer comme refusé"
+                              title="Marquer comme refusÃ©"
                             >
                               <XCircle className="h-5 w-5" />
                             </Button>
@@ -619,9 +619,9 @@ export function QuotesTab() {
       {selectedQuote && (
         <>
           <Dialog open={showPreviewDialog} onOpenChange={setShowPreviewDialog}>
-            <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20 text-white max-w-4xl">
+            <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 text-white max-w-4xl">
               <DialogHeader>
-                <DialogTitle>Aperçu du devis {selectedQuote.number}</DialogTitle>
+                <DialogTitle>AperÃ§u du devis {selectedQuote.number}</DialogTitle>
                 <DialogDescription className="text-white/60">
                   Visualisez le devis avant de l'exporter
                 </DialogDescription>
@@ -650,13 +650,13 @@ export function QuotesTab() {
             onOpenChange={setShowDeleteDialog}
             onConfirm={handleDeleteQuote}
             title="Supprimer le devis"
-            description="Êtes-vous sûr de vouloir supprimer ce devis ? Cette action est irréversible."
-            itemName={`Devis ${selectedQuote.number} - ${selectedQuote.clientName} (${selectedQuote.amount.toLocaleString()}€)`}
+            description="ÃŠtes-vous sÃ»r de vouloir supprimer ce devis ? Cette action est irrÃ©versible."
+            itemName={`Devis ${selectedQuote.number} - ${selectedQuote.clientName} (${selectedQuote.amount.toLocaleString()}â‚¬)`}
             warningMessage={
               selectedQuote.status === "converted"
-                ? "Ce devis a été converti en facture. La facture associée sera également supprimée."
+                ? "Ce devis a Ã©tÃ© converti en facture. La facture associÃ©e sera Ã©galement supprimÃ©e."
                 : selectedQuote.status === "accepted"
-                ? "Ce devis a été accepté mais pas encore converti en facture."
+                ? "Ce devis a Ã©tÃ© acceptÃ© mais pas encore converti en facture."
                 : undefined
             }
           />

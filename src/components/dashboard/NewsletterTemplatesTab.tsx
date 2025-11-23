@@ -72,9 +72,9 @@ const templates: Template[] = [
   {
     id: "project",
     title: "Nouveau Projet",
-    description: "Annoncez un nouveau projet à vos abonnés",
+    description: "Annoncez un nouveau projet Ã  vos abonnÃ©s",
     icon: Briefcase,
-    color: "#00FFC2",
+    color: "#CCFF00",
   },
   {
     id: "blog",
@@ -85,22 +85,22 @@ const templates: Template[] = [
   },
   {
     id: "case-study",
-    title: "Étude de Cas",
-    description: "Présentez une nouvelle étude de cas",
+    title: "Ã‰tude de Cas",
+    description: "PrÃ©sentez une nouvelle Ã©tude de cas",
     icon: FileText,
     color: "#8B5CF6",
   },
   {
     id: "digest",
     title: "Digest Mensuel",
-    description: "Résumé de plusieurs contenus",
+    description: "RÃ©sumÃ© de plusieurs contenus",
     icon: Layers,
     color: "#F59E0B",
   },
   {
     id: "announcement",
     title: "Annonce",
-    description: "Message personnalisé avec un appel à l'action",
+    description: "Message personnalisÃ© avec un appel Ã  l'action",
     icon: Sparkles,
     color: "#EC4899",
   },
@@ -139,9 +139,9 @@ export function NewsletterTemplatesTab() {
       if (projectsData.ok) {
         const data = await projectsData.json();
         setProjects(data.projects || []);
-        console.log("✅ Projets chargés:", data.projects?.length || 0);
+        console.log("âœ… Projets chargÃ©s:", data.projects?.length || 0);
       } else {
-        console.error("❌ Erreur chargement projets:", projectsData.status);
+        console.error("âŒ Erreur chargement projets:", projectsData.status);
       }
 
       // Load blogs using blogService
@@ -149,9 +149,9 @@ export function NewsletterTemplatesTab() {
         const { fetchBlogPosts } = await import("../../utils/blogService");
         const { posts: loadedPosts, mode } = await fetchBlogPosts("fr");
         setBlogs(loadedPosts);
-        console.log(`✅ Blogs chargés (${mode} mode):`, loadedPosts.length);
+        console.log(`âœ… Blogs chargÃ©s (${mode} mode):`, loadedPosts.length);
       } catch (error) {
-        console.error("❌ Erreur chargement blogs:", error);
+        console.error("âŒ Erreur chargement blogs:", error);
         setBlogs([]);
       }
 
@@ -165,9 +165,9 @@ export function NewsletterTemplatesTab() {
       if (caseStudiesData.ok) {
         const data = await caseStudiesData.json();
         setCaseStudies(data.caseStudies || []);
-        console.log("✅ Études de cas chargées:", data.caseStudies?.length || 0);
+        console.log("âœ… Ã‰tudes de cas chargÃ©es:", data.caseStudies?.length || 0);
       } else {
-        console.error("❌ Erreur chargement études de cas:", caseStudiesData.status);
+        console.error("âŒ Erreur chargement Ã©tudes de cas:", caseStudiesData.status);
       }
     } catch (error) {
       console.error("Error loading content:", error);
@@ -219,42 +219,42 @@ export function NewsletterTemplatesTab() {
     if (selectedTemplate === "project") {
       const project = projects.find((p) => p.id === selectedProjects[0]);
       if (project) {
-        subject = `✨ Nouveau projet : ${project.title}`;
+        subject = `âœ¨ Nouveau projet : ${project.title}`;
         htmlContent = `
-          <h2 style="color: #00FFC2; margin-bottom: 20px;">Nouveau projet disponible !</h2>
+          <h2 style="color: #CCFF00; margin-bottom: 20px;">Nouveau projet disponible !</h2>
           
           <div style="background: #F4F4F4; padding: 20px; border-radius: 8px; margin: 20px 0;">
             ${project.image ? `<img src="${project.image}" alt="${project.title}" style="width: 100%; border-radius: 8px; margin-bottom: 15px;" />` : ""}
             <h3 style="margin: 0 0 10px 0; color: #0C0C0C;">${project.title}</h3>
             <p style="color: #666; margin: 0 0 15px 0;">${project.description}</p>
-            ${project.tags ? `<p style="font-size: 14px; color: #00FFC2;">${project.tags.join(" • ")}</p>` : ""}
+            ${project.tags ? `<p style="font-size: 14px; color: #CCFF00;">${project.tags.join(" â€¢ ")}</p>` : ""}
           </div>
           
           <p>Je suis ravi de partager ce nouveau projet avec vous !</p>
           
           <div style="text-align: center; margin: 30px 0;">
-            <a href="${frontendUrl}" style="display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600;">
-              Découvrir le projet
+            <a href="${frontendUrl}" style="display: inline-block; background: #CCFF00; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600;">
+              DÃ©couvrir le projet
             </a>
           </div>
         `;
-        textContent = `Nouveau projet : ${project.title}\n\n${project.description}\n\nDécouvrir : ${frontendUrl}`;
+        textContent = `Nouveau projet : ${project.title}\n\n${project.description}\n\nDÃ©couvrir : ${frontendUrl}`;
       }
     } else if (selectedTemplate === "blog") {
       const blog = blogs.find((b) => b.id === selectedBlogs[0]);
       if (blog) {
-        subject = `📚 Nouvel article : ${blog.title}`;
+        subject = `ðŸ“š Nouvel article : ${blog.title}`;
         htmlContent = `
           <h2 style="color: #3B82F6; margin-bottom: 20px;">Nouvel article de blog</h2>
           
           <div style="background: #F4F4F4; padding: 20px; border-radius: 8px; margin: 20px 0;">
             ${blog.coverImage ? `<img src="${blog.coverImage}" alt="${blog.title}" style="width: 100%; border-radius: 8px; margin-bottom: 15px;" />` : ""}
-            <p style="font-size: 12px; color: #00FFC2; text-transform: uppercase; margin: 0 0 10px 0;">${blog.category}</p>
+            <p style="font-size: 12px; color: #CCFF00; text-transform: uppercase; margin: 0 0 10px 0;">${blog.category}</p>
             <h3 style="margin: 0 0 10px 0; color: #0C0C0C;">${blog.title}</h3>
             <p style="color: #666; margin: 0;">${blog.excerpt}</p>
           </div>
           
-          <p>J'espère que cet article vous sera utile !</p>
+          <p>J'espÃ¨re que cet article vous sera utile !</p>
           
           <div style="text-align: center; margin: 30px 0;">
             <a href="${frontendUrl}/blog/${blog.slug}" style="display: inline-block; background: #3B82F6; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600;">
@@ -267,38 +267,38 @@ export function NewsletterTemplatesTab() {
     } else if (selectedTemplate === "case-study") {
       const caseStudy = caseStudies.find((c) => c.id === selectedCaseStudies[0]);
       if (caseStudy) {
-        subject = `💼 Étude de cas : ${caseStudy.title}`;
+        subject = `ðŸ’¼ Ã‰tude de cas : ${caseStudy.title}`;
         htmlContent = `
-          <h2 style="color: #8B5CF6; margin-bottom: 20px;">Nouvelle étude de cas</h2>
+          <h2 style="color: #8B5CF6; margin-bottom: 20px;">Nouvelle Ã©tude de cas</h2>
           
           <div style="background: #F4F4F4; padding: 20px; border-radius: 8px; margin: 20px 0;">
             ${caseStudy.thumbnail ? `<img src="${caseStudy.thumbnail}" alt="${caseStudy.title}" style="width: 100%; border-radius: 8px; margin-bottom: 15px;" />` : ""}
             <p style="font-size: 12px; color: #8B5CF6; text-transform: uppercase; margin: 0 0 5px 0;">${caseStudy.category}</p>
             <h3 style="margin: 0 0 5px 0; color: #0C0C0C;">${caseStudy.title}</h3>
             <p style="color: #666; margin: 0 0 10px 0; font-style: italic;">${caseStudy.subtitle}</p>
-            <p style="font-size: 14px; color: #00FFC2; margin: 0;">Client : ${caseStudy.client}</p>
+            <p style="font-size: 14px; color: #CCFF00; margin: 0;">Client : ${caseStudy.client}</p>
           </div>
           
-          <p>Découvrez comment j'ai aidé ${caseStudy.client} à atteindre ses objectifs.</p>
+          <p>DÃ©couvrez comment j'ai aidÃ© ${caseStudy.client} Ã  atteindre ses objectifs.</p>
           
           <div style="text-align: center; margin: 30px 0;">
             <a href="${frontendUrl}/case-studies/${caseStudy.slug}" style="display: inline-block; background: #8B5CF6; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600;">
-              Voir l'étude de cas
+              Voir l'Ã©tude de cas
             </a>
           </div>
         `;
-        textContent = `Étude de cas : ${caseStudy.title}\n\n${caseStudy.subtitle}\n\nClient : ${caseStudy.client}\n\nVoir : ${frontendUrl}/case-studies/${caseStudy.slug}`;
+        textContent = `Ã‰tude de cas : ${caseStudy.title}\n\n${caseStudy.subtitle}\n\nClient : ${caseStudy.client}\n\nVoir : ${frontendUrl}/case-studies/${caseStudy.slug}`;
       }
     } else if (selectedTemplate === "digest") {
-      subject = customTitle || "📬 Votre digest mensuel";
+      subject = customTitle || "ðŸ“¬ Votre digest mensuel";
       
       let digestHTML = "";
       let digestText = customMessage ? `${customMessage}\n\n` : "";
 
       // Add selected projects
       if (selectedProjects.length > 0) {
-        digestHTML += `<h3 style="color: #00FFC2; margin: 30px 0 15px 0;">🚀 Nouveaux Projets</h3>`;
-        digestText += `🚀 Nouveaux Projets\n`;
+        digestHTML += `<h3 style="color: #CCFF00; margin: 30px 0 15px 0;">ðŸš€ Nouveaux Projets</h3>`;
+        digestText += `ðŸš€ Nouveaux Projets\n`;
         
         selectedProjects.forEach((id) => {
           const project = projects.find((p) => p.id === id);
@@ -316,8 +316,8 @@ export function NewsletterTemplatesTab() {
 
       // Add selected blogs
       if (selectedBlogs.length > 0) {
-        digestHTML += `<h3 style="color: #3B82F6; margin: 30px 0 15px 0;">📚 Nouveaux Articles</h3>`;
-        digestText += `📚 Nouveaux Articles\n`;
+        digestHTML += `<h3 style="color: #3B82F6; margin: 30px 0 15px 0;">ðŸ“š Nouveaux Articles</h3>`;
+        digestText += `ðŸ“š Nouveaux Articles\n`;
         
         selectedBlogs.forEach((id) => {
           const blog = blogs.find((b) => b.id === id);
@@ -327,7 +327,7 @@ export function NewsletterTemplatesTab() {
                 <span style="font-size: 12px; color: #3B82F6; text-transform: uppercase;">${blog.category}</span>
                 <h4 style="margin: 5px 0 8px 0; color: #0C0C0C;">${blog.title}</h4>
                 <p style="margin: 0; color: #666; font-size: 14px;">${blog.excerpt}</p>
-                <a href="${frontendUrl}/blog/${blog.slug}" style="color: #3B82F6; text-decoration: none; font-size: 14px; margin-top: 8px; display: inline-block;">Lire →</a>
+                <a href="${frontendUrl}/blog/${blog.slug}" style="color: #3B82F6; text-decoration: none; font-size: 14px; margin-top: 8px; display: inline-block;">Lire â†’</a>
               </div>
             `;
             digestText += `- ${blog.title}\n  ${blog.excerpt}\n  Lire : ${frontendUrl}/blog/${blog.slug}\n\n`;
@@ -337,8 +337,8 @@ export function NewsletterTemplatesTab() {
 
       // Add selected case studies
       if (selectedCaseStudies.length > 0) {
-        digestHTML += `<h3 style="color: #8B5CF6; margin: 30px 0 15px 0;">💼 Études de Cas</h3>`;
-        digestText += `💼 Études de Cas\n`;
+        digestHTML += `<h3 style="color: #8B5CF6; margin: 30px 0 15px 0;">ðŸ’¼ Ã‰tudes de Cas</h3>`;
+        digestText += `ðŸ’¼ Ã‰tudes de Cas\n`;
         
         selectedCaseStudies.forEach((id) => {
           const caseStudy = caseStudies.find((c) => c.id === id);
@@ -348,7 +348,7 @@ export function NewsletterTemplatesTab() {
                 <span style="font-size: 12px; color: #8B5CF6; text-transform: uppercase;">${caseStudy.category}</span>
                 <h4 style="margin: 5px 0 5px 0; color: #0C0C0C;">${caseStudy.title}</h4>
                 <p style="margin: 0 0 8px 0; color: #666; font-size: 14px; font-style: italic;">${caseStudy.subtitle}</p>
-                <a href="${frontendUrl}/case-studies/${caseStudy.slug}" style="color: #8B5CF6; text-decoration: none; font-size: 14px; display: inline-block;">Voir l'étude →</a>
+                <a href="${frontendUrl}/case-studies/${caseStudy.slug}" style="color: #8B5CF6; text-decoration: none; font-size: 14px; display: inline-block;">Voir l'Ã©tude â†’</a>
               </div>
             `;
             digestText += `- ${caseStudy.title}\n  ${caseStudy.subtitle}\n  Voir : ${frontendUrl}/case-studies/${caseStudy.slug}\n\n`;
@@ -360,14 +360,14 @@ export function NewsletterTemplatesTab() {
         ${customMessage ? `<p style="font-size: 16px; margin-bottom: 20px;">${customMessage.replace(/\n/g, "<br>")}</p>` : ""}
         ${digestHTML}
         <div style="text-align: center; margin: 40px 0 20px 0;">
-          <a href="${frontendUrl}" style="display: inline-block; background: #00FFC2; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600;">
+          <a href="${frontendUrl}" style="display: inline-block; background: #CCFF00; color: #0C0C0C; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600;">
             Voir tout sur le site
           </a>
         </div>
       `;
       textContent = digestText + `\nVoir tout : ${frontendUrl}`;
     } else if (selectedTemplate === "announcement") {
-      subject = customTitle || "📢 Annonce importante";
+      subject = customTitle || "ðŸ“¢ Annonce importante";
       htmlContent = `
         <h2 style="color: #EC4899; margin-bottom: 20px;">${customTitle || "Annonce"}</h2>
         <p style="font-size: 16px; line-height: 1.6;">${customMessage.replace(/\n/g, "<br>")}</p>
@@ -409,7 +409,7 @@ export function NewsletterTemplatesTab() {
             }
             .header {
               background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
-              color: #00FFC2;
+              color: #CCFF00;
               padding: 40px 20px;
               text-align: center;
               border-radius: 8px 8px 0 0;
@@ -425,7 +425,7 @@ export function NewsletterTemplatesTab() {
             }
             .footer {
               background: #0C0C0C;
-              color: #00FFC2;
+              color: #CCFF00;
               padding: 20px;
               text-align: center;
               font-size: 12px;
@@ -440,7 +440,7 @@ export function NewsletterTemplatesTab() {
               color: #999;
             }
             .unsubscribe a {
-              color: #00FFC2;
+              color: #CCFF00;
               text-decoration: none;
             }
           </style>
@@ -448,18 +448,18 @@ export function NewsletterTemplatesTab() {
         <body>
           <div class="container">
             <div class="header">
-              <h1>✨ ${subject}</h1>
+              <h1>âœ¨ ${subject}</h1>
             </div>
             <div class="content">
               ${html}
               
               <div class="unsubscribe">
-                <p>Vous recevez cet email car vous êtes inscrit à notre newsletter.</p>
-                <p><a href="{{unsubscribe_url}}">Se désabonner</a></p>
+                <p>Vous recevez cet email car vous Ãªtes inscrit Ã  notre newsletter.</p>
+                <p><a href="{{unsubscribe_url}}">Se dÃ©sabonner</a></p>
               </div>
             </div>
             <div class="footer">
-              <p style="margin: 0;">© 2025 Portfolio Freelance - Tous droits réservés</p>
+              <p style="margin: 0;">Â© 2025 Portfolio Freelance - Tous droits rÃ©servÃ©s</p>
             </div>
           </div>
         </body>
@@ -468,18 +468,18 @@ export function NewsletterTemplatesTab() {
   };
 
   const handleUseTemplate = () => {
-    console.log("🚀 Bouton 'Utiliser ce template' cliqué");
+    console.log("ðŸš€ Bouton 'Utiliser ce template' cliquÃ©");
     
     const { subject, html, text } = generateEmailContent();
     
-    console.log("📧 Contenu généré:");
+    console.log("ðŸ“§ Contenu gÃ©nÃ©rÃ©:");
     console.log("  Subject:", subject);
     console.log("  HTML length:", html?.length || 0);
     console.log("  Text length:", text?.length || 0);
     
     if (!subject || !html) {
-      console.error("❌ Contenu invalide - subject ou html vide");
-      toast.error("Veuillez sélectionner au moins un élément");
+      console.error("âŒ Contenu invalide - subject ou html vide");
+      toast.error("Veuillez sÃ©lectionner au moins un Ã©lÃ©ment");
       return;
     }
 
@@ -488,14 +488,14 @@ export function NewsletterTemplatesTab() {
     localStorage.setItem("newsletter_draft_html", html);
     localStorage.setItem("newsletter_draft_text", text);
     
-    console.log("✅ Données sauvegardées dans localStorage");
+    console.log("âœ… DonnÃ©es sauvegardÃ©es dans localStorage");
     console.log("  Keys:", Object.keys(localStorage).filter(k => k.startsWith("newsletter_draft")));
     
-    toast.success("Template chargé ! Allez dans l'onglet 'Envoyer une campagne'");
+    toast.success("Template chargÃ© ! Allez dans l'onglet 'Envoyer une campagne'");
     
     // Trigger custom event to notify campaign tab
     window.dispatchEvent(new CustomEvent("newsletter-template-selected"));
-    console.log("📢 Événement 'newsletter-template-selected' déclenché");
+    console.log("ðŸ“¢ Ã‰vÃ©nement 'newsletter-template-selected' dÃ©clenchÃ©");
   };
 
   const canGenerate = () => {
@@ -515,7 +515,7 @@ export function NewsletterTemplatesTab() {
       <div>
         <h2 className="text-white mb-2">Templates d'Emails</h2>
         <p className="text-white/60">
-          Créez rapidement des emails avec vos contenus
+          CrÃ©ez rapidement des emails avec vos contenus
         </p>
       </div>
 
@@ -531,7 +531,7 @@ export function NewsletterTemplatesTab() {
                 whileTap={{ scale: 0.98 }}
               >
                 <Card
-                  className="bg-white/5 border-white/10 p-6 cursor-pointer hover:border-[#00FFC2]/50 transition-all"
+                  className="bg-white/5 border-white/10 p-6 cursor-pointer hover:border-[#CCFF00]/50 transition-all"
                   onClick={() => handleTemplateSelect(template.id)}
                 >
                   <div
@@ -556,7 +556,7 @@ export function NewsletterTemplatesTab() {
             onClick={() => setSelectedTemplate(null)}
             className="border-white/10 text-white/60 hover:text-white"
           >
-            ← Retour aux templates
+            â† Retour aux templates
           </Button>
 
           {/* Template Title */}
@@ -591,7 +591,7 @@ export function NewsletterTemplatesTab() {
                   Titre de l'email *
                 </label>
                 <Input
-                  placeholder="Ex: 📬 Votre digest mensuel"
+                  placeholder="Ex: ðŸ“¬ Votre digest mensuel"
                   value={customTitle}
                   onChange={(e) => setCustomTitle(e.target.value)}
                   className="bg-white/5 border-white/10 text-white"
@@ -633,7 +633,7 @@ export function NewsletterTemplatesTab() {
               {(selectedTemplate === "project" || selectedTemplate === "digest") && (
                 <Card className="bg-white/5 border-white/10 p-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <Briefcase className="h-5 w-5 text-[#00FFC2]" />
+                    <Briefcase className="h-5 w-5 text-[#CCFF00]" />
                     <h3 className="text-white">Projets</h3>
                     <Badge variant="outline" className="ml-auto">
                       {selectedProjects.length}
@@ -669,7 +669,7 @@ export function NewsletterTemplatesTab() {
                             <p className="text-xs text-white/40 truncate">{project.description}</p>
                           </div>
                           {selectedTemplate === "project" && selectedProjects.includes(project.id) && (
-                            <CheckCircle2 className="h-4 w-4 text-[#00FFC2] flex-shrink-0" />
+                            <CheckCircle2 className="h-4 w-4 text-[#CCFF00] flex-shrink-0" />
                           )}
                         </div>
                       ))
@@ -732,7 +732,7 @@ export function NewsletterTemplatesTab() {
                 <Card className="bg-white/5 border-white/10 p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <FileText className="h-5 w-5 text-[#8B5CF6]" />
-                    <h3 className="text-white">Études de Cas</h3>
+                    <h3 className="text-white">Ã‰tudes de Cas</h3>
                     <Badge variant="outline" className="ml-auto">
                       {selectedCaseStudies.length}
                     </Badge>
@@ -741,7 +741,7 @@ export function NewsletterTemplatesTab() {
                     {isLoading ? (
                       <p className="text-sm text-white/40">Chargement...</p>
                     ) : caseStudies.length === 0 ? (
-                      <p className="text-sm text-white/40">Aucune étude</p>
+                      <p className="text-sm text-white/40">Aucune Ã©tude</p>
                     ) : (
                       caseStudies.map((caseStudy) => (
                         <div
@@ -784,14 +784,14 @@ export function NewsletterTemplatesTab() {
               variant="outline"
               onClick={() => setShowPreview(true)}
               disabled={!canGenerate()}
-              className="border-[#00FFC2]/30 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+              className="border-[#CCFF00]/30 text-[#CCFF00] hover:bg-[#CCFF00]/10"
             >
               <Eye className="h-4 w-4 mr-2" />
-              Prévisualiser
+              PrÃ©visualiser
             </Button>
             <Button
               onClick={() => {
-                console.log("🔵 BOUTON CLIQUÉ !");
+                console.log("ðŸ”µ BOUTON CLIQUÃ‰ !");
                 console.log("  selectedTemplate:", selectedTemplate);
                 console.log("  selectedProjects:", selectedProjects);
                 console.log("  selectedBlogs:", selectedBlogs);
@@ -801,7 +801,7 @@ export function NewsletterTemplatesTab() {
                 setShowSuccessDialog(true);
               }}
               disabled={!canGenerate()}
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+              className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
             >
               <Send className="h-4 w-4 mr-2" />
               Utiliser ce template
@@ -814,9 +814,9 @@ export function NewsletterTemplatesTab() {
       <Dialog open={showPreview} onOpenChange={setShowPreview}>
         <DialogContent className="max-w-3xl bg-[#0C0C0C] border-white/10 max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-white">Aperçu de l'email</DialogTitle>
+            <DialogTitle className="text-white">AperÃ§u de l'email</DialogTitle>
             <DialogDescription className="text-white/60">
-              Voici comment votre email apparaîtra aux abonnés
+              Voici comment votre email apparaÃ®tra aux abonnÃ©s
             </DialogDescription>
           </DialogHeader>
           <div className="mt-4">
@@ -849,15 +849,15 @@ export function NewsletterTemplatesTab() {
         <DialogContent className="bg-[#0C0C0C] border-white/10">
           <DialogHeader>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 rounded-full bg-[#00FFC2]/20 flex items-center justify-center">
-                <CheckCircle2 className="h-6 w-6 text-[#00FFC2]" />
+              <div className="w-12 h-12 rounded-full bg-[#CCFF00]/20 flex items-center justify-center">
+                <CheckCircle2 className="h-6 w-6 text-[#CCFF00]" />
               </div>
               <DialogTitle className="text-white text-xl">
-                Template sauvegardé !
+                Template sauvegardÃ© !
               </DialogTitle>
             </div>
             <DialogDescription className="text-white/60 text-base">
-              Votre template est prêt à être envoyé
+              Votre template est prÃªt Ã  Ãªtre envoyÃ©
             </DialogDescription>
           </DialogHeader>
           
@@ -865,25 +865,25 @@ export function NewsletterTemplatesTab() {
             {/* Instructions */}
             <div className="bg-white/5 border border-white/10 rounded-lg p-4">
               <h4 className="text-white mb-3 flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-[#00FFC2]" />
-                Prochaines étapes
+                <Sparkles className="h-5 w-5 text-[#CCFF00]" />
+                Prochaines Ã©tapes
               </h4>
               <ol className="space-y-2 text-sm text-white/70">
                 <li className="flex items-start gap-2">
-                  <span className="text-[#00FFC2] font-semibold">1.</span>
+                  <span className="text-[#CCFF00] font-semibold">1.</span>
                   <span>Rendez-vous dans l'onglet <strong className="text-white">"Envoyer une campagne"</strong></span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#00FFC2] font-semibold">2.</span>
-                  <span>Personnalisez le contenu si nécessaire</span>
+                  <span className="text-[#CCFF00] font-semibold">2.</span>
+                  <span>Personnalisez le contenu si nÃ©cessaire</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#00FFC2] font-semibold">3.</span>
-                  <span>Prévisualisez l'email</span>
+                  <span className="text-[#CCFF00] font-semibold">3.</span>
+                  <span>PrÃ©visualisez l'email</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#00FFC2] font-semibold">4.</span>
-                  <span>Envoyez à vos abonnés !</span>
+                  <span className="text-[#CCFF00] font-semibold">4.</span>
+                  <span>Envoyez Ã  vos abonnÃ©s !</span>
                 </li>
               </ol>
             </div>
@@ -896,10 +896,10 @@ export function NewsletterTemplatesTab() {
                   // Trigger navigation to campaign tab
                   window.dispatchEvent(new CustomEvent("newsletter-switch-to-campaign"));
                 }}
-                className="flex-1 bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+                className="flex-1 bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
               >
                 <Send className="h-4 w-4 mr-2" />
-                Aller à l'envoi
+                Aller Ã  l'envoi
               </Button>
               <Button
                 onClick={() => setShowSuccessDialog(false)}

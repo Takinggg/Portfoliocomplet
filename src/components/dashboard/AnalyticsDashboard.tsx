@@ -30,8 +30,8 @@ interface AnalyticsDashboardProps {
 }
 
 export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings }: AnalyticsDashboardProps) {
-  // Debug: afficher les données reçues
-  console.log('📊 Analytics Data:', {
+  // Debug: afficher les donnÃ©es reÃ§ues
+  console.log('ðŸ“Š Analytics Data:', {
     leadsCount: leads.length,
     leads: leads,
     clientsCount: clients.length,
@@ -82,9 +82,9 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
     
     return [
       { stage: 'Leads', count: totalLeads, color: '#8b5cf6' },
-      { stage: 'Clients', count: convertedClients, color: '#00FFC2' },
-      { stage: 'Devis Acceptés', count: acceptedQuotes, color: '#3b82f6' },
-      { stage: 'Factures Payées', count: paidInvoices, color: '#10b981' }
+      { stage: 'Clients', count: convertedClients, color: '#CCFF00' },
+      { stage: 'Devis AcceptÃ©s', count: acceptedQuotes, color: '#3b82f6' },
+      { stage: 'Factures PayÃ©es', count: paidInvoices, color: '#10b981' }
     ];
   }, [leads, clients, quotes, invoices, bookings]);
 
@@ -114,7 +114,7 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
     return clientsWithRevenue;
   }, [clients, invoices]);
 
-  // Prévisions de trésorerie
+  // PrÃ©visions de trÃ©sorerie
   const cashFlowForecast = useMemo(() => {
     const paidTotal = invoices
       .filter(inv => inv.status === 'paid')
@@ -129,17 +129,17 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
       .reduce((sum, q) => sum + (parseFloat(q.total || q.amount) || 0), 0);
     
     return [
-      { category: 'Encaissé', amount: paidTotal, color: '#10b981' },
-      { category: 'À encaisser', amount: pendingTotal, color: '#f59e0b' },
+      { category: 'EncaissÃ©', amount: paidTotal, color: '#10b981' },
+      { category: 'Ã€ encaisser', amount: pendingTotal, color: '#f59e0b' },
       { category: 'Potentiel (devis)', amount: quotesTotal, color: '#8b5cf6' }
     ];
   }, [invoices, quotes]);
 
-  // Stats générales
+  // Stats gÃ©nÃ©rales
   const stats = useMemo(() => {
     const paidInvoices = invoices.filter(inv => inv.status === 'paid');
-    console.log('💰 Paid Invoices:', paidInvoices);
-    console.log('💰 Paid Invoices Details:', paidInvoices.map(inv => ({
+    console.log('ðŸ’° Paid Invoices:', paidInvoices);
+    console.log('ðŸ’° Paid Invoices Details:', paidInvoices.map(inv => ({
       id: inv.id,
       total: inv.total,
       amount: inv.amount,
@@ -151,7 +151,7 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
     const totalRevenue = paidInvoices
       .reduce((sum, inv) => sum + (parseFloat(inv.total || inv.amount) || 0), 0);
     
-    console.log('💰 Total Revenue:', totalRevenue);
+    console.log('ðŸ’° Total Revenue:', totalRevenue);
     
     const lastMonthRevenue = invoices
       .filter(inv => {
@@ -206,12 +206,12 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
     
     return [
       { name: 'En attente', value: pending, color: '#f59e0b' },
-      { name: 'Acceptés', value: accepted, color: '#10b981' },
-      { name: 'Refusés', value: rejected, color: '#ef4444' }
+      { name: 'AcceptÃ©s', value: accepted, color: '#10b981' },
+      { name: 'RefusÃ©s', value: rejected, color: '#ef4444' }
     ];
   }, [quotes]);
 
-  const COLORS = ['#8b5cf6', '#00FFC2', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+  const COLORS = ['#8b5cf6', '#CCFF00', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
 
   return (
     <div className="space-y-6 p-6">
@@ -222,7 +222,7 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
             <TrendingUp className="w-8 h-8 text-cyan-400" />
             Analytics & Reporting
           </h2>
-          <p className="text-white/60 mt-1">Vue d'ensemble de votre activité</p>
+          <p className="text-white/60 mt-1">Vue d'ensemble de votre activitÃ©</p>
         </div>
       </div>
 
@@ -241,11 +241,11 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
             </Badge>
           </div>
           <div className="text-3xl font-bold text-white mb-1">
-            {stats.totalRevenue.toLocaleString('fr-FR')}€
+            {stats.totalRevenue.toLocaleString('fr-FR')}â‚¬
           </div>
           <div className="text-sm text-white/60">CA Total</div>
           <div className="text-xs text-green-400 mt-2">
-            {stats.currentMonthRevenue.toLocaleString('fr-FR')}€ ce mois
+            {stats.currentMonthRevenue.toLocaleString('fr-FR')}â‚¬ ce mois
           </div>
         </motion.div>
 
@@ -277,11 +277,11 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
             <DollarSign className="w-8 h-8 text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-white mb-1">
-            {Math.round(stats.avgInvoice).toLocaleString('fr-FR')}€
+            {Math.round(stats.avgInvoice).toLocaleString('fr-FR')}â‚¬
           </div>
           <div className="text-sm text-white/60">Panier Moyen</div>
           <div className="text-xs text-purple-400 mt-2">
-            Par facture payée
+            Par facture payÃ©e
           </div>
         </motion.div>
 
@@ -297,7 +297,7 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
           <div className="text-3xl font-bold text-white mb-1">
             {bookings.filter(b => b.status === 'confirmed').length}
           </div>
-          <div className="text-sm text-white/60">RDV Confirmés</div>
+          <div className="text-sm text-white/60">RDV ConfirmÃ©s</div>
           <div className="text-xs text-blue-400 mt-2">
             {bookings.filter(b => b.status === 'pending').length} en attente
           </div>
@@ -315,14 +315,14 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
         >
           <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-green-400" />
-            Évolution du CA (6 derniers mois)
+            Ã‰volution du CA (6 derniers mois)
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={revenueByMonth}>
               <defs>
                 <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#00FFC2" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#00FFC2" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#CCFF00" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#CCFF00" stopOpacity={0}/>
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
@@ -336,13 +336,13 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
                   color: '#fff'
                 }}
                 labelStyle={{ color: '#fff' }}
-                itemStyle={{ color: '#00FFC2' }}
-                formatter={(value: number) => `${value.toLocaleString('fr-FR')}€`}
+                itemStyle={{ color: '#CCFF00' }}
+                formatter={(value: number) => `${value.toLocaleString('fr-FR')}â‚¬`}
               />
               <Area 
                 type="monotone" 
                 dataKey="revenue" 
-                stroke="#00FFC2" 
+                stroke="#CCFF00" 
                 strokeWidth={2}
                 fillOpacity={1} 
                 fill="url(#colorRevenue)" 
@@ -375,7 +375,7 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
                   color: '#fff'
                 }}
                 labelStyle={{ color: '#fff' }}
-                itemStyle={{ color: '#00FFC2' }}
+                itemStyle={{ color: '#CCFF00' }}
               />
               <Bar dataKey="count" radius={[0, 8, 8, 0]}>
                 {conversionFunnel.map((entry, index) => (
@@ -422,7 +422,7 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
                 </div>
                 <div className="text-right">
                   <div className="font-bold text-green-400">
-                    {client.revenue.toLocaleString('fr-FR')}€
+                    {client.revenue.toLocaleString('fr-FR')}â‚¬
                   </div>
                 </div>
               </div>
@@ -435,7 +435,7 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
           </div>
         </motion.div>
 
-        {/* Prévisions Trésorerie */}
+        {/* PrÃ©visions TrÃ©sorerie */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -444,7 +444,7 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
         >
           <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-green-400" />
-            Prévisions de Trésorerie
+            PrÃ©visions de TrÃ©sorerie
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -471,8 +471,8 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
                   color: '#fff'
                 }}
                 labelStyle={{ color: '#fff' }}
-                itemStyle={{ color: '#00FFC2' }}
-                formatter={(value: number) => `${value.toLocaleString('fr-FR')}€`}
+                itemStyle={{ color: '#CCFF00' }}
+                formatter={(value: number) => `${value.toLocaleString('fr-FR')}â‚¬`}
               />
             </PieChart>
           </ResponsiveContainer>
@@ -483,7 +483,7 @@ export function AnalyticsDashboard({ leads, clients, quotes, invoices, bookings 
                   <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
                   <span className="text-white/80">{item.category}</span>
                 </div>
-                <span className="font-bold text-white">{item.amount.toLocaleString('fr-FR')}€</span>
+                <span className="font-bold text-white">{item.amount.toLocaleString('fr-FR')}â‚¬</span>
               </div>
             ))}
           </div>

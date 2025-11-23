@@ -25,7 +25,7 @@ export function BlogPreviewSection({ onNavigate }: BlogPreviewSectionProps) {
       const { fetchBlogPosts } = await import("../../utils/blogService");
       const { posts: loadedPosts, mode } = await fetchBlogPosts(language);
       
-      console.log(`✅ Blog preview loaded in ${mode} mode:`, loadedPosts.length);
+      console.log(`âœ… Blog preview loaded in ${mode} mode:`, loadedPosts.length);
       
       // Get latest 3 published posts
       const publishedPosts = loadedPosts
@@ -48,9 +48,9 @@ export function BlogPreviewSection({ onNavigate }: BlogPreviewSectionProps) {
   return (
     <section className="py-24 bg-[#0C0C0C] relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#00FFC2]/5 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#CCFF00]/5 to-transparent" />
       <motion.div
-        className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00FFC2]/10 rounded-full blur-3xl"
+        className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#CCFF00]/10 rounded-full blur-3xl"
         animate={{
           scale: [1, 1.2, 1],
           opacity: [0.3, 0.5, 0.3],
@@ -70,9 +70,9 @@ export function BlogPreviewSection({ onNavigate }: BlogPreviewSectionProps) {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 bg-[#00FFC2]/10 border border-[#00FFC2]/20 rounded-full px-4 py-2 mb-6">
-            <Sparkles className="h-4 w-4 text-[#00FFC2]" />
-            <span className="text-sm text-[#00FFC2]">{t('blog.hero.title')}</span>
+          <div className="inline-flex items-center gap-2 bg-[#CCFF00]/10 border border-[#CCFF00]/20 rounded-full px-4 py-2 mb-6">
+            <Sparkles className="h-4 w-4 text-[#CCFF00]" />
+            <span className="text-sm text-[#CCFF00]">{t('blog.hero.title')}</span>
           </div>
           <h2 className="text-4xl md:text-5xl text-white mb-4">
             {t('blog.latest.title')}
@@ -107,7 +107,7 @@ export function BlogPreviewSection({ onNavigate }: BlogPreviewSectionProps) {
           <Button
             onClick={() => onNavigate("blog")}
             size="lg"
-            className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90 group"
+            className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90 group"
           >
             <BookOpen className="h-5 w-5 mr-2" />
             {t('blog.latest.viewAll')}

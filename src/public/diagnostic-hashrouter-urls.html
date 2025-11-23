@@ -27,7 +27,7 @@
     h1 {
       font-size: 2.5rem;
       margin-bottom: 10px;
-      background: linear-gradient(135deg, #00FFC2, #00CC99);
+      background: linear-gradient(135deg, #CCFF00, #00CC99);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -47,7 +47,7 @@
     }
     
     .section h2 {
-      color: #00FFC2;
+      color: #CCFF00;
       margin-bottom: 20px;
       font-size: 1.5rem;
     }
@@ -67,10 +67,10 @@
     .value {
       color: #F4F4F4;
       font-family: monospace;
-      background: rgba(0, 255, 194, 0.05);
+      background: rgba(204, 255, 0, 0.05);
       padding: 8px 12px;
       border-radius: 6px;
-      border-left: 3px solid #00FFC2;
+      border-left: 3px solid #CCFF00;
       word-break: break-all;
     }
     
@@ -83,9 +83,9 @@
     }
     
     .status.success {
-      background: rgba(0, 255, 194, 0.15);
-      color: #00FFC2;
-      border: 1px solid rgba(0, 255, 194, 0.3);
+      background: rgba(204, 255, 0, 0.15);
+      color: #CCFF00;
+      border: 1px solid rgba(204, 255, 0, 0.3);
     }
     
     .status.error {
@@ -129,9 +129,9 @@
     }
     
     .test-result.pass {
-      background: rgba(0, 255, 194, 0.1);
-      color: #00FFC2;
-      border-left: 3px solid #00FFC2;
+      background: rgba(204, 255, 0, 0.1);
+      color: #CCFF00;
+      border-left: 3px solid #CCFF00;
     }
     
     .test-result.fail {
@@ -141,7 +141,7 @@
     }
     
     button {
-      background: #00FFC2;
+      background: #CCFF00;
       color: #0C0C0C;
       border: none;
       padding: 12px 24px;
@@ -168,7 +168,7 @@
     }
     
     .code-block code {
-      color: #00FFC2;
+      color: #CCFF00;
       font-family: monospace;
       font-size: 0.9rem;
     }
@@ -180,14 +180,14 @@
 </head>
 <body>
   <div class="container">
-    <h1>🔍 Diagnostic HashRouter URLs</h1>
-    <p class="subtitle">Vérification de la configuration des URLs avec HashRouter</p>
+    <h1>ðŸ” Diagnostic HashRouter URLs</h1>
+    <p class="subtitle">VÃ©rification de la configuration des URLs avec HashRouter</p>
     
-    <!-- État actuel -->
+    <!-- Ã‰tat actuel -->
     <div class="section">
-      <h2>📍 État actuel de l'URL</h2>
+      <h2>ðŸ“ Ã‰tat actuel de l'URL</h2>
       <div class="info-grid">
-        <div class="label">URL complète :</div>
+        <div class="label">URL complÃ¨te :</div>
         <div class="value" id="fullUrl">-</div>
         
         <div class="label">Hash :</div>
@@ -204,29 +204,29 @@
       </div>
       
       <div class="actions">
-        <button onclick="refreshInfo()">🔄 Rafraîchir</button>
-        <button onclick="copyToClipboard()">📋 Copier diagnostic</button>
+        <button onclick="refreshInfo()">ðŸ”„ RafraÃ®chir</button>
+        <button onclick="copyToClipboard()">ðŸ“‹ Copier diagnostic</button>
       </div>
     </div>
     
     <!-- Tests automatiques -->
     <div class="section">
-      <h2>🧪 Tests automatiques</h2>
+      <h2>ðŸ§ª Tests automatiques</h2>
       <div id="testsContainer"></div>
     </div>
     
     <!-- Actions de test -->
     <div class="section">
-      <h2>🎯 Actions de test</h2>
+      <h2>ðŸŽ¯ Actions de test</h2>
       <div class="test-item">
         <div class="test-title">Test 1 : Changement vers FR</div>
-        <div class="test-description">Redirige vers /#/fr et vérifie que l'URL est correcte</div>
+        <div class="test-description">Redirige vers /#/fr et vÃ©rifie que l'URL est correcte</div>
         <button onclick="testLanguageChange('fr')">Tester FR</button>
       </div>
       
       <div class="test-item">
         <div class="test-title">Test 2 : Changement vers EN</div>
-        <div class="test-description">Redirige vers /#/en et vérifie que l'URL est correcte</div>
+        <div class="test-description">Redirige vers /#/en et vÃ©rifie que l'URL est correcte</div>
         <button onclick="testLanguageChange('en')">Tester EN</button>
       </div>
       
@@ -245,9 +245,9 @@
     
     <!-- Guide rapide -->
     <div class="section">
-      <h2>📖 Guide rapide</h2>
+      <h2>ðŸ“– Guide rapide</h2>
       <p style="color: #999; margin-bottom: 15px;">
-        Pour un système HashRouter correct, l'URL doit TOUJOURS avoir ce format :
+        Pour un systÃ¨me HashRouter correct, l'URL doit TOUJOURS avoir ce format :
       </p>
       <div class="code-block">
         <code>https://www.maxence.design/#/fr</code>
@@ -256,10 +256,10 @@
         <code>https://www.maxence.design/#/en/projects</code>
       </div>
       <p style="color: #999; margin-top: 15px;">
-        <strong>❌ Incorrect :</strong> <code style="color: #ff4444;">https://www.maxence.design/fr</code> (pas de #)
+        <strong>âŒ Incorrect :</strong> <code style="color: #ff4444;">https://www.maxence.design/fr</code> (pas de #)
       </p>
       <p style="color: #999; margin-top: 5px;">
-        <strong>✅ Correct :</strong> <code style="color: #00FFC2;">https://www.maxence.design/#/fr</code>
+        <strong>âœ… Correct :</strong> <code style="color: #CCFF00;">https://www.maxence.design/#/fr</code>
       </p>
     </div>
   </div>
@@ -272,19 +272,19 @@
       document.getElementById('pathname').textContent = window.location.pathname;
       document.getElementById('origin').textContent = window.location.origin;
       
-      // Vérifier le statut de l'URL
+      // VÃ©rifier le statut de l'URL
       const hash = window.location.hash;
       const pathname = window.location.pathname;
       const statusEl = document.getElementById('urlStatus');
       
       if (hash && hash.match(/#\/(fr|en)/)) {
-        statusEl.innerHTML = '<span class="status success">✅ URL Correcte</span>';
+        statusEl.innerHTML = '<span class="status success">âœ… URL Correcte</span>';
       } else if (pathname.match(/^\/(fr|en)/)) {
-        statusEl.innerHTML = '<span class="status error">❌ URL sans hash (sera corrigée)</span>';
+        statusEl.innerHTML = '<span class="status error">âŒ URL sans hash (sera corrigÃ©e)</span>';
       } else if (!hash || hash === '#/' || hash === '#') {
-        statusEl.innerHTML = '<span class="status warning">⚠️ Pas de langue (redirection en cours)</span>';
+        statusEl.innerHTML = '<span class="status warning">âš ï¸ Pas de langue (redirection en cours)</span>';
       } else {
-        statusEl.innerHTML = '<span class="status error">❌ Format inconnu</span>';
+        statusEl.innerHTML = '<span class="status error">âŒ Format inconnu</span>';
       }
       
       runAutomaticTests();
@@ -296,17 +296,17 @@
         {
           name: 'Hash existe',
           test: () => window.location.hash !== '',
-          description: 'Vérifie que l\'URL contient un hash (#)'
+          description: 'VÃ©rifie que l\'URL contient un hash (#)'
         },
         {
           name: 'Hash contient une langue',
           test: () => window.location.hash.match(/#\/(fr|en)/),
-          description: 'Vérifie que le hash contient /fr ou /en'
+          description: 'VÃ©rifie que le hash contient /fr ou /en'
         },
         {
           name: 'Pathname est racine',
           test: () => window.location.pathname === '/',
-          description: 'Vérifie que le pathname est / (pas /fr ou /en)'
+          description: 'VÃ©rifie que le pathname est / (pas /fr ou /en)'
         },
         {
           name: 'Format URL HashRouter',
@@ -315,7 +315,7 @@
             const pathname = window.location.pathname;
             return pathname === '/' && hash.match(/#\/(fr|en)/);
           },
-          description: 'Vérifie que l\'URL suit le format HashRouter complet'
+          description: 'VÃ©rifie que l\'URL suit le format HashRouter complet'
         }
       ];
       
@@ -330,7 +330,7 @@
           <div class="test-title">${test.name}</div>
           <div class="test-description">${test.description}</div>
           <div class="test-result ${result ? 'pass' : 'fail'}">
-            ${result ? '✅ PASS' : '❌ FAIL'}
+            ${result ? 'âœ… PASS' : 'âŒ FAIL'}
           </div>
         `;
         container.appendChild(div);
@@ -340,8 +340,8 @@
     // Tester le changement de langue
     function testLanguageChange(lang) {
       const newUrl = `${window.location.origin}/#/${lang}`;
-      console.log(`🧪 Test changement langue vers ${lang}`);
-      console.log(`📍 Nouvelle URL: ${newUrl}`);
+      console.log(`ðŸ§ª Test changement langue vers ${lang}`);
+      console.log(`ðŸ“ Nouvelle URL: ${newUrl}`);
       window.location.href = newUrl;
     }
     
@@ -351,17 +351,17 @@
       const langMatch = hash.match(/#\/(fr|en)/);
       const lang = langMatch ? langMatch[1] : 'fr';
       const newUrl = `${window.location.origin}/#/${lang}/${page}`;
-      console.log(`🧪 Test navigation vers ${page}`);
-      console.log(`📍 Nouvelle URL: ${newUrl}`);
+      console.log(`ðŸ§ª Test navigation vers ${page}`);
+      console.log(`ðŸ“ Nouvelle URL: ${newUrl}`);
       window.location.href = newUrl;
     }
     
     // Copier le diagnostic
     function copyToClipboard() {
       const diagnostic = `
-🔍 Diagnostic HashRouter URLs - ${new Date().toLocaleString()}
+ðŸ” Diagnostic HashRouter URLs - ${new Date().toLocaleString()}
 
-URL complète: ${window.location.href}
+URL complÃ¨te: ${window.location.href}
 Hash: ${window.location.hash || '(vide)'}
 Pathname: ${window.location.pathname}
 Origin: ${window.location.origin}
@@ -370,25 +370,25 @@ Statut: ${document.getElementById('urlStatus').textContent}
       `.trim();
       
       navigator.clipboard.writeText(diagnostic).then(() => {
-        alert('✅ Diagnostic copié dans le presse-papier !');
+        alert('âœ… Diagnostic copiÃ© dans le presse-papier !');
       }).catch(err => {
         console.error('Erreur copie:', err);
-        alert('❌ Erreur lors de la copie');
+        alert('âŒ Erreur lors de la copie');
       });
     }
     
     // Initialiser au chargement
     window.addEventListener('load', () => {
       refreshInfo();
-      console.log('🔍 Diagnostic HashRouter chargé');
-      console.log('📍 URL actuelle:', window.location.href);
-      console.log('🔗 Hash:', window.location.hash);
-      console.log('📂 Pathname:', window.location.pathname);
+      console.log('ðŸ” Diagnostic HashRouter chargÃ©');
+      console.log('ðŸ“ URL actuelle:', window.location.href);
+      console.log('ðŸ”— Hash:', window.location.hash);
+      console.log('ðŸ“‚ Pathname:', window.location.pathname);
     });
     
-    // Rafraîchir quand l'URL change
+    // RafraÃ®chir quand l'URL change
     window.addEventListener('hashchange', () => {
-      console.log('🔄 Hash changé:', window.location.hash);
+      console.log('ðŸ”„ Hash changÃ©:', window.location.hash);
       refreshInfo();
     });
   </script>

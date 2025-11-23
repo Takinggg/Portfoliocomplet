@@ -67,7 +67,7 @@ export function InvoiceEditDialog({ invoice, clients, open, onOpenChange, onRefr
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -95,9 +95,9 @@ export function InvoiceEditDialog({ invoice, clients, open, onOpenChange, onRefr
         
         // Check if email was sent
         if (data.emailSent) {
-          toast.success(`Facture mise à jour et email envoyé à ${selectedClient.name} !`);
+          toast.success(`Facture mise Ã  jour et email envoyÃ© Ã  ${selectedClient.name} !`);
         } else {
-          toast.success("Facture mise à jour avec succès");
+          toast.success("Facture mise Ã  jour avec succÃ¨s");
         }
         
         onOpenChange(false);
@@ -105,11 +105,11 @@ export function InvoiceEditDialog({ invoice, clients, open, onOpenChange, onRefr
       } else {
         const error = await response.text();
         console.error("Error response:", error);
-        toast.error("Erreur lors de la mise à jour");
+        toast.error("Erreur lors de la mise Ã  jour");
       }
     } catch (error) {
       console.error("Error updating invoice:", error);
-      toast.error("Erreur lors de la mise à jour");
+      toast.error("Erreur lors de la mise Ã  jour");
     } finally {
       setIsSaving(false);
     }
@@ -117,7 +117,7 @@ export function InvoiceEditDialog({ invoice, clients, open, onOpenChange, onRefr
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20 text-white max-w-lg">
+      <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 text-white max-w-lg">
         <DialogHeader>
           <DialogTitle>Modifier la facture {invoice.number}</DialogTitle>
           <DialogDescription className="text-white/60">
@@ -133,9 +133,9 @@ export function InvoiceEditDialog({ invoice, clients, open, onOpenChange, onRefr
               onValueChange={(value) => setEditedInvoice({ ...editedInvoice, clientId: value })}
             >
               <SelectTrigger className="mt-1 bg-white/5 border-white/10 text-white">
-                <SelectValue placeholder="Sélectionner un client" />
+                <SelectValue placeholder="SÃ©lectionner un client" />
               </SelectTrigger>
-              <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+              <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
                 {clients.map((client) => (
                   <SelectItem key={client.id} value={client.id}>
                     {client.name}
@@ -146,7 +146,7 @@ export function InvoiceEditDialog({ invoice, clients, open, onOpenChange, onRefr
           </div>
 
           <div>
-            <Label>Montant (€) *</Label>
+            <Label>Montant (â‚¬) *</Label>
             <Input
               type="number"
               step="0.01"
@@ -169,7 +169,7 @@ export function InvoiceEditDialog({ invoice, clients, open, onOpenChange, onRefr
           </div>
 
           <div>
-            <Label>Date d'échéance *</Label>
+            <Label>Date d'Ã©chÃ©ance *</Label>
             <Input
               type="date"
               value={editedInvoice.dueDate}
@@ -187,10 +187,10 @@ export function InvoiceEditDialog({ invoice, clients, open, onOpenChange, onRefr
               <SelectTrigger className="mt-1 bg-white/5 border-white/10 text-white">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+              <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
                 <SelectItem value="draft">Brouillon</SelectItem>
-                <SelectItem value="sent">Envoyée</SelectItem>
-                <SelectItem value="paid">Payée</SelectItem>
+                <SelectItem value="sent">EnvoyÃ©e</SelectItem>
+                <SelectItem value="paid">PayÃ©e</SelectItem>
                 <SelectItem value="overdue">En retard</SelectItem>
               </SelectContent>
             </Select>
@@ -206,7 +206,7 @@ export function InvoiceEditDialog({ invoice, clients, open, onOpenChange, onRefr
               Annuler
             </Button>
             <Button
-              className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+              className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               onClick={handleSave}
               disabled={isSaving}
             >

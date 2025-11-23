@@ -38,7 +38,7 @@ export function LanguageSwitcherWithURL() {
     // Dispatch event so other components can react
     window.dispatchEvent(new PopStateEvent('popstate'));
 
-    console.log(`🌍 Language changed to ${newLang.toUpperCase()}, URL updated for SEO`);
+    console.log(`ðŸŒ Language changed to ${newLang.toUpperCase()}, URL updated for SEO`);
   };
 
   return (
@@ -49,10 +49,10 @@ export function LanguageSwitcherWithURL() {
           onClick={() => handleLanguageChange('fr')}
           className={`px-3 py-1 rounded text-sm transition-all ${
             language === 'fr'
-              ? 'bg-[#00FFC2] text-[#0C0C0C]'
+              ? 'bg-[#CCFF00] text-[#0C0C0C]'
               : 'bg-[#F4F4F4]/10 text-[#F4F4F4]/60 hover:bg-[#F4F4F4]/20'
           }`}
-          aria-label="Français"
+          aria-label="FranÃ§ais"
           aria-pressed={language === 'fr'}
         >
           FR
@@ -61,7 +61,7 @@ export function LanguageSwitcherWithURL() {
           onClick={() => handleLanguageChange('en')}
           className={`px-3 py-1 rounded text-sm transition-all ${
             language === 'en'
-              ? 'bg-[#00FFC2] text-[#0C0C0C]'
+              ? 'bg-[#CCFF00] text-[#0C0C0C]'
               : 'bg-[#F4F4F4]/10 text-[#F4F4F4]/60 hover:bg-[#F4F4F4]/20'
           }`}
           aria-label="English"

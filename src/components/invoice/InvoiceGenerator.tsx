@@ -58,7 +58,7 @@ export function InvoiceGenerator({ invoice, freelanceInfo, onDownload }: Invoice
             align-items: start;
             margin-bottom: 60px;
             padding-bottom: 30px;
-            border-bottom: 3px solid #00FFC2;
+            border-bottom: 3px solid #CCFF00;
           }
           
           .logo-section h1 {
@@ -69,7 +69,7 @@ export function InvoiceGenerator({ invoice, freelanceInfo, onDownload }: Invoice
           }
           
           .logo-section .accent {
-            color: #00FFC2;
+            color: #CCFF00;
           }
           
           .invoice-info {
@@ -176,7 +176,7 @@ export function InvoiceGenerator({ invoice, freelanceInfo, onDownload }: Invoice
             border-bottom: none;
             margin-bottom: 0;
             padding-top: 12px;
-            border-top: 2px solid #00FFC2;
+            border-top: 2px solid #CCFF00;
           }
           
           .total-row.final {
@@ -185,7 +185,7 @@ export function InvoiceGenerator({ invoice, freelanceInfo, onDownload }: Invoice
           }
           
           .total-row.final .amount {
-            color: #00FFC2;
+            color: #CCFF00;
           }
           
           .payment-info {
@@ -266,16 +266,16 @@ export function InvoiceGenerator({ invoice, freelanceInfo, onDownload }: Invoice
           <div class="header">
             <div class="logo-section">
               <h1>${freelanceInfo.name.split(' ')[0]} <span class="accent">${freelanceInfo.name.split(' ').slice(1).join(' ')}</span></h1>
-              <p style="color: #666; margin-top: 4px;">Développeur Freelance</p>
+              <p style="color: #666; margin-top: 4px;">DÃ©veloppeur Freelance</p>
             </div>
             <div class="invoice-info">
-              <div class="invoice-number">Facture N° ${invoice.number}</div>
+              <div class="invoice-number">Facture NÂ° ${invoice.number}</div>
               <div class="invoice-date">
-                Date d'émission : ${new Date(invoice.date).toLocaleDateString('fr-FR')}<br>
-                Date d'échéance : ${new Date(invoice.dueDate).toLocaleDateString('fr-FR')}
+                Date d'Ã©mission : ${new Date(invoice.date).toLocaleDateString('fr-FR')}<br>
+                Date d'Ã©chÃ©ance : ${new Date(invoice.dueDate).toLocaleDateString('fr-FR')}
               </div>
               <div class="status-badge status-${invoice.status.toLowerCase()}">
-                ${invoice.status === 'draft' ? 'Brouillon' : invoice.status === 'sent' ? 'Envoyée' : invoice.status === 'paid' ? 'Payée' : 'En retard'}
+                ${invoice.status === 'draft' ? 'Brouillon' : invoice.status === 'sent' ? 'EnvoyÃ©e' : invoice.status === 'paid' ? 'PayÃ©e' : 'En retard'}
               </div>
             </div>
           </div>
@@ -316,9 +316,9 @@ export function InvoiceGenerator({ invoice, freelanceInfo, onDownload }: Invoice
             <tbody>
               <tr>
                 <td>
-                  <strong>${invoice.description || 'Prestation de développement web'}</strong>
+                  <strong>${invoice.description || 'Prestation de dÃ©veloppement web'}</strong>
                 </td>
-                <td style="text-align: right; font-weight: 600;">${invoice.amount.toLocaleString('fr-FR')} €</td>
+                <td style="text-align: right; font-weight: 600;">${invoice.amount.toLocaleString('fr-FR')} â‚¬</td>
               </tr>
             </tbody>
           </table>
@@ -328,15 +328,15 @@ export function InvoiceGenerator({ invoice, freelanceInfo, onDownload }: Invoice
             <div class="total-box">
               <div class="total-row">
                 <span>Sous-total HT</span>
-                <span>${invoice.amount.toLocaleString('fr-FR')} €</span>
+                <span>${invoice.amount.toLocaleString('fr-FR')} â‚¬</span>
               </div>
               <div class="total-row">
                 <span>TVA (Non applicable)</span>
-                <span>0,00 €</span>
+                <span>0,00 â‚¬</span>
               </div>
               <div class="total-row final">
                 <span>Total TTC</span>
-                <span class="amount">${invoice.amount.toLocaleString('fr-FR')} €</span>
+                <span class="amount">${invoice.amount.toLocaleString('fr-FR')} â‚¬</span>
               </div>
             </div>
           </div>
@@ -344,15 +344,15 @@ export function InvoiceGenerator({ invoice, freelanceInfo, onDownload }: Invoice
           <!-- Payment Info -->
           <div class="payment-info">
             <h3>Conditions de paiement</h3>
-            <p><strong>Échéance :</strong> ${new Date(invoice.dueDate).toLocaleDateString('fr-FR')}</p>
-            <p><strong>Modalités :</strong> Paiement par virement bancaire</p>
+            <p><strong>Ã‰chÃ©ance :</strong> ${new Date(invoice.dueDate).toLocaleDateString('fr-FR')}</p>
+            <p><strong>ModalitÃ©s :</strong> Paiement par virement bancaire</p>
             ${freelanceInfo.iban ? `<p><strong>IBAN :</strong> ${freelanceInfo.iban}</p>` : ''}
             ${freelanceInfo.bic ? `<p><strong>BIC :</strong> ${freelanceInfo.bic}</p>` : ''}
           </div>
           
           <!-- Legal Mentions -->
           <div class="payment-info" style="font-size: 11px; line-height: 1.6;">
-            <h3 style="font-size: 12px;">Mentions légales</h3>
+            <h3 style="font-size: 12px;">Mentions lÃ©gales</h3>
             ${freelanceInfo.legalEntity ? `<p style="margin-bottom: 8px;"><strong>${freelanceInfo.legalEntity}</strong></p>` : ''}
             ${freelanceInfo.legalMentions?.registration ? `<p>${freelanceInfo.legalMentions.registration}</p>` : ''}
             ${freelanceInfo.legalMentions?.tva ? `<p>${freelanceInfo.legalMentions.tva}</p>` : ''}
@@ -367,7 +367,7 @@ export function InvoiceGenerator({ invoice, freelanceInfo, onDownload }: Invoice
             <p>${freelanceInfo.address}</p>
             <p>${freelanceInfo.email} - ${freelanceInfo.phone}</p>
             ${freelanceInfo.siret ? `<p>SIRET : ${freelanceInfo.siret}</p>` : ''}
-            <p style="margin-top: 12px; color: #00FFC2; font-weight: 600;">Merci pour votre confiance !</p>
+            <p style="margin-top: 12px; color: #CCFF00; font-weight: 600;">Merci pour votre confiance !</p>
           </div>
         </div>
       </body>
@@ -394,10 +394,10 @@ export function InvoiceGenerator({ invoice, freelanceInfo, onDownload }: Invoice
     <div className="flex gap-3">
       <Button
         onClick={printInvoice}
-        className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+        className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
       >
         <Download className="h-4 w-4 mr-2" />
-        Télécharger PDF
+        TÃ©lÃ©charger PDF
       </Button>
       <Button
         onClick={printInvoice}

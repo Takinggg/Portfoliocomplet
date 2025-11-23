@@ -45,7 +45,7 @@ export function AutoServerDiagnostic() {
         results[0] = {
           name: "Health Check",
           status: "success",
-          message: `✅ Serveur opérationnel (version ${data.version})`,
+          message: `âœ… Serveur opÃ©rationnel (version ${data.version})`,
           details: data,
         };
       } else {
@@ -53,22 +53,22 @@ export function AutoServerDiagnostic() {
         results[0] = {
           name: "Health Check",
           status: "error",
-          message: `❌ HTTP ${response.status}`,
+          message: `âŒ HTTP ${response.status}`,
           details: text,
           solution: response.status === 404 
-            ? "Le serveur n'est pas déployé. Exécutez: supabase functions deploy server --no-verify-jwt"
-            : "Vérifiez les logs du serveur sur le dashboard Supabase",
+            ? "Le serveur n'est pas dÃ©ployÃ©. ExÃ©cutez: supabase functions deploy server --no-verify-jwt"
+            : "VÃ©rifiez les logs du serveur sur le dashboard Supabase",
         };
       }
     } catch (error: any) {
       results[0] = {
         name: "Health Check",
         status: "error",
-        message: `❌ ${error.name}: ${error.message}`,
+        message: `âŒ ${error.name}: ${error.message}`,
         details: error,
         solution: error.name === "TimeoutError"
-          ? "Le serveur ne répond pas dans les délais. Vérifiez qu'il est déployé."
-          : "Impossible de contacter le serveur. Vérifiez votre connexion internet et que le serveur est déployé.",
+          ? "Le serveur ne rÃ©pond pas dans les dÃ©lais. VÃ©rifiez qu'il est dÃ©ployÃ©."
+          : "Impossible de contacter le serveur. VÃ©rifiez votre connexion internet et que le serveur est dÃ©ployÃ©.",
       };
     }
     setTests([...results]);
@@ -93,29 +93,29 @@ export function AutoServerDiagnostic() {
           name: "Blog Posts",
           status: posts.length > 0 ? "success" : "warning",
           message: posts.length > 0 
-            ? `✅ ${posts.length} articles trouvés` 
-            : `⚠️ Aucun article trouvé`,
+            ? `âœ… ${posts.length} articles trouvÃ©s` 
+            : `âš ï¸ Aucun article trouvÃ©`,
           details: { count: posts.length },
           solution: posts.length === 0 
-            ? "Utilisez le bouton 'Initialiser les données du blog' dans le dashboard"
+            ? "Utilisez le bouton 'Initialiser les donnÃ©es du blog' dans le dashboard"
             : undefined,
         };
       } else {
         results[1] = {
           name: "Blog Posts",
           status: "error",
-          message: `❌ HTTP ${response.status}`,
+          message: `âŒ HTTP ${response.status}`,
           details: await response.text(),
-          solution: "La route blog ne fonctionne pas. Vérifiez les logs du serveur.",
+          solution: "La route blog ne fonctionne pas. VÃ©rifiez les logs du serveur.",
         };
       }
     } catch (error: any) {
       results[1] = {
         name: "Blog Posts",
         status: "error",
-        message: `❌ ${error.message}`,
+        message: `âŒ ${error.message}`,
         details: error,
-        solution: "Vérifiez que le serveur est bien déployé et opérationnel.",
+        solution: "VÃ©rifiez que le serveur est bien dÃ©ployÃ© et opÃ©rationnel.",
       };
     }
     setTests([...results]);
@@ -139,23 +139,23 @@ export function AutoServerDiagnostic() {
         results[2] = {
           name: "Newsletter Stats",
           status: "success",
-          message: `✅ ${stats.total || stats.totalCount || 0} abonnés`,
+          message: `âœ… ${stats.total || stats.totalCount || 0} abonnÃ©s`,
           details: stats,
         };
       } else {
         results[2] = {
           name: "Newsletter Stats",
           status: "error",
-          message: `❌ HTTP ${response.status}`,
+          message: `âŒ HTTP ${response.status}`,
           details: await response.text(),
-          solution: "La route newsletter ne fonctionne pas. Vérifiez les logs du serveur.",
+          solution: "La route newsletter ne fonctionne pas. VÃ©rifiez les logs du serveur.",
         };
       }
     } catch (error: any) {
       results[2] = {
         name: "Newsletter Stats",
         status: "error",
-        message: `❌ ${error.message}`,
+        message: `âŒ ${error.message}`,
         details: error,
       };
     }
@@ -181,7 +181,7 @@ export function AutoServerDiagnostic() {
         results[3] = {
           name: "Projects",
           status: count > 0 ? "success" : "warning",
-          message: count > 0 ? `✅ ${count} projets` : `⚠️ Aucun projet`,
+          message: count > 0 ? `âœ… ${count} projets` : `âš ï¸ Aucun projet`,
           details: { count },
           solution: count === 0 
             ? "Utilisez le bouton 'Seed Projects' dans le dashboard"
@@ -191,7 +191,7 @@ export function AutoServerDiagnostic() {
         results[3] = {
           name: "Projects",
           status: "error",
-          message: `❌ HTTP ${response.status}`,
+          message: `âŒ HTTP ${response.status}`,
           details: await response.text(),
         };
       }
@@ -199,7 +199,7 @@ export function AutoServerDiagnostic() {
       results[3] = {
         name: "Projects",
         status: "error",
-        message: `❌ ${error.message}`,
+        message: `âŒ ${error.message}`,
         details: error,
       };
     }
@@ -229,23 +229,23 @@ export function AutoServerDiagnostic() {
         results[4] = {
           name: "KV Store (Write Test)",
           status: "success",
-          message: "✅ Écriture OK",
+          message: "âœ… Ã‰criture OK",
           details: { key: testKey },
         };
       } else {
         results[4] = {
           name: "KV Store (Write Test)",
           status: "error",
-          message: `❌ HTTP ${response.status}`,
+          message: `âŒ HTTP ${response.status}`,
           details: await response.text(),
-          solution: "Problème avec la table KV. Vérifiez qu'elle existe dans Supabase.",
+          solution: "ProblÃ¨me avec la table KV. VÃ©rifiez qu'elle existe dans Supabase.",
         };
       }
     } catch (error: any) {
       results[4] = {
         name: "KV Store (Write Test)",
         status: "error",
-        message: `❌ ${error.message}`,
+        message: `âŒ ${error.message}`,
         details: error,
       };
     }
@@ -269,7 +269,7 @@ export function AutoServerDiagnostic() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "success":
-        return <CheckCircle2 className="w-5 h-5 text-[#00FFC2]" />;
+        return <CheckCircle2 className="w-5 h-5 text-[#CCFF00]" />;
       case "error":
         return <XCircle className="w-5 h-5 text-red-500" />;
       case "warning":
@@ -284,7 +284,7 @@ export function AutoServerDiagnostic() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "success":
-        return <Badge className="bg-[#00FFC2] text-black">Réussi</Badge>;
+        return <Badge className="bg-[#CCFF00] text-black">RÃ©ussi</Badge>;
       case "error":
         return <Badge variant="destructive">Erreur</Badge>;
       case "warning":
@@ -306,7 +306,7 @@ export function AutoServerDiagnostic() {
             <Button
               onClick={runDiagnostic}
               disabled={isRunning}
-              className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+              className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
             >
               {isRunning ? (
                 <>
@@ -331,8 +331,8 @@ export function AutoServerDiagnostic() {
                   <div className="text-sm text-gray-400">Tests</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-[#00FFC2]">{successCount}</div>
-                  <div className="text-sm text-gray-400">Réussis</div>
+                  <div className="text-3xl font-bold text-[#CCFF00]">{successCount}</div>
+                  <div className="text-sm text-gray-400">RÃ©ussis</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-yellow-500">{warningCount}</div>
@@ -348,20 +348,20 @@ export function AutoServerDiagnostic() {
               <div className="mt-6 pt-6 border-t border-[#2A2A2A]">
                 {errorCount === 0 && warningCount === 0 ? (
                   <div className="text-center">
-                    <CheckCircle2 className="w-12 h-12 text-[#00FFC2] mx-auto mb-2" />
-                    <p className="text-[#00FFC2]">🎉 Tous les tests sont passés avec succès !</p>
+                    <CheckCircle2 className="w-12 h-12 text-[#CCFF00] mx-auto mb-2" />
+                    <p className="text-[#CCFF00]">ðŸŽ‰ Tous les tests sont passÃ©s avec succÃ¨s !</p>
                     <p className="text-sm text-gray-400 mt-2">Votre serveur fonctionne parfaitement.</p>
                   </div>
                 ) : errorCount > 0 ? (
                   <div className="text-center">
                     <XCircle className="w-12 h-12 text-red-500 mx-auto mb-2" />
-                    <p className="text-red-400">⚠️ Des erreurs ont été détectées</p>
+                    <p className="text-red-400">âš ï¸ Des erreurs ont Ã©tÃ© dÃ©tectÃ©es</p>
                     <p className="text-sm text-gray-400 mt-2">Consultez les solutions ci-dessous.</p>
                   </div>
                 ) : (
                   <div className="text-center">
                     <AlertCircle className="w-12 h-12 text-yellow-500 mx-auto mb-2" />
-                    <p className="text-yellow-400">⚠️ Le serveur fonctionne mais certaines données manquent</p>
+                    <p className="text-yellow-400">âš ï¸ Le serveur fonctionne mais certaines donnÃ©es manquent</p>
                     <p className="text-sm text-gray-400 mt-2">Utilisez les boutons d'initialisation dans le dashboard.</p>
                   </div>
                 )}
@@ -387,7 +387,7 @@ export function AutoServerDiagnostic() {
                     {/* Solution */}
                     {test.solution && (
                       <div className="mt-4 p-4 bg-[#0C0C0C] border border-[#2A2A2A] rounded-lg">
-                        <p className="text-sm font-medium text-[#00FFC2] mb-2">💡 Solution recommandée:</p>
+                        <p className="text-sm font-medium text-[#CCFF00] mb-2">ðŸ’¡ Solution recommandÃ©e:</p>
                         <p className="text-sm text-gray-300">{test.solution}</p>
                       </div>
                     )}
@@ -401,12 +401,12 @@ export function AutoServerDiagnostic() {
                           onClick={() => setShowDetails({ ...showDetails, [test.name]: !showDetails[test.name] })}
                           className="text-xs"
                         >
-                          {showDetails[test.name] ? "Masquer les détails" : "Voir les détails"}
+                          {showDetails[test.name] ? "Masquer les dÃ©tails" : "Voir les dÃ©tails"}
                         </Button>
                         {showDetails[test.name] && (
                           <div className="mt-2 p-4 bg-[#0C0C0C] border border-[#2A2A2A] rounded-lg">
                             <div className="flex items-center justify-between mb-2">
-                              <span className="text-xs text-gray-400">Détails techniques:</span>
+                              <span className="text-xs text-gray-400">DÃ©tails techniques:</span>
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -433,13 +433,13 @@ export function AutoServerDiagnostic() {
 
         {/* Quick Links */}
         <Card className="bg-[#1A1A1A] border-[#2A2A2A] p-6">
-          <h3 className="text-[#F4F4F4] mb-4">🔗 Liens utiles</h3>
+          <h3 className="text-[#F4F4F4] mb-4">ðŸ”— Liens utiles</h3>
           <div className="space-y-3">
             <a
               href={`https://supabase.com/dashboard/project/${projectId}/logs/edge-functions`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-[#00FFC2] hover:underline"
+              className="flex items-center gap-2 text-[#CCFF00] hover:underline"
             >
               <ExternalLink className="w-4 h-4" />
               Logs Edge Functions Supabase
@@ -448,7 +448,7 @@ export function AutoServerDiagnostic() {
               href={`https://supabase.com/dashboard/project/${projectId}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-[#00FFC2] hover:underline"
+              className="flex items-center gap-2 text-[#CCFF00] hover:underline"
             >
               <ExternalLink className="w-4 h-4" />
               Dashboard Supabase
@@ -457,7 +457,7 @@ export function AutoServerDiagnostic() {
               href={`https://supabase.com/dashboard/project/${projectId}/settings/functions`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-[#00FFC2] hover:underline"
+              className="flex items-center gap-2 text-[#CCFF00] hover:underline"
             >
               <ExternalLink className="w-4 h-4" />
               Secrets / Variables d'environnement
@@ -466,7 +466,7 @@ export function AutoServerDiagnostic() {
               href={`${baseUrl}/health`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-[#00FFC2] hover:underline"
+              className="flex items-center gap-2 text-[#CCFF00] hover:underline"
             >
               <ExternalLink className="w-4 h-4" />
               Health Check Direct
@@ -476,7 +476,7 @@ export function AutoServerDiagnostic() {
 
         {/* Info */}
         <Card className="bg-[#1A1A1A] border-[#2A2A2A] p-6">
-          <h3 className="text-[#F4F4F4] mb-4">📋 Informations</h3>
+          <h3 className="text-[#F4F4F4] mb-4">ðŸ“‹ Informations</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-400">Project ID:</span>
@@ -488,7 +488,7 @@ export function AutoServerDiagnostic() {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Mode de fallback:</span>
-              <span className="text-[#00FFC2]">Activé ✓</span>
+              <span className="text-[#CCFF00]">ActivÃ© âœ“</span>
             </div>
           </div>
         </Card>
@@ -496,10 +496,10 @@ export function AutoServerDiagnostic() {
         {/* Command Help */}
         {errorCount > 0 && (
           <Card className="bg-red-950/20 border-red-900/50 p-6">
-            <h3 className="text-red-400 mb-4">🚨 Commandes de dépannage</h3>
+            <h3 className="text-red-400 mb-4">ðŸš¨ Commandes de dÃ©pannage</h3>
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-gray-400 mb-2">Redéployer le serveur:</p>
+                <p className="text-sm text-gray-400 mb-2">RedÃ©ployer le serveur:</p>
                 <div className="flex items-center gap-2">
                   <code className="flex-1 bg-[#0C0C0C] px-4 py-2 rounded text-sm text-[#F4F4F4] font-mono">
                     supabase functions deploy server --no-verify-jwt
@@ -514,7 +514,7 @@ export function AutoServerDiagnostic() {
                 </div>
               </div>
               <div>
-                <p className="text-sm text-gray-400 mb-2">Voir les logs en temps réel:</p>
+                <p className="text-sm text-gray-400 mb-2">Voir les logs en temps rÃ©el:</p>
                 <div className="flex items-center gap-2">
                   <code className="flex-1 bg-[#0C0C0C] px-4 py-2 rounded text-sm text-[#F4F4F4] font-mono">
                     supabase functions logs server --tail
@@ -529,7 +529,7 @@ export function AutoServerDiagnostic() {
                 </div>
               </div>
               <div>
-                <p className="text-sm text-gray-400 mb-2">Lister les fonctions déployées:</p>
+                <p className="text-sm text-gray-400 mb-2">Lister les fonctions dÃ©ployÃ©es:</p>
                 <div className="flex items-center gap-2">
                   <code className="flex-1 bg-[#0C0C0C] px-4 py-2 rounded text-sm text-[#F4F4F4] font-mono">
                     supabase functions list

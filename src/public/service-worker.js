@@ -6,12 +6,12 @@ const CACHE_NAME = `portfolio-pro-${CACHE_VERSION}`;
 const OFFLINE_CACHE = `portfolio-pro-offline-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `portfolio-pro-runtime-${CACHE_VERSION}`;
 
-// Ressources critiques à mettre en cache lors de l'installation
-// Note: La liste est vide pour éviter les erreurs 404 dans l'environnement Figma preview
+// Ressources critiques Ã  mettre en cache lors de l'installation
+// Note: La liste est vide pour Ã©viter les erreurs 404 dans l'environnement Figma preview
 // Les ressources seront mises en cache dynamiquement lors de leur utilisation
 const CRITICAL_ASSETS = [];
 
-// Stratégie de cache par type de ressource
+// StratÃ©gie de cache par type de ressource
 const CACHE_STRATEGIES = {
   // Cache First - pour assets statiques (images, fonts, CSS, JS)
   cacheFirst: [
@@ -43,13 +43,13 @@ self.addEventListener('install', (event) => {
       .then((cache) => {
         console.log('[SW] Mise en cache des ressources critiques');
         return cache.addAll(CRITICAL_ASSETS).catch((err) => {
-          console.warn('[SW] Certaines ressources n\'ont pas pu être mises en cache:', err);
-          // Ne pas échouer l'installation si certaines ressources ne sont pas disponibles
+          console.warn('[SW] Certaines ressources n\'ont pas pu Ãªtre mises en cache:', err);
+          // Ne pas Ã©chouer l'installation si certaines ressources ne sont pas disponibles
         });
       })
       .then(() => {
-        console.log('[SW] Installation terminée');
-        return self.skipWaiting(); // Active immédiatement le nouveau SW
+        console.log('[SW] Installation terminÃ©e');
+        return self.skipWaiting(); // Active immÃ©diatement le nouveau SW
       })
       .catch((error) => {
         console.error('[SW] Erreur lors de l\'installation:', error);
@@ -74,40 +74,40 @@ self.addEventListener('activate', (event) => {
                      name !== RUNTIME_CACHE;
             })
             .map((name) => {
-              console.log('[SW] Suppression du cache obsolète:', name);
+              console.log('[SW] Suppression du cache obsolÃ¨te:', name);
               return caches.delete(name);
             })
         );
       })
       .then(() => {
-        console.log('[SW] Activation terminée');
-        return self.clients.claim(); // Prend le contrôle immédiatement
+        console.log('[SW] Activation terminÃ©e');
+        return self.clients.claim(); // Prend le contrÃ´le immÃ©diatement
       })
   );
 });
 
-// Interception des requêtes
+// Interception des requÃªtes
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
   
-  // Ignorer les requêtes non-HTTP
+  // Ignorer les requÃªtes non-HTTP
   if (!url.protocol.startsWith('http')) {
     return;
   }
   
-  // Ignorer les requêtes Chrome extensions
+  // Ignorer les requÃªtes Chrome extensions
   if (url.protocol === 'chrome-extension:') {
     return;
   }
 
-  // Déterminer la stratégie de cache
+  // DÃ©terminer la stratÃ©gie de cache
   const strategy = determineStrategy(request);
   
   event.respondWith(
     strategy(request)
       .catch(() => {
-        // Si tout échoue, afficher la page offline pour les navigations
+        // Si tout Ã©choue, afficher la page offline pour les navigations
         if (request.mode === 'navigate') {
           return caches.match('/offline.html').then((response) => {
             if (response) {
@@ -134,9 +134,9 @@ self.addEventListener('fetch', (event) => {
                     text-align: center;
                     padding: 20px;
                   }
-                  h1 { color: #00FFC2; margin-bottom: 16px; }
+                  h1 { color: #CCFF00; margin-bottom: 16px; }
                   button {
-                    background: #00FFC2;
+                    background: #CCFF00;
                     color: #0C0C0C;
                     border: none;
                     padding: 12px 24px;
@@ -150,8 +150,8 @@ self.addEventListener('fetch', (event) => {
               <body>
                 <div>
                   <h1>Mode Hors Ligne</h1>
-                  <p>Vous êtes actuellement hors ligne.</p>
-                  <button onclick="window.location.reload()">Réessayer</button>
+                  <p>Vous Ãªtes actuellement hors ligne.</p>
+                  <button onclick="window.location.reload()">RÃ©essayer</button>
                 </div>
               </body>
               </html>`,
@@ -162,7 +162,7 @@ self.addEventListener('fetch', (event) => {
           });
         }
         
-        // Pour les autres ressources, retourner une réponse vide
+        // Pour les autres ressources, retourner une rÃ©ponse vide
         return new Response('', {
           status: 408,
           statusText: 'Request Timeout',
@@ -171,7 +171,7 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Déterminer la stratégie de cache appropriée
+// DÃ©terminer la stratÃ©gie de cache appropriÃ©e
 function determineStrategy(request) {
   const url = new URL(request.url);
   
@@ -193,7 +193,7 @@ function determineStrategy(request) {
   return staleWhileRevalidate;
 }
 
-// Stratégie Cache First
+// StratÃ©gie Cache First
 async function cacheFirst(request) {
   const cache = await caches.open(CACHE_NAME);
   const cached = await cache.match(request);
@@ -204,7 +204,7 @@ async function cacheFirst(request) {
   
   const response = await fetch(request);
   
-  // Mettre en cache si la réponse est valide
+  // Mettre en cache si la rÃ©ponse est valide
   if (response && response.status === 200) {
     cache.put(request, response.clone());
   }
@@ -212,21 +212,21 @@ async function cacheFirst(request) {
   return response;
 }
 
-// Stratégie Network First
+// StratÃ©gie Network First
 async function networkFirst(request) {
   const cache = await caches.open(RUNTIME_CACHE);
   
   try {
     const response = await fetch(request);
     
-    // Mettre en cache si la réponse est valide
+    // Mettre en cache si la rÃ©ponse est valide
     if (response && response.status === 200) {
       cache.put(request, response.clone());
     }
     
     return response;
   } catch (error) {
-    // Si le réseau échoue, utiliser le cache
+    // Si le rÃ©seau Ã©choue, utiliser le cache
     const cached = await cache.match(request);
     
     if (cached) {
@@ -237,23 +237,23 @@ async function networkFirst(request) {
   }
 }
 
-// Stratégie Stale While Revalidate
+// StratÃ©gie Stale While Revalidate
 async function staleWhileRevalidate(request) {
   const cache = await caches.open(RUNTIME_CACHE);
   const cached = await cache.match(request);
   
-  // Toujours essayer de récupérer une version fraîche
+  // Toujours essayer de rÃ©cupÃ©rer une version fraÃ®che
   const fetchPromise = fetch(request).then((response) => {
     if (response && response.status === 200) {
       cache.put(request, response.clone());
     }
     return response;
   }).catch(() => {
-    // Si le fetch échoue, retourner le cache
+    // Si le fetch Ã©choue, retourner le cache
     return cached;
   });
   
-  // Retourner le cache immédiatement s'il existe, sinon attendre le réseau
+  // Retourner le cache immÃ©diatement s'il existe, sinon attendre le rÃ©seau
   return cached || fetchPromise;
 }
 
@@ -280,7 +280,7 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// Synchronisation en arrière-plan (Background Sync)
+// Synchronisation en arriÃ¨re-plan (Background Sync)
 self.addEventListener('sync', (event) => {
   console.log('[SW] Background sync:', event.tag);
   
@@ -290,10 +290,10 @@ self.addEventListener('sync', (event) => {
 });
 
 async function syncData() {
-  console.log('[SW] Synchronisation des données...');
+  console.log('[SW] Synchronisation des donnÃ©es...');
   
   try {
-    console.log('[SW] Synchronisation réussie');
+    console.log('[SW] Synchronisation rÃ©ussie');
   } catch (error) {
     console.error('[SW] Erreur de synchronisation:', error);
     throw error;
@@ -302,7 +302,7 @@ async function syncData() {
 
 // Notifications Push
 self.addEventListener('push', (event) => {
-  console.log('[SW] Push notification reçue');
+  console.log('[SW] Push notification reÃ§ue');
   
   const options = {
     body: event.data ? event.data.text() : 'Nouvelle notification',
@@ -318,7 +318,7 @@ self.addEventListener('push', (event) => {
 
 // Gestion des clics sur les notifications
 self.addEventListener('notificationclick', (event) => {
-  console.log('[SW] Notification cliquée:', event.action);
+  console.log('[SW] Notification cliquÃ©e:', event.action);
   
   event.notification.close();
   
@@ -329,4 +329,4 @@ self.addEventListener('notificationclick', (event) => {
   }
 });
 
-console.log('[SW] Service Worker chargé - Version:', CACHE_VERSION);
+console.log('[SW] Service Worker chargÃ© - Version:', CACHE_VERSION);

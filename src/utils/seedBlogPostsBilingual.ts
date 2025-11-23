@@ -23,20 +23,20 @@ const demoBlogPostsBilingual: BlogPost[] = [
   {
     id: "1_fr",
     slug: "debuter-react-2024",
-    title: "Débuter avec React en 2024 : Guide Complet",
-    excerpt: "Apprenez les fondamentaux de React avec les dernières bonnes pratiques et hooks modernes.",
+    title: "DÃ©buter avec React en 2024 : Guide Complet",
+    excerpt: "Apprenez les fondamentaux de React avec les derniÃ¨res bonnes pratiques et hooks modernes.",
     content: `
-      <h2>Introduction à React</h2>
-      <p>React est une bibliothèque JavaScript puissante pour créer des interfaces utilisateur modernes et réactives. Dans ce guide, nous allons explorer les concepts essentiels.</p>
+      <h2>Introduction Ã  React</h2>
+      <p>React est une bibliothÃ¨que JavaScript puissante pour crÃ©er des interfaces utilisateur modernes et rÃ©actives. Dans ce guide, nous allons explorer les concepts essentiels.</p>
       
       <h3>Installation et Configuration</h3>
-      <p>Commencez par créer un nouveau projet avec Vite :</p>
+      <p>Commencez par crÃ©er un nouveau projet avec Vite :</p>
       <pre><code class="language-bash">npm create vite@latest my-react-app -- --template react-ts
 cd my-react-app
 npm install</code></pre>
       
       <h3>Premier Composant</h3>
-      <p>Créez votre premier composant fonctionnel :</p>
+      <p>CrÃ©ez votre premier composant fonctionnel :</p>
       <pre><code class="language-tsx">import { useState } from 'react';
 
 function Counter() {
@@ -53,16 +53,16 @@ function Counter() {
 }</code></pre>
       
       <h3>Hooks Essentiels</h3>
-      <p>Les hooks les plus importants à maîtriser :</p>
+      <p>Les hooks les plus importants Ã  maÃ®triser :</p>
       <ul>
-        <li><strong>useState</strong> : Gestion de l'état local</li>
+        <li><strong>useState</strong> : Gestion de l'Ã©tat local</li>
         <li><strong>useEffect</strong> : Effets de bord et lifecycle</li>
-        <li><strong>useContext</strong> : Partage de données globales</li>
-        <li><strong>useMemo</strong> : Optimisation des calculs coûteux</li>
+        <li><strong>useContext</strong> : Partage de donnÃ©es globales</li>
+        <li><strong>useMemo</strong> : Optimisation des calculs coÃ»teux</li>
       </ul>
       
       <h3>Conclusion</h3>
-      <p>React est un outil puissant qui continuera d'évoluer. Restez à jour avec les dernières pratiques !</p>
+      <p>React est un outil puissant qui continuera d'Ã©voluer. Restez Ã  jour avec les derniÃ¨res pratiques !</p>
     `,
     category: "development",
     tags: ["React", "JavaScript", "TypeScript", "Frontend"],
@@ -76,28 +76,28 @@ function Counter() {
   {
     id: "2_fr",
     slug: "design-system-moderne",
-    title: "Créer un Design System Moderne avec Tailwind CSS",
-    excerpt: "Découvrez comment construire un design system cohérent et maintenable avec Tailwind CSS.",
+    title: "CrÃ©er un Design System Moderne avec Tailwind CSS",
+    excerpt: "DÃ©couvrez comment construire un design system cohÃ©rent et maintenable avec Tailwind CSS.",
     content: `
       <h2>Qu'est-ce qu'un Design System ?</h2>
-      <p>Un design system est un ensemble de composants, patterns et guidelines qui assurent la cohérence visuelle d'un produit.</p>
+      <p>Un design system est un ensemble de composants, patterns et guidelines qui assurent la cohÃ©rence visuelle d'un produit.</p>
       
       <h3>Configuration de Tailwind CSS v4</h3>
       <p>Installez Tailwind CSS dans votre projet :</p>
       <pre><code class="language-bash">npm install tailwindcss@next @tailwindcss/postcss@next
 npx tailwindcss init</code></pre>
       
-      <h3>Définir votre Palette de Couleurs</h3>
-      <p>Créez des tokens de couleurs cohérents :</p>
+      <h3>DÃ©finir votre Palette de Couleurs</h3>
+      <p>CrÃ©ez des tokens de couleurs cohÃ©rents :</p>
       <pre><code class="language-css">@theme {
-  --color-primary: #00FFC2;
+  --color-primary: #CCFF00;
   --color-background: #0C0C0C;
   --color-text: #F4F4F4;
-  --color-accent: #00D9A6;
+  --color-accent: #DAFF40;
 }</code></pre>
       
-      <h3>Composants Réutilisables</h3>
-      <p>Créez des composants avec des variants :</p>
+      <h3>Composants RÃ©utilisables</h3>
+      <p>CrÃ©ez des composants avec des variants :</p>
       <pre><code class="language-tsx">interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
@@ -132,10 +132,10 @@ export function Button({
     id: "3_fr",
     slug: "tarification-freelance",
     title: "Tarification Freelance : Comment Fixer Vos Prix",
-    excerpt: "Guide complet pour définir une tarification juste et rentable pour votre activité freelance.",
+    excerpt: "Guide complet pour dÃ©finir une tarification juste et rentable pour votre activitÃ© freelance.",
     content: `
       <h2>L'Importance de Bien Se Tarifer</h2>
-      <p>Fixer ses prix est l'un des défis majeurs du freelance. Une tarification trop basse vous épuise, trop haute vous fait perdre des clients.</p>
+      <p>Fixer ses prix est l'un des dÃ©fis majeurs du freelance. Une tarification trop basse vous Ã©puise, trop haute vous fait perdre des clients.</p>
       
       <h3>Calculer Votre Taux Journalier</h3>
       <p>Formule de base pour calculer votre TJM (Taux Journalier Moyen) :</p>
@@ -144,7 +144,7 @@ const chargesFixes = 1500; // Loyer, assurances, etc.
 const salaireSouhaite = 3000;
 const chargesSociales = salaireSouhaite * 0.45;
 
-// Jours travaillés
+// Jours travaillÃ©s
 const joursAnnee = 365;
 const joursFeries = 11;
 const joursConges = 25;
@@ -162,27 +162,27 @@ const coutMensuel = chargesFixes + salaireSouhaite + chargesSociales;
 const coutAnnuel = coutMensuel * 12;
 
 const tjm = coutAnnuel / joursTravailles;
-console.log(\`TJM minimum: \${tjm}€\`);</code></pre>
+console.log(\`TJM minimum: \${tjm}â‚¬\`);</code></pre>
       
-      <h3>Les Différents Modèles de Tarification</h3>
+      <h3>Les DiffÃ©rents ModÃ¨les de Tarification</h3>
       <ul>
         <li><strong>Tarif horaire</strong> : Simple mais limite les gains</li>
-        <li><strong>Forfait projet</strong> : Prévisible pour le client</li>
-        <li><strong>Valeur perçue</strong> : Basé sur le ROI client</li>
-        <li><strong>Retainer mensuel</strong> : Revenu récurrent stable</li>
+        <li><strong>Forfait projet</strong> : PrÃ©visible pour le client</li>
+        <li><strong>Valeur perÃ§ue</strong> : BasÃ© sur le ROI client</li>
+        <li><strong>Retainer mensuel</strong> : Revenu rÃ©current stable</li>
       </ul>
       
-      <h3>Négociation et Positionnement</h3>
-      <p>Quelques conseils pour défendre vos prix :</p>
+      <h3>NÃ©gociation et Positionnement</h3>
+      <p>Quelques conseils pour dÃ©fendre vos prix :</p>
       <ul>
         <li>Ne baissez jamais vos prix de plus de 10%</li>
-        <li>Proposez plutôt de réduire le périmètre</li>
-        <li>Montrez votre valeur ajoutée avec des résultats concrets</li>
-        <li>Ayez plusieurs clients pour ne pas dépendre d'un seul</li>
+        <li>Proposez plutÃ´t de rÃ©duire le pÃ©rimÃ¨tre</li>
+        <li>Montrez votre valeur ajoutÃ©e avec des rÃ©sultats concrets</li>
+        <li>Ayez plusieurs clients pour ne pas dÃ©pendre d'un seul</li>
       </ul>
       
       <h3>Augmenter Progressivement</h3>
-      <p>Augmentez vos tarifs de 10-15% chaque année ou à chaque nouveau client.</p>
+      <p>Augmentez vos tarifs de 10-15% chaque annÃ©e ou Ã  chaque nouveau client.</p>
     `,
     category: "business",
     tags: ["Freelance", "Tarification", "Business", "Conseils"],
@@ -196,14 +196,14 @@ console.log(\`TJM minimum: \${tjm}€\`);</code></pre>
   {
     id: "4_fr",
     slug: "typescript-avance",
-    title: "TypeScript Avancé : Types Utilitaires et Génériques",
-    excerpt: "Maîtrisez les concepts avancés de TypeScript pour écrire du code plus robuste et maintenable.",
+    title: "TypeScript AvancÃ© : Types Utilitaires et GÃ©nÃ©riques",
+    excerpt: "MaÃ®trisez les concepts avancÃ©s de TypeScript pour Ã©crire du code plus robuste et maintenable.",
     content: `
-      <h2>Au-delà des Bases</h2>
-      <p>TypeScript offre des fonctionnalités puissantes pour typer votre code de manière précise et expressive.</p>
+      <h2>Au-delÃ  des Bases</h2>
+      <p>TypeScript offre des fonctionnalitÃ©s puissantes pour typer votre code de maniÃ¨re prÃ©cise et expressive.</p>
       
       <h3>Types Utilitaires Essentiels</h3>
-      <pre><code class="language-typescript">// Partial : Rend toutes les propriétés optionnelles
+      <pre><code class="language-typescript">// Partial : Rend toutes les propriÃ©tÃ©s optionnelles
 type User = {
   id: number;
   name: string;
@@ -213,20 +213,20 @@ type User = {
 type PartialUser = Partial<User>;
 // { id?: number; name?: string; email?: string; }
 
-// Pick : Sélectionne certaines propriétés
+// Pick : SÃ©lectionne certaines propriÃ©tÃ©s
 type UserPreview = Pick<User, 'id' | 'name'>;
 // { id: number; name: string; }
 
-// Omit : Exclut certaines propriétés
+// Omit : Exclut certaines propriÃ©tÃ©s
 type UserWithoutEmail = Omit<User, 'email'>;
 // { id: number; name: string; }
 
-// Record : Crée un type avec des clés et valeurs
+// Record : CrÃ©e un type avec des clÃ©s et valeurs
 type UserRoles = Record<string, 'admin' | 'user' | 'guest'>;
 // { [key: string]: 'admin' | 'user' | 'guest' }</code></pre>
       
-      <h3>Génériques Avancés</h3>
-      <pre><code class="language-typescript">// Fonction générique avec contraintes
+      <h3>GÃ©nÃ©riques AvancÃ©s</h3>
+      <pre><code class="language-typescript">// Fonction gÃ©nÃ©rique avec contraintes
 function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
   return obj[key];
 }
@@ -240,7 +240,7 @@ type A = IsString<string>; // true
 type B = IsString<number>; // false</code></pre>
       
       <h3>Mapped Types</h3>
-      <pre><code class="language-typescript">// Rendre toutes les propriétés readonly
+      <pre><code class="language-typescript">// Rendre toutes les propriÃ©tÃ©s readonly
 type Readonly<T> = {
   readonly [P in keyof T]: T[P];
 };
@@ -254,7 +254,7 @@ type UserGetters = Getters<User>;
 // { getId: () => number; getName: () => string; getEmail: () => string; }</code></pre>
       
       <h3>Conclusion</h3>
-      <p>TypeScript avancé permet de créer des APIs type-safe et auto-documentées.</p>
+      <p>TypeScript avancÃ© permet de crÃ©er des APIs type-safe et auto-documentÃ©es.</p>
     `,
     category: "development",
     tags: ["TypeScript", "Advanced", "Generics", "Types"],
@@ -268,22 +268,22 @@ type UserGetters = Getters<User>;
   {
     id: "5_fr",
     slug: "animations-web-performantes",
-    title: "Créer des Animations Web Performantes",
-    excerpt: "Techniques et bonnes pratiques pour des animations fluides à 60fps avec CSS et JavaScript.",
+    title: "CrÃ©er des Animations Web Performantes",
+    excerpt: "Techniques et bonnes pratiques pour des animations fluides Ã  60fps avec CSS et JavaScript.",
     content: `
       <h2>Performance Avant Tout</h2>
-      <p>Les animations peuvent enrichir l'expérience utilisateur, mais elles doivent rester fluides.</p>
+      <p>Les animations peuvent enrichir l'expÃ©rience utilisateur, mais elles doivent rester fluides.</p>
       
-      <h3>Propriétés CSS Performantes</h3>
-      <p>Privilégiez ces propriétés qui utilisent le GPU :</p>
-      <pre><code class="language-css">/* ✅ Performant - GPU accelerated */
+      <h3>PropriÃ©tÃ©s CSS Performantes</h3>
+      <p>PrivilÃ©giez ces propriÃ©tÃ©s qui utilisent le GPU :</p>
+      <pre><code class="language-css">/* âœ… Performant - GPU accelerated */
 .element {
   transform: translateX(100px);
   opacity: 0.5;
   filter: blur(5px);
 }
 
-/* ❌ Moins performant - Déclenche reflow */
+/* âŒ Moins performant - DÃ©clenche reflow */
 .element {
   left: 100px;
   width: 200px;
@@ -324,8 +324,8 @@ elements.forEach(el => observer.observe(el));</code></pre>
       <h3>Optimisation</h3>
       <ul>
         <li>Utilisez <code>will-change</code> avec parcimonie</li>
-        <li>Préférez <code>transform</code> à <code>left/top</code></li>
-        <li>Limitez les animations simultanées</li>
+        <li>PrÃ©fÃ©rez <code>transform</code> Ã  <code>left/top</code></li>
+        <li>Limitez les animations simultanÃ©es</li>
         <li>Testez sur mobile (60fps target)</li>
       </ul>
     `,
@@ -410,10 +410,10 @@ npx tailwindcss init</code></pre>
       <h3>Define Your Color Palette</h3>
       <p>Create consistent color tokens:</p>
       <pre><code class="language-css">@theme {
-  --color-primary: #00FFC2;
+  --color-primary: #CCFF00;
   --color-background: #0C0C0C;
   --color-text: #F4F4F4;
-  --color-accent: #00D9A6;
+  --color-accent: #DAFF40;
 }</code></pre>
       
       <h3>Reusable Components</h3>
@@ -482,7 +482,7 @@ const monthlyCost = fixedCosts + desiredSalary + socialCharges;
 const annualCost = monthlyCost * 12;
 
 const dailyRate = annualCost / workingDays;
-console.log(\`Minimum daily rate: \${dailyRate}€\`);</code></pre>
+console.log(\`Minimum daily rate: \${dailyRate}â‚¬\`);</code></pre>
       
       <h3>Different Pricing Models</h3>
       <ul>
@@ -596,14 +596,14 @@ type UserGetters = Getters<User>;
       
       <h3>Performant CSS Properties</h3>
       <p>Favor these properties that use the GPU:</p>
-      <pre><code class="language-css">/* ✅ Performant - GPU accelerated */
+      <pre><code class="language-css">/* âœ… Performant - GPU accelerated */
 .element {
   transform: translateX(100px);
   opacity: 0.5;
   filter: blur(5px);
 }
 
-/* ❌ Less performant - Triggers reflow */
+/* âŒ Less performant - Triggers reflow */
 .element {
   left: 100px;
   width: 200px;
@@ -664,7 +664,7 @@ elements.forEach(el => observer.observe(el));</code></pre>
  * Seed bilingual blog posts (French + English)
  */
 export async function seedBlogPostsBilingual() {
-  console.log("🌱 Seeding bilingual blog posts (FR + EN)...");
+  console.log("ðŸŒ± Seeding bilingual blog posts (FR + EN)...");
 
   try {
     let successCount = 0;
@@ -689,24 +689,24 @@ export async function seedBlogPostsBilingual() {
 
         if (response.ok) {
           successCount++;
-          console.log(`✅ Created blog post (${post.language}): ${post.title}`);
+          console.log(`âœ… Created blog post (${post.language}): ${post.title}`);
         } else {
           errorCount++;
           const error = await response.text();
-          console.error(`❌ Failed to create post ${post.title}:`, error);
+          console.error(`âŒ Failed to create post ${post.title}:`, error);
         }
       } catch (error) {
         errorCount++;
-        console.error(`❌ Error creating post ${post.title}:`, error);
+        console.error(`âŒ Error creating post ${post.title}:`, error);
       }
     }
 
     console.log(
-      `\n✅ Bilingual blog seeding complete: ${successCount} posts created (FR + EN), ${errorCount} errors`
+      `\nâœ… Bilingual blog seeding complete: ${successCount} posts created (FR + EN), ${errorCount} errors`
     );
     return { success: true, created: successCount, errors: errorCount };
   } catch (error) {
-    console.error("❌ Fatal error seeding bilingual blog posts:", error);
+    console.error("âŒ Fatal error seeding bilingual blog posts:", error);
     return { success: false, error };
   }
 }

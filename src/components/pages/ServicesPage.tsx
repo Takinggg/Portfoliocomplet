@@ -43,67 +43,67 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
   const text = {
     hero: {
       badge: language === 'en' ? 'Design. AI. Automation.' : 'Design. IA. Automatisation.',
-      title1: language === 'en' ? 'Experiences' : 'Des expériences',
+      title1: language === 'en' ? 'Experiences' : 'Des expÃ©riences',
       title2: language === 'en' ? 'that work' : 'qui fonctionnent',
       subtitle: language === 'en' 
         ? 'I combine UI/UX design with intelligent systems to create clear, scalable, and time-efficient products.'
-        : 'J\'allie UI/UX design et systèmes intelligents pour créer des produits clairs, évolutifs et économes en temps.',
-      cta1: language === 'en' ? 'Request free audit — 15 min' : 'Demander un audit gratuit — 15 min',
-      cta2: language === 'en' ? 'View my work' : 'Voir mes réalisations',
+        : 'J\'allie UI/UX design et systÃ¨mes intelligents pour crÃ©er des produits clairs, Ã©volutifs et Ã©conomes en temps.',
+      cta1: language === 'en' ? 'Request free audit â€” 15 min' : 'Demander un audit gratuit â€” 15 min',
+      cta2: language === 'en' ? 'View my work' : 'Voir mes rÃ©alisations',
     },
     sections: {
-      services: language === 'en' ? 'Detailed Services' : 'Services détaillés',
+      services: language === 'en' ? 'Detailed Services' : 'Services dÃ©taillÃ©s',
       servicesTitle: language === 'en' ? 'What I do' : 'Ce que je propose',
       servicesSubtitle: language === 'en' ? '5 modular services to build your perfect product' : '5 services modulaires pour construire votre produit parfait',
       faq: 'FAQ',
-      faqTitle: language === 'en' ? 'Frequently asked questions' : 'Questions fréquentes',
-      faqSubtitle: language === 'en' ? 'Everything you need to know before getting started' : 'Tout ce que vous devez savoir avant de démarrer',
+      faqTitle: language === 'en' ? 'Frequently asked questions' : 'Questions frÃ©quentes',
+      faqSubtitle: language === 'en' ? 'Everything you need to know before getting started' : 'Tout ce que vous devez savoir avant de dÃ©marrer',
       contact: 'Contact',
-      contactTitle: language === 'en' ? 'Let\'s start your project' : 'Démarrons votre projet',
-      contactSubtitle: language === 'en' ? 'Describe your needs, I\'ll respond within 24h with an action plan' : 'Décrivez votre besoin, je vous réponds sous 24h avec un plan d\'action',
-      finalCta: language === 'en' ? 'Ready to transform your product?' : 'Prêt à transformer votre produit ?',
+      contactTitle: language === 'en' ? 'Let\'s start your project' : 'DÃ©marrons votre projet',
+      contactSubtitle: language === 'en' ? 'Describe your needs, I\'ll respond within 24h with an action plan' : 'DÃ©crivez votre besoin, je vous rÃ©ponds sous 24h avec un plan d\'action',
+      finalCta: language === 'en' ? 'Ready to transform your product?' : 'PrÃªt Ã  transformer votre produit ?',
       finalCtaSubtitle: language === 'en' ? 'Start with a free 15-minute audit. No commitment, no obligation.' : 'Commencez par un audit gratuit de 15 minutes. Sans engagement, sans obligation.',
-      bookAudit: language === 'en' ? 'Book my free audit' : 'Réserver mon audit gratuit',
-      sendBrief: language === 'en' ? 'Send a detailed brief' : 'Envoyer un brief détaillé',
-      whyItWorks: language === 'en' ? 'Why it works' : 'Pourquoi ça marche',
-      whyItWorksSubtitle: language === 'en' ? 'A complete approach that combines design, tech, and results' : 'Une approche complète qui allie design, tech et résultats',
-      methodology: language === 'en' ? 'Methodology' : 'Méthodologie',
+      bookAudit: language === 'en' ? 'Book my free audit' : 'RÃ©server mon audit gratuit',
+      sendBrief: language === 'en' ? 'Send a detailed brief' : 'Envoyer un brief dÃ©taillÃ©',
+      whyItWorks: language === 'en' ? 'Why it works' : 'Pourquoi Ã§a marche',
+      whyItWorksSubtitle: language === 'en' ? 'A complete approach that combines design, tech, and results' : 'Une approche complÃ¨te qui allie design, tech et rÃ©sultats',
+      methodology: language === 'en' ? 'Methodology' : 'MÃ©thodologie',
       howIWork: language === 'en' ? 'How I work' : 'Comment je travaille',
-      howIWorkSubtitle: language === 'en' ? 'A proven 5-step process for predictable, quality results' : 'Un process en 5 étapes éprouvé pour des résultats prévisibles et de qualité',
-      results: language === 'en' ? 'Results' : 'Résultats',
-      caseStudiesTitle: language === 'en' ? 'Quick case studies' : 'Études de cas rapides',
-      caseStudiesSubtitle: language === 'en' ? 'Problem → Action → Result' : 'Problème → Action → Résultat',
+      howIWorkSubtitle: language === 'en' ? 'A proven 5-step process for predictable, quality results' : 'Un process en 5 Ã©tapes Ã©prouvÃ© pour des rÃ©sultats prÃ©visibles et de qualitÃ©',
+      results: language === 'en' ? 'Results' : 'RÃ©sultats',
+      caseStudiesTitle: language === 'en' ? 'Quick case studies' : 'Ã‰tudes de cas rapides',
+      caseStudiesSubtitle: language === 'en' ? 'Problem â†’ Action â†’ Result' : 'ProblÃ¨me â†’ Action â†’ RÃ©sultat',
     },
     whyItWorks: {
       card1: {
-        title: language === 'en' ? 'User-centered design' : 'Design centré',
+        title: language === 'en' ? 'User-centered design' : 'Design centrÃ©',
         description: language === 'en'
           ? 'Interfaces designed for your users, tested and validated before implementation.'
-          : 'Interfaces pensées pour vos utilisateurs, testées et validées avant implémentation.',
+          : 'Interfaces pensÃ©es pour vos utilisateurs, testÃ©es et validÃ©es avant implÃ©mentation.',
         metric: '+15%',
         metricLabel: language === 'en' ? 'average conversion rate' : 'taux de conversion moyen',
       },
       card2: {
-        title: language === 'en' ? 'Actionable systems' : 'Systèmes actionnables',
+        title: language === 'en' ? 'Actionable systems' : 'SystÃ¨mes actionnables',
         description: language === 'en'
           ? 'Automations and workflows that save time and reduce human errors.'
-          : 'Automatisations et workflows qui économisent du temps et réduisent les erreurs humaines.',
+          : 'Automatisations et workflows qui Ã©conomisent du temps et rÃ©duisent les erreurs humaines.',
         metric: '-20h',
-        metricLabel: language === 'en' ? 'per month automated' : 'par mois automatisé',
+        metricLabel: language === 'en' ? 'per month automated' : 'par mois automatisÃ©',
       },
       card3: {
-        title: language === 'en' ? 'Measurable results' : 'Résultats mesurables',
+        title: language === 'en' ? 'Measurable results' : 'RÃ©sultats mesurables',
         description: language === 'en'
           ? 'Analytics, dashboards, and KPIs to track the real impact of every improvement.'
-          : 'Analytics, dashboards et KPIs pour suivre l\'impact réel de chaque amélioration.',
+          : 'Analytics, dashboards et KPIs pour suivre l\'impact rÃ©el de chaque amÃ©lioration.',
         metric: 'ROI',
-        metricLabel: language === 'en' ? 'recovered in 2-4 weeks' : 'récupéré en 2-4 semaines',
+        metricLabel: language === 'en' ? 'recovered in 2-4 weeks' : 'rÃ©cupÃ©rÃ© en 2-4 semaines',
       },
     },
     trust: {
       satisfaction: language === 'en' ? 'Client satisfaction' : 'Satisfaction clients',
-      responseTime: language === 'en' ? 'Response time' : 'Temps de réponse',
-      compliance: language === 'en' ? 'Compliance guaranteed' : 'Conformité garantie',
+      responseTime: language === 'en' ? 'Response time' : 'Temps de rÃ©ponse',
+      compliance: language === 'en' ? 'Compliance guaranteed' : 'ConformitÃ© garantie',
       nda: language === 'en' ? 'On request' : 'Sur demande',
     },
   };
@@ -111,8 +111,8 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
   // SEO Meta tags
   useEffect(() => {
     document.title = language === 'en'
-      ? "Services — UI/UX Design, Automation & AI — Maxence"
-      : "Services — UI/UX Design, Automatisation & IA — Maxence";
+      ? "Services â€” UI/UX Design, Automation & AI â€” Maxence"
+      : "Services â€” UI/UX Design, Automatisation & IA â€” Maxence";
     
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
@@ -120,7 +120,7 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
         "content",
         language === 'en'
           ? "UI/UX design + automation: I help startups and freelancers create high-performance interfaces and intelligent systems. Free audit."
-          : "UI/UX design + automatisation : j'aide les startups et freelances à créer des interfaces performantes et des systèmes intelligents. Audit gratuit."
+          : "UI/UX design + automatisation : j'aide les startups et freelances Ã  crÃ©er des interfaces performantes et des systÃ¨mes intelligents. Audit gratuit."
       );
     }
   }, [language]);
@@ -131,74 +131,74 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       id: "starter",
       name: "Starter",
       tagline: "Audit & Quick-Wins",
-      description: "Pour identifier rapidement les points d'amélioration et démarrer avec 2 automatisations simples.",
-      price: "300-500 €",
+      description: "Pour identifier rapidement les points d'amÃ©lioration et dÃ©marrer avec 2 automatisations simples.",
+      price: "300-500 â‚¬",
       duration: "3-5 jours",
       deliverables: [
         "Audit UX complet de votre produit",
         "2 automatisations rapides (emails, workflows)",
-        "Plan d'action priorisé (1 page)",
+        "Plan d'action priorisÃ© (1 page)",
         "Session de restitution (1h)",
       ],
       detailedDescription:
-        "Le pack Starter est idéal pour les projets en démarrage ou pour tester une collaboration. Je réalise un audit approfondi de votre interface, identifie les points de friction et implémente 2 automatisations simples pour économiser du temps dès maintenant.",
+        "Le pack Starter est idÃ©al pour les projets en dÃ©marrage ou pour tester une collaboration. Je rÃ©alise un audit approfondi de votre interface, identifie les points de friction et implÃ©mente 2 automatisations simples pour Ã©conomiser du temps dÃ¨s maintenant.",
       included: [
         "Support email pendant 7 jours",
-        "Document de synthèse en PDF",
-        "Recommandations priorisées",
+        "Document de synthÃ¨se en PDF",
+        "Recommandations priorisÃ©es",
       ],
     },
     {
       id: "pro",
       name: "Pro",
       tagline: "Product Experience",
-      description: "Refonte d'une page ou d'un flow complet + automatisations avancées + dashboard de suivi.",
-      price: "1 000-2 500 €",
+      description: "Refonte d'une page ou d'un flow complet + automatisations avancÃ©es + dashboard de suivi.",
+      price: "1 000-2 500 â‚¬",
       priceNote: "selon scope",
       duration: "1-2 semaines",
       recommended: true,
       deliverables: [
         "UI redesign complet d'1 page ou flow",
-        "Prototype interactif haute-fidélité",
-        "3 automatisations avancées (n8n, API, GPT)",
+        "Prototype interactif haute-fidÃ©litÃ©",
+        "3 automatisations avancÃ©es (n8n, API, GPT)",
         "Dashboard Notion/Airtable pour suivi",
         "Design system basique (couleurs, typo, composants)",
         "Support 14 jours post-livraison",
       ],
       detailedDescription:
-        "Le pack Pro est le plus populaire. Il combine un redesign complet d'une page ou d'un parcours utilisateur avec des automatisations intelligentes et un dashboard de suivi. Parfait pour les startups et PME qui veulent un résultat professionnel rapidement.",
+        "Le pack Pro est le plus populaire. Il combine un redesign complet d'une page ou d'un parcours utilisateur avec des automatisations intelligentes et un dashboard de suivi. Parfait pour les startups et PME qui veulent un rÃ©sultat professionnel rapidement.",
       included: [
         "Fichier Figma source",
         "Export assets (SVG, PNG)",
         "Documentation technique",
-        "1 itération de révision incluse",
+        "1 itÃ©ration de rÃ©vision incluse",
       ],
     },
     {
       id: "scale",
       name: "Scale",
       tagline: "System Builder",
-      description: "Design system complet, multi-pages, intégrations IA avancées et workflows complexes.",
-      price: "4 000+ €",
+      description: "Design system complet, multi-pages, intÃ©grations IA avancÃ©es et workflows complexes.",
+      price: "4 000+ â‚¬",
       priceNote: "sur devis",
       duration: "3-4 semaines",
       deliverables: [
-        "Design system complet et évolutif",
-        "Refonte multi-pages (jusqu'à 5 pages)",
-        "Intégrations IA avancées (GPT, APIs tierces)",
-        "Workflows automatisés complexes (n8n, Make, Zapier)",
-        "Dashboard analytique avancé",
-        "Documentation complète",
+        "Design system complet et Ã©volutif",
+        "Refonte multi-pages (jusqu'Ã  5 pages)",
+        "IntÃ©grations IA avancÃ©es (GPT, APIs tierces)",
+        "Workflows automatisÃ©s complexes (n8n, Make, Zapier)",
+        "Dashboard analytique avancÃ©",
+        "Documentation complÃ¨te",
         "Support 30 jours + maintenance",
       ],
       detailedDescription:
-        "Le pack Scale est conçu pour les projets ambitieux nécessitant une architecture solide, un design system complet et des automatisations avancées. Idéal pour les scaleups, agences et projets SaaS.",
+        "Le pack Scale est conÃ§u pour les projets ambitieux nÃ©cessitant une architecture solide, un design system complet et des automatisations avancÃ©es. IdÃ©al pour les scaleups, agences et projets SaaS.",
       included: [
         "Design system Figma + Storybook",
         "Code components (React/Vue)",
         "API documentation",
-        "Formation équipe (2h)",
-        "3 itérations de révision",
+        "Formation Ã©quipe (2h)",
+        "3 itÃ©rations de rÃ©vision",
       ],
     },
   ];
@@ -208,13 +208,13 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
     {
       step: "01",
       icon: Target,
-      title: language === 'en' ? 'Discovery & Goals' : 'Découverte & Objectifs',
+      title: language === 'en' ? 'Discovery & Goals' : 'DÃ©couverte & Objectifs',
       description: language === 'en'
         ? 'Kick-off call to understand your vision, users, and constraints.'
         : 'Kick-off call pour comprendre votre vision, vos utilisateurs et vos contraintes.',
       deliverables: language === 'en'
         ? ['Validated brief', 'User personas', 'Measurable objectives']
-        : ['Brief validé', 'User personas', 'Objectifs mesurables'],
+        : ['Brief validÃ©', 'User personas', 'Objectifs mesurables'],
       duration: language === 'en' ? '1-2 days' : '1-2 jours',
     },
     {
@@ -223,7 +223,7 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       title: language === 'en' ? 'Audit & Mapping' : 'Audit & Mapping',
       description: language === 'en'
         ? 'Analysis of existing situation, identification of pain points and improvement opportunities.'
-        : 'Analyse de l\'existant, identification des pain points et opportunités d\'amélioration.',
+        : 'Analyse de l\'existant, identification des pain points et opportunitÃ©s d\'amÃ©lioration.',
       deliverables: language === 'en'
         ? ['Audit report', 'User journey map', 'Quick-wins list']
         : ['Rapport d\'audit', 'User journey map', 'Liste des quick-wins'],
@@ -235,7 +235,7 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       title: language === 'en' ? 'Wireframes & Design System' : 'Wireframes & Design System',
       description: language === 'en'
         ? 'Creation of mockups, interactive prototypes, and design system foundations.'
-        : 'Création des maquettes, prototypes interactifs et fondations du design system.',
+        : 'CrÃ©ation des maquettes, prototypes interactifs et fondations du design system.',
       deliverables: language === 'en'
         ? ['Wireframes', 'Figma prototypes', 'Design system v1']
         : ['Wireframes', 'Prototypes Figma', 'Design system v1'],
@@ -244,25 +244,25 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
     {
       step: "04",
       icon: Code2,
-      title: language === 'en' ? 'Implementation & Automation' : 'Implémentation & Automatisation',
+      title: language === 'en' ? 'Implementation & Automation' : 'ImplÃ©mentation & Automatisation',
       description: language === 'en'
         ? 'Design integration, workflows setup, and API connections (n8n, GPT, etc.).'
-        : 'Intégration du design, setup des workflows et connexions API (n8n, GPT, etc.).',
+        : 'IntÃ©gration du design, setup des workflows et connexions API (n8n, GPT, etc.).',
       deliverables: language === 'en'
         ? ['Integrated UI', 'Active workflows', 'Configured dashboard']
-        : ['UI intégrée', 'Workflows actifs', 'Dashboard configuré'],
+        : ['UI intÃ©grÃ©e', 'Workflows actifs', 'Dashboard configurÃ©'],
       duration: language === 'en' ? '5-7 days' : '5-7 jours',
     },
     {
       step: "05",
       icon: Award,
-      title: language === 'en' ? 'Measure & Iterate' : 'Mesure & Itération',
+      title: language === 'en' ? 'Measure & Iterate' : 'Mesure & ItÃ©ration',
       description: language === 'en'
         ? 'Performance tracking, adjustments, and post-delivery support.'
         : 'Suivi des performances, ajustements et support post-livraison.',
       deliverables: language === 'en'
         ? ['Analytics setup', 'Performance report', 'Evolution recommendations']
-        : ['Analytics setup', 'Rapport de performance', 'Recommandations d\'évolution'],
+        : ['Analytics setup', 'Rapport de performance', 'Recommandations d\'Ã©volution'],
       duration: language === 'en' ? 'Ongoing' : 'En continu',
     },
   ];
@@ -276,13 +276,13 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       category: language === 'en' ? 'UI/UX + Automation' : 'UI/UX + Automatisation',
       problem: language === 'en'
         ? '83% cart abandonment rate, complex 6-step purchase process, no automated follow-up.'
-        : 'Taux d\'abandon panier à 83%, process d\'achat complexe avec 6 étapes, aucun suivi automatisé.',
+        : 'Taux d\'abandon panier Ã  83%, process d\'achat complexe avec 6 Ã©tapes, aucun suivi automatisÃ©.',
       action: language === 'en'
         ? 'Complete funnel redesign in 3 steps, added progress indicators, automated reminder emails.'
-        : 'Redesign complet du tunnel en 3 étapes, ajout d\'indicateurs de progression, automatisation emails de relance.',
+        : 'Redesign complet du tunnel en 3 Ã©tapes, ajout d\'indicateurs de progression, automatisation emails de relance.',
       result: language === 'en'
         ? 'Abandonment reduced to 52% (-31 points), +28% conversions, ROI recovered in 2 weeks.'
-        : 'Taux d\'abandon réduit à 52% (-31 points), +28% de conversions, ROI récupéré en 2 semaines.',
+        : 'Taux d\'abandon rÃ©duit Ã  52% (-31 points), +28% de conversions, ROI rÃ©cupÃ©rÃ© en 2 semaines.',
       metric: {
         value: "-31%",
         label: language === 'en' ? 'Cart abandonment' : 'Abandon panier',
@@ -291,7 +291,7 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
     },
     {
       id: "case-freelance",
-      title: language === 'en' ? 'Automated freelance dashboard' : 'Dashboard freelance automatisé',
+      title: language === 'en' ? 'Automated freelance dashboard' : 'Dashboard freelance automatisÃ©',
       client: language === 'en' ? 'Freelance designer' : 'Freelance designer',
       category: language === 'en' ? 'Automation + Dashboard' : 'Automatisation + Dashboard',
       problem: language === 'en'
@@ -299,30 +299,30 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
         : '15h/mois perdues sur administration : facturation, suivi clients, reporting.',
       action: language === 'en'
         ? 'Notion dashboard + n8n workflows: auto invoice generation, follow-up emails, weekly reports.'
-        : 'Dashboard Notion + workflows n8n : génération factures auto, emails de suivi, rapports hebdo.',
+        : 'Dashboard Notion + workflows n8n : gÃ©nÃ©ration factures auto, emails de suivi, rapports hebdo.',
       result: language === 'en'
         ? '15h/month saved, 100% automated invoicing, improved client satisfaction through proactive tracking.'
-        : 'Économie de 15h/mois, facturation 100% automatisée, satisfaction client accrue grâce au suivi proactif.',
+        : 'Ã‰conomie de 15h/mois, facturation 100% automatisÃ©e, satisfaction client accrue grÃ¢ce au suivi proactif.',
       metric: {
         value: "15h",
-        label: language === 'en' ? 'Saved/month' : 'Économisées/mois',
+        label: language === 'en' ? 'Saved/month' : 'Ã‰conomisÃ©es/mois',
       },
-      tags: language === 'en' ? ['Notion', 'n8n', 'Productivity'] : ['Notion', 'n8n', 'Productivité'],
+      tags: language === 'en' ? ['Notion', 'n8n', 'Productivity'] : ['Notion', 'n8n', 'ProductivitÃ©'],
     },
     {
       id: "case-saas",
-      title: language === 'en' ? 'Optimized SaaS onboarding' : 'Onboarding SaaS optimisé',
+      title: language === 'en' ? 'Optimized SaaS onboarding' : 'Onboarding SaaS optimisÃ©',
       client: language === 'en' ? 'B2B SaaS' : 'SaaS B2B',
       category: language === 'en' ? 'UI/UX + AI' : 'UI/UX + IA',
       problem: language === 'en'
         ? '30% of new users abandon during onboarding, no personalization.'
-        : '30% des nouveaux utilisateurs abandonnent à l\'onboarding, aucune personnalisation.',
+        : '30% des nouveaux utilisateurs abandonnent Ã  l\'onboarding, aucune personnalisation.',
       action: language === 'en'
         ? 'Interactive 4-step onboarding redesign, GPT integration for personalized recommendations.'
-        : 'Redesign onboarding interactif en 4 étapes, intégration GPT pour recommandations personnalisées.',
+        : 'Redesign onboarding interactif en 4 Ã©tapes, intÃ©gration GPT pour recommandations personnalisÃ©es.',
       result: language === 'en'
         ? '100% onboarding completion rate, +45% engagement, 22% improved D30 retention.'
-        : 'Taux de complétion onboarding 100%, engagement +45%, rétention J30 améliorée de 22%.',
+        : 'Taux de complÃ©tion onboarding 100%, engagement +45%, rÃ©tention J30 amÃ©liorÃ©e de 22%.',
       metric: {
         value: "+45%",
         label: language === 'en' ? 'Engagement' : 'Engagement',
@@ -339,20 +339,20 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       title: "UI/UX Design",
       description: language === 'en'
         ? 'Wireframes, high-fidelity mockups, interactive prototypes, and scalable design systems.'
-        : 'Wireframes, maquettes haute-fidélité, prototypes interactifs et design systems évolutifs.',
+        : 'Wireframes, maquettes haute-fidÃ©litÃ©, prototypes interactifs et design systems Ã©volutifs.',
       features: language === 'en'
         ? ['User research & personas', 'Wireframing & user flows', 'Clickable prototypes (Figma)', 'Design system & components']
         : ['User research & personas', 'Wireframing & user flows', 'Prototypes cliquables (Figma)', 'Design system & composants'],
       usageExample: language === 'en'
         ? 'Complete redesign of a SaaS app: from UX audit to design system in 2 weeks.'
-        : 'Refonte complète d\'une app SaaS : de l\'audit UX au design system en 2 semaines.',
+        : 'Refonte complÃ¨te d\'une app SaaS : de l\'audit UX au design system en 2 semaines.',
       duration: language === 'en' ? '5-10 days' : '5-10 jours',
-      complexity: (language === 'en' ? 'moderate' : 'modérée') as const,
+      complexity: (language === 'en' ? 'moderate' : 'modÃ©rÃ©e') as const,
     },
     {
       id: "integration-front",
       icon: Code2,
-      title: language === 'en' ? 'Front-end Integration' : 'Intégration Front-end',
+      title: language === 'en' ? 'Front-end Integration' : 'IntÃ©gration Front-end',
       description: language === 'en'
         ? 'Transform designs into functional interfaces with React, Framer, or Webflow.'
         : 'Transformation des designs en interfaces fonctionnelles avec React, Framer ou Webflow.',
@@ -361,9 +361,9 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
         : ['React/TypeScript', 'Framer / Webflow', 'Responsive design', 'Optimisation performance'],
       usageExample: language === 'en'
         ? 'Integration of a Figma design system into reusable React components.'
-        : 'Intégration d\'un design system Figma en composants React réutilisables.',
+        : 'IntÃ©gration d\'un design system Figma en composants React rÃ©utilisables.',
       duration: language === 'en' ? '5-7 days' : '5-7 jours',
-      complexity: (language === 'en' ? 'moderate' : 'modérée') as const,
+      complexity: (language === 'en' ? 'moderate' : 'modÃ©rÃ©e') as const,
     },
     {
       id: "automation",
@@ -371,15 +371,15 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       title: language === 'en' ? 'Automation (n8n, Make, Zapier)' : 'Automatisation (n8n, Make, Zapier)',
       description: language === 'en'
         ? 'Automated workflows to save time: emails, CRM, content generation.'
-        : 'Workflows automatisés pour économiser du temps : emails, CRM, génération de contenus.',
+        : 'Workflows automatisÃ©s pour Ã©conomiser du temps : emails, CRM, gÃ©nÃ©ration de contenus.',
       features: language === 'en'
         ? ['n8n / Make / Zapier', 'API integrations', 'Email automation', 'Webhooks & cron jobs']
-        : ['n8n / Make / Zapier', 'Intégrations API', 'Email automation', 'Webhooks & cron jobs'],
+        : ['n8n / Make / Zapier', 'IntÃ©grations API', 'Email automation', 'Webhooks & cron jobs'],
       usageExample: language === 'en'
         ? 'Complete automation of lead capture to CRM and follow-up emails.'
-        : 'Automatisation complète du process de lead capture vers CRM et emails de suivi.',
+        : 'Automatisation complÃ¨te du process de lead capture vers CRM et emails de suivi.',
       duration: language === 'en' ? '3-5 days' : '3-5 jours',
-      complexity: (language === 'en' ? 'moderate' : 'modérée') as const,
+      complexity: (language === 'en' ? 'moderate' : 'modÃ©rÃ©e') as const,
     },
     {
       id: "ai-integration",
@@ -387,15 +387,15 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       title: language === 'en' ? 'AI & Prompt Engineering' : 'IA & Prompts Engineering',
       description: language === 'en'
         ? 'GPT integration for content generation, summarization, chatbots, and AI assistants.'
-        : 'Intégration GPT pour génération de contenu, summarization, chatbots et assistants IA.',
+        : 'IntÃ©gration GPT pour gÃ©nÃ©ration de contenu, summarization, chatbots et assistants IA.',
       features: language === 'en'
         ? ['OpenAI GPT integration', 'Prompt engineering', 'Custom chatbots', 'Content generation']
-        : ['OpenAI GPT integration', 'Prompt engineering', 'Chatbots personnalisés', 'Content generation'],
+        : ['OpenAI GPT integration', 'Prompt engineering', 'Chatbots personnalisÃ©s', 'Content generation'],
       usageExample: language === 'en'
         ? 'GPT chatbot integrated for customer support with contextual responses based on documentation.'
-        : 'Chatbot GPT intégré pour support client avec réponses contextuelles basées sur la doc.',
+        : 'Chatbot GPT intÃ©grÃ© pour support client avec rÃ©ponses contextuelles basÃ©es sur la doc.',
       duration: language === 'en' ? '4-6 days' : '4-6 jours',
-      complexity: (language === 'en' ? 'advanced' : 'avancée') as const,
+      complexity: (language === 'en' ? 'advanced' : 'avancÃ©e') as const,
     },
     {
       id: "dashboards",
@@ -403,21 +403,21 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
       title: language === 'en' ? 'Dashboards & Reporting' : 'Dashboards & Reporting',
       description: language === 'en'
         ? 'Custom dashboards on Notion, Airtable, or custom interfaces to track your KPIs.'
-        : 'Tableaux de bord personnalisés sur Notion, Airtable ou interfaces custom pour suivre vos KPIs.',
+        : 'Tableaux de bord personnalisÃ©s sur Notion, Airtable ou interfaces custom pour suivre vos KPIs.',
       features: language === 'en'
         ? ['Notion / Airtable', 'Custom dashboards (React)', 'Data visualization', 'Automated reports']
-        : ['Notion / Airtable', 'Dashboards custom (React)', 'Visualisation de données', 'Rapports automatisés'],
+        : ['Notion / Airtable', 'Dashboards custom (React)', 'Visualisation de donnÃ©es', 'Rapports automatisÃ©s'],
       usageExample: language === 'en'
         ? 'Notion dashboard synced with Stripe, Google Analytics, and CRM for real-time business tracking.'
-        : 'Dashboard Notion synchronisé avec Stripe, Google Analytics et CRM pour suivi business temps réel.',
+        : 'Dashboard Notion synchronisÃ© avec Stripe, Google Analytics et CRM pour suivi business temps rÃ©el.',
       duration: language === 'en' ? '3-5 days' : '3-5 jours',
-      complexity: (language === 'en' ? 'moderate' : 'modérée') as const,
+      complexity: (language === 'en' ? 'moderate' : 'modÃ©rÃ©e') as const,
     },
   ];
 
   // FAQ - Utilisation des vraies FAQs de FAQPage
   const FAQ_CATEGORIES = [
-    { id: "general", name: "Général", name_en: "General", icon: User, color: "text-blue-400", order: 1 },
+    { id: "general", name: "GÃ©nÃ©ral", name_en: "General", icon: User, color: "text-blue-400", order: 1 },
     { id: "design", name: "Design", name_en: "Design", icon: Palette, color: "text-purple-400", order: 2 },
     { id: "automation", name: "Automatisation & IA", name_en: "Automation & AI", icon: Zap, color: "text-yellow-400", order: 3 },
     { id: "process", name: "Process client", name_en: "Client Process", icon: Clock, color: "text-green-400", order: 4 },
@@ -425,36 +425,36 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
   ];
 
   const FAQ_QUESTIONS = [
-    // ==================== GÉNÉRAL ====================
-    { id: "general_1", question: "Qui êtes-vous ?", question_en: "Who are you?", answer: "Je m'appelle Maxence, freelance spécialisé en design, automatisation et IA. J'aide les entreprises à créer des systèmes intelligents et des interfaces performantes.", answer_en: "I'm Maxence, a freelance designer and automation specialist. I help companies build smart systems and efficient interfaces.", categoryId: "general", order: 1, isPublished: true },
-    { id: "general_2", question: "Avec qui travaillez-vous ?", question_en: "Who do you work with?", answer: "Je collabore avec des startups, PME et indépendants qui souhaitent professionnaliser leur image et optimiser leurs process.", answer_en: "I collaborate with startups, SMEs, and independent creators.", categoryId: "general", order: 2, isPublished: true },
-    { id: "general_3", question: "Où êtes-vous basé ?", question_en: "Where are you based?", answer: "Je travaille en full remote, depuis la France.", answer_en: "I work fully remote from France.", categoryId: "general", order: 3, isPublished: true },
-    { id: "general_4", question: "Travaillez-vous à l'international ?", question_en: "Do you work internationally?", answer: "Oui, j'accompagne des clients dans plusieurs pays (Europe, États-Unis, Asie).", answer_en: "Yes, I work with clients from Europe, the U.S., and Asia.", categoryId: "general", order: 4, isPublished: true },
-    { id: "general_5", question: "Quelle est votre langue de travail ?", question_en: "What languages do you work in?", answer: "Je travaille en français et en anglais.", answer_en: "French and English.", categoryId: "general", order: 5, isPublished: true },
+    // ==================== GÃ‰NÃ‰RAL ====================
+    { id: "general_1", question: "Qui Ãªtes-vous ?", question_en: "Who are you?", answer: "Je m'appelle Maxence, freelance spÃ©cialisÃ© en design, automatisation et IA. J'aide les entreprises Ã  crÃ©er des systÃ¨mes intelligents et des interfaces performantes.", answer_en: "I'm Maxence, a freelance designer and automation specialist. I help companies build smart systems and efficient interfaces.", categoryId: "general", order: 1, isPublished: true },
+    { id: "general_2", question: "Avec qui travaillez-vous ?", question_en: "Who do you work with?", answer: "Je collabore avec des startups, PME et indÃ©pendants qui souhaitent professionnaliser leur image et optimiser leurs process.", answer_en: "I collaborate with startups, SMEs, and independent creators.", categoryId: "general", order: 2, isPublished: true },
+    { id: "general_3", question: "OÃ¹ Ãªtes-vous basÃ© ?", question_en: "Where are you based?", answer: "Je travaille en full remote, depuis la France.", answer_en: "I work fully remote from France.", categoryId: "general", order: 3, isPublished: true },
+    { id: "general_4", question: "Travaillez-vous Ã  l'international ?", question_en: "Do you work internationally?", answer: "Oui, j'accompagne des clients dans plusieurs pays (Europe, Ã‰tats-Unis, Asie).", answer_en: "Yes, I work with clients from Europe, the U.S., and Asia.", categoryId: "general", order: 4, isPublished: true },
+    { id: "general_5", question: "Quelle est votre langue de travail ?", question_en: "What languages do you work in?", answer: "Je travaille en franÃ§ais et en anglais.", answer_en: "French and English.", categoryId: "general", order: 5, isPublished: true },
     
     // ==================== DESIGN ====================
-    { id: "design_1", question: "Quels types de design proposez-vous ?", question_en: "What kind of design services do you offer?", answer: "Web design, UI/UX design, maquettes complètes de site, et création de dashboards personnalisés.", answer_en: "Web design, UI/UX design, full site mockups, and custom dashboard creation.", categoryId: "design", order: 1, isPublished: true },
-    { id: "design_2", question: "Utilisez-vous Figma pour vos projets ?", question_en: "Do you use Figma?", answer: "Oui, Figma est mon outil principal. Je l'utilise aussi avec Figma AI pour accélérer la conception.", answer_en: "Yes, Figma (and Figma AI) is my main design tool.", categoryId: "design", order: 2, isPublished: true },
-    { id: "design_3", question: "Pouvez-vous refaire entièrement un site existant ?", question_en: "Can you redesign an existing website?", answer: "Oui, je peux effectuer une refonte complète, que ce soit sur le plan visuel ou structurel.", answer_en: "Absolutely — I can fully redesign and optimize your current site.", categoryId: "design", order: 3, isPublished: true },
-    { id: "design_4", question: "Proposez-vous des identités visuelles complètes ?", question_en: "Do you create full visual identities?", answer: "Oui, je peux concevoir un système visuel complet : couleurs, typographie, logo et composants.", answer_en: "Yes, including colors, typography, logos, and components.", categoryId: "design", order: 4, isPublished: true },
-    { id: "design_5", question: "Offrez-vous des prototypes interactifs ?", question_en: "Do you provide interactive prototypes?", answer: "Oui, chaque projet est livré avec un prototype cliquable pour valider les interactions avant développement.", answer_en: "Yes, every project includes a clickable prototype before development.", categoryId: "design", order: 5, isPublished: true },
+    { id: "design_1", question: "Quels types de design proposez-vous ?", question_en: "What kind of design services do you offer?", answer: "Web design, UI/UX design, maquettes complÃ¨tes de site, et crÃ©ation de dashboards personnalisÃ©s.", answer_en: "Web design, UI/UX design, full site mockups, and custom dashboard creation.", categoryId: "design", order: 1, isPublished: true },
+    { id: "design_2", question: "Utilisez-vous Figma pour vos projets ?", question_en: "Do you use Figma?", answer: "Oui, Figma est mon outil principal. Je l'utilise aussi avec Figma AI pour accÃ©lÃ©rer la conception.", answer_en: "Yes, Figma (and Figma AI) is my main design tool.", categoryId: "design", order: 2, isPublished: true },
+    { id: "design_3", question: "Pouvez-vous refaire entiÃ¨rement un site existant ?", question_en: "Can you redesign an existing website?", answer: "Oui, je peux effectuer une refonte complÃ¨te, que ce soit sur le plan visuel ou structurel.", answer_en: "Absolutely â€” I can fully redesign and optimize your current site.", categoryId: "design", order: 3, isPublished: true },
+    { id: "design_4", question: "Proposez-vous des identitÃ©s visuelles complÃ¨tes ?", question_en: "Do you create full visual identities?", answer: "Oui, je peux concevoir un systÃ¨me visuel complet : couleurs, typographie, logo et composants.", answer_en: "Yes, including colors, typography, logos, and components.", categoryId: "design", order: 4, isPublished: true },
+    { id: "design_5", question: "Offrez-vous des prototypes interactifs ?", question_en: "Do you provide interactive prototypes?", answer: "Oui, chaque projet est livrÃ© avec un prototype cliquable pour valider les interactions avant dÃ©veloppement.", answer_en: "Yes, every project includes a clickable prototype before development.", categoryId: "design", order: 5, isPublished: true },
     
     // ==================== AUTOMATION & AI ====================
-    { id: "automation_1", question: "Qu'est-ce que l'automatisation d'entreprise ?", question_en: "What is business automation?", answer: "C'est la mise en place de processus qui se déclenchent automatiquement (envoi d'emails, génération de factures, synchronisation de données, etc.).", answer_en: "It's about creating workflows that run automatically (emails, invoices, data sync, etc.).", categoryId: "automation", order: 1, isPublished: true },
-    { id: "automation_2", question: "Quels outils d'automatisation utilisez-vous ?", question_en: "What tools do you use for automation?", answer: "J'utilise principalement n8n, Zapier et des solutions maison codées directement dans vos systèmes.", answer_en: "Mainly n8n, Zapier, and custom-coded automations.", categoryId: "automation", order: 2, isPublished: true },
-    { id: "automation_3", question: "Proposez-vous des intégrations IA ?", question_en: "Do you integrate AI?", answer: "Oui, j'intègre des modèles d'IA pour améliorer la productivité : génération de contenu, réponses automatiques, analyse de données, etc.", answer_en: "Yes, I use AI for productivity: content generation, analysis, smart notifications.", categoryId: "automation", order: 3, isPublished: true },
-    { id: "automation_4", question: "Pouvez-vous créer un système entièrement personnalisé sans no-code ?", question_en: "Can you build custom systems from scratch (no no-code)?", answer: "Oui, je code les systèmes à la main si nécessaire, notamment pour les dashboards internes.", answer_en: "Yes, I develop everything directly when necessary.", categoryId: "automation", order: 4, isPublished: true },
-    { id: "automation_5", question: "L'IA remplace-t-elle le design humain ?", question_en: "Does AI replace human design?", answer: "Non, elle l'accélère. L'IA m'aide à prototyper et tester plus vite, mais le design final reste 100 % humain.", answer_en: "No, it speeds it up — design decisions remain human.", categoryId: "automation", order: 5, isPublished: true },
+    { id: "automation_1", question: "Qu'est-ce que l'automatisation d'entreprise ?", question_en: "What is business automation?", answer: "C'est la mise en place de processus qui se dÃ©clenchent automatiquement (envoi d'emails, gÃ©nÃ©ration de factures, synchronisation de donnÃ©es, etc.).", answer_en: "It's about creating workflows that run automatically (emails, invoices, data sync, etc.).", categoryId: "automation", order: 1, isPublished: true },
+    { id: "automation_2", question: "Quels outils d'automatisation utilisez-vous ?", question_en: "What tools do you use for automation?", answer: "J'utilise principalement n8n, Zapier et des solutions maison codÃ©es directement dans vos systÃ¨mes.", answer_en: "Mainly n8n, Zapier, and custom-coded automations.", categoryId: "automation", order: 2, isPublished: true },
+    { id: "automation_3", question: "Proposez-vous des intÃ©grations IA ?", question_en: "Do you integrate AI?", answer: "Oui, j'intÃ¨gre des modÃ¨les d'IA pour amÃ©liorer la productivitÃ© : gÃ©nÃ©ration de contenu, rÃ©ponses automatiques, analyse de donnÃ©es, etc.", answer_en: "Yes, I use AI for productivity: content generation, analysis, smart notifications.", categoryId: "automation", order: 3, isPublished: true },
+    { id: "automation_4", question: "Pouvez-vous crÃ©er un systÃ¨me entiÃ¨rement personnalisÃ© sans no-code ?", question_en: "Can you build custom systems from scratch (no no-code)?", answer: "Oui, je code les systÃ¨mes Ã  la main si nÃ©cessaire, notamment pour les dashboards internes.", answer_en: "Yes, I develop everything directly when necessary.", categoryId: "automation", order: 4, isPublished: true },
+    { id: "automation_5", question: "L'IA remplace-t-elle le design humain ?", question_en: "Does AI replace human design?", answer: "Non, elle l'accÃ©lÃ¨re. L'IA m'aide Ã  prototyper et tester plus vite, mais le design final reste 100 % humain.", answer_en: "No, it speeds it up â€” design decisions remain human.", categoryId: "automation", order: 5, isPublished: true },
     
     // ==================== PROCESS CLIENT ====================
-    { id: "process_1", question: "Comment se déroule un projet typique ?", question_en: "What's your typical workflow?", answer: "Étape 1 : Appel découverte → Étape 2 : Proposition → Étape 3 : Design / Développement → Étape 4 : Livraison & suivi.", answer_en: "Step 1: Discovery call → Step 2: Proposal → Step 3: Design/Build → Step 4: Delivery & follow-up.", categoryId: "process", order: 1, isPublished: true },
-    { id: "process_2", question: "Quelle est la durée typique d'un projet ?", question_en: "How long does a project take?", answer: "Cela dépend du pack : quelques jours pour un Starter, 1-2 semaines pour du Pro, et 3-4 semaines pour un Scale.", answer_en: "It depends: a few days for Starter, 1-2 weeks for Pro, 3-4 weeks for Scale.", categoryId: "process", order: 2, isPublished: true },
-    { id: "process_3", question: "Proposez-vous des révisions ?", question_en: "Do you offer revisions?", answer: "Oui, chaque pack inclut des révisions (1 à 3 itérations selon le niveau).", answer_en: "Yes, each package includes revisions (1-3 rounds depending on the level).", categoryId: "process", order: 3, isPublished: true },
+    { id: "process_1", question: "Comment se dÃ©roule un projet typique ?", question_en: "What's your typical workflow?", answer: "Ã‰tape 1 : Appel dÃ©couverte â†’ Ã‰tape 2 : Proposition â†’ Ã‰tape 3 : Design / DÃ©veloppement â†’ Ã‰tape 4 : Livraison & suivi.", answer_en: "Step 1: Discovery call â†’ Step 2: Proposal â†’ Step 3: Design/Build â†’ Step 4: Delivery & follow-up.", categoryId: "process", order: 1, isPublished: true },
+    { id: "process_2", question: "Quelle est la durÃ©e typique d'un projet ?", question_en: "How long does a project take?", answer: "Cela dÃ©pend du pack : quelques jours pour un Starter, 1-2 semaines pour du Pro, et 3-4 semaines pour un Scale.", answer_en: "It depends: a few days for Starter, 1-2 weeks for Pro, 3-4 weeks for Scale.", categoryId: "process", order: 2, isPublished: true },
+    { id: "process_3", question: "Proposez-vous des rÃ©visions ?", question_en: "Do you offer revisions?", answer: "Oui, chaque pack inclut des rÃ©visions (1 Ã  3 itÃ©rations selon le niveau).", answer_en: "Yes, each package includes revisions (1-3 rounds depending on the level).", categoryId: "process", order: 3, isPublished: true },
     
     // ==================== TARIFICATION ====================
-    { id: "pricing_1", question: "Quels sont vos tarifs ?", question_en: "What are your rates?", answer: "Les tarifs varient selon le projet. Contactez-moi pour un devis personnalisé adapté à vos besoins.", answer_en: "Rates vary by project. Contact me for a custom quote tailored to your needs.", categoryId: "pricing", order: 1, isPublished: true },
-    { id: "pricing_2", question: "Comment se passe le paiement ?", question_en: "How does payment work?", answer: "Paiement en 2 fois : un acompte au démarrage, et le solde à la livraison. Virement bancaire ou Stripe acceptés.", answer_en: "Payment in 2 installments: deposit upfront, balance upon delivery. Bank transfer or Stripe accepted.", categoryId: "pricing", order: 2, isPublished: true },
-    { id: "pricing_3", question: "Offrez-vous une garantie ?", question_en: "Do you offer a guarantee?", answer: "Oui, un support post-livraison est inclus pour corrections et ajustements (7 à 30 jours selon le pack).", answer_en: "Yes, post-delivery support is included for fixes and adjustments (7-30 days depending on package).", categoryId: "pricing", order: 3, isPublished: true },
+    { id: "pricing_1", question: "Quels sont vos tarifs ?", question_en: "What are your rates?", answer: "Les tarifs varient selon le projet. Contactez-moi pour un devis personnalisÃ© adaptÃ© Ã  vos besoins.", answer_en: "Rates vary by project. Contact me for a custom quote tailored to your needs.", categoryId: "pricing", order: 1, isPublished: true },
+    { id: "pricing_2", question: "Comment se passe le paiement ?", question_en: "How does payment work?", answer: "Paiement en 2 fois : un acompte au dÃ©marrage, et le solde Ã  la livraison. Virement bancaire ou Stripe acceptÃ©s.", answer_en: "Payment in 2 installments: deposit upfront, balance upon delivery. Bank transfer or Stripe accepted.", categoryId: "pricing", order: 2, isPublished: true },
+    { id: "pricing_3", question: "Offrez-vous une garantie ?", question_en: "Do you offer a guarantee?", answer: "Oui, un support post-livraison est inclus pour corrections et ajustements (7 Ã  30 jours selon le pack).", answer_en: "Yes, post-delivery support is included for fixes and adjustments (7-30 days depending on package).", categoryId: "pricing", order: 3, isPublished: true },
   ];
 
   const faqs = t.language === 'en' 
@@ -471,8 +471,8 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
             className="absolute inset-0"
             style={{
               backgroundImage: `
-              linear-gradient(rgba(0, 255, 194, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 255, 194, 0.03) 1px, transparent 1px)
+              linear-gradient(rgba(204, 255, 0, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(204, 255, 0, 0.03) 1px, transparent 1px)
             `,
               backgroundSize: "80px 80px",
             }}
@@ -516,7 +516,7 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
 
             <p className="text-xl md:text-2xl text-neutral-400 mb-12 leading-relaxed max-w-3xl mx-auto">
               {text.hero.subtitle}
-              produits clairs, évolutifs et économes en temps.
+              produits clairs, Ã©volutifs et Ã©conomes en temps.
             </p>
 
             {/* Cover image from cahier des charges */}

@@ -31,7 +31,7 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
     setIsSubmitting(true);
 
     try {
-      console.log("📧 Subscribing to newsletter:", email, "Language:", language);
+      console.log("ðŸ“§ Subscribing to newsletter:", email, "Language:", language);
       
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/newsletter/subscribe`,
@@ -49,10 +49,10 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
         }
       );
 
-      console.log("📧 Newsletter response status:", response.status);
+      console.log("ðŸ“§ Newsletter response status:", response.status);
       
       const data = await response.json();
-      console.log("📧 Newsletter response data:", data);
+      console.log("ðŸ“§ Newsletter response data:", data);
 
       // Handle already subscribed case (backend now returns success: false for duplicates)
       if (data.alreadySubscribed) {
@@ -74,11 +74,11 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
         // Reset success after 5s
         setTimeout(() => setIsSuccess(false), 5000);
       } else {
-        console.error("❌ Newsletter error:", data);
+        console.error("âŒ Newsletter error:", data);
         toast.error(data.message || data.error || t("newsletter.form.error"));
       }
     } catch (error) {
-      console.error("❌ Newsletter subscription error:", error);
+      console.error("âŒ Newsletter subscription error:", error);
       toast.error(t("newsletter.form.error"));
     } finally {
       setIsSubmitting(false);
@@ -87,19 +87,19 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
 
   if (isSuccess && variant === "minimal") {
     return (
-      <div className={`flex items-center gap-2 p-3 rounded-lg bg-[#00FFC2]/10 border border-[#00FFC2]/30 ${className}`}>
-        <CheckCircle2 className="h-4 w-4 text-[#00FFC2] flex-shrink-0" />
-        <p className="text-sm text-[#00FFC2]">{t("newsletter.form.success")}</p>
+      <div className={`flex items-center gap-2 p-3 rounded-lg bg-[#CCFF00]/10 border border-[#CCFF00]/30 ${className}`}>
+        <CheckCircle2 className="h-4 w-4 text-[#CCFF00] flex-shrink-0" />
+        <p className="text-sm text-[#CCFF00]">{t("newsletter.form.success")}</p>
       </div>
     );
   }
 
   if (isSuccess && variant === "default") {
     return (
-      <div className={`flex items-center gap-3 p-4 rounded-lg bg-[#00FFC2]/10 border border-[#00FFC2]/30 ${className}`}>
-        <CheckCircle2 className="h-5 w-5 text-[#00FFC2] flex-shrink-0" />
+      <div className={`flex items-center gap-3 p-4 rounded-lg bg-[#CCFF00]/10 border border-[#CCFF00]/30 ${className}`}>
+        <CheckCircle2 className="h-5 w-5 text-[#CCFF00] flex-shrink-0" />
         <div>
-          <p className="text-sm text-[#00FFC2] mb-1">{t("newsletter.form.success")}</p>
+          <p className="text-sm text-[#CCFF00] mb-1">{t("newsletter.form.success")}</p>
           <p className="text-xs text-white/70">{t("newsletter.form.successDescription")}</p>
         </div>
       </div>
@@ -120,7 +120,7 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90 flex-shrink-0"
+          className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90 flex-shrink-0"
         >
           {isSubmitting ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -146,7 +146,7 @@ export function NewsletterForm({ variant = "default", className = "", onSuccess 
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+          className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
         >
           {isSubmitting ? (
             <Loader2 className="h-4 w-4 animate-spin" />

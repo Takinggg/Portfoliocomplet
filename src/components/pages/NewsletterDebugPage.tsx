@@ -50,10 +50,10 @@ export default function NewsletterDebugPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl mb-4">
-            Newsletter Debug <span className="text-[#00FFC2]">.</span>
+            Newsletter Debug <span className="text-[#CCFF00]">.</span>
           </h1>
           <p className="text-[#A3A3A3] text-lg">
-            Vérification de la configuration FRONTEND_URL pour les emails de confirmation
+            VÃ©rification de la configuration FRONTEND_URL pour les emails de confirmation
           </p>
         </div>
 
@@ -62,7 +62,7 @@ export default function NewsletterDebugPage() {
           <Button
             onClick={loadConfig}
             disabled={loading}
-            className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+            className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
           >
             <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
             Recharger
@@ -86,7 +86,7 @@ export default function NewsletterDebugPage() {
         {loading && !config && (
           <Card className="bg-[#1A1A1A] border-[#2A2A2A] p-12">
             <div className="flex items-center justify-center gap-3">
-              <RefreshCw className="w-6 h-6 animate-spin text-[#00FFC2]" />
+              <RefreshCw className="w-6 h-6 animate-spin text-[#CCFF00]" />
               <p className="text-[#A3A3A3]">Chargement de la configuration...</p>
             </div>
           </Card>
@@ -119,7 +119,7 @@ export default function NewsletterDebugPage() {
                   }>
                     {config.isValid 
                       ? 'Les emails de confirmation contiendront des liens valides.'
-                      : 'Les emails ne pourront pas générer de liens de confirmation corrects.'
+                      : 'Les emails ne pourront pas gÃ©nÃ©rer de liens de confirmation corrects.'
                     }
                   </p>
                 </div>
@@ -128,7 +128,7 @@ export default function NewsletterDebugPage() {
 
             {/* Configuration Details */}
             <Card className="bg-[#1A1A1A] border-[#2A2A2A] p-6">
-              <h3 className="text-xl font-semibold mb-6">Détails de configuration</h3>
+              <h3 className="text-xl font-semibold mb-6">DÃ©tails de configuration</h3>
               
               <div className="space-y-4">
                 
@@ -139,7 +139,7 @@ export default function NewsletterDebugPage() {
                     {config.hasProtocol ? (
                       <Badge className="bg-green-500/20 text-green-500 border-green-500">
                         <CheckCircle className="w-3 h-3 mr-1" />
-                        Protocole présent
+                        Protocole prÃ©sent
                       </Badge>
                     ) : (
                       <Badge className="bg-orange-500/20 text-orange-500 border-orange-500">
@@ -149,8 +149,8 @@ export default function NewsletterDebugPage() {
                     )}
                   </div>
                   <div className="bg-[#0C0C0C] p-3 rounded-md border border-[#2A2A2A]">
-                    <code className="text-[#00FFC2] text-sm">
-                      {config.raw || '(non défini)'}
+                    <code className="text-[#CCFF00] text-sm">
+                      {config.raw || '(non dÃ©fini)'}
                     </code>
                   </div>
                 </div>
@@ -158,10 +158,10 @@ export default function NewsletterDebugPage() {
                 {/* Fixed Value */}
                 <div>
                   <span className="text-[#A3A3A3] text-sm font-medium mb-2 block">
-                    Valeur corrigée (utilisée par le serveur)
+                    Valeur corrigÃ©e (utilisÃ©e par le serveur)
                   </span>
                   <div className="bg-[#0C0C0C] p-3 rounded-md border border-[#2A2A2A]">
-                    <code className="text-[#00FFC2] text-sm">
+                    <code className="text-[#CCFF00] text-sm">
                       {config.fixed}
                     </code>
                   </div>
@@ -171,10 +171,10 @@ export default function NewsletterDebugPage() {
                 {config.testUrl && (
                   <div>
                     <span className="text-[#A3A3A3] text-sm font-medium mb-2 block">
-                      Exemple d'URL de confirmation générée
+                      Exemple d'URL de confirmation gÃ©nÃ©rÃ©e
                     </span>
                     <div className="bg-[#0C0C0C] p-3 rounded-md border border-[#2A2A2A]">
-                      <code className="text-[#00FFC2] text-sm break-all">
+                      <code className="text-[#CCFF00] text-sm break-all">
                         {config.testUrl}
                       </code>
                     </div>
@@ -182,9 +182,9 @@ export default function NewsletterDebugPage() {
                       href={config.testUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 mt-2 text-sm text-[#00FFC2] hover:underline"
+                      className="inline-flex items-center gap-2 mt-2 text-sm text-[#CCFF00] hover:underline"
                     >
-                      Tester ce lien →
+                      Tester ce lien â†’
                     </a>
                   </div>
                 )}
@@ -195,56 +195,56 @@ export default function NewsletterDebugPage() {
             {!config.isValid && (
               <Card className="bg-[#1A1A1A] border-[#2A2A2A] p-6">
                 <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <AlertCircle className="w-5 h-5 text-[#00FFC2]" />
+                  <AlertCircle className="w-5 h-5 text-[#CCFF00]" />
                   Comment corriger ?
                 </h3>
                 
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-semibold text-[#00FFC2] mb-2">1. Ouvre le Dashboard Supabase</h4>
+                    <h4 className="font-semibold text-[#CCFF00] mb-2">1. Ouvre le Dashboard Supabase</h4>
                     <a 
                       href="https://supabase.com/dashboard"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-[#A3A3A3] hover:text-[#00FFC2] underline"
+                      className="text-sm text-[#A3A3A3] hover:text-[#CCFF00] underline"
                     >
                       https://supabase.com/dashboard
                     </a>
                   </div>
 
                   <div>
-                    <h4 className="font-semibold text-[#00FFC2] mb-2">2. Va dans Edge Functions</h4>
+                    <h4 className="font-semibold text-[#CCFF00] mb-2">2. Va dans Edge Functions</h4>
                     <p className="text-sm text-[#A3A3A3]">
-                      Menu de gauche → Edge Functions → Ta fonction "server"
+                      Menu de gauche â†’ Edge Functions â†’ Ta fonction "server"
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="font-semibold text-[#00FFC2] mb-2">3. Configure la variable</h4>
+                    <h4 className="font-semibold text-[#CCFF00] mb-2">3. Configure la variable</h4>
                     <p className="text-sm text-[#A3A3A3] mb-2">
-                      Onglet "Settings" ou "Secrets" → Ajoute :
+                      Onglet "Settings" ou "Secrets" â†’ Ajoute :
                     </p>
                     <div className="bg-[#0C0C0C] p-3 rounded-md border border-[#2A2A2A]">
                       <div className="text-sm">
                         <div className="text-[#A3A3A3]">Nom :</div>
-                        <code className="text-[#00FFC2]">FRONTEND_URL</code>
+                        <code className="text-[#CCFF00]">FRONTEND_URL</code>
                       </div>
                       <div className="text-sm mt-2">
                         <div className="text-[#A3A3A3]">Valeur :</div>
-                        <code className="text-[#00FFC2]">https://ton-domaine.com</code>
+                        <code className="text-[#CCFF00]">https://ton-domaine.com</code>
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <h4 className="font-semibold text-[#00FFC2] mb-2">4. Redémarre la fonction</h4>
+                    <h4 className="font-semibold text-[#CCFF00] mb-2">4. RedÃ©marre la fonction</h4>
                     <p className="text-sm text-[#A3A3A3]">
-                      Si nécessaire, redéploie la fonction Edge
+                      Si nÃ©cessaire, redÃ©ploie la fonction Edge
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="font-semibold text-[#00FFC2] mb-2">5. Vérifie</h4>
+                    <h4 className="font-semibold text-[#CCFF00] mb-2">5. VÃ©rifie</h4>
                     <p className="text-sm text-[#A3A3A3]">
                       Clique sur le bouton "Recharger" en haut de cette page
                     </p>
@@ -261,13 +261,13 @@ export default function NewsletterDebugPage() {
                   <div>
                     <h3 className="text-green-500 font-semibold mb-2">Configuration OK !</h3>
                     <p className="text-green-300 mb-4">
-                      Le système newsletter est prêt à fonctionner. Les emails de confirmation contiendront des liens valides et cliquables.
+                      Le systÃ¨me newsletter est prÃªt Ã  fonctionner. Les emails de confirmation contiendront des liens valides et cliquables.
                     </p>
                     <a 
                       href="/"
-                      className="inline-flex items-center gap-2 text-sm text-[#00FFC2] hover:underline"
+                      className="inline-flex items-center gap-2 text-sm text-[#CCFF00] hover:underline"
                     >
-                      ← Retour au site
+                      â† Retour au site
                     </a>
                   </div>
                 </div>

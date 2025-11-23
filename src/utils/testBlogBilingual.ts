@@ -1,17 +1,17 @@
 /**
- * Test du système de blog bilingue
+ * Test du systÃ¨me de blog bilingue
  * Usage: await testBlogBilingual()
  */
 
 import { projectId, publicAnonKey } from "./supabase/info";
 
 export async function testBlogBilingual() {
-  console.log("%c🌍 Test du Blog Bilingue", "font-size: 16px; font-weight: bold; color: #00FFC2");
-  console.log("━".repeat(50));
+  console.log("%cðŸŒ Test du Blog Bilingue", "font-size: 16px; font-weight: bold; color: #CCFF00");
+  console.log("â”".repeat(50));
   
   try {
     // 1. Test articles FR
-    console.log("\n%c📝 Test Articles Français", "font-weight: bold; color: #00FFC2");
+    console.log("\n%cðŸ“ Test Articles FranÃ§ais", "font-weight: bold; color: #CCFF00");
     const responseFr = await fetch(
       `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/blog/posts?lang=fr`,
       {
@@ -23,16 +23,16 @@ export async function testBlogBilingual() {
     
     if (responseFr.ok) {
       const postsFr = await responseFr.json();
-      console.log(`✅ ${postsFr.length} articles trouvés en français`);
+      console.log(`âœ… ${postsFr.length} articles trouvÃ©s en franÃ§ais`);
       postsFr.forEach((post, i: number) => {
         console.log(`   ${i + 1}. ${post.title} (${post.slug})`);
       });
     } else {
-      console.error("❌ Erreur récupération articles FR:", responseFr.status);
+      console.error("âŒ Erreur rÃ©cupÃ©ration articles FR:", responseFr.status);
     }
     
     // 2. Test articles EN
-    console.log("\n%c📝 Test Articles English", "font-weight: bold; color: #00FFC2");
+    console.log("\n%cðŸ“ Test Articles English", "font-weight: bold; color: #CCFF00");
     const responseEn = await fetch(
       `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/blog/posts?lang=en`,
       {
@@ -44,16 +44,16 @@ export async function testBlogBilingual() {
     
     if (responseEn.ok) {
       const postsEn = await responseEn.json();
-      console.log(`✅ ${postsEn.length} articles trouvés en anglais`);
+      console.log(`âœ… ${postsEn.length} articles trouvÃ©s en anglais`);
       postsEn.forEach((post, i: number) => {
         console.log(`   ${i + 1}. ${post.title} (${post.slug})`);
       });
     } else {
-      console.error("❌ Erreur récupération articles EN:", responseEn.status);
+      console.error("âŒ Erreur rÃ©cupÃ©ration articles EN:", responseEn.status);
     }
     
-    // 3. Résumé
-    console.log("\n%c📊 Résumé", "font-weight: bold; color: #00FFC2");
+    // 3. RÃ©sumÃ©
+    console.log("\n%cðŸ“Š RÃ©sumÃ©", "font-weight: bold; color: #CCFF00");
     const totalFr = responseFr.ok ? (await responseFr.clone().json()).length : 0;
     const totalEn = responseEn.ok ? (await responseEn.clone().json()).length : 0;
     
@@ -62,30 +62,30 @@ export async function testBlogBilingual() {
     console.log(`   Total: ${totalFr + totalEn}`);
     
     if (totalFr === 0 && totalEn === 0) {
-      console.log("\n%c⚠️ Aucun article trouvé", "color: orange; font-weight: bold");
-      console.log("   Utilisez le bouton 'Initialiser Blog' pour créer les articles");
-      console.log("   Ou exécutez: await seedBlogPostsBilingual()");
+      console.log("\n%câš ï¸ Aucun article trouvÃ©", "color: orange; font-weight: bold");
+      console.log("   Utilisez le bouton 'Initialiser Blog' pour crÃ©er les articles");
+      console.log("   Ou exÃ©cutez: await seedBlogPostsBilingual()");
     } else if (totalFr === 0) {
-      console.log("\n%c⚠️ Articles français manquants", "color: orange; font-weight: bold");
+      console.log("\n%câš ï¸ Articles franÃ§ais manquants", "color: orange; font-weight: bold");
     } else if (totalEn === 0) {
-      console.log("\n%c⚠️ Articles anglais manquants", "color: orange; font-weight: bold");
-      console.log("   C'était le problème ! Utilisez seedBlogPostsBilingual()");
+      console.log("\n%câš ï¸ Articles anglais manquants", "color: orange; font-weight: bold");
+      console.log("   C'Ã©tait le problÃ¨me ! Utilisez seedBlogPostsBilingual()");
     } else {
-      console.log("\n%c✅ Blog bilingue complet !", "color: #00FFC2; font-weight: bold");
+      console.log("\n%câœ… Blog bilingue complet !", "color: #CCFF00; font-weight: bold");
     }
     
   } catch (error) {
-    console.error("❌ Erreur lors du test:", error);
+    console.error("âŒ Erreur lors du test:", error);
   }
   
-  console.log("\n" + "━".repeat(50));
+  console.log("\n" + "â”".repeat(50));
 }
 
 /**
  * Test rapide pour voir si les articles changent selon la langue
  */
 export async function testLanguageSwitching() {
-  console.log("%c🔄 Test du Changement de Langue", "font-size: 16px; font-weight: bold; color: #00FFC2");
+  console.log("%cðŸ”„ Test du Changement de Langue", "font-size: 16px; font-weight: bold; color: #CCFF00");
   
   const testLang = async (lang: string) => {
     const response = await fetch(
@@ -107,16 +107,16 @@ export async function testLanguageSwitching() {
   const postsFr = await testLang("fr");
   const postsEn = await testLang("en");
   
-  console.log(`\nFrançais: ${postsFr.length} articles`);
+  console.log(`\nFranÃ§ais: ${postsFr.length} articles`);
   console.log(`Anglais: ${postsEn.length} articles`);
   
   if (postsFr.length > 0 && postsEn.length > 0) {
-    console.log("\n%c✅ Le changement de langue fonctionne !", "color: #00FFC2; font-weight: bold");
+    console.log("\n%câœ… Le changement de langue fonctionne !", "color: #CCFF00; font-weight: bold");
   } else if (postsFr.length > 0 && postsEn.length === 0) {
-    console.log("\n%c❌ Pas d'articles en anglais !", "color: red; font-weight: bold");
-    console.log("   Solution: Exécutez seedBlogPostsBilingual()");
+    console.log("\n%câŒ Pas d'articles en anglais !", "color: red; font-weight: bold");
+    console.log("   Solution: ExÃ©cutez seedBlogPostsBilingual()");
   } else {
-    console.log("\n%c⚠️ Problème détecté", "color: orange; font-weight: bold");
+    console.log("\n%câš ï¸ ProblÃ¨me dÃ©tectÃ©", "color: orange; font-weight: bold");
   }
 }
 

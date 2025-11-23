@@ -1,6 +1,6 @@
 /**
  * Migration Wizard
- * Guide interactif pour la migration complète vers Supabase
+ * Guide interactif pour la migration complÃ¨te vers Supabase
  */
 
 import { useState, useEffect } from "react";
@@ -26,37 +26,37 @@ export function MigrationWizard() {
   const [steps, setSteps] = useState<Step[]>([
     {
       id: 1,
-      title: "Déployer le Serveur Complet",
-      description: "Copiez le code et déployez-le sur Supabase Dashboard",
+      title: "DÃ©ployer le Serveur Complet",
+      description: "Copiez le code et dÃ©ployez-le sur Supabase Dashboard",
       status: "pending"
     },
     {
       id: 2,
-      title: "Vérifier le Déploiement",
-      description: "Attendre 30-60 secondes et vérifier la version du serveur",
+      title: "VÃ©rifier le DÃ©ploiement",
+      description: "Attendre 30-60 secondes et vÃ©rifier la version du serveur",
       status: "pending"
     },
     {
       id: 3,
       title: "Activer le Mode Serveur",
-      description: "Rafraîchir la détection du serveur dans l'application",
+      description: "RafraÃ®chir la dÃ©tection du serveur dans l'application",
       status: "pending"
     },
     {
       id: 4,
-      title: "Créer Toutes les Données",
-      description: "Initialiser le portfolio avec des données professionnelles",
+      title: "CrÃ©er Toutes les DonnÃ©es",
+      description: "Initialiser le portfolio avec des donnÃ©es professionnelles",
       status: "pending"
     },
     {
       id: 5,
-      title: "Vérification Finale",
+      title: "VÃ©rification Finale",
       description: "Tester que tout fonctionne correctement",
       status: "pending"
     }
   ]);
 
-  // Vérifier la version du serveur au chargement
+  // VÃ©rifier la version du serveur au chargement
   useEffect(() => {
     checkServerVersion();
   }, []);
@@ -72,7 +72,7 @@ export function MigrationWizard() {
       const data = await res.json();
       setServerVersion(data.version);
       
-      // Si serveur complet déjà déployé, marquer les premières étapes comme complétées
+      // Si serveur complet dÃ©jÃ  dÃ©ployÃ©, marquer les premiÃ¨res Ã©tapes comme complÃ©tÃ©es
       if (data.version === "complete-2.0.0") {
         updateStepStatus(1, "completed");
         updateStepStatus(2, "completed");
@@ -98,7 +98,7 @@ export function MigrationWizard() {
       updateStepStatus(1, "completed");
       setCurrentStep(1);
       
-      alert("✅ Code copié ! Maintenant ouvrez le Supabase Dashboard et collez-le.");
+      alert("âœ… Code copiÃ© ! Maintenant ouvrez le Supabase Dashboard et collez-le.");
     } catch (error) {
       alert("Erreur lors de la copie. Copiez manuellement depuis /DEPLOYER_COMPLET_TOUTES_FONCTIONNALITES.txt");
     }
@@ -123,7 +123,7 @@ export function MigrationWizard() {
         updateStepStatus(2, "completed");
         setCurrentStep(2);
       } else {
-        alert("⚠️ Serveur pas encore déployé ou ancienne version. Attendez 30 secondes et réessayez.");
+        alert("âš ï¸ Serveur pas encore dÃ©ployÃ© ou ancienne version. Attendez 30 secondes et rÃ©essayez.");
         updateStepStatus(2, "pending");
       }
     } finally {
@@ -157,11 +157,11 @@ export function MigrationWizard() {
         updateStepStatus(4, "completed");
         setCurrentStep(4);
       } else {
-        alert("❌ Échec de la création des données. Vérifiez que le serveur complet est déployé.");
+        alert("âŒ Ã‰chec de la crÃ©ation des donnÃ©es. VÃ©rifiez que le serveur complet est dÃ©ployÃ©.");
         updateStepStatus(4, "pending");
       }
     } catch (error) {
-      alert("❌ Erreur lors de la création des données.");
+      alert("âŒ Erreur lors de la crÃ©ation des donnÃ©es.");
       updateStepStatus(4, "pending");
     } finally {
       setLoading(false);
@@ -172,7 +172,7 @@ export function MigrationWizard() {
     updateStepStatus(5, "completed");
     setCurrentStep(5);
     
-    // Ouvrir la page de vérification dans un nouvel onglet
+    // Ouvrir la page de vÃ©rification dans un nouvel onglet
     window.open('/', '_blank');
   };
 
@@ -184,7 +184,7 @@ export function MigrationWizard() {
             <Button
               onClick={handleCopyServerCode}
               size="sm"
-              className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+              className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
             >
               Copier le Code
             </Button>
@@ -211,10 +211,10 @@ export function MigrationWizard() {
             {loading ? (
               <>
                 <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                Vérification...
+                VÃ©rification...
               </>
             ) : (
-              <>Vérifier le Déploiement</>
+              <>VÃ©rifier le DÃ©ploiement</>
             )}
           </Button>
         );
@@ -227,7 +227,7 @@ export function MigrationWizard() {
             size="sm"
             className="mt-3 bg-purple-500 hover:bg-purple-600"
           >
-            Rafraîchir le Serveur
+            RafraÃ®chir le Serveur
           </Button>
         );
       
@@ -239,7 +239,7 @@ export function MigrationWizard() {
             size="sm"
             className="mt-3 bg-green-500 hover:bg-green-600"
           >
-            {loading ? "Création..." : "Créer les Données"}
+            {loading ? "CrÃ©ation..." : "CrÃ©er les DonnÃ©es"}
           </Button>
         );
       
@@ -251,7 +251,7 @@ export function MigrationWizard() {
             size="sm"
             className="mt-3 bg-yellow-500 hover:bg-yellow-600 text-black"
           >
-            Vérifier & Tester
+            VÃ©rifier & Tester
           </Button>
         );
       
@@ -274,11 +274,11 @@ export function MigrationWizard() {
   const progress = (steps.filter(s => s.status === "completed").length / steps.length) * 100;
 
   return (
-    <Card className="bg-gradient-to-br from-[#00FFC2]/10 to-blue-500/10 border-[#00FFC2]/20 p-6">
+    <Card className="bg-gradient-to-br from-[#CCFF00]/10 to-blue-500/10 border-[#CCFF00]/20 p-6">
       <div className="mb-6">
-        <h2 className="text-2xl text-white mb-2">🧙‍♂️ Assistant de Migration</h2>
+        <h2 className="text-2xl text-white mb-2">ðŸ§™â€â™‚ï¸ Assistant de Migration</h2>
         <p className="text-sm text-white/60">
-          Suivez ces étapes pour migrer votre portfolio vers Supabase
+          Suivez ces Ã©tapes pour migrer votre portfolio vers Supabase
         </p>
         
         {/* Barre de progression */}
@@ -289,7 +289,7 @@ export function MigrationWizard() {
           </div>
           <div className="h-2 bg-white/10 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-[#00FFC2] to-blue-500 transition-all duration-500"
+              className="h-full bg-gradient-to-r from-[#CCFF00] to-blue-500 transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -302,12 +302,12 @@ export function MigrationWizard() {
               ? "bg-green-500/10 text-green-400 border border-green-500/20"
               : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
           }`}>
-            {serverVersion === "complete-2.0.0" ? "✅" : "⚠️"} Serveur actuel : {serverVersion}
+            {serverVersion === "complete-2.0.0" ? "âœ…" : "âš ï¸"} Serveur actuel : {serverVersion}
           </div>
         )}
       </div>
 
-      {/* Étapes */}
+      {/* Ã‰tapes */}
       <div className="space-y-4">
         {steps.map((step, index) => (
           <div 
@@ -318,7 +318,7 @@ export function MigrationWizard() {
                 : step.status === "inprogress"
                 ? "bg-blue-500/10 border-blue-500/20"
                 : currentStep === index
-                ? "bg-white/10 border-[#00FFC2]/30"
+                ? "bg-white/10 border-[#CCFF00]/30"
                 : "bg-white/5 border-white/10"
             }`}
           >
@@ -339,7 +339,7 @@ export function MigrationWizard() {
                   </div>
                   
                   {currentStep === index && step.status !== "completed" && (
-                    <ArrowRight className="h-5 w-5 text-[#00FFC2] flex-shrink-0 animate-pulse" />
+                    <ArrowRight className="h-5 w-5 text-[#CCFF00] flex-shrink-0 animate-pulse" />
                   )}
                 </div>
                 
@@ -354,17 +354,17 @@ export function MigrationWizard() {
       {progress === 100 && (
         <div className="mt-6 p-4 bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-500/30 rounded-lg">
           <h3 className="text-lg text-white font-medium mb-2">
-            🎉 Migration Terminée !
+            ðŸŽ‰ Migration TerminÃ©e !
           </h3>
           <p className="text-sm text-white/70 mb-3">
-            Votre portfolio est maintenant 100% synchronisé avec Supabase.
-            Toutes vos données sont sauvegardées dans le cloud !
+            Votre portfolio est maintenant 100% synchronisÃ© avec Supabase.
+            Toutes vos donnÃ©es sont sauvegardÃ©es dans le cloud !
           </p>
           <Button
             onClick={() => window.location.href = "/"}
-            className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+            className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
           >
-            Voir Mon Portfolio 🚀
+            Voir Mon Portfolio ðŸš€
           </Button>
         </div>
       )}

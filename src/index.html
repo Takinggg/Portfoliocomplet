@@ -3,49 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💼</text></svg>" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>ðŸ’¼</text></svg>" />
     <title>Maxence - Portfolio & CRM</title>
     <script>
-      // ⚡ CRITICAL: Redirect legacy URLs BEFORE React loads
+      // âš¡ CRITICAL: Redirect legacy URLs BEFORE React loads
       // Si l'URL est /en ou /fr (ancienne URL), rediriger vers /#/en ou /#/fr
       (function() {
         const path = window.location.pathname;
         const hash = window.location.hash;
         
-        // IMPORTANT: Ne rien faire si on a déjà un hash correct
+        // IMPORTANT: Ne rien faire si on a dÃ©jÃ  un hash correct
         if (hash.startsWith('#/')) {
-          console.log('✅ URL déjà correcte:', window.location.href);
+          console.log('âœ… URL dÃ©jÃ  correcte:', window.location.href);
           return;
         }
         
         // Si on est sur /en ou /fr (sans hash), rediriger vers /#/en ou /#/fr
         if (path === '/en' || path === '/en/' || path.startsWith('/en/')) {
-          console.log('🔄 Redirection: /en → /#/en');
+          console.log('ðŸ”„ Redirection: /en â†’ /#/en');
           window.location.replace('/#/en');
           return;
         }
         
         if (path === '/fr' || path === '/fr/' || path.startsWith('/fr/')) {
-          console.log('🔄 Redirection: /fr → /#/fr');
+          console.log('ðŸ”„ Redirection: /fr â†’ /#/fr');
           window.location.replace('/#/fr');
           return;
         }
         
-        // Si on a un double préfixe comme /en/#/en, corriger
+        // Si on a un double prÃ©fixe comme /en/#/en, corriger
         if ((path === '/en' || path === '/en/') && hash.startsWith('#/en')) {
-          console.log('🔄 Fix double préfixe: /en/#/en → /#/en');
+          console.log('ðŸ”„ Fix double prÃ©fixe: /en/#/en â†’ /#/en');
           window.location.replace('/#/en');
           return;
         }
         
         if ((path === '/fr' || path === '/fr/') && hash.startsWith('#/fr')) {
-          console.log('🔄 Fix double préfixe: /fr/#/fr → /#/fr');
+          console.log('ðŸ”„ Fix double prÃ©fixe: /fr/#/fr â†’ /#/fr');
           window.location.replace('/#/fr');
           return;
         }
         
-        // La racine / sera gérée par GeoRedirect dans React
-        console.log('📍 Pathname:', path, '| Hash:', hash || '(vide)');
+        // La racine / sera gÃ©rÃ©e par GeoRedirect dans React
+        console.log('ðŸ“ Pathname:', path, '| Hash:', hash || '(vide)');
       })();
       
       // Charger le manifest seulement en production (pas dans l'iframe Figma)
@@ -55,29 +55,29 @@
         manifestLink.href = '/manifest.json';
         document.head.appendChild(manifestLink);
       } else {
-        console.log('%c🔧 PWA Désactivée', 'color: #00FFC2; font-weight: bold;', 
-          '\nVous êtes dans l\'environnement de preview Figma Make.',
-          '\nLes fonctionnalités PWA (manifest, service worker) sont désactivées pour éviter les erreurs.',
-          '\n✅ Elles seront actives après déploiement en production.');
+        console.log('%cðŸ”§ PWA DÃ©sactivÃ©e', 'color: #CCFF00; font-weight: bold;', 
+          '\nVous Ãªtes dans l\'environnement de preview Figma Make.',
+          '\nLes fonctionnalitÃ©s PWA (manifest, service worker) sont dÃ©sactivÃ©es pour Ã©viter les erreurs.',
+          '\nâœ… Elles seront actives aprÃ¨s dÃ©ploiement en production.');
       }
     </script>
     
     <script>
-      // ✅ HashRouter + Legacy URL Auto-Redirect
-      console.log('%c╔════════════════════════════════════════════════════════════╗', 'color: #00FFC2;');
-      console.log('%c║  🎯 Portfolio + CRM avec HashRouter + Auto-Redirect       ║', 'color: #00FFC2; font-weight: bold;');
-      console.log('%c║  ✅ URLs : maxence.design/#/fr et /#/en                   ║', 'color: #00FFC2;');
-      console.log('%c║  ⚡ Anciennes URLs /en et /fr redirigées auto            ║', 'color: #00FFC2;');
-      console.log('%c║  ✅ Pas de double préfixe (/en/#/en)                      ║', 'color: #00FFC2;');
-      console.log('%c╚════════════════════════════════════════════════════════════╝', 'color: #00FFC2;');
+      // âœ… HashRouter + Legacy URL Auto-Redirect
+      console.log('%câ•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—', 'color: #CCFF00;');
+      console.log('%câ•‘  ðŸŽ¯ Portfolio + CRM avec HashRouter + Auto-Redirect       â•‘', 'color: #CCFF00; font-weight: bold;');
+      console.log('%câ•‘  âœ… URLs : maxence.design/#/fr et /#/en                   â•‘', 'color: #CCFF00;');
+      console.log('%câ•‘  âš¡ Anciennes URLs /en et /fr redirigÃ©es auto            â•‘', 'color: #CCFF00;');
+      console.log('%câ•‘  âœ… Pas de double prÃ©fixe (/en/#/en)                      â•‘', 'color: #CCFF00;');
+      console.log('%câ•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•', 'color: #CCFF00;');
       console.log('');
-      console.log('%c⚡ Script de redirection actif (avant React)', 'color: #00FFC2; font-weight: bold;');
-      console.log('%c  • /en → /#/en (automatique)', 'color: #F4F4F4;');
-      console.log('%c  • /fr → /#/fr (automatique)', 'color: #F4F4F4;');
-      console.log('%c  • Corrige /en/#/en → /#/en', 'color: #F4F4F4;');
+      console.log('%câš¡ Script de redirection actif (avant React)', 'color: #CCFF00; font-weight: bold;');
+      console.log('%c  â€¢ /en â†’ /#/en (automatique)', 'color: #F4F4F4;');
+      console.log('%c  â€¢ /fr â†’ /#/fr (automatique)', 'color: #F4F4F4;');
+      console.log('%c  â€¢ Corrige /en/#/en â†’ /#/en', 'color: #F4F4F4;');
       console.log('');
-      console.log('%c📚 Docs : FIX_HASH_ROUTER_FINAL.md', 'color: #00FFC2; font-weight: bold;');
-      console.log('%c🔧 Commandes : testServerConnection(), seedTestProjects()', 'color: #00FFC2;');
+      console.log('%cðŸ“š Docs : FIX_HASH_ROUTER_FINAL.md', 'color: #CCFF00; font-weight: bold;');
+      console.log('%cðŸ”§ Commandes : testServerConnection(), seedTestProjects()', 'color: #CCFF00;');
     </script>
 
   </head>

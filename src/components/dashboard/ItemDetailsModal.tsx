@@ -31,7 +31,7 @@ export function ItemDetailsModal({
 }: ItemDetailsModalProps) {
   if (!open || !item) return null;
 
-  // État local pour les notes
+  // Ã‰tat local pour les notes
   const [clientNotes, setClientNotes] = useState(item.clientNotes || []);
 
   const handleAddNote = (note: any) => {
@@ -41,24 +41,24 @@ export function ItemDetailsModal({
       createdAt: new Date().toISOString()
     };
     setClientNotes([...clientNotes, newNote]);
-    toast.success('Note ajoutée !');
+    toast.success('Note ajoutÃ©e !');
   };
 
   const handleDeleteNote = (noteId: string) => {
     setClientNotes(clientNotes.filter((n: any) => n.id !== noteId));
-    toast.success('Note supprimée !');
+    toast.success('Note supprimÃ©e !');
   };
 
   const getStatusBadge = (status: string) => {
     const statusMap: Record<string, { label: string; color: string }> = {
-      'draft': { label: '📝 Brouillon', color: 'bg-gray-500/10 text-gray-400 border-gray-500/20' },
-      'sent': { label: '📤 Envoyé', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
-      'accepted': { label: '✅ Accepté', color: 'bg-green-500/10 text-green-400 border-green-500/20' },
-      'rejected': { label: '❌ Refusé', color: 'bg-red-500/10 text-red-400 border-red-500/20' },
-      'pending': { label: '⏳ En attente', color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' },
-      'paid': { label: '💰 Payée', color: 'bg-green-500/10 text-green-400 border-green-500/20' },
-      'unpaid': { label: '⏰ Impayée', color: 'bg-orange-500/10 text-orange-400 border-orange-500/20' },
-      'overdue': { label: '🔴 En retard', color: 'bg-red-500/10 text-red-400 border-red-500/20' },
+      'draft': { label: 'ðŸ“ Brouillon', color: 'bg-gray-500/10 text-gray-400 border-gray-500/20' },
+      'sent': { label: 'ðŸ“¤ EnvoyÃ©', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
+      'accepted': { label: 'âœ… AcceptÃ©', color: 'bg-green-500/10 text-green-400 border-green-500/20' },
+      'rejected': { label: 'âŒ RefusÃ©', color: 'bg-red-500/10 text-red-400 border-red-500/20' },
+      'pending': { label: 'â³ En attente', color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' },
+      'paid': { label: 'ðŸ’° PayÃ©e', color: 'bg-green-500/10 text-green-400 border-green-500/20' },
+      'unpaid': { label: 'â° ImpayÃ©e', color: 'bg-orange-500/10 text-orange-400 border-orange-500/20' },
+      'overdue': { label: 'ðŸ”´ En retard', color: 'bg-red-500/10 text-red-400 border-red-500/20' },
     };
     const config = statusMap[status] || { label: status, color: 'bg-white/10 text-white/60 border-white/20' };
     return <Badge className={`${config.color} border`}>{config.label}</Badge>;
@@ -74,8 +74,8 @@ export function ItemDetailsModal({
   };
 
   const formatCurrency = (amount: number | null | undefined) => {
-    if (!amount) return '0€';
-    return `${amount.toLocaleString('fr-FR')}€`;
+    if (!amount) return '0â‚¬';
+    return `${amount.toLocaleString('fr-FR')}â‚¬`;
   };
 
   return (
@@ -98,15 +98,15 @@ export function ItemDetailsModal({
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl max-h-[85vh] z-50"
           >
-            <div className="bg-[#0C0C0C] border border-[#00FFC2]/20 rounded-2xl shadow-2xl shadow-[#00FFC2]/10 overflow-hidden">
+            <div className="bg-[#0C0C0C] border border-[#CCFF00]/20 rounded-2xl shadow-2xl shadow-[#CCFF00]/10 overflow-hidden">
               {/* Header */}
-              <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-gradient-to-r from-[#00FFC2]/5 to-transparent">
+              <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-gradient-to-r from-[#CCFF00]/5 to-transparent">
                 <div className="flex items-center gap-3">
                   {type === 'lead' && <User className="w-6 h-6 text-blue-400" />}
                   {type === 'client' && <Building className="w-6 h-6 text-green-400" />}
                   {type === 'booking' && <Calendar className="w-6 h-6 text-green-400" />}
                   {type === 'quote' && <FileText className="w-6 h-6 text-yellow-400" />}
-                  {type === 'invoice' && <Receipt className="w-6 h-6 text-[#00FFC2]" />}
+                  {type === 'invoice' && <Receipt className="w-6 h-6 text-[#CCFF00]" />}
                   
                   <div>
                     <h2 className="text-xl font-bold text-white">
@@ -157,13 +157,13 @@ export function ItemDetailsModal({
                               items: item.metadata?.items || item.items || []
                             });
                           }
-                          toast.success('PDF exporté avec succès !');
+                          toast.success('PDF exportÃ© avec succÃ¨s !');
                         } catch (error) {
                           console.error('Erreur export PDF:', error);
                           toast.error('Erreur lors de l\'export PDF');
                         }
                       }}
-                      className="text-[#00FFC2] hover:text-[#00FFC2]/80 hover:bg-[#00FFC2]/10"
+                      className="text-[#CCFF00] hover:text-[#CCFF00]/80 hover:bg-[#CCFF00]/10"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       Export PDF
@@ -175,7 +175,7 @@ export function ItemDetailsModal({
                       size="sm"
                       variant="ghost"
                       onClick={onEdit}
-                      className="text-white/60 hover:text-[#00FFC2]"
+                      className="text-white/60 hover:text-[#CCFF00]"
                     >
                       <Edit className="w-4 h-4" />
                     </Button>
@@ -196,10 +196,10 @@ export function ItemDetailsModal({
                   <div className="space-y-6">
                     <div className="grid grid-cols-2 gap-4">
                       <InfoCard icon={Mail} label="Email" value={item.email || 'N/A'} />
-                      <InfoCard icon={Phone} label="Téléphone" value={item.phone || 'N/A'} />
+                      <InfoCard icon={Phone} label="TÃ©lÃ©phone" value={item.phone || 'N/A'} />
                       <InfoCard icon={Building} label="Entreprise" value={item.company || 'N/A'} />
-                      <InfoCard icon={DollarSign} label="Valeur estimée" value={formatCurrency(item.value)} />
-                      <InfoCard icon={Calendar} label="Créé le" value={formatDate(item.createdAt || item.created_at)} />
+                      <InfoCard icon={DollarSign} label="Valeur estimÃ©e" value={formatCurrency(item.value)} />
+                      <InfoCard icon={Calendar} label="CrÃ©Ã© le" value={formatDate(item.createdAt || item.created_at)} />
                       <InfoCard icon={CheckCircle} label="Statut" value={item.status || 'N/A'} />
                     </div>
 
@@ -227,11 +227,11 @@ export function ItemDetailsModal({
                     <div className="grid grid-cols-2 gap-4">
                       <InfoCard icon={User} label="Nom" value={item.name || 'N/A'} />
                       <InfoCard icon={Mail} label="Email" value={item.email || 'N/A'} />
-                      <InfoCard icon={Phone} label="Téléphone" value={item.phone || 'N/A'} />
+                      <InfoCard icon={Phone} label="TÃ©lÃ©phone" value={item.phone || 'N/A'} />
                       <InfoCard icon={Calendar} label="Date" value={item.date || 'N/A'} />
                       <InfoCard icon={Clock} label="Heure" value={item.time || 'N/A'} />
                       <InfoCard icon={Briefcase} label="Service" value={item.service || 'N/A'} />
-                      <InfoCard icon={Calendar} label="Créé le" value={formatDate(item.createdAt || item.created_at)} />
+                      <InfoCard icon={Calendar} label="CrÃ©Ã© le" value={formatDate(item.createdAt || item.created_at)} />
                       <div className="bg-white/5 border border-white/10 rounded-lg p-3">
                         <div className="flex items-center gap-2 mb-1">
                           <CheckCircle className="w-4 h-4 text-white/40" />
@@ -258,7 +258,7 @@ export function ItemDetailsModal({
                   <div className="space-y-6">
                     <div className="grid grid-cols-2 gap-4">
                       <InfoCard icon={Mail} label="Email" value={item.email || 'N/A'} />
-                      <InfoCard icon={Phone} label="Téléphone" value={item.phone || 'N/A'} />
+                      <InfoCard icon={Phone} label="TÃ©lÃ©phone" value={item.phone || 'N/A'} />
                       <InfoCard icon={Building} label="Entreprise" value={item.company || 'N/A'} />
                       <InfoCard icon={MapPin} label="Adresse" value={item.address || 'N/A'} />
                       <InfoCard icon={DollarSign} label="CA Total" value={formatCurrency(item.revenue)} />
@@ -291,7 +291,7 @@ export function ItemDetailsModal({
                         {relatedItems.invoices && relatedItems.invoices.length > 0 && (
                           <div className="bg-white/5 border border-white/10 rounded-lg p-4">
                             <h3 className="text-sm font-semibold text-white/80 mb-3 flex items-center gap-2">
-                              <Receipt className="w-4 h-4 text-[#00FFC2]" />
+                              <Receipt className="w-4 h-4 text-[#CCFF00]" />
                               Factures ({relatedItems.invoices.length})
                             </h3>
                             <div className="space-y-2">
@@ -328,8 +328,8 @@ export function ItemDetailsModal({
                       <InfoCard icon={User} label="Client" value={item.clientName || item.client_name || 'N/A'} />
                       <InfoCard icon={Mail} label="Email" value={item.clientEmail || item.client_email || 'N/A'} />
                       <InfoCard icon={DollarSign} label="Montant" value={formatCurrency(item.amount || item.total)} />
-                      <InfoCard icon={Calendar} label="Validité" value={formatDate(item.validUntil || item.valid_until)} />
-                      <InfoCard icon={Calendar} label="Créé le" value={formatDate(item.createdAt || item.created_at)} />
+                      <InfoCard icon={Calendar} label="ValiditÃ©" value={formatDate(item.validUntil || item.valid_until)} />
+                      <InfoCard icon={Calendar} label="CrÃ©Ã© le" value={formatDate(item.createdAt || item.created_at)} />
                       <div className="bg-white/5 border border-white/10 rounded-lg p-3">
                         <div className="flex items-center gap-2 mb-1">
                           <CheckCircle className="w-4 h-4 text-white/40" />
@@ -349,7 +349,7 @@ export function ItemDetailsModal({
                               <div className="flex-1">
                                 <div className="text-white font-medium">{lineItem.description || lineItem.name}</div>
                                 <div className="text-white/40 text-xs">
-                                  Qté: {lineItem.quantity} × {formatCurrency(lineItem.unitPrice || lineItem.price)}
+                                  QtÃ©: {lineItem.quantity} Ã— {formatCurrency(lineItem.unitPrice || lineItem.price)}
                                 </div>
                               </div>
                               <div className="text-white font-semibold">
@@ -359,7 +359,7 @@ export function ItemDetailsModal({
                           ))}
                           <div className="flex items-center justify-between pt-3 border-t border-white/20">
                             <span className="text-white font-bold">Total</span>
-                            <span className="text-[#00FFC2] font-bold text-lg">
+                            <span className="text-[#CCFF00] font-bold text-lg">
                               {formatCurrency(item.amount || item.total)}
                             </span>
                           </div>
@@ -371,7 +371,7 @@ export function ItemDetailsModal({
                       <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 flex items-center gap-3">
                         <Mail className="w-5 h-5 text-blue-400" />
                         <div>
-                          <div className="text-sm font-medium text-blue-400">Email envoyé</div>
+                          <div className="text-sm font-medium text-blue-400">Email envoyÃ©</div>
                           <div className="text-xs text-blue-400/60">
                             {new Date(item.lastEmailSent).toLocaleString('fr-FR')}
                           </div>
@@ -388,8 +388,8 @@ export function ItemDetailsModal({
                       <InfoCard icon={User} label="Client" value={item.clientName || item.client_name || 'N/A'} />
                       <InfoCard icon={Mail} label="Email" value={item.clientEmail || item.client_email || 'N/A'} />
                       <InfoCard icon={DollarSign} label="Montant" value={formatCurrency(item.total || item.amount)} />
-                      <InfoCard icon={Calendar} label="Date d'échéance" value={formatDate(item.dueDate || item.due_date)} />
-                      <InfoCard icon={Calendar} label="Créée le" value={formatDate(item.createdAt || item.created_at)} />
+                      <InfoCard icon={Calendar} label="Date d'Ã©chÃ©ance" value={formatDate(item.dueDate || item.due_date)} />
+                      <InfoCard icon={Calendar} label="CrÃ©Ã©e le" value={formatDate(item.createdAt || item.created_at)} />
                       <div className="bg-white/5 border border-white/10 rounded-lg p-3">
                         <div className="flex items-center gap-2 mb-1">
                           <CheckCircle className="w-4 h-4 text-white/40" />
@@ -409,7 +409,7 @@ export function ItemDetailsModal({
                               <div className="flex-1">
                                 <div className="text-white font-medium">{lineItem.description || lineItem.name}</div>
                                 <div className="text-white/40 text-xs">
-                                  Qté: {lineItem.quantity} × {formatCurrency(lineItem.unitPrice || lineItem.price)}
+                                  QtÃ©: {lineItem.quantity} Ã— {formatCurrency(lineItem.unitPrice || lineItem.price)}
                                 </div>
                               </div>
                               <div className="text-white font-semibold">
@@ -419,7 +419,7 @@ export function ItemDetailsModal({
                           ))}
                           <div className="flex items-center justify-between pt-3 border-t border-white/20">
                             <span className="text-white font-bold">Total</span>
-                            <span className="text-[#00FFC2] font-bold text-lg">
+                            <span className="text-[#CCFF00] font-bold text-lg">
                               {formatCurrency(item.total || item.amount)}
                             </span>
                           </div>
@@ -431,7 +431,7 @@ export function ItemDetailsModal({
                       <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 flex items-center gap-3">
                         <Mail className="w-5 h-5 text-blue-400" />
                         <div>
-                          <div className="text-sm font-medium text-blue-400">Email envoyé</div>
+                          <div className="text-sm font-medium text-blue-400">Email envoyÃ©</div>
                           <div className="text-xs text-blue-400/60">
                             {new Date(item.lastEmailSent).toLocaleString('fr-FR')}
                           </div>
@@ -445,7 +445,7 @@ export function ItemDetailsModal({
                         <div>
                           <div className="text-sm font-medium text-red-400">Facture en retard</div>
                           <div className="text-xs text-red-400/60">
-                            Échéance dépassée depuis {Math.floor((new Date().getTime() - new Date(item.dueDate || item.due_date).getTime()) / (1000 * 60 * 60 * 24))} jours
+                            Ã‰chÃ©ance dÃ©passÃ©e depuis {Math.floor((new Date().getTime() - new Date(item.dueDate || item.due_date).getTime()) / (1000 * 60 * 60 * 24))} jours
                           </div>
                         </div>
                       </div>

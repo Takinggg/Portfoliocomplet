@@ -14,49 +14,49 @@ setTimeout(() => {
     
     // Show a BIG warning in console
     console.log(`%c
-╔═══════════════════════════════════════════════════════════════╗
-║                                                               ║
-║          🚨 ATTENTION - NAVIGATION CASSÉE                    ║
-║                                                               ║
-╚═══════════════════════════════════════════════════════════════╝
+â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+â•‘                                                               â•‘
+â•‘          ðŸš¨ ATTENTION - NAVIGATION CASSÃ‰E                    â•‘
+â•‘                                                               â•‘
+â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     `, 'color: #FF5757; font-size: 20px; font-weight: bold;');
 
     console.log(`%c
-📍 URL actuelle : ${window.location.href}
+ðŸ“ URL actuelle : ${window.location.href}
 
-❌ PROBLÈME DÉTECTÉ :
+âŒ PROBLÃˆME DÃ‰TECTÃ‰ :
    Tu es sur PRODUCTION (${hostname})
-   Mais l'URL n'a PAS de préfixe de langue (/fr/ ou /en/)
+   Mais l'URL n'a PAS de prÃ©fixe de langue (/fr/ ou /en/)
 
-🔍 CE QUI NE MARCHE PAS :
-   ✗ Navigation vers Services, Blog, Projects, etc.
-   ✗ Changement de langue
-   ✗ URLs bilingues
-   ✗ SEO multilingue
+ðŸ” CE QUI NE MARCHE PAS :
+   âœ— Navigation vers Services, Blog, Projects, etc.
+   âœ— Changement de langue
+   âœ— URLs bilingues
+   âœ— SEO multilingue
 
-🎯 POURQUOI ?
-   Le code avec les URLs bilingues n'est pas encore déployé sur Vercel.
+ðŸŽ¯ POURQUOI ?
+   Le code avec les URLs bilingues n'est pas encore dÃ©ployÃ© sur Vercel.
    
    Le code est dans Git, mais Vercel affiche l'ancienne version.
 
-⚡ SOLUTION IMMÉDIATE :
+âš¡ SOLUTION IMMÃ‰DIATE :
 
-   Exécute ces 3 commandes :
+   ExÃ©cute ces 3 commandes :
 
    1. git add .
    2. git commit -m "feat: URLs bilingues /fr/ et /en/"
    3. git push origin main
 
-   Puis attends 3-5 minutes que Vercel redéploie.
+   Puis attends 3-5 minutes que Vercel redÃ©ploie.
 
-📖 Guide complet :
+ðŸ“– Guide complet :
    Ouvre le fichier /ACTION_URGENTE.md dans ton code
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 
-⏱️  Après le déploiement, cette URL deviendra : /fr${pathname}
+â±ï¸  AprÃ¨s le dÃ©ploiement, cette URL deviendra : /fr${pathname}
 
-✅ La navigation fonctionnera parfaitement !
+âœ… La navigation fonctionnera parfaitement !
 
     `, 'color: #F4F4F4; font-size: 14px; background: #1a0000; padding: 20px; border-left: 5px solid #FF5757;');
 
@@ -81,7 +81,7 @@ setTimeout(() => {
       
       alertDiv.innerHTML = `
         <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">
-          🚨 Navigation cassée - Code non déployé
+          ðŸš¨ Navigation cassÃ©e - Code non dÃ©ployÃ©
         </div>
         <div style="font-size: 14px; line-height: 1.6; margin-bottom: 15px;">
           Les pages (Services, Blog, etc.) ne fonctionnent pas car le code n'est pas encore sur Vercel.
@@ -149,23 +149,23 @@ setTimeout(() => {
   // If we're on production WITH prefix, show success message
   if (isProduction && hasPrefix) {
     console.log(`%c
-🎉 URLs BILINGUES DÉPLOYÉES AVEC SUCCÈS !
+ðŸŽ‰ URLs BILINGUES DÃ‰PLOYÃ‰ES AVEC SUCCÃˆS !
 
-📍 URL : ${window.location.href}
-🌍 Langue : ${pathname.match(/^\/(en|fr)/)?.[1]?.toUpperCase()}
-✅ Navigation fonctionnelle
-✅ SEO multilingue actif
-✅ Rewrites SPA configurés
-✅ React Router opérationnel
+ðŸ“ URL : ${window.location.href}
+ðŸŒ Langue : ${pathname.match(/^\/(en|fr)/)?.[1]?.toUpperCase()}
+âœ… Navigation fonctionnelle
+âœ… SEO multilingue actif
+âœ… Rewrites SPA configurÃ©s
+âœ… React Router opÃ©rationnel
 
-Tout fonctionne parfaitement ! 🚀
+Tout fonctionne parfaitement ! ðŸš€
 
-💡 Tu peux maintenant :
+ðŸ’¡ Tu peux maintenant :
    - Naviguer entre les pages
-   - Rafraîchir n'importe quelle page
+   - RafraÃ®chir n'importe quelle page
    - Partager des liens directs
    - Changer de langue
-    `, 'color: #00FFC2; font-size: 14px; background: #0a2520; padding: 15px; border-left: 5px solid #00FFC2;');
+    `, 'color: #CCFF00; font-size: 14px; background: #0a2520; padding: 15px; border-left: 5px solid #CCFF00;');
   }
 }, 2000);
 

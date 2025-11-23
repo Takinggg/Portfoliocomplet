@@ -68,7 +68,7 @@ const iconOptions = [
 ];
 
 const colorOptions = [
-  { value: "text-[#00FFC2]", label: "Turquoise" },
+  { value: "text-[#CCFF00]", label: "Turquoise" },
   { value: "text-purple-400", label: "Violet" },
   { value: "text-green-400", label: "Vert" },
   { value: "text-blue-400", label: "Bleu" },
@@ -91,7 +91,7 @@ export function FAQTab() {
   const [categoryFormData, setCategoryFormData] = useState({
     name: "",
     icon: "HelpCircle",
-    color: "text-[#00FFC2]",
+    color: "text-[#CCFF00]",
   });
 
   // Question Dialog States
@@ -128,12 +128,12 @@ export function FAQTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
-      // Charger les catégories depuis le serveur
-      console.log("📋 Loading FAQ categories from server...");
+      // Charger les catÃ©gories depuis le serveur
+      console.log("ðŸ“‹ Loading FAQ categories from server...");
       const categoriesResponse = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/faq-categories`,
         {
@@ -143,17 +143,17 @@ export function FAQTab() {
 
       if (categoriesResponse.ok) {
         const categoriesData = await categoriesResponse.json();
-        console.log("✅ Categories loaded from server:", categoriesData.categories);
+        console.log("âœ… Categories loaded from server:", categoriesData.categories);
         setCategories(categoriesData.categories || []);
       } else {
-        console.warn("⚠️ Failed to load categories from server, using fallback");
-        // Fallback: créer des catégories par défaut
+        console.warn("âš ï¸ Failed to load categories from server, using fallback");
+        // Fallback: crÃ©er des catÃ©gories par dÃ©faut
         setCategories([
           {
             id: "faq_category_general",
-            name: "Général",
+            name: "GÃ©nÃ©ral",
             icon: "HelpCircle",
-            color: "text-[#00FFC2]",
+            color: "text-[#CCFF00]",
             order: 0,
             createdAt: new Date().toISOString(),
           },
@@ -164,7 +164,7 @@ export function FAQTab() {
       const { fetchFAQs } = await import("../../utils/dataService");
       const { faqs, mode } = await fetchFAQs("fr");
       
-      console.log(`✅ FAQs loaded in ${mode} mode:`, faqs.length);
+      console.log(`âœ… FAQs loaded in ${mode} mode:`, faqs.length);
       
       // Convertir les FAQs en format attendu
       setQuestions(faqs.map((faq: any) => ({
@@ -181,7 +181,7 @@ export function FAQTab() {
       })));
     } catch (error) {
       console.error("Error fetching FAQ data:", error);
-      toast.error(`Erreur lors du chargement des données (mode local disponible)`);
+      toast.error(`Erreur lors du chargement des donnÃ©es (mode local disponible)`);
     } finally {
       setLoading(false);
     }
@@ -192,7 +192,7 @@ export function FAQTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -210,7 +210,7 @@ export function FAQTab() {
       });
 
       if (response.ok) {
-        toast.success(editingCategory ? "Catégorie mise à jour" : "Catégorie créée");
+        toast.success(editingCategory ? "CatÃ©gorie mise Ã  jour" : "CatÃ©gorie crÃ©Ã©e");
         setShowCategoryDialog(false);
         resetCategoryForm();
         fetchData();
@@ -230,7 +230,7 @@ export function FAQTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -243,7 +243,7 @@ export function FAQTab() {
       );
 
       if (response.ok) {
-        toast.success("Catégorie supprimée");
+        toast.success("CatÃ©gorie supprimÃ©e");
         setShowDeleteCategoryDialog(false);
         setDeletingCategory(null);
         fetchData();
@@ -262,7 +262,7 @@ export function FAQTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -286,7 +286,7 @@ export function FAQTab() {
       });
 
       if (response.ok) {
-        toast.success(editingQuestion ? "Question mise à jour" : "Question créée");
+        toast.success(editingQuestion ? "Question mise Ã  jour" : "Question crÃ©Ã©e");
         setShowQuestionDialog(false);
         resetQuestionForm();
         fetchData();
@@ -306,7 +306,7 @@ export function FAQTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -319,7 +319,7 @@ export function FAQTab() {
       );
 
       if (response.ok) {
-        toast.success("Question supprimée");
+        toast.success("Question supprimÃ©e");
         setShowDeleteQuestionDialog(false);
         setDeletingQuestion(null);
         fetchData();
@@ -334,7 +334,7 @@ export function FAQTab() {
   };
 
   const resetCategoryForm = () => {
-    setCategoryFormData({ name: "", icon: "HelpCircle", color: "text-[#00FFC2]" });
+    setCategoryFormData({ name: "", icon: "HelpCircle", color: "text-[#CCFF00]" });
     setEditingCategory(null);
   };
 
@@ -377,7 +377,7 @@ export function FAQTab() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <RefreshCw className="h-8 w-8 animate-spin text-[#00FFC2]" />
+        <RefreshCw className="h-8 w-8 animate-spin text-[#CCFF00]" />
       </div>
     );
   }
@@ -392,8 +392,8 @@ export function FAQTab() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl text-white">Gestion FAQ</h2>
-          <p className="text-[#00FFC2]/60 mt-1">
-            {categories.length} catégories • {questions.length} questions
+          <p className="text-[#CCFF00]/60 mt-1">
+            {categories.length} catÃ©gories â€¢ {questions.length} questions
           </p>
         </div>
         <div className="flex gap-3">
@@ -401,11 +401,11 @@ export function FAQTab() {
             <Button
               onClick={async () => {
                 try {
-                  toast.info("Initialisation des données FAQ...");
+                  toast.info("Initialisation des donnÃ©es FAQ...");
                   // @ts-ignore
                   const result = await window.seedFAQData();
                   if (result) {
-                    toast.success(`✅ ${result.categories} catégories et ${result.questions} questions créées !`);
+                    toast.success(`âœ… ${result.categories} catÃ©gories et ${result.questions} questions crÃ©Ã©es !`);
                     fetchData();
                   }
                 } catch (error) {
@@ -427,14 +427,14 @@ export function FAQTab() {
             className="bg-white/5 text-white hover:bg-white/10 border border-white/10"
           >
             <Tag className="h-4 w-4 mr-2" />
-            Nouvelle catégorie
+            Nouvelle catÃ©gorie
           </Button>
           <Button
             onClick={() => {
               resetQuestionForm();
               setShowQuestionDialog(true);
             }}
-            className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+            className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
           >
             <Plus className="h-4 w-4 mr-2" />
             Nouvelle question
@@ -445,20 +445,20 @@ export function FAQTab() {
       {/* Tabs */}
       <Tabs defaultValue="questions" className="w-full">
         <TabsList className="bg-white/5 border border-white/10">
-          <TabsTrigger value="questions" className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-black">
+          <TabsTrigger value="questions" className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-black">
             <MessageSquare className="h-4 w-4 mr-2" />
             Questions ({questions.length})
           </TabsTrigger>
-          <TabsTrigger value="categories" className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-black">
+          <TabsTrigger value="categories" className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-black">
             <Tag className="h-4 w-4 mr-2" />
-            Catégories ({categories.length})
+            CatÃ©gories ({categories.length})
           </TabsTrigger>
         </TabsList>
 
         {/* Questions Tab */}
         <TabsContent value="questions" className="space-y-6">
           {/* Filters */}
-          <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
+          <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
             <CardContent className="pt-6">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1 relative">
@@ -472,10 +472,10 @@ export function FAQTab() {
                 </div>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                   <SelectTrigger className="md:w-64 bg-white/5 border-white/10 text-white">
-                    <SelectValue placeholder="Toutes les catégories" />
+                    <SelectValue placeholder="Toutes les catÃ©gories" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
-                    <SelectItem value="all">Toutes les catégories</SelectItem>
+                  <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
+                    <SelectItem value="all">Toutes les catÃ©gories</SelectItem>
                     {categories.map(cat => (
                       <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
                     ))}
@@ -493,12 +493,12 @@ export function FAQTab() {
           </Card>
 
           {/* Questions List */}
-          <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
-            <CardHeader className="border-b border-[#00FFC2]/10">
+          <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
+            <CardHeader className="border-b border-[#CCFF00]/10">
               <CardTitle className="flex items-center justify-between">
                 <span>Questions</span>
-                <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-0">
-                  {filteredQuestions.length} résultats
+                <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-0">
+                  {filteredQuestions.length} rÃ©sultats
                 </Badge>
               </CardTitle>
             </CardHeader>
@@ -509,20 +509,20 @@ export function FAQTab() {
                   <div>
                     <h3 className="text-xl text-white mb-2">Aucune question FAQ</h3>
                     <p className="text-white/60 mb-2">
-                      Initialisez les données FAQ avec <span className="text-[#00FFC2]">37 questions professionnelles</span>
+                      Initialisez les donnÃ©es FAQ avec <span className="text-[#CCFF00]">37 questions professionnelles</span>
                     </p>
                     <p className="text-sm text-white/50 mb-6">
-                      Réparties en 6 catégories : Services, Tarifs, Processus, Communication, Technique, Légal
+                      RÃ©parties en 6 catÃ©gories : Services, Tarifs, Processus, Communication, Technique, LÃ©gal
                     </p>
                   </div>
                   <Button
                     onClick={async () => {
                       try {
-                        toast.info("Initialisation des données FAQ...");
+                        toast.info("Initialisation des donnÃ©es FAQ...");
                         // @ts-ignore
                         const result = await window.seedFAQData();
                         if (result) {
-                          toast.success(`✅ ${result.categories} catégories et ${result.questions} questions créées !`);
+                          toast.success(`âœ… ${result.categories} catÃ©gories et ${result.questions} questions crÃ©Ã©es !`);
                           fetchData();
                         }
                       } catch (error) {
@@ -533,16 +533,16 @@ export function FAQTab() {
                     className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 px-8 py-6 text-lg"
                   >
                     <Sparkles className="h-5 w-5 mr-3" />
-                    Initialiser FAQ (6 catégories + 37 questions)
+                    Initialiser FAQ (6 catÃ©gories + 37 questions)
                   </Button>
                   <p className="text-xs text-white/40 mt-4">
-                    💡 Astuce : Vous pouvez aussi utiliser la console : <code className="text-[#00FFC2] bg-[#00FFC2]/10 px-2 py-1 rounded">await window.seedFAQData()</code>
+                    ðŸ’¡ Astuce : Vous pouvez aussi utiliser la console : <code className="text-[#CCFF00] bg-[#CCFF00]/10 px-2 py-1 rounded">await window.seedFAQData()</code>
                   </p>
                 </div>
               ) : filteredQuestions.length === 0 ? (
                 <div className="text-center text-white/40 py-12">
                   <HelpCircle className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                  <p>Aucune question trouvée avec ces filtres</p>
+                  <p>Aucune question trouvÃ©e avec ces filtres</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -575,7 +575,7 @@ export function FAQTab() {
                             </div>
                             
                             {category && (
-                              <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-0 text-xs mb-2">
+                              <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-0 text-xs mb-2">
                                 {category.name}
                               </Badge>
                             )}
@@ -635,7 +635,7 @@ export function FAQTab() {
                               }}
                               variant="ghost"
                               size="sm"
-                              className="text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                              className="text-[#CCFF00] hover:bg-[#CCFF00]/10"
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
@@ -663,31 +663,31 @@ export function FAQTab() {
 
         {/* Categories Tab */}
         <TabsContent value="categories">
-          <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
-            <CardHeader className="border-b border-[#00FFC2]/10">
-              <CardTitle>Catégories</CardTitle>
+          <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
+            <CardHeader className="border-b border-[#CCFF00]/10">
+              <CardTitle>CatÃ©gories</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               {categories.length === 0 ? (
                 <div className="text-center text-white/40 py-12 space-y-4">
                   <Tag className="h-16 w-16 mx-auto mb-4 opacity-20" />
                   <div>
-                    <h3 className="text-xl text-white mb-2">Aucune catégorie FAQ</h3>
+                    <h3 className="text-xl text-white mb-2">Aucune catÃ©gorie FAQ</h3>
                     <p className="text-white/60 mb-2">
-                      Initialisez les données FAQ pour créer <span className="text-[#00FFC2]">6 catégories</span>
+                      Initialisez les donnÃ©es FAQ pour crÃ©er <span className="text-[#CCFF00]">6 catÃ©gories</span>
                     </p>
                     <p className="text-sm text-white/50 mb-6">
-                      Services • Tarifs & Paiement • Processus & Délais • Communication • Technique • Légal & Sécurité
+                      Services â€¢ Tarifs & Paiement â€¢ Processus & DÃ©lais â€¢ Communication â€¢ Technique â€¢ LÃ©gal & SÃ©curitÃ©
                     </p>
                   </div>
                   <Button
                     onClick={async () => {
                       try {
-                        toast.info("Initialisation des données FAQ...");
+                        toast.info("Initialisation des donnÃ©es FAQ...");
                         // @ts-ignore
                         const result = await window.seedFAQData();
                         if (result) {
-                          toast.success(`✅ ${result.categories} catégories et ${result.questions} questions créées !`);
+                          toast.success(`âœ… ${result.categories} catÃ©gories et ${result.questions} questions crÃ©Ã©es !`);
                           fetchData();
                         }
                       } catch (error) {
@@ -698,7 +698,7 @@ export function FAQTab() {
                     className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 px-8 py-6 text-lg"
                   >
                     <Sparkles className="h-5 w-5 mr-3" />
-                    Initialiser FAQ (6 catégories + 37 questions)
+                    Initialiser FAQ (6 catÃ©gories + 37 questions)
                   </Button>
                 </div>
               ) : (
@@ -730,7 +730,7 @@ export function FAQTab() {
                               }}
                               variant="ghost"
                               size="sm"
-                              className="text-[#00FFC2] hover:bg-[#00FFC2]/10 h-8 w-8 p-0"
+                              className="text-[#CCFF00] hover:bg-[#CCFF00]/10 h-8 w-8 p-0"
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
@@ -763,18 +763,18 @@ export function FAQTab() {
 
       {/* Category Dialog */}
       <Dialog open={showCategoryDialog} onOpenChange={setShowCategoryDialog}>
-        <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20 text-white">
+        <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 text-white">
           <DialogHeader>
             <DialogTitle>
-              {editingCategory ? "Modifier la catégorie" : "Nouvelle catégorie"}
+              {editingCategory ? "Modifier la catÃ©gorie" : "Nouvelle catÃ©gorie"}
             </DialogTitle>
             <DialogDescription className="text-white/60">
-              Organisez vos questions FAQ par catégorie
+              Organisez vos questions FAQ par catÃ©gorie
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label className="text-white/80">Nom de la catégorie *</Label>
+              <Label className="text-white/80">Nom de la catÃ©gorie *</Label>
               <Input
                 value={categoryFormData.name}
                 onChange={(e) => setCategoryFormData({ ...categoryFormData, name: e.target.value })}
@@ -785,7 +785,7 @@ export function FAQTab() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="text-white/80">Icône</Label>
+                <Label className="text-white/80">IcÃ´ne</Label>
                 <Select
                   value={categoryFormData.icon}
                   onValueChange={(value) => setCategoryFormData({ ...categoryFormData, icon: value })}
@@ -793,7 +793,7 @@ export function FAQTab() {
                   <SelectTrigger className="bg-white/5 border-white/10 text-white mt-2">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+                  <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
                     {iconOptions.map(icon => (
                       <SelectItem key={icon.value} value={icon.value}>{icon.label}</SelectItem>
                     ))}
@@ -810,7 +810,7 @@ export function FAQTab() {
                   <SelectTrigger className="bg-white/5 border-white/10 text-white mt-2">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+                  <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
                     {colorOptions.map(color => (
                       <SelectItem key={color.value} value={color.value}>{color.label}</SelectItem>
                     ))}
@@ -823,9 +823,9 @@ export function FAQTab() {
               <Button
                 onClick={handleSaveCategory}
                 disabled={!categoryFormData.name}
-                className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               >
-                {editingCategory ? "Mettre à jour" : "Créer"}
+                {editingCategory ? "Mettre Ã  jour" : "CrÃ©er"}
               </Button>
               <Button
                 onClick={() => {
@@ -844,7 +844,7 @@ export function FAQTab() {
 
       {/* Question Dialog */}
       <Dialog open={showQuestionDialog} onOpenChange={setShowQuestionDialog}>
-        <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -852,7 +852,7 @@ export function FAQTab() {
                   {editingQuestion ? "Modifier la question" : "Nouvelle question"}
                 </DialogTitle>
                 <DialogDescription className="text-white/60">
-                  Ajoutez des questions fréquentes pour aider vos visiteurs
+                  Ajoutez des questions frÃ©quentes pour aider vos visiteurs
                 </DialogDescription>
               </div>
               {editingQuestion && questionFormData.question_en && questionFormData.answer_en && (
@@ -867,11 +867,11 @@ export function FAQTab() {
           {/* Language Tabs */}
           <Tabs value={editorLang} onValueChange={(v) => setEditorLang(v as "fr" | "en")} className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-white/5">
-              <TabsTrigger value="fr" className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-black">
-                🇫🇷 Français
+              <TabsTrigger value="fr" className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-black">
+                ðŸ‡«ðŸ‡· FranÃ§ais
               </TabsTrigger>
-              <TabsTrigger value="en" className="data-[state=active]:bg-[#00FFC2] data-[state=active]:text-black">
-                🇬🇧 English
+              <TabsTrigger value="en" className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-black">
+                ðŸ‡¬ðŸ‡§ English
               </TabsTrigger>
             </TabsList>
 
@@ -888,26 +888,26 @@ export function FAQTab() {
               </div>
 
               <div>
-                <Label className="text-white/80">Réponse (FR) *</Label>
+                <Label className="text-white/80">RÃ©ponse (FR) *</Label>
                 <Textarea
                   value={questionFormData.answer}
                   onChange={(e) => setQuestionFormData({ ...questionFormData, answer: e.target.value })}
-                  placeholder="Réponse détaillée à la question..."
+                  placeholder="RÃ©ponse dÃ©taillÃ©e Ã  la question..."
                   rows={6}
                   className="bg-white/5 border-white/10 text-white mt-2"
                 />
               </div>
 
               <div>
-                <Label className="text-white/80">Mots-clés (FR) - séparés par des virgules</Label>
+                <Label className="text-white/80">Mots-clÃ©s (FR) - sÃ©parÃ©s par des virgules</Label>
                 <Input
                   value={questionFormData.keywords}
                   onChange={(e) => setQuestionFormData({ ...questionFormData, keywords: e.target.value })}
-                  placeholder="tarifs, prix, coût, devis"
+                  placeholder="tarifs, prix, coÃ»t, devis"
                   className="bg-white/5 border-white/10 text-white mt-2"
                 />
                 <p className="text-xs text-white/40 mt-1">
-                  Aide à la recherche et au filtrage
+                  Aide Ã  la recherche et au filtrage
                 </p>
               </div>
             </TabsContent>
@@ -953,15 +953,15 @@ export function FAQTab() {
           {/* Common Fields */}
           <div className="space-y-4">
             <div>
-              <Label className="text-white/80">Catégorie *</Label>
+              <Label className="text-white/80">CatÃ©gorie *</Label>
               <Select
                 value={questionFormData.categoryId}
                 onValueChange={(value) => setQuestionFormData({ ...questionFormData, categoryId: value })}
               >
                 <SelectTrigger className="bg-white/5 border-white/10 text-white mt-2">
-                  <SelectValue placeholder="Sélectionner une catégorie" />
+                  <SelectValue placeholder="SÃ©lectionner une catÃ©gorie" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0C0C0C] border-[#00FFC2]/20">
+                <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
                   {categories.map(cat => (
                     <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
                   ))}
@@ -975,7 +975,7 @@ export function FAQTab() {
                 id="isPublished"
                 checked={questionFormData.isPublished}
                 onChange={(e) => setQuestionFormData({ ...questionFormData, isPublished: e.target.checked })}
-                className="w-4 h-4 rounded border-white/20 bg-white/5 text-[#00FFC2]"
+                className="w-4 h-4 rounded border-white/20 bg-white/5 text-[#CCFF00]"
               />
               <Label htmlFor="isPublished" className="text-white/80 cursor-pointer">
                 Publier cette question (visible sur le site)
@@ -986,9 +986,9 @@ export function FAQTab() {
               <Button
                 onClick={handleSaveQuestion}
                 disabled={!questionFormData.question || !questionFormData.answer || !questionFormData.categoryId}
-                className="flex-1 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
               >
-                {editingQuestion ? "Mettre à jour" : "Créer"}
+                {editingQuestion ? "Mettre Ã  jour" : "CrÃ©er"}
               </Button>
               <Button
                 onClick={() => {
@@ -1011,12 +1011,12 @@ export function FAQTab() {
           open={showDeleteCategoryDialog}
           onOpenChange={setShowDeleteCategoryDialog}
           onConfirm={handleDeleteCategory}
-          title="Supprimer la catégorie"
-          description="Êtes-vous sûr de vouloir supprimer cette catégorie ?"
+          title="Supprimer la catÃ©gorie"
+          description="ÃŠtes-vous sÃ»r de vouloir supprimer cette catÃ©gorie ?"
           itemName={deletingCategory.name}
           warningMessage={
             questions.filter(q => q.categoryId === deletingCategory.id).length > 0
-              ? `Cette catégorie contient ${questions.filter(q => q.categoryId === deletingCategory.id).length} question(s). Elles seront également supprimées.`
+              ? `Cette catÃ©gorie contient ${questions.filter(q => q.categoryId === deletingCategory.id).length} question(s). Elles seront Ã©galement supprimÃ©es.`
               : undefined
           }
         />
@@ -1029,7 +1029,7 @@ export function FAQTab() {
           onOpenChange={setShowDeleteQuestionDialog}
           onConfirm={handleDeleteQuestion}
           title="Supprimer la question"
-          description="Êtes-vous sûr de vouloir supprimer cette question ?"
+          description="ÃŠtes-vous sÃ»r de vouloir supprimer cette question ?"
           itemName={deletingQuestion.question}
         />
       )}

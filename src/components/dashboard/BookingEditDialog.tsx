@@ -11,7 +11,7 @@ interface BookingEditDialogProps {
   onOpenChange: (open: boolean) => void;
   booking: any;
   onSave: (bookingData: any) => void;
-  clients?: any[]; // Liste des clients pour sélection
+  clients?: any[]; // Liste des clients pour sÃ©lection
 }
 
 export function BookingEditDialog({ open, onOpenChange, booking, onSave, clients = [] }: BookingEditDialogProps) {
@@ -48,9 +48,9 @@ export function BookingEditDialog({ open, onOpenChange, booking, onSave, clients
         recurrence
       });
       setHasRecurrence(recurrence.type !== "none");
-      setSelectedClientId(""); // Réinitialiser la sélection client
+      setSelectedClientId(""); // RÃ©initialiser la sÃ©lection client
     } else {
-      // Nouveau booking - réinitialiser tout
+      // Nouveau booking - rÃ©initialiser tout
       setFormData({
         name: "",
         email: "",
@@ -67,7 +67,7 @@ export function BookingEditDialog({ open, onOpenChange, booking, onSave, clients
     }
   }, [booking, open]);
 
-  // Fonction pour remplir le formulaire avec les données d'un client
+  // Fonction pour remplir le formulaire avec les donnÃ©es d'un client
   const handleClientSelect = (clientId: string) => {
     setSelectedClientId(clientId);
     
@@ -99,17 +99,17 @@ export function BookingEditDialog({ open, onOpenChange, booking, onSave, clients
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          {/* Sélection de client (seulement pour nouveau booking) */}
+          {/* SÃ©lection de client (seulement pour nouveau booking) */}
           {!booking && clients.length > 0 && (
             <div className="space-y-2 pb-2 border-b border-white/10">
               <Label className="text-white/80">Client</Label>
               <Select value={selectedClientId} onValueChange={handleClientSelect}>
                 <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                  <SelectValue placeholder="Sélectionner un client existant ou saisir manuellement" />
+                  <SelectValue placeholder="SÃ©lectionner un client existant ou saisir manuellement" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#0C0C0C] border-white/10 max-h-[300px]">
                   <SelectItem value="manual" className="text-white/60 hover:bg-white/5">
-                    ✏️ Saisie manuelle
+                    âœï¸ Saisie manuelle
                   </SelectItem>
                   {clients.map((client) => (
                     <SelectItem 
@@ -155,7 +155,7 @@ export function BookingEditDialog({ open, onOpenChange, booking, onSave, clients
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-white/80">Téléphone</Label>
+              <Label htmlFor="phone" className="text-white/80">TÃ©lÃ©phone</Label>
               <Input
                 id="phone"
                 type="tel"
@@ -208,14 +208,14 @@ export function BookingEditDialog({ open, onOpenChange, booking, onSave, clients
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-[#0C0C0C] border-white/10">
-                <SelectItem value="pending" className="text-white hover:bg-white/5">⏳ En attente</SelectItem>
-                <SelectItem value="confirmed" className="text-white hover:bg-white/5">✅ Confirmé</SelectItem>
-                <SelectItem value="cancelled" className="text-white hover:bg-white/5">❌ Annulé</SelectItem>
+                <SelectItem value="pending" className="text-white hover:bg-white/5">â³ En attente</SelectItem>
+                <SelectItem value="confirmed" className="text-white hover:bg-white/5">âœ… ConfirmÃ©</SelectItem>
+                <SelectItem value="cancelled" className="text-white hover:bg-white/5">âŒ AnnulÃ©</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          {/* Section Récurrence */}
+          {/* Section RÃ©currence */}
           <div className="space-y-3 pt-2 border-t border-white/10">
             <div className="flex items-center gap-2">
               <input
@@ -231,17 +231,17 @@ export function BookingEditDialog({ open, onOpenChange, booking, onSave, clients
                     });
                   }
                 }}
-                className="w-4 h-4 rounded border-white/20 bg-white/5 text-[#00FFC2] focus:ring-[#00FFC2]"
+                className="w-4 h-4 rounded border-white/20 bg-white/5 text-[#CCFF00] focus:ring-[#CCFF00]"
               />
               <Label htmlFor="hasRecurrence" className="text-white/80 cursor-pointer">
-                🔁 Rendez-vous récurrent
+                ðŸ” Rendez-vous rÃ©current
               </Label>
             </div>
 
             {hasRecurrence && (
               <div className="grid grid-cols-2 gap-4 pt-2">
                 <div className="space-y-2">
-                  <Label className="text-white/80">Fréquence</Label>
+                  <Label className="text-white/80">FrÃ©quence</Label>
                   <Select 
                     value={formData.recurrence.type} 
                     onValueChange={(value: any) => setFormData({
@@ -253,9 +253,9 @@ export function BookingEditDialog({ open, onOpenChange, booking, onSave, clients
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-[#0C0C0C] border-white/10">
-                      <SelectItem value="daily" className="text-white hover:bg-white/5">📅 Quotidien</SelectItem>
-                      <SelectItem value="weekly" className="text-white hover:bg-white/5">📆 Hebdomadaire</SelectItem>
-                      <SelectItem value="monthly" className="text-white hover:bg-white/5">🗓️ Mensuel</SelectItem>
+                      <SelectItem value="daily" className="text-white hover:bg-white/5">ðŸ“… Quotidien</SelectItem>
+                      <SelectItem value="weekly" className="text-white hover:bg-white/5">ðŸ“† Hebdomadaire</SelectItem>
+                      <SelectItem value="monthly" className="text-white hover:bg-white/5">ðŸ—“ï¸ Mensuel</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -298,7 +298,7 @@ export function BookingEditDialog({ open, onOpenChange, booking, onSave, clients
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               className="bg-white/5 border-white/10 text-white min-h-[100px]"
-              placeholder="Informations complémentaires..."
+              placeholder="Informations complÃ©mentaires..."
             />
           </div>
 

@@ -5,24 +5,24 @@
 
 if (typeof window !== 'undefined') {
   setTimeout(() => {
-    console.log('%c═══════════════════════════════════════════════════════════════', 'color: #00FFC2; font-size: 14px;');
-    console.log('%c         🚨 NOUVEAU FIX APPLIQUÉ - LIRE MAINTENANT           ', 'color: #00FFC2; font-size: 14px; font-weight: bold;');
-    console.log('%c═══════════════════════════════════════════════════════════════', 'color: #00FFC2; font-size: 14px;');
+    console.log('%câ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•', 'color: #CCFF00; font-size: 14px;');
+    console.log('%c         ðŸš¨ NOUVEAU FIX APPLIQUÃ‰ - LIRE MAINTENANT           ', 'color: #CCFF00; font-size: 14px; font-weight: bold;');
+    console.log('%câ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•', 'color: #CCFF00; font-size: 14px;');
     console.log('');
-    console.log('%c📖 Guide urgent:', 'color: #F4F4F4; font-weight: bold;');
+    console.log('%cðŸ“– Guide urgent:', 'color: #F4F4F4; font-weight: bold;');
     console.log('   /FAIRE_MAINTENANT.txt');
     console.log('');
-    console.log('%c🔧 Correctif:', 'color: #F4F4F4; font-weight: bold;');
-    console.log('   • Chargement forcé des utilitaires URLs');
-    console.log('   • Initialisation multiple et agressive');
-    console.log('   • Vérification automatique');
+    console.log('%cðŸ”§ Correctif:', 'color: #F4F4F4; font-weight: bold;');
+    console.log('   â€¢ Chargement forcÃ© des utilitaires URLs');
+    console.log('   â€¢ Initialisation multiple et agressive');
+    console.log('   â€¢ VÃ©rification automatique');
     console.log('');
-    console.log('%c🚀 Action:', 'color: #F4F4F4; font-weight: bold;');
-    console.log('   1. Vider le cache (F12 → Network → Disable cache)');
+    console.log('%cðŸš€ Action:', 'color: #F4F4F4; font-weight: bold;');
+    console.log('   1. Vider le cache (F12 â†’ Network â†’ Disable cache)');
     console.log('   2. Recharger: Ctrl+Shift+R');
     console.log('   3. Attendre 3 secondes');
     console.log('   4. Tester: window.testAllURLs.printAllRoutes()');
     console.log('');
-    console.log('%c═══════════════════════════════════════════════════════════════', 'color: #00FFC2; font-size: 14px;');
+    console.log('%câ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•', 'color: #CCFF00; font-size: 14px;');
   }, 500);
 }

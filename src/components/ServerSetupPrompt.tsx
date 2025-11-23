@@ -1,6 +1,6 @@
 /**
  * Server Setup Prompt
- * Bouton flottant qui apparaît sur les pages en mode local
+ * Bouton flottant qui apparaÃ®t sur les pages en mode local
  */
 
 import { motion, AnimatePresence } from "motion/react";
@@ -26,7 +26,7 @@ export function ServerSetupPrompt({ show, onClose }: ServerSetupPromptProps) {
     if ((window as any).serverDiagnostic) {
       (window as any).serverDiagnostic();
     } else {
-      // Fallback: essayer de déclencher un event ou changer le hash
+      // Fallback: essayer de dÃ©clencher un event ou changer le hash
       window.location.hash = "server-diagnostic";
     }
   };
@@ -41,11 +41,11 @@ export function ServerSetupPrompt({ show, onClose }: ServerSetupPromptProps) {
         exit={{ opacity: 0, y: 20, scale: 0.9 }}
         className="fixed bottom-6 right-6 z-50 max-w-sm"
       >
-        <div className="bg-gradient-to-br from-[#00FFC2]/20 to-blue-500/20 backdrop-blur-xl border border-[#00FFC2]/30 rounded-2xl p-5 shadow-2xl">
+        <div className="bg-gradient-to-br from-[#CCFF00]/20 to-blue-500/20 backdrop-blur-xl border border-[#CCFF00]/30 rounded-2xl p-5 shadow-2xl">
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-2">
-              <div className="p-2 bg-[#00FFC2]/20 rounded-lg">
-                <Server className="h-5 w-5 text-[#00FFC2]" />
+              <div className="p-2 bg-[#CCFF00]/20 rounded-lg">
+                <Server className="h-5 w-5 text-[#CCFF00]" />
               </div>
               <h3 className="text-white font-medium">
                 Synchroniser avec Supabase
@@ -61,14 +61,14 @@ export function ServerSetupPrompt({ show, onClose }: ServerSetupPromptProps) {
           </div>
 
           <p className="text-sm text-white/70 mb-4">
-            Cette page utilise des données locales. Déployez le serveur complet
+            Cette page utilise des donnÃ©es locales. DÃ©ployez le serveur complet
             pour synchroniser avec Supabase.
           </p>
 
           <div className="flex gap-2">
             <Button
               onClick={handleSetup}
-              className="flex-1 bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+              className="flex-1 bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
             >
               Configurer <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
@@ -84,8 +84,8 @@ export function ServerSetupPrompt({ show, onClose }: ServerSetupPromptProps) {
           {/* Pulsing indicator */}
           <div className="absolute -top-1 -right-1">
             <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00FFC2] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#00FFC2]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#CCFF00] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#CCFF00]"></span>
             </span>
           </div>
         </div>

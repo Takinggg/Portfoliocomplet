@@ -59,14 +59,14 @@ export function FirstTimeSetupModal() {
 
   const openConsole = () => {
     console.clear();
-    console.log('%c🚀 GUIDE DE DÉPLOIEMENT', 'font-size: 18px; font-weight: bold; color: #00FFC2;');
+    console.log('%cðŸš€ GUIDE DE DÃ‰PLOIEMENT', 'font-size: 18px; font-weight: bold; color: #CCFF00;');
     console.log('');
-    console.log('Exécutez cette commande dans votre terminal:');
-    console.log('%csupabase functions deploy server', 'font-size: 14px; background: #1a1a1a; padding: 8px; color: #00FFC2;');
+    console.log('ExÃ©cutez cette commande dans votre terminal:');
+    console.log('%csupabase functions deploy server', 'font-size: 14px; background: #1a1a1a; padding: 8px; color: #CCFF00;');
     console.log('');
     console.log('Ou tapez dans cette console:');
-    console.log('%cdeployServer()', 'font-size: 14px; background: #1a1a1a; padding: 8px; color: #00FFC2;');
-    alert('✅ Instructions affichées dans la console (F12)');
+    console.log('%cdeployServer()', 'font-size: 14px; background: #1a1a1a; padding: 8px; color: #CCFF00;');
+    alert('âœ… Instructions affichÃ©es dans la console (F12)');
   };
 
   if (!showModal || serverStatus === 'checking') {
@@ -75,20 +75,20 @@ export function FirstTimeSetupModal() {
 
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
-      <DialogContent className="sm:max-w-md bg-[#0C0C0C] border-[#00FFC2]/20">
+      <DialogContent className="sm:max-w-md bg-[#0C0C0C] border-[#CCFF00]/20">
         <DialogHeader>
           <div className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-[#00FFC2]" />
+            <AlertTriangle className="h-5 w-5 text-[#CCFF00]" />
             <DialogTitle className="text-[#F4F4F4]">Configuration initiale requise</DialogTitle>
           </div>
           <DialogDescription asChild>
             <div className="text-[#F4F4F4]/60 space-y-3 pt-4">
               <p>
-                Bienvenue ! Pour que l'application fonctionne, vous devez déployer le serveur Edge Function sur Supabase.
+                Bienvenue ! Pour que l'application fonctionne, vous devez dÃ©ployer le serveur Edge Function sur Supabase.
               </p>
               
-              <div className="bg-black/40 border border-[#00FFC2]/10 rounded-lg p-4 space-y-2">
-                <div className="flex items-center gap-2 text-[#00FFC2]">
+              <div className="bg-black/40 border border-[#CCFF00]/10 rounded-lg p-4 space-y-2">
+                <div className="flex items-center gap-2 text-[#CCFF00]">
                   <Terminal className="h-4 w-4" />
                   <span className="font-medium">Commande rapide</span>
                 </div>
@@ -98,18 +98,18 @@ export function FirstTimeSetupModal() {
               </div>
 
               <div className="space-y-2 text-sm">
-                <p className="text-[#F4F4F4]/80">Ou suivez ces étapes :</p>
+                <p className="text-[#F4F4F4]/80">Ou suivez ces Ã©tapes :</p>
                 <ol className="list-decimal list-inside space-y-1 text-[#F4F4F4]/60">
                   <li>Ouvrir la console (F12)</li>
-                  <li>Exécuter : <code className="text-[#00FFC2]">deployServer()</code></li>
-                  <li>Suivre les instructions affichées</li>
+                  <li>ExÃ©cuter : <code className="text-[#CCFF00]">deployServer()</code></li>
+                  <li>Suivre les instructions affichÃ©es</li>
                 </ol>
               </div>
 
               <div className="flex flex-col gap-2 pt-2">
                 <Button
                   onClick={openConsole}
-                  className="w-full bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+                  className="w-full bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
                 >
                   <Terminal className="h-4 w-4 mr-2" />
                   Voir les instructions
@@ -118,7 +118,7 @@ export function FirstTimeSetupModal() {
                 <Button
                   onClick={() => window.open(`https://supabase.com/dashboard/project/${projectId}/functions`, '_blank')}
                   variant="outline"
-                  className="w-full border-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                  className="w-full border-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/10"
                 >
                   <ExternalLink className="h-4 w-4 mr-2" />
                   Ouvrir Dashboard Supabase

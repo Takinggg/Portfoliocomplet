@@ -21,7 +21,7 @@
       margin-bottom: 20px;
     }
     button {
-      background: #00ffc2;
+      background: #CCFF00;
       color: #000;
       border: none;
       padding: 10px 20px;
@@ -45,17 +45,17 @@
     .error { background: #3d1a1a; border: 1px solid #5d2d2d; }
     .info { background: #1a1a3d; border: 1px solid #2d2d5d; }
     .status { display: inline-block; margin-right: 10px; }
-    .status.active { color: #00ffc2; }
+    .status.active { color: #CCFF00; }
     .status.inactive { color: #ff4444; }
-    h1 { color: #00ffc2; }
+    h1 { color: #CCFF00; }
     h2 { color: #fff; font-size: 18px; margin-bottom: 10px; }
   </style>
 </head>
 <body>
-  <h1>🔒 Test Protection Arcjet</h1>
+  <h1>ðŸ”’ Test Protection Arcjet</h1>
   
   <div class="test-section">
-    <h2>1️⃣ Test Newsletter Subscribe (Bot Detection + Email Validation)</h2>
+    <h2>1ï¸âƒ£ Test Newsletter Subscribe (Bot Detection + Email Validation)</h2>
     <button onclick="testNewsletter('valid@gmail.com')">Test Email Valide</button>
     <button onclick="testNewsletter('test@yopmail.com')">Test Email Jetable (BLOCK)</button>
     <button onclick="testNewsletter('invalid@')">Test Email Invalide</button>
@@ -63,20 +63,20 @@
   </div>
 
   <div class="test-section">
-    <h2>2️⃣ Test Lead Form (Bot Detection + Email Validation)</h2>
+    <h2>2ï¸âƒ£ Test Lead Form (Bot Detection + Email Validation)</h2>
     <button onclick="testLead('test@example.com')">Test Normal</button>
     <button onclick="testLead('spam@tempmail.com')">Test Email Jetable</button>
     <div id="lead-result"></div>
   </div>
 
   <div class="test-section">
-    <h2>3️⃣ Test Rate Limiting (60 req/min global)</h2>
-    <button onclick="testRateLimit()">Spam 20 Requêtes Rapides</button>
+    <h2>3ï¸âƒ£ Test Rate Limiting (60 req/min global)</h2>
+    <button onclick="testRateLimit()">Spam 20 RequÃªtes Rapides</button>
     <div id="ratelimit-result"></div>
   </div>
 
   <div class="test-section">
-    <h2>4️⃣ Test Login Rate Limiting (5 tentatives/5min)</h2>
+    <h2>4ï¸âƒ£ Test Login Rate Limiting (5 tentatives/5min)</h2>
     <button onclick="testLoginRateLimit()">Spam 10 Tentatives Login</button>
     <div id="login-result"></div>
   </div>
@@ -91,7 +91,7 @@
     }
 
     async function testNewsletter(email) {
-      showResult('newsletter-result', '⏳ Test en cours...', 'info');
+      showResult('newsletter-result', 'â³ Test en cours...', 'info');
       
       try {
         const response = await fetch(`${API_BASE}/newsletter/subscribe`, {
@@ -109,32 +109,32 @@
 
         const data = await response.json();
         
-        let result = `📧 Email testé: ${email}\n`;
-        result += `🔢 Status HTTP: ${response.status}\n\n`;
+        let result = `ðŸ“§ Email testÃ©: ${email}\n`;
+        result += `ðŸ”¢ Status HTTP: ${response.status}\n\n`;
         
         if (response.status === 403) {
-          result += `✅ Bot détecté ! (Arcjet actif)\n`;
+          result += `âœ… Bot dÃ©tectÃ© ! (Arcjet actif)\n`;
           result += `Message: ${data.error}`;
           showResult('newsletter-result', result, 'success');
         } else if (response.status === 400) {
-          result += `✅ Email invalide bloqué ! (Arcjet actif)\n`;
+          result += `âœ… Email invalide bloquÃ© ! (Arcjet actif)\n`;
           result += `Raison: ${data.error}`;
           showResult('newsletter-result', result, 'success');
         } else if (response.ok) {
-          result += `✅ Email accepté (valide)\n`;
-          result += `Réponse: ${JSON.stringify(data, null, 2)}`;
+          result += `âœ… Email acceptÃ© (valide)\n`;
+          result += `RÃ©ponse: ${JSON.stringify(data, null, 2)}`;
           showResult('newsletter-result', result, 'success');
         } else {
-          result += `⚠️ Erreur: ${JSON.stringify(data, null, 2)}`;
+          result += `âš ï¸ Erreur: ${JSON.stringify(data, null, 2)}`;
           showResult('newsletter-result', result, 'error');
         }
       } catch (error) {
-        showResult('newsletter-result', `❌ Erreur réseau: ${error.message}`, 'error');
+        showResult('newsletter-result', `âŒ Erreur rÃ©seau: ${error.message}`, 'error');
       }
     }
 
     async function testLead(email) {
-      showResult('lead-result', '⏳ Test en cours...', 'info');
+      showResult('lead-result', 'â³ Test en cours...', 'info');
       
       try {
         const response = await fetch(`${API_BASE}/leads`, {
@@ -153,30 +153,30 @@
 
         const data = await response.json();
         
-        let result = `👤 Lead testé: ${email}\n`;
-        result += `🔢 Status HTTP: ${response.status}\n\n`;
+        let result = `ðŸ‘¤ Lead testÃ©: ${email}\n`;
+        result += `ðŸ”¢ Status HTTP: ${response.status}\n\n`;
         
         if (response.status === 403) {
-          result += `✅ Bot détecté ! (Arcjet actif)`;
+          result += `âœ… Bot dÃ©tectÃ© ! (Arcjet actif)`;
           showResult('lead-result', result, 'success');
         } else if (response.status === 400) {
-          result += `✅ Email invalide bloqué !\n`;
+          result += `âœ… Email invalide bloquÃ© !\n`;
           result += `Message: ${data.error}`;
           showResult('lead-result', result, 'success');
         } else if (response.ok) {
-          result += `✅ Lead accepté`;
+          result += `âœ… Lead acceptÃ©`;
           showResult('lead-result', result, 'success');
         } else {
-          result += `⚠️ Erreur: ${JSON.stringify(data, null, 2)}`;
+          result += `âš ï¸ Erreur: ${JSON.stringify(data, null, 2)}`;
           showResult('lead-result', result, 'error');
         }
       } catch (error) {
-        showResult('lead-result', `❌ Erreur: ${error.message}`, 'error');
+        showResult('lead-result', `âŒ Erreur: ${error.message}`, 'error');
       }
     }
 
     async function testRateLimit() {
-      showResult('ratelimit-result', '⏳ Envoi de 20 requêtes...', 'info');
+      showResult('ratelimit-result', 'â³ Envoi de 20 requÃªtes...', 'info');
       
       const results = [];
       
@@ -211,23 +211,23 @@
       const blocked = results.filter(r => r.blocked).length;
       const successful = results.filter(r => r.status === 200 || r.status === 400).length;
       
-      let result = `📊 Résultats du test de rate limiting:\n\n`;
-      result += `✅ Requêtes réussies: ${successful}\n`;
-      result += `🚫 Requêtes bloquées (429): ${blocked}\n\n`;
+      let result = `ðŸ“Š RÃ©sultats du test de rate limiting:\n\n`;
+      result += `âœ… RequÃªtes rÃ©ussies: ${successful}\n`;
+      result += `ðŸš« RequÃªtes bloquÃ©es (429): ${blocked}\n\n`;
       
       if (blocked > 0) {
-        result += `✅ ARCJET ACTIF - Rate limiting fonctionne!\n`;
-        result += `Les requêtes ont été limitées après ${successful} tentatives.`;
+        result += `âœ… ARCJET ACTIF - Rate limiting fonctionne!\n`;
+        result += `Les requÃªtes ont Ã©tÃ© limitÃ©es aprÃ¨s ${successful} tentatives.`;
         showResult('ratelimit-result', result, 'success');
       } else {
-        result += `⚠️ Aucune requête bloquée\n`;
-        result += `Le rate limiting n'a pas été déclenché (limite: 60/min)`;
+        result += `âš ï¸ Aucune requÃªte bloquÃ©e\n`;
+        result += `Le rate limiting n'a pas Ã©tÃ© dÃ©clenchÃ© (limite: 60/min)`;
         showResult('ratelimit-result', result, 'info');
       }
     }
 
     async function testLoginRateLimit() {
-      showResult('login-result', '⏳ Test de 10 tentatives de login...', 'info');
+      showResult('login-result', 'â³ Test de 10 tentatives de login...', 'info');
       
       const results = [];
       
@@ -251,7 +251,7 @@
             blocked: response.status === 429
           });
           
-          // Petit délai pour voir la progression
+          // Petit dÃ©lai pour voir la progression
           await new Promise(resolve => setTimeout(resolve, 100));
         } catch (error) {
           results.push({
@@ -265,18 +265,18 @@
       const blocked = results.filter(r => r.blocked).length;
       const successful = results.filter(r => r.status !== 429 && r.status !== 'ERROR').length;
       
-      let result = `🔐 Résultats du test de login rate limiting:\n\n`;
-      result += `Tentatives autorisées: ${successful}\n`;
-      result += `🚫 Tentatives bloquées: ${blocked}\n\n`;
+      let result = `ðŸ” RÃ©sultats du test de login rate limiting:\n\n`;
+      result += `Tentatives autorisÃ©es: ${successful}\n`;
+      result += `ðŸš« Tentatives bloquÃ©es: ${blocked}\n\n`;
       
       if (blocked > 0) {
-        result += `✅ PROTECTION LOGIN ACTIVE!\n`;
-        result += `Le compte est protégé après ${successful} tentatives.\n`;
+        result += `âœ… PROTECTION LOGIN ACTIVE!\n`;
+        result += `Le compte est protÃ©gÃ© aprÃ¨s ${successful} tentatives.\n`;
         result += `Limite stricte: 5 tentatives / 5 minutes`;
         showResult('login-result', result, 'success');
       } else {
-        result += `⚠️ Aucune tentative bloquée\n`;
-        result += `Le rate limiting strict (5/5min) n'a pas été atteint`;
+        result += `âš ï¸ Aucune tentative bloquÃ©e\n`;
+        result += `Le rate limiting strict (5/5min) n'a pas Ã©tÃ© atteint`;
         showResult('login-result', result, 'info');
       }
     }

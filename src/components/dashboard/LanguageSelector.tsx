@@ -15,7 +15,7 @@ export function LanguageSelector() {
           onClick={() => setLanguage('fr')}
           className={
             language === 'fr'
-              ? 'bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30'
+              ? 'bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30'
               : 'text-white/60 hover:text-white hover:bg-white/5'
           }
         >
@@ -27,7 +27,7 @@ export function LanguageSelector() {
           onClick={() => setLanguage('en')}
           className={
             language === 'en'
-              ? 'bg-[#00FFC2]/20 text-[#00FFC2] hover:bg-[#00FFC2]/30'
+              ? 'bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30'
               : 'text-white/60 hover:text-white hover:bg-white/5'
           }
         >

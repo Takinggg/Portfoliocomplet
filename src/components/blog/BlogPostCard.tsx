@@ -46,22 +46,22 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
   const { t, language } = useTranslation();
   
   const categoryConfig: Record<string, { label: string; color: string }> = {
-    development: { label: "Développement", color: "#00FFC2" },
-    design: { label: "Design", color: "#00D9A6" },
+    development: { label: "DÃ©veloppement", color: "#CCFF00" },
+    design: { label: "Design", color: "#DAFF40" },
     business: { label: "Business", color: "#00B38A" },
-    // Support pour catégories en français (mode local)
-    "Développement": { label: "Développement", color: "#00FFC2" },
+    // Support pour catÃ©gories en franÃ§ais (mode local)
+    "DÃ©veloppement": { label: "DÃ©veloppement", color: "#CCFF00" },
     "TypeScript": { label: "TypeScript", color: "#3178C6" },
-    "Design": { label: "Design", color: "#00D9A6" },
+    "Design": { label: "Design", color: "#DAFF40" },
     "Performance": { label: "Performance", color: "#FF6B6B" },
     "React": { label: "React", color: "#61DAFB" },
   };
 
-  // Normaliser la catégorie et ajouter un fallback
+  // Normaliser la catÃ©gorie et ajouter un fallback
   const normalizedCategory = post.category?.toLowerCase() || "development";
   const config = categoryConfig[post.category] || 
                  categoryConfig[normalizedCategory] || 
-                 { label: post.category || "Article", color: "#00FFC2" };
+                 { label: post.category || "Article", color: "#CCFF00" };
 
   if (variant === "compact") {
     return (
@@ -73,7 +73,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
         onClick={onClick}
         className="cursor-pointer"
       >
-        <Card className="bg-white/5 border-white/10 hover:bg-white/[0.07] hover:border-[#00FFC2]/30 transition-all overflow-hidden">
+        <Card className="bg-white/5 border-white/10 hover:bg-white/[0.07] hover:border-[#CCFF00]/30 transition-all overflow-hidden">
           <div className="p-4">
             <div className="flex items-start gap-3">
               {post.coverImage && (
@@ -129,7 +129,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
         onClick={onClick}
         className="cursor-pointer"
       >
-        <Card className="bg-gradient-to-br from-white/10 to-white/5 border-[#00FFC2]/20 hover:border-[#00FFC2]/40 transition-all overflow-hidden">
+        <Card className="bg-gradient-to-br from-white/10 to-white/5 border-[#CCFF00]/20 hover:border-[#CCFF00]/40 transition-all overflow-hidden">
           {post.coverImage && (
             <div className="relative h-64 overflow-hidden">
               <ImageWithFallback
@@ -144,7 +144,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
                 className="absolute top-4 left-4"
                 style={{ backgroundColor: `${config.color}`, color: '#0C0C0C' }}
               >
-                ⭐ {t('blog.card.featured')}
+                â­ {t('blog.card.featured')}
               </Badge>
             </div>
           )}
@@ -182,7 +182,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
                 )}
               </div>
               <motion.div
-                className="flex items-center gap-2 text-[#00FFC2]"
+                className="flex items-center gap-2 text-[#CCFF00]"
                 whileHover={{ x: 5 }}
               >
                 <span className="text-sm">{t('blog.card.read')}</span>
@@ -205,7 +205,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
       onClick={onClick}
       className="cursor-pointer group"
     >
-      <Card className="bg-[#0C0C0C] border-white/10 hover:bg-white/[0.03] hover:border-[#00FFC2]/40 transition-all overflow-hidden h-full flex flex-col">
+      <Card className="bg-[#0C0C0C] border-white/10 hover:bg-white/[0.03] hover:border-[#CCFF00]/40 transition-all overflow-hidden h-full flex flex-col">
         {post.coverImage && (
           <div className="relative h-56 overflow-hidden">
             <ImageWithFallback
@@ -256,7 +256,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
           )}
           
           {/* Title */}
-          <h3 className="text-2xl font-bold text-white mb-3 line-clamp-2 group-hover:text-[#00FFC2] transition-colors leading-tight">
+          <h3 className="text-2xl font-bold text-white mb-3 line-clamp-2 group-hover:text-[#CCFF00] transition-colors leading-tight">
             {post.title}
           </h3>
           
@@ -304,7 +304,7 @@ export function BlogPostCard({ post, onClick, variant = "default" }: BlogPostCar
             
             {/* Read more arrow */}
             <motion.div
-              className="flex items-center gap-2 text-[#00FFC2] text-sm font-medium"
+              className="flex items-center gap-2 text-[#CCFF00] text-sm font-medium"
               whileHover={{ x: 5 }}
               transition={{ duration: 0.2 }}
             >

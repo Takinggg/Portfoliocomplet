@@ -71,7 +71,7 @@ export function ClientsTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         // Charger des clients vides en mode local
         setClients([]);
         return;
@@ -89,7 +89,7 @@ export function ClientsTab() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("❌ Server response error:", response.status, errorText);
+        console.error("âŒ Server response error:", response.status, errorText);
         throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
 
@@ -99,32 +99,32 @@ export function ClientsTab() {
       // Cache les clients pour un usage futur
       localStorage.setItem("cached_clients", JSON.stringify(data.clients || []));
     } catch (error: any) {
-      console.error("❌ Error fetching clients:", error);
+      console.error("âŒ Error fetching clients:", error);
       
-      // Message d'erreur spécifique selon le code HTTP
+      // Message d'erreur spÃ©cifique selon le code HTTP
       const is404 = error.message?.includes("404");
       const is401 = error.message?.includes("401");
       
       if (is404) {
-        toast.error("Routes clients non déployées", {
-          description: "Le serveur doit être redéployé sur Supabase. Consultez REDEPLOYER_SERVEUR.md",
+        toast.error("Routes clients non dÃ©ployÃ©es", {
+          description: "Le serveur doit Ãªtre redÃ©ployÃ© sur Supabase. Consultez REDEPLOYER_SERVEUR.md",
           duration: 10000,
         });
       } else if (is401) {
-        toast.error("Session expirée", {
+        toast.error("Session expirÃ©e", {
           description: "Veuillez vous reconnecter au dashboard.",
         });
       }
       
-      // Mode dégradé : charger des données locales si disponibles
+      // Mode dÃ©gradÃ© : charger des donnÃ©es locales si disponibles
       const cachedClients = localStorage.getItem("cached_clients");
       if (cachedClients) {
         try {
           const parsed = JSON.parse(cachedClients);
           setClients(parsed);
           if (!is404 && !is401) {
-            toast.info("Données locales chargées", {
-              description: "Le serveur est indisponible. Affichage des données en cache.",
+            toast.info("DonnÃ©es locales chargÃ©es", {
+              description: "Le serveur est indisponible. Affichage des donnÃ©es en cache.",
             });
           }
         } catch (e) {
@@ -135,7 +135,7 @@ export function ClientsTab() {
         setClients([]);
         if (!is404 && !is401) {
           toast.warning("Serveur indisponible", {
-            description: "Impossible de charger les clients. Vérifiez que le serveur est déployé.",
+            description: "Impossible de charger les clients. VÃ©rifiez que le serveur est dÃ©ployÃ©.",
           });
         }
       }
@@ -171,7 +171,7 @@ export function ClientsTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -205,7 +205,7 @@ export function ClientsTab() {
 
   const convertLeadsToClients = async () => {
     if (selectedLeadIds.length === 0) {
-      toast.error("Veuillez sélectionner au moins un lead");
+      toast.error("Veuillez sÃ©lectionner au moins un lead");
       return;
     }
 
@@ -213,7 +213,7 @@ export function ClientsTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -256,7 +256,7 @@ export function ClientsTab() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Session expirée");
+        toast.error("Session expirÃ©e");
         return;
       }
 
@@ -284,8 +284,8 @@ export function ClientsTab() {
       if (data.deletedProjects > 0) deletedInfo.push(`${data.deletedProjects} projet(s)`);
       
       const message = deletedInfo.length > 0 
-        ? `Client supprimé avec ${deletedInfo.join(", ")}`
-        : "Client supprimé avec succès";
+        ? `Client supprimÃ© avec ${deletedInfo.join(", ")}`
+        : "Client supprimÃ© avec succÃ¨s";
       
       toast.success(message);
       setShowDeleteDialog(false);
@@ -294,7 +294,7 @@ export function ClientsTab() {
     } catch (error) {
       console.error("Error deleting client:", error);
       toast.error("Impossible de supprimer le client", {
-        description: "Le serveur est indisponible. Veuillez réessayer plus tard.",
+        description: "Le serveur est indisponible. Veuillez rÃ©essayer plus tard.",
       });
     }
   };
@@ -332,7 +332,7 @@ export function ClientsTab() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl mb-2">Clients</h1>
-          <p className="text-white/60">Gérez votre base de clients</p>
+          <p className="text-white/60">GÃ©rez votre base de clients</p>
         </div>
         <div className="flex items-center gap-3">
           <Button
@@ -348,12 +348,12 @@ export function ClientsTab() {
           </Button>
           <Button
             onClick={fetchConvertibleLeads}
-            className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+            className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
           >
             <UserPlus className="h-4 w-4 mr-2" />
             Convertir des leads
           </Button>
-          <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-0 px-4 py-2 text-lg">
+          <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-0 px-4 py-2 text-lg">
             <Users className="h-5 w-5 mr-2" />
             {clients.length} client{clients.length > 1 ? "s" : ""}
           </Badge>
@@ -362,7 +362,7 @@ export function ClientsTab() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
+        <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
@@ -378,7 +378,7 @@ export function ClientsTab() {
           </CardContent>
         </Card>
 
-        <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
+        <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
@@ -394,17 +394,17 @@ export function ClientsTab() {
           </CardContent>
         </Card>
 
-        <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
+        <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-white/60 text-sm mb-1">Revenu total</p>
-                <p className="text-3xl text-[#00FFC2]">
-                  {clients.reduce((sum, c) => sum + (c.revenue || 0), 0).toLocaleString()}€
+                <p className="text-3xl text-[#CCFF00]">
+                  {clients.reduce((sum, c) => sum + (c.revenue || 0), 0).toLocaleString()}â‚¬
                 </p>
               </div>
-              <div className="w-12 h-12 bg-[#00FFC2]/10 rounded-xl flex items-center justify-center">
-                <DollarSign className="h-6 w-6 text-[#00FFC2]" />
+              <div className="w-12 h-12 bg-[#CCFF00]/10 rounded-xl flex items-center justify-center">
+                <DollarSign className="h-6 w-6 text-[#CCFF00]" />
               </div>
             </div>
           </CardContent>
@@ -412,8 +412,8 @@ export function ClientsTab() {
       </div>
 
       {/* Clients Table */}
-      <Card className="bg-black/40 border-[#00FFC2]/10 backdrop-blur-xl">
-        <CardHeader className="border-b border-[#00FFC2]/10">
+      <Card className="bg-black/40 border-[#CCFF00]/10 backdrop-blur-xl">
+        <CardHeader className="border-b border-[#CCFF00]/10">
           <div className="flex items-center justify-between">
             <CardTitle>Liste des clients</CardTitle>
             <div className="flex items-center gap-3">
@@ -434,7 +434,7 @@ export function ClientsTab() {
             <div className="text-center py-8 text-white/40">Chargement...</div>
           ) : filteredClients.length === 0 ? (
             <div className="text-center py-8 text-white/40">
-              {searchQuery ? "Aucun client trouvé" : "Aucun client"}
+              {searchQuery ? "Aucun client trouvÃ©" : "Aucun client"}
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -480,8 +480,8 @@ export function ClientsTab() {
                           {getStatusLabel(client.status)}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-[#00FFC2] font-medium">
-                        {(client.revenue || 0).toLocaleString()}€
+                      <TableCell className="text-[#CCFF00] font-medium">
+                        {(client.revenue || 0).toLocaleString()}â‚¬
                       </TableCell>
                       <TableCell className="text-white/60">
                         {new Date(client.createdAt).toLocaleDateString('fr-FR')}
@@ -495,7 +495,7 @@ export function ClientsTab() {
                             }}
                             variant="ghost"
                             size="sm"
-                            className="text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                            className="text-[#CCFF00] hover:bg-[#CCFF00]/10"
                             title="Modifier le client"
                           >
                             <Edit className="h-4 w-4" />
@@ -539,19 +539,19 @@ export function ClientsTab() {
           onOpenChange={setShowDeleteDialog}
           onConfirm={handleDeleteClient}
           title="Supprimer le client"
-          description="Êtes-vous sûr de vouloir supprimer ce client ? Cette action est irréversible et supprimera également :"
+          description="ÃŠtes-vous sÃ»r de vouloir supprimer ce client ? Cette action est irrÃ©versible et supprimera Ã©galement :"
           itemName={`${selectedClient.name} (${selectedClient.email})`}
-          warningMessage="Toutes les factures, devis et projets associés à ce client seront également supprimés définitivement."
+          warningMessage="Toutes les factures, devis et projets associÃ©s Ã  ce client seront Ã©galement supprimÃ©s dÃ©finitivement."
         />
       )}
 
       {/* Convert Leads to Clients Dialog */}
       <Dialog open={showConvertDialog} onOpenChange={setShowConvertDialog}>
-        <DialogContent className="bg-[#0C0C0C] border-[#00FFC2]/20 text-white max-w-2xl">
+        <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl">Convertir des leads en clients</DialogTitle>
             <DialogDescription className="text-white/60">
-              Sélectionnez les leads que vous souhaitez convertir en clients actifs
+              SÃ©lectionnez les leads que vous souhaitez convertir en clients actifs
             </DialogDescription>
           </DialogHeader>
 
@@ -560,7 +560,7 @@ export function ClientsTab() {
               <div className="text-center py-8 text-white/40">
                 <UserPlus className="h-12 w-12 mx-auto mb-3 opacity-40" />
                 <p>Aucun lead disponible pour conversion</p>
-                <p className="text-sm mt-2">Tous vos leads ont déjà été convertis en clients</p>
+                <p className="text-sm mt-2">Tous vos leads ont dÃ©jÃ  Ã©tÃ© convertis en clients</p>
               </div>
             ) : (
               convertibleLeads.map((lead) => (
@@ -577,7 +577,7 @@ export function ClientsTab() {
                         setSelectedLeadIds(selectedLeadIds.filter((id) => id !== lead.id));
                       }
                     }}
-                    className="border-[#00FFC2]/50 data-[state=checked]:bg-[#00FFC2] data-[state=checked]:border-[#00FFC2]"
+                    className="border-[#CCFF00]/50 data-[state=checked]:bg-[#CCFF00] data-[state=checked]:border-[#CCFF00]"
                   />
                   <div className="flex-1">
                     <p className="font-medium text-white">{lead.name}</p>
@@ -594,7 +594,7 @@ export function ClientsTab() {
                   <Badge 
                     className={
                       lead.status === "new" 
-                        ? "bg-[#00FFC2]/10 text-[#00FFC2] border-0" 
+                        ? "bg-[#CCFF00]/10 text-[#CCFF00] border-0" 
                         : lead.status === "qualified"
                         ? "bg-blue-500/10 text-blue-400 border-0"
                         : "bg-white/10 text-white border-0"
@@ -610,7 +610,7 @@ export function ClientsTab() {
           <DialogFooter className="border-t border-white/10 pt-4">
             <div className="flex items-center justify-between w-full">
               <p className="text-sm text-white/60">
-                {selectedLeadIds.length} lead{selectedLeadIds.length > 1 ? "s" : ""} sélectionné{selectedLeadIds.length > 1 ? "s" : ""}
+                {selectedLeadIds.length} lead{selectedLeadIds.length > 1 ? "s" : ""} sÃ©lectionnÃ©{selectedLeadIds.length > 1 ? "s" : ""}
               </p>
               <div className="flex gap-3">
                 <Button
@@ -626,7 +626,7 @@ export function ClientsTab() {
                 <Button
                   onClick={convertLeadsToClients}
                   disabled={selectedLeadIds.length === 0 || converting}
-                  className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                  className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
                 >
                   <UserPlus className="h-4 w-4 mr-2" />
                   {converting ? "Conversion..." : `Convertir ${selectedLeadIds.length > 0 ? `(${selectedLeadIds.length})` : ""}`}

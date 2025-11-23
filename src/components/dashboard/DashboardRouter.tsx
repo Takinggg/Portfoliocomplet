@@ -13,11 +13,11 @@ export function DashboardRouter({ currentView, onViewChange }: DashboardRouterPr
     return <EmailSettings />;
   }
   
-  // Pour les autres vues, retourne null et laisse le composant parent gérer
+  // Pour les autres vues, retourne null et laisse le composant parent gÃ©rer
   return null;
 }
 
-// Bouton de menu pour les emails (à ajouter dans la navigation)
+// Bouton de menu pour les emails (Ã  ajouter dans la navigation)
 export function EmailsMenuButton({ active, onClick }: { active: boolean; onClick: () => void }) {
   return (
     <Button
@@ -25,7 +25,7 @@ export function EmailsMenuButton({ active, onClick }: { active: boolean; onClick
       variant="ghost"
       className={`w-full justify-start ${
         active
-          ? "bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+          ? "bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
           : "text-neutral-300 hover:bg-neutral-800 hover:text-white"
       }`}
     >

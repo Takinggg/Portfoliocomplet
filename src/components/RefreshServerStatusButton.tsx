@@ -1,5 +1,5 @@
 /**
- * Bouton pour forcer une vérification immédiate du serveur
+ * Bouton pour forcer une vÃ©rification immÃ©diate du serveur
  */
 
 import { useState } from "react";
@@ -15,14 +15,14 @@ export function RefreshServerStatusButton() {
     setChecking(true);
     setResult(null);
 
-    // Force une vérification immédiate (ignore le cache)
+    // Force une vÃ©rification immÃ©diate (ignore le cache)
     const available = await forceCheckServer();
     const mode = getServerMode();
 
     setResult({ available, mode });
     setChecking(false);
 
-    // Reload après 1 seconde si le serveur est disponible
+    // Reload aprÃ¨s 1 seconde si le serveur est disponible
     if (available) {
       setTimeout(() => {
         window.location.reload();
@@ -36,10 +36,10 @@ export function RefreshServerStatusButton() {
         onClick={handleRefresh}
         disabled={checking}
         variant="default"
-        className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+        className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
       >
         <RefreshCw className={`h-4 w-4 mr-2 ${checking ? "animate-spin" : ""}`} />
-        {checking ? "Vérification..." : "Rafraîchir le serveur"}
+        {checking ? "VÃ©rification..." : "RafraÃ®chir le serveur"}
       </Button>
 
       {result && (

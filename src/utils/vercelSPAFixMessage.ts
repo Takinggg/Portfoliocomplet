@@ -8,35 +8,35 @@ setTimeout(() => {
 
   if (isProduction) {
     console.log(`%c
-╔═══════════════════════════════════════════════════════════════╗
-║                                                               ║
-║          🎯 VERCEL SPA FIX APPLIQUÉ                          ║
-║                                                               ║
-╚═══════════════════════════════════════════════════════════════╝
-    `, 'color: #00FFC2; font-size: 18px; font-weight: bold;');
+â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+â•‘                                                               â•‘
+â•‘          ðŸŽ¯ VERCEL SPA FIX APPLIQUÃ‰                          â•‘
+â•‘                                                               â•‘
+â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    `, 'color: #CCFF00; font-size: 18px; font-weight: bold;');
 
     console.log(`%c
-📍 CONFIGURATION VERCEL MISE À JOUR
+ðŸ“ CONFIGURATION VERCEL MISE Ã€ JOUR
 
 Le fichier vercel.json contient maintenant la configuration
-"rewrites" nécessaire pour que React Router fonctionne correctement.
+"rewrites" nÃ©cessaire pour que React Router fonctionne correctement.
 
-✅ Ce qui est corrigé :
-   • Accès direct aux URLs (/fr/services, /en/blog, etc.)
-   • Rafraîchissement de page (F5)
-   • Partage de liens directs
-   • Navigation entre les pages
-   • Changement de langue
+âœ… Ce qui est corrigÃ© :
+   â€¢ AccÃ¨s direct aux URLs (/fr/services, /en/blog, etc.)
+   â€¢ RafraÃ®chissement de page (F5)
+   â€¢ Partage de liens directs
+   â€¢ Navigation entre les pages
+   â€¢ Changement de langue
 
-🔍 Vérifier si c'est déployé :
-   1. Vérifie sur https://vercel.com/dashboard que le build est "Ready"
+ðŸ” VÃ©rifier si c'est dÃ©ployÃ© :
+   1. VÃ©rifie sur https://vercel.com/dashboard que le build est "Ready"
    2. Vide ton cache : Ctrl+Shift+R (Win) ou Cmd+Shift+R (Mac)
-   3. Teste d'accéder directement à ${hostname}/fr/services
+   3. Teste d'accÃ©der directement Ã  ${hostname}/fr/services
    
-   Si la page s'affiche = C'EST DÉPLOYÉ ✅
-   Si tu as un 404 = Le code n'est pas encore déployé
+   Si la page s'affiche = C'EST DÃ‰PLOYÃ‰ âœ…
+   Si tu as un 404 = Le code n'est pas encore dÃ©ployÃ©
 
-💡 Pour déployer le fix (si pas encore fait) :
+ðŸ’¡ Pour dÃ©ployer le fix (si pas encore fait) :
    
    git add vercel.json
    git commit -m "fix: rewrites SPA pour React Router"
@@ -44,11 +44,11 @@ Le fichier vercel.json contient maintenant la configuration
    
    Puis attends 2-3 minutes.
 
-📖 Guide complet : /FIX_FINAL_SPA.md
+ðŸ“– Guide complet : /FIX_FINAL_SPA.md
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 
-    `, 'color: #F4F4F4; font-size: 13px; background: #0a2520; padding: 15px; border-left: 5px solid #00FFC2;');
+    `, 'color: #F4F4F4; font-size: 13px; background: #0a2520; padding: 15px; border-left: 5px solid #CCFF00;');
   }
 }, 3000);
 

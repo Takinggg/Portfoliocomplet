@@ -46,14 +46,14 @@ export function CRMMasterList() {
         if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
         
-        console.log(`📦 API Response for ${currentTab}:`, data);
+        console.log(`ðŸ“¦ API Response for ${currentTab}:`, data);
         
         // Extract the array from the API response
         let items = [];
         if (data.success) {
-          console.log(`🔑 Looking for key: "${currentTab}" in data:`, Object.keys(data));
+          console.log(`ðŸ”‘ Looking for key: "${currentTab}" in data:`, Object.keys(data));
           items = data[currentTab] || data.data || [];
-          console.log(`📊 Found items:`, items);
+          console.log(`ðŸ“Š Found items:`, items);
         } else {
           items = Array.isArray(data) ? data : [];
         }
@@ -62,16 +62,16 @@ export function CRMMasterList() {
         if (currentTab === 'leads' || currentTab === 'quotes') {
           const before = items.length;
           items = items.filter((item: Entity) => item.status !== 'converted');
-          console.log(`🔒 Filtered ${before - items.length} converted ${currentTab}`);
+          console.log(`ðŸ”’ Filtered ${before - items.length} converted ${currentTab}`);
         }
         
-        console.log(`✅ Extracted ${items.length} items for ${currentTab}`);
+        console.log(`âœ… Extracted ${items.length} items for ${currentTab}`);
         if (items.length > 0) {
-          console.log(`🔬 First item structure:`, items[0]);
+          console.log(`ðŸ”¬ First item structure:`, items[0]);
         }
         setEntities(Array.isArray(items) ? items : []);
       } catch (error) {
-        console.error(`❌ Erreur de chargement des ${currentTab}:`, error);
+        console.error(`âŒ Erreur de chargement des ${currentTab}:`, error);
         showToast(`Erreur de chargement des ${currentTab}`, 'error');
         setEntities([]);
       } finally {
@@ -160,7 +160,7 @@ export function CRMMasterList() {
             placeholder="Rechercher..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-white/5 border-white/10 focus:border-[#00FFC2]"
+            className="pl-10 bg-white/5 border-white/10 focus:border-[#CCFF00]"
           />
         </div>
       </div>
@@ -169,11 +169,11 @@ export function CRMMasterList() {
       <div className="flex-1 overflow-y-auto">
         {loading ? (
           <div className="flex items-center justify-center h-32">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#00FFC2]"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#CCFF00]"></div>
           </div>
         ) : filteredEntities.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-32 text-gray-400">
-            <p>Aucun résultat</p>
+            <p>Aucun rÃ©sultat</p>
           </div>
         ) : (
           <div className="divide-y divide-white/5">
@@ -182,7 +182,7 @@ export function CRMMasterList() {
                 key={entity.id}
                 onClick={() => setSelectedId(entity.id)}
                 className={`p-4 cursor-pointer transition-colors hover:bg-white/5 ${
-                  selectedId === entity.id ? 'bg-[#00FFC2]/10 border-l-2 border-[#00FFC2]' : ''
+                  selectedId === entity.id ? 'bg-[#CCFF00]/10 border-l-2 border-[#CCFF00]' : ''
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
@@ -206,7 +206,7 @@ export function CRMMasterList() {
                     </p>
                     <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
                       {entity.amount && (
-                        <span className="text-[#00FFC2]">
+                        <span className="text-[#CCFF00]">
                           {new Intl.NumberFormat('fr-FR', {
                             style: 'currency',
                             currency: 'EUR',

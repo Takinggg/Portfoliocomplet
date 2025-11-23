@@ -55,7 +55,7 @@ export function ServerDiagnostic() {
     // Reset tous les tests
     setTests((prev) => prev.map((t) => ({ ...t, status: "pending", message: undefined, details: undefined })));
 
-    console.log("🔍 Démarrage du diagnostic serveur...");
+    console.log("ðŸ” DÃ©marrage du diagnostic serveur...");
 
     // Test 1: Connexion Serveur
     updateTest("Connexion Serveur", { status: "running" });
@@ -66,13 +66,13 @@ export function ServerDiagnostic() {
       if (isAvailable) {
         updateTest("Connexion Serveur", {
           status: "success",
-          message: "Serveur accessible et opérationnel",
+          message: "Serveur accessible et opÃ©rationnel",
           details: { mode: "server", available: true },
         });
       } else {
         updateTest("Connexion Serveur", {
           status: "warning",
-          message: "Serveur non accessible, mode local activé",
+          message: "Serveur non accessible, mode local activÃ©",
           details: { mode: "local", available: false },
         });
       }
@@ -100,7 +100,7 @@ export function ServerDiagnostic() {
       if (response.ok) {
         updateTest("Route Health Check", {
           status: "success",
-          message: `Serveur version ${data.version || "unknown"} opérationnel`,
+          message: `Serveur version ${data.version || "unknown"} opÃ©rationnel`,
           details: data,
           url: healthUrl,
         });
@@ -138,8 +138,8 @@ export function ServerDiagnostic() {
           status: posts.length > 0 ? "success" : "warning",
           message:
             posts.length > 0
-              ? `${posts.length} articles trouvés`
-              : "Aucun article trouvé (base vide)",
+              ? `${posts.length} articles trouvÃ©s`
+              : "Aucun article trouvÃ© (base vide)",
           details: { count: posts.length, posts: posts.slice(0, 2) },
           url: blogUrl,
         });
@@ -176,7 +176,7 @@ export function ServerDiagnostic() {
         const stats = await response.json();
         updateTest("Route Newsletter Stats", {
           status: "success",
-          message: `${stats.total || stats.totalCount || 0} abonnés trouvés`,
+          message: `${stats.total || stats.totalCount || 0} abonnÃ©s trouvÃ©s`,
           details: stats,
           url: newsletterUrl,
         });
@@ -217,7 +217,7 @@ export function ServerDiagnostic() {
       });
     }
 
-    // Calculer le résumé
+    // Calculer le rÃ©sumÃ©
     setTests((currentTests) => {
       const successCount = currentTests.filter((t) => t.status === "success").length;
       const errorCount = currentTests.filter((t) => t.status === "error").length;
@@ -234,7 +234,7 @@ export function ServerDiagnostic() {
     });
 
     setRunning(false);
-    console.log("✅ Diagnostic terminé");
+    console.log("âœ… Diagnostic terminÃ©");
   };
 
   const getStatusIcon = (status: DiagnosticTest["status"]) => {
@@ -290,9 +290,9 @@ export function ServerDiagnostic() {
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      console.log("✅ Copié dans le presse-papiers");
+      console.log("âœ… CopiÃ© dans le presse-papiers");
     } catch (error) {
-      console.error("❌ Erreur de copie:", error);
+      console.error("âŒ Erreur de copie:", error);
     }
   };
 
@@ -300,11 +300,11 @@ export function ServerDiagnostic() {
     <Card className="bg-white/5 border-white/10 p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <Server className="h-6 w-6 text-[#00FFC2]" />
+          <Server className="h-6 w-6 text-[#CCFF00]" />
           <div>
             <h2 className="text-xl text-white">Diagnostic Serveur</h2>
             <p className="text-sm text-white/60">
-              Vérification complète de tous les composants
+              VÃ©rification complÃ¨te de tous les composants
             </p>
           </div>
         </div>
@@ -312,7 +312,7 @@ export function ServerDiagnostic() {
         <Button
           onClick={runDiagnostics}
           disabled={running}
-          className="bg-[#00FFC2] text-[#0C0C0C] hover:bg-[#00FFC2]/90"
+          className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
         >
           {running ? (
             <>
@@ -328,7 +328,7 @@ export function ServerDiagnostic() {
         </Button>
       </div>
 
-      {/* Résumé */}
+      {/* RÃ©sumÃ© */}
       {summary && (
         <div className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10">
           <div className="grid grid-cols-4 gap-4 text-center">
@@ -338,7 +338,7 @@ export function ServerDiagnostic() {
             </div>
             <div>
               <div className="text-2xl text-green-400">{summary.success}</div>
-              <div className="text-xs text-white/60">Réussis</div>
+              <div className="text-xs text-white/60">RÃ©ussis</div>
             </div>
             <div>
               <div className="text-2xl text-yellow-400">{summary.warnings}</div>
@@ -353,7 +353,7 @@ export function ServerDiagnostic() {
           {summary.errors === 0 && summary.warnings === 0 && (
             <div className="mt-4 flex items-center gap-2 text-green-400 text-sm">
               <CheckCircle className="h-4 w-4" />
-              <span>Tous les tests sont passés avec succès !</span>
+              <span>Tous les tests sont passÃ©s avec succÃ¨s !</span>
             </div>
           )}
 
@@ -362,11 +362,11 @@ export function ServerDiagnostic() {
               <XCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
               <div>
                 <div className="font-medium">
-                  {summary.errors} erreur{summary.errors > 1 ? "s" : ""} détectée
+                  {summary.errors} erreur{summary.errors > 1 ? "s" : ""} dÃ©tectÃ©e
                   {summary.errors > 1 ? "s" : ""}
                 </div>
                 <div className="text-white/60 text-xs mt-1">
-                  Consultez les détails ci-dessous pour plus d'informations
+                  Consultez les dÃ©tails ci-dessous pour plus d'informations
                 </div>
               </div>
             </div>
@@ -408,7 +408,7 @@ export function ServerDiagnostic() {
               </div>
             </div>
 
-            {/* Détails expandables */}
+            {/* DÃ©tails expandables */}
             {expandedTest === test.name && test.details && (
               <div className="px-4 pb-4 border-t border-white/10">
                 <div className="mt-3 space-y-2">
@@ -418,7 +418,7 @@ export function ServerDiagnostic() {
                         variant="ghost"
                         size="sm"
                         onClick={() => window.open(test.url, "_blank")}
-                        className="text-xs text-[#00FFC2] hover:text-[#00FFC2]/80"
+                        className="text-xs text-[#CCFF00] hover:text-[#CCFF00]/80"
                       >
                         <ExternalLink className="h-3 w-3 mr-1" />
                         Ouvrir l'URL
@@ -464,11 +464,11 @@ export function ServerDiagnostic() {
 
         <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
           <p className="text-xs text-blue-200">
-            💡 <strong>Astuce:</strong> Si des tests échouent, consultez le fichier{" "}
+            ðŸ’¡ <strong>Astuce:</strong> Si des tests Ã©chouent, consultez le fichier{" "}
             <code className="bg-black/30 px-1 py-0.5 rounded">
               DIAGNOSTIC_SERVEUR_APRES_DEPLOIEMENT.md
             </code>{" "}
-            pour des solutions détaillées.
+            pour des solutions dÃ©taillÃ©es.
           </p>
         </div>
       </div>

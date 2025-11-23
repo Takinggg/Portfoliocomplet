@@ -58,7 +58,7 @@ export function QuoteGenerator({ quote, freelanceInfo, onDownload }: QuoteGenera
             align-items: start;
             margin-bottom: 60px;
             padding-bottom: 30px;
-            border-bottom: 3px solid #00FFC2;
+            border-bottom: 3px solid #CCFF00;
           }
           
           .logo-section h1 {
@@ -69,7 +69,7 @@ export function QuoteGenerator({ quote, freelanceInfo, onDownload }: QuoteGenera
           }
           
           .logo-section .accent {
-            color: #00FFC2;
+            color: #CCFF00;
           }
           
           .quote-info {
@@ -176,7 +176,7 @@ export function QuoteGenerator({ quote, freelanceInfo, onDownload }: QuoteGenera
             border-bottom: none;
             margin-bottom: 0;
             padding-top: 12px;
-            border-top: 2px solid #00FFC2;
+            border-top: 2px solid #CCFF00;
           }
           
           .total-row.final {
@@ -185,7 +185,7 @@ export function QuoteGenerator({ quote, freelanceInfo, onDownload }: QuoteGenera
           }
           
           .total-row.final .amount {
-            color: #00FFC2;
+            color: #CCFF00;
           }
           
           .validity-box {
@@ -293,16 +293,16 @@ export function QuoteGenerator({ quote, freelanceInfo, onDownload }: QuoteGenera
           <div class="header">
             <div class="logo-section">
               <h1>${freelanceInfo.name.split(' ')[0]} <span class="accent">${freelanceInfo.name.split(' ').slice(1).join(' ')}</span></h1>
-              <p style="color: #666; margin-top: 4px;">Développeur Freelance</p>
+              <p style="color: #666; margin-top: 4px;">DÃ©veloppeur Freelance</p>
             </div>
             <div class="quote-info">
-              <div class="quote-number">Devis N° ${quote.number}</div>
+              <div class="quote-number">Devis NÂ° ${quote.number}</div>
               <div class="quote-date">
-                Date d'émission : ${new Date(quote.date).toLocaleDateString('fr-FR')}<br>
+                Date d'Ã©mission : ${new Date(quote.date).toLocaleDateString('fr-FR')}<br>
                 Valide jusqu'au : ${new Date(quote.validUntil).toLocaleDateString('fr-FR')}
               </div>
               <div class="status-badge status-${quote.status.toLowerCase()}">
-                ${quote.status === 'draft' ? 'Brouillon' : quote.status === 'sent' ? 'Envoyé' : quote.status === 'accepted' ? 'Accepté' : quote.status === 'declined' ? 'Refusé' : 'Converti'}
+                ${quote.status === 'draft' ? 'Brouillon' : quote.status === 'sent' ? 'EnvoyÃ©' : quote.status === 'accepted' ? 'AcceptÃ©' : quote.status === 'declined' ? 'RefusÃ©' : 'Converti'}
               </div>
             </div>
           </div>
@@ -334,9 +334,9 @@ export function QuoteGenerator({ quote, freelanceInfo, onDownload }: QuoteGenera
           
           <!-- Validity Notice -->
           <div class="validity-box">
-            <h3>⏰ Validité de ce devis</h3>
+            <h3>â° ValiditÃ© de ce devis</h3>
             <p><strong>Ce devis est valable jusqu'au ${new Date(quote.validUntil).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</strong></p>
-            <p style="margin-top: 8px; font-size: 13px;">Passé cette date, les tarifs et disponibilités pourront être modifiés.</p>
+            <p style="margin-top: 8px; font-size: 13px;">PassÃ© cette date, les tarifs et disponibilitÃ©s pourront Ãªtre modifiÃ©s.</p>
           </div>
           
           <!-- Items Table -->
@@ -350,9 +350,9 @@ export function QuoteGenerator({ quote, freelanceInfo, onDownload }: QuoteGenera
             <tbody>
               <tr>
                 <td>
-                  <strong>${quote.description || 'Prestation de développement web'}</strong>
+                  <strong>${quote.description || 'Prestation de dÃ©veloppement web'}</strong>
                 </td>
-                <td style="text-align: right; font-weight: 600;">${quote.amount.toLocaleString('fr-FR')} €</td>
+                <td style="text-align: right; font-weight: 600;">${quote.amount.toLocaleString('fr-FR')} â‚¬</td>
               </tr>
             </tbody>
           </table>
@@ -362,31 +362,31 @@ export function QuoteGenerator({ quote, freelanceInfo, onDownload }: QuoteGenera
             <div class="total-box">
               <div class="total-row">
                 <span>Sous-total HT</span>
-                <span>${quote.amount.toLocaleString('fr-FR')} €</span>
+                <span>${quote.amount.toLocaleString('fr-FR')} â‚¬</span>
               </div>
               <div class="total-row">
                 <span>TVA (Non applicable)</span>
-                <span>0,00 €</span>
+                <span>0,00 â‚¬</span>
               </div>
               <div class="total-row final">
                 <span>Total TTC</span>
-                <span class="amount">${quote.amount.toLocaleString('fr-FR')} €</span>
+                <span class="amount">${quote.amount.toLocaleString('fr-FR')} â‚¬</span>
               </div>
             </div>
           </div>
           
           <!-- Conditions -->
           <div class="conditions-box">
-            <h3>Conditions générales</h3>
-            <p><strong>Modalités de paiement :</strong> Un acompte de 30% sera demandé à la signature du devis, le solde étant payable à la livraison du projet.</p>
-            <p><strong>Délai de livraison :</strong> Estimé après validation du devis et réception de l'acompte.</p>
-            <p><strong>Révisions :</strong> Deux cycles de révisions sont inclus dans le tarif proposé.</p>
-            <p style="margin-top: 12px; color: #666; font-size: 12px;">En signant ce devis, vous acceptez les conditions générales de vente disponibles sur demande.</p>
+            <h3>Conditions gÃ©nÃ©rales</h3>
+            <p><strong>ModalitÃ©s de paiement :</strong> Un acompte de 30% sera demandÃ© Ã  la signature du devis, le solde Ã©tant payable Ã  la livraison du projet.</p>
+            <p><strong>DÃ©lai de livraison :</strong> EstimÃ© aprÃ¨s validation du devis et rÃ©ception de l'acompte.</p>
+            <p><strong>RÃ©visions :</strong> Deux cycles de rÃ©visions sont inclus dans le tarif proposÃ©.</p>
+            <p style="margin-top: 12px; color: #666; font-size: 12px;">En signant ce devis, vous acceptez les conditions gÃ©nÃ©rales de vente disponibles sur demande.</p>
           </div>
           
           <!-- Signature Box -->
           <div style="background: #F4F4F4; padding: 30px; border-radius: 8px; margin-bottom: 40px;">
-            <h3 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; color: #0C0C0C;">Signature du client (précédée de "Bon pour accord")</h3>
+            <h3 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; color: #0C0C0C;">Signature du client (prÃ©cÃ©dÃ©e de "Bon pour accord")</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px;">
               <div>
                 <p style="font-size: 13px; color: #666; margin-bottom: 8px;">Date :</p>
@@ -401,7 +401,7 @@ export function QuoteGenerator({ quote, freelanceInfo, onDownload }: QuoteGenera
           
           <!-- Legal Mentions -->
           <div class="conditions-box" style="font-size: 11px; line-height: 1.6;">
-            <h3 style="font-size: 12px;">Mentions légales</h3>
+            <h3 style="font-size: 12px;">Mentions lÃ©gales</h3>
             ${freelanceInfo.legalEntity ? `<p style="margin-bottom: 8px;"><strong>${freelanceInfo.legalEntity}</strong></p>` : ''}
             ${freelanceInfo.legalMentions?.registration ? `<p>${freelanceInfo.legalMentions.registration}</p>` : ''}
             ${freelanceInfo.legalMentions?.tva ? `<p>${freelanceInfo.legalMentions.tva}</p>` : ''}
@@ -414,7 +414,7 @@ export function QuoteGenerator({ quote, freelanceInfo, onDownload }: QuoteGenera
             <p>${freelanceInfo.address}</p>
             <p>${freelanceInfo.email} - ${freelanceInfo.phone}</p>
             ${freelanceInfo.siret ? `<p>SIRET : ${freelanceInfo.siret}</p>` : ''}
-            <p style="margin-top: 12px; color: #00FFC2; font-weight: 600;">Merci pour votre confiance !</p>
+            <p style="margin-top: 12px; color: #CCFF00; font-weight: 600;">Merci pour votre confiance !</p>
           </div>
         </div>
       </body>
@@ -441,10 +441,10 @@ export function QuoteGenerator({ quote, freelanceInfo, onDownload }: QuoteGenera
     <div className="flex gap-3">
       <Button
         onClick={printQuote}
-        className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+        className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
       >
         <Download className="h-4 w-4 mr-2" />
-        Télécharger PDF
+        TÃ©lÃ©charger PDF
       </Button>
       <Button
         onClick={printQuote}

@@ -9,87 +9,87 @@ setTimeout(() => {
   const hasPrefix = pathname.match(/^\/(en|fr)(\/|$)/) !== null;
 
   console.log(`%c
-╔═══════════════════════════════════════════════════════════════╗
-║                                                               ║
-║              🌍 URLs BILINGUES - STATUS                      ║
-║                                                               ║
-╚═══════════════════════════════════════════════════════════════╝
-  `, 'color: #00FFC2; font-size: 16px; font-weight: bold;');
+â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+â•‘                                                               â•‘
+â•‘              ðŸŒ URLs BILINGUES - STATUS                      â•‘
+â•‘                                                               â•‘
+â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  `, 'color: #CCFF00; font-size: 16px; font-weight: bold;');
 
   if (isLocal && hasPrefix) {
     console.log(`%c
-✅ URLS BILINGUES ACTIVES EN LOCAL !
+âœ… URLS BILINGUES ACTIVES EN LOCAL !
 
-📍 URL actuelle : ${pathname}
-🌍 Langue : ${pathname.match(/^\/(en|fr)/)?.[1]?.toUpperCase()}
+ðŸ“ URL actuelle : ${pathname}
+ðŸŒ Langue : ${pathname.match(/^\/(en|fr)/)?.[1]?.toUpperCase()}
 
-🎯 PROCHAINE ÉTAPE : Déployer sur Vercel
+ðŸŽ¯ PROCHAINE Ã‰TAPE : DÃ©ployer sur Vercel
 
 1. Commit et push :
    git add .
    git commit -m "feat: URLs bilingues /fr/ et /en/"
    git push origin main
 
-2. Attends 2-5 min que Vercel redéploie
+2. Attends 2-5 min que Vercel redÃ©ploie
 
-3. Vérifie sur maxence.design
+3. VÃ©rifie sur maxence.design
 
-📖 Guide complet : /DEPLOYER_SUR_VERCEL.md
+ðŸ“– Guide complet : /DEPLOYER_SUR_VERCEL.md
     `, 'color: #F4F4F4; font-size: 13px;');
     
   } else if (isLocal && !hasPrefix) {
     console.log(`%c
-⚠️  URL EN LOCAL SANS PRÉFIXE
+âš ï¸  URL EN LOCAL SANS PRÃ‰FIXE
 
-📍 URL actuelle : ${pathname}
-🎯 URL attendue : /fr${pathname}
+ðŸ“ URL actuelle : ${pathname}
+ðŸŽ¯ URL attendue : /fr${pathname}
 
 Recharge la page : Ctrl+Shift+R (Win) ou Cmd+Shift+R (Mac)
     `, 'color: #FF5757; font-size: 13px;');
     
   } else if (!isLocal && hasPrefix) {
     console.log(`%c
-🎉 URLS BILINGUES DÉPLOYÉES EN PRODUCTION !
+ðŸŽ‰ URLS BILINGUES DÃ‰PLOYÃ‰ES EN PRODUCTION !
 
-📍 URL actuelle : ${pathname}
-🌍 Langue : ${pathname.match(/^\/(en|fr)/)?.[1]?.toUpperCase()}
-🌐 Environnement : PRODUCTION (${hostname})
+ðŸ“ URL actuelle : ${pathname}
+ðŸŒ Langue : ${pathname.match(/^\/(en|fr)/)?.[1]?.toUpperCase()}
+ðŸŒ Environnement : PRODUCTION (${hostname})
 
-✅ Tout fonctionne parfaitement !
-    `, 'color: #00FFC2; font-size: 13px;');
+âœ… Tout fonctionne parfaitement !
+    `, 'color: #CCFF00; font-size: 13px;');
     
   } else if (!isLocal && !hasPrefix) {
     console.log(`%c
-🌐 EN PRODUCTION - URLs Bilingues Non Déployées
+ðŸŒ EN PRODUCTION - URLs Bilingues Non DÃ©ployÃ©es
 
-📍 Environnement : PRODUCTION (${hostname})
-📍 URL actuelle : ${pathname}
+ðŸ“ Environnement : PRODUCTION (${hostname})
+ðŸ“ URL actuelle : ${pathname}
 
-⚠️  Les URLs bilingues sont dans le code mais PAS ENCORE déployées sur Vercel.
+âš ï¸  Les URLs bilingues sont dans le code mais PAS ENCORE dÃ©ployÃ©es sur Vercel.
 
-🚨 SYMPTÔMES :
-   - Tu vois le sélecteur FR/EN
+ðŸš¨ SYMPTÃ”MES :
+   - Tu vois le sÃ©lecteur FR/EN
    - Mais les pages comme "/services" ne fonctionnent pas
-   - Les URLs restent sans préfixe (/blog au lieu de /fr/blog)
+   - Les URLs restent sans prÃ©fixe (/blog au lieu de /fr/blog)
 
-🎯 SOLUTION IMMÉDIATE :
+ðŸŽ¯ SOLUTION IMMÃ‰DIATE :
 
-   Exécute ces 3 commandes dans ton terminal :
+   ExÃ©cute ces 3 commandes dans ton terminal :
 
-   1️⃣  git add .
-   2️⃣  git commit -m "feat: URLs bilingues /fr/ et /en/"
-   3️⃣  git push origin main
+   1ï¸âƒ£  git add .
+   2ï¸âƒ£  git commit -m "feat: URLs bilingues /fr/ et /en/"
+   3ï¸âƒ£  git push origin main
 
-   Puis attends 3-5 minutes que Vercel redéploie.
+   Puis attends 3-5 minutes que Vercel redÃ©ploie.
 
-📖 Guide détaillé : Voir /ACTION_URGENTE.md dans ton code
+ðŸ“– Guide dÃ©taillÃ© : Voir /ACTION_URGENTE.md dans ton code
 
-⏱️  Une fois déployé, cette URL deviendra : /fr${pathname}
+â±ï¸  Une fois dÃ©ployÃ©, cette URL deviendra : /fr${pathname}
     `, 'color: #FF5757; font-size: 14px; background: #1a0000; padding: 20px; border: 2px solid #FF5757; font-weight: bold;');
   }
 
   console.log(`%c
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
   `, 'color: #666;');
 }, 1500);
 

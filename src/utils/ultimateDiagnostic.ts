@@ -1,7 +1,7 @@
 /**
- * 🔍 DIAGNOSTIC ULTIME - TROUVE LE VRAI PROBLÈME
+ * ðŸ” DIAGNOSTIC ULTIME - TROUVE LE VRAI PROBLÃˆME
  * 
- * Ce script teste TOUT et donne un diagnostic PRÉCIS
+ * Ce script teste TOUT et donne un diagnostic PRÃ‰CIS
  */
 
 interface DiagnosticTestResult {
@@ -26,9 +26,9 @@ interface DiagnosticResults {
 
 export async function runUltimateDiagnostic() {
   console.clear();
-  console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00FFC2; font-weight: bold;');
-  console.log('%c🔍 DIAGNOSTIC ULTIME - DÉTECTION DU PROBLÈME 404', 'color: #00FFC2; font-size: 20px; font-weight: bold;');
-  console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00FFC2; font-weight: bold;');
+  console.log('%câ”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”', 'color: #CCFF00; font-weight: bold;');
+  console.log('%cðŸ” DIAGNOSTIC ULTIME - DÃ‰TECTION DU PROBLÃˆME 404', 'color: #CCFF00; font-size: 20px; font-weight: bold;');
+  console.log('%câ”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”', 'color: #CCFF00; font-weight: bold;');
   console.log('');
 
   const results: DiagnosticResults = {
@@ -40,10 +40,10 @@ export async function runUltimateDiagnostic() {
     recommendation: '',
   };
 
-  // ═══════════════════════════════════════════════════════════
-  // TEST 1 : Vérifier les fichiers de config
-  // ═══════════════════════════════════════════════════════════
-  console.log('%c📋 TEST 1 : Fichiers de configuration', 'color: #00ccff; font-size: 16px; font-weight: bold;');
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // TEST 1 : VÃ©rifier les fichiers de config
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  console.log('%cðŸ“‹ TEST 1 : Fichiers de configuration', 'color: #00ccff; font-size: 16px; font-weight: bold;');
   console.log('');
 
   try {
@@ -53,18 +53,18 @@ export async function runUltimateDiagnostic() {
       exists: res200.status === 200,
       contentType: res200.headers.get('content-type'),
     };
-    console.log('  200.html:', res200.status === 200 ? '✅ EXISTE' : '❌ MANQUANT', `(${res200.status})`);
+    console.log('  200.html:', res200.status === 200 ? 'âœ… EXISTE' : 'âŒ MANQUANT', `(${res200.status})`);
     
     if (res200.status === 200) {
       const html = await res200.text();
       results.tests.file200.hasRoot = html.includes('id="root"');
       results.tests.file200.size = html.length;
-      console.log('    → Contient <div id="root">:', html.includes('id="root"') ? '✅ OUI' : '❌ NON');
-      console.log('    → Taille:', html.length, 'bytes');
+      console.log('    â†’ Contient <div id="root">:', html.includes('id="root"') ? 'âœ… OUI' : 'âŒ NON');
+      console.log('    â†’ Taille:', html.length, 'bytes');
     }
   } catch (e) {
     results.tests.file200 = { error: e.message };
-    console.log('  200.html: ❌ ERREUR', e.message);
+    console.log('  200.html: âŒ ERREUR', e.message);
   }
 
   try {
@@ -73,10 +73,10 @@ export async function runUltimateDiagnostic() {
       status: resIndex.status,
       exists: resIndex.status === 200,
     };
-    console.log('  index.html:', resIndex.status === 200 ? '✅ EXISTE' : '❌ MANQUANT', `(${resIndex.status})`);
+    console.log('  index.html:', resIndex.status === 200 ? 'âœ… EXISTE' : 'âŒ MANQUANT', `(${resIndex.status})`);
   } catch (e) {
     results.tests.indexHtml = { error: e.message };
-    console.log('  index.html: ❌ ERREUR', e.message);
+    console.log('  index.html: âŒ ERREUR', e.message);
   }
 
   try {
@@ -85,24 +85,24 @@ export async function runUltimateDiagnostic() {
       status: resVercel.status,
       exists: resVercel.status === 200,
     };
-    console.log('  vercel.json:', resVercel.status === 200 ? '⚠️ EXISTE (Figma Make devrait ignorer)' : '✅ 404 (Normal avec Figma Make)', `(${resVercel.status})`);
+    console.log('  vercel.json:', resVercel.status === 200 ? 'âš ï¸ EXISTE (Figma Make devrait ignorer)' : 'âœ… 404 (Normal avec Figma Make)', `(${resVercel.status})`);
     
     if (resVercel.status === 200) {
       const json = await resVercel.json();
       results.tests.vercelJson.content = json;
-      console.log('    → Contenu:', JSON.stringify(json, null, 2));
+      console.log('    â†’ Contenu:', JSON.stringify(json, null, 2));
     }
   } catch (e) {
     results.tests.vercelJson = { error: e.message };
-    console.log('  vercel.json: ❌ ERREUR', e.message);
+    console.log('  vercel.json: âŒ ERREUR', e.message);
   }
 
   console.log('');
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // TEST 2 : Tester les routes existantes
-  // ═══════════════════════════════════════════════════════════
-  console.log('%c🛣️ TEST 2 : Routes existantes', 'color: #00ccff; font-size: 16px; font-weight: bold;');
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  console.log('%cðŸ›£ï¸ TEST 2 : Routes existantes', 'color: #00ccff; font-size: 16px; font-weight: bold;');
   console.log('');
 
   const routesToTest = ['/', '/fr', '/en', '/fr/projects', '/test-inexistant-12345'];
@@ -121,25 +121,25 @@ export async function runUltimateDiagnostic() {
       };
       
       console.log(`  ${route}:`);
-      console.log(`    → Status: ${res.status}`);
-      console.log(`    → Est HTML: ${isHTML ? '✅ OUI' : '❌ NON'}`);
-      console.log(`    → Contient <div id="root">: ${hasRoot ? '✅ OUI' : '❌ NON'}`);
+      console.log(`    â†’ Status: ${res.status}`);
+      console.log(`    â†’ Est HTML: ${isHTML ? 'âœ… OUI' : 'âŒ NON'}`);
+      console.log(`    â†’ Contient <div id="root">: ${hasRoot ? 'âœ… OUI' : 'âŒ NON'}`);
       
       if (res.status === 404) {
-        console.log(`    → ⚠️ ROUTE RETOURNE 404 !`);
+        console.log(`    â†’ âš ï¸ ROUTE RETOURNE 404 !`);
       }
     } catch (e) {
       results.tests[`route_${route.replace(/\//g, '_')}`] = { error: e.message };
-      console.log(`  ${route}: ❌ ERREUR`, e.message);
+      console.log(`  ${route}: âŒ ERREUR`, e.message);
     }
   }
 
   console.log('');
 
-  // ═══════════════════════════════════════════════════════════
-  // TEST 3 : Vérifier l'environnement
-  // ═══════════════════════════════════════════════════════════
-  console.log('%c⚙️ TEST 3 : Environnement', 'color: #00ccff; font-size: 16px; font-weight: bold;');
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // TEST 3 : VÃ©rifier l'environnement
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  console.log('%câš™ï¸ TEST 3 : Environnement', 'color: #00ccff; font-size: 16px; font-weight: bold;');
   console.log('');
 
   results.environment = {
@@ -150,17 +150,17 @@ export async function runUltimateDiagnostic() {
     userAgent: navigator.userAgent,
   };
 
-  console.log('  Production:', results.environment.isProduction ? '✅ OUI' : '❌ NON (localhost)');
-  console.log('  Vercel:', results.environment.isVercel ? '✅ OUI' : '❌ NON');
-  console.log('  Localhost:', results.environment.isLocalhost ? '✅ OUI' : '❌ NON');
+  console.log('  Production:', results.environment.isProduction ? 'âœ… OUI' : 'âŒ NON (localhost)');
+  console.log('  Vercel:', results.environment.isVercel ? 'âœ… OUI' : 'âŒ NON');
+  console.log('  Localhost:', results.environment.isLocalhost ? 'âœ… OUI' : 'âŒ NON');
   console.log('  Protocol:', results.environment.protocol);
 
   console.log('');
 
-  // ═══════════════════════════════════════════════════════════
-  // TEST 4 : Vérifier le routing React
-  // ═══════════════════════════════════════════════════════════
-  console.log('%c⚛️ TEST 4 : React Router', 'color: #00ccff; font-size: 16px; font-weight: bold;');
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // TEST 4 : VÃ©rifier le routing React
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  console.log('%câš›ï¸ TEST 4 : React Router', 'color: #00ccff; font-size: 16px; font-weight: bold;');
   console.log('');
 
   const rootElement = document.getElementById('root');
@@ -170,122 +170,122 @@ export async function runUltimateDiagnostic() {
     innerHTML: rootElement ? rootElement.innerHTML.length : 0,
   };
 
-  console.log('  <div id="root"> existe:', results.reactRouter.rootExists ? '✅ OUI' : '❌ NON');
-  console.log('  React a monté des composants:', results.reactRouter.hasChildren ? '✅ OUI' : '❌ NON');
+  console.log('  <div id="root"> existe:', results.reactRouter.rootExists ? 'âœ… OUI' : 'âŒ NON');
+  console.log('  React a montÃ© des composants:', results.reactRouter.hasChildren ? 'âœ… OUI' : 'âŒ NON');
   console.log('  Taille du contenu:', results.reactRouter.innerHTML, 'bytes');
 
   console.log('');
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // ANALYSE ET RECOMMANDATION
-  // ═══════════════════════════════════════════════════════════
-  console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00FFC2; font-weight: bold;');
-  console.log('%c📊 ANALYSE ET RECOMMANDATION', 'color: #00FFC2; font-size: 18px; font-weight: bold;');
-  console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00FFC2; font-weight: bold;');
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  console.log('%câ”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”', 'color: #CCFF00; font-weight: bold;');
+  console.log('%cðŸ“Š ANALYSE ET RECOMMANDATION', 'color: #CCFF00; font-size: 18px; font-weight: bold;');
+  console.log('%câ”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”', 'color: #CCFF00; font-weight: bold;');
   console.log('');
 
-  // Analyser les résultats
+  // Analyser les rÃ©sultats
   const file200Exists = results.tests.file200?.exists;
   const file200HasRoot = results.tests.file200?.hasRoot;
   const routesFail = results.tests.route__fr?.status === 404 || results.tests.route__en?.status === 404;
   const isProduction = results.environment.isProduction;
 
   if (!isProduction) {
-    console.log('%c⚠️ TU ES EN LOCALHOST !', 'color: #ff9900; font-size: 16px; font-weight: bold;');
+    console.log('%câš ï¸ TU ES EN LOCALHOST !', 'color: #ff9900; font-size: 16px; font-weight: bold;');
     console.log('');
-    console.log('Le problème 404 concerne seulement la PRODUCTION (Vercel).');
-    console.log('En localhost, le dev server de Vite gère automatiquement les routes.');
+    console.log('Le problÃ¨me 404 concerne seulement la PRODUCTION (Vercel).');
+    console.log('En localhost, le dev server de Vite gÃ¨re automatiquement les routes.');
     console.log('');
-    console.log('✅ ACTION : PUSH sur GitHub et teste sur Vercel !');
+    console.log('âœ… ACTION : PUSH sur GitHub et teste sur Vercel !');
     results.recommendation = 'LOCALHOST_OK_TEST_PRODUCTION';
   } else if (file200Exists && file200HasRoot && routesFail) {
-    console.log('%c❌ PROBLÈME IDENTIFIÉ : 200.html EXISTE MAIS N\'EST PAS UTILISÉ !', 'color: #ff0000; font-size: 16px; font-weight: bold;');
+    console.log('%câŒ PROBLÃˆME IDENTIFIÃ‰ : 200.html EXISTE MAIS N\'EST PAS UTILISÃ‰ !', 'color: #ff0000; font-size: 16px; font-weight: bold;');
     console.log('');
     console.log('Diagnostic :');
-    console.log('  ✅ Le fichier 200.html existe');
-    console.log('  ✅ Le fichier contient <div id="root">');
-    console.log('  ❌ Mais les routes retournent quand même 404');
+    console.log('  âœ… Le fichier 200.html existe');
+    console.log('  âœ… Le fichier contient <div id="root">');
+    console.log('  âŒ Mais les routes retournent quand mÃªme 404');
     console.log('');
     console.log('Cause probable :');
-    console.log('  → Figma Make ou Vercel a une configuration qui empêche 200.html de fonctionner');
-    console.log('  → Le fichier vercel.json est peut-être ignoré ou mal configuré');
+    console.log('  â†’ Figma Make ou Vercel a une configuration qui empÃªche 200.html de fonctionner');
+    console.log('  â†’ Le fichier vercel.json est peut-Ãªtre ignorÃ© ou mal configurÃ©');
     console.log('');
-    console.log('%c🎯 RECOMMANDATION : PASSER AU HASH ROUTING', 'color: #00FFC2; font-size: 16px; font-weight: bold;');
+    console.log('%cðŸŽ¯ RECOMMANDATION : PASSER AU HASH ROUTING', 'color: #CCFF00; font-size: 16px; font-weight: bold;');
     console.log('');
-    console.log('Le Hash Routing (#/fr au lieu de /fr) fonctionne à 100% sans aucune config serveur !');
+    console.log('Le Hash Routing (#/fr au lieu de /fr) fonctionne Ã  100% sans aucune config serveur !');
     console.log('');
     console.log('URLs :');
-    console.log('  ❌ Avant : https://maxence.design/fr');
-    console.log('  ✅ Après : https://maxence.design/#/fr');
+    console.log('  âŒ Avant : https://maxence.design/fr');
+    console.log('  âœ… AprÃ¨s : https://maxence.design/#/fr');
     console.log('');
     console.log('Modification : 2 lignes de code dans AppWithRouter.tsx');
     results.recommendation = 'USE_HASH_ROUTING';
   } else if (!file200Exists) {
-    console.log('%c❌ PROBLÈME : 200.html N\'EXISTE PAS SUR LE SERVEUR !', 'color: #ff0000; font-size: 16px; font-weight: bold;');
+    console.log('%câŒ PROBLÃˆME : 200.html N\'EXISTE PAS SUR LE SERVEUR !', 'color: #ff0000; font-size: 16px; font-weight: bold;');
     console.log('');
-    console.log('Le fichier existe dans le code mais n\'a pas été déployé.');
+    console.log('Le fichier existe dans le code mais n\'a pas Ã©tÃ© dÃ©ployÃ©.');
     console.log('');
     console.log('Causes possibles :');
-    console.log('  1. Le build Vite n\'a pas copié le fichier');
-    console.log('  2. Figma Make a un système de build qui ignore certains fichiers');
+    console.log('  1. Le build Vite n\'a pas copiÃ© le fichier');
+    console.log('  2. Figma Make a un systÃ¨me de build qui ignore certains fichiers');
     console.log('  3. Le fichier est dans /public mais n\'arrive pas dans /build');
     console.log('');
-    console.log('%c🎯 RECOMMANDATION : VÉRIFIER LE BUILD', 'color: #00FFC2; font-size: 16px; font-weight: bold;');
+    console.log('%cðŸŽ¯ RECOMMANDATION : VÃ‰RIFIER LE BUILD', 'color: #CCFF00; font-size: 16px; font-weight: bold;');
     console.log('');
-    console.log('1. Va sur Vercel Dashboard → Deployments');
-    console.log('2. Clique sur le dernier déploiement');
+    console.log('1. Va sur Vercel Dashboard â†’ Deployments');
+    console.log('2. Clique sur le dernier dÃ©ploiement');
     console.log('3. Regarde les Build Logs');
     console.log('4. Cherche la ligne : "Created 200.html for Vercel SPA routing"');
     console.log('');
-    console.log('Si tu ne la trouves pas → Le plugin Vite ne fonctionne pas');
+    console.log('Si tu ne la trouves pas â†’ Le plugin Vite ne fonctionne pas');
     console.log('');
     console.log('SOLUTION ALTERNATIVE : Passer au Hash Routing (fonctionne sans config)');
     results.recommendation = 'CHECK_BUILD_LOGS_OR_HASH_ROUTING';
   } else if (!routesFail) {
-    console.log('%c✅ TOUT FONCTIONNE ! AUCUN PROBLÈME DÉTECTÉ !', 'color: #00ff00; font-size: 16px; font-weight: bold;');
+    console.log('%câœ… TOUT FONCTIONNE ! AUCUN PROBLÃˆME DÃ‰TECTÃ‰ !', 'color: #00ff00; font-size: 16px; font-weight: bold;');
     console.log('');
     console.log('Toutes les routes fonctionnent correctement :');
-    console.log('  ✅ /fr retourne du HTML avec <div id="root">');
-    console.log('  ✅ /en retourne du HTML avec <div id="root">');
-    console.log('  ✅ React Router gère les routes');
+    console.log('  âœ… /fr retourne du HTML avec <div id="root">');
+    console.log('  âœ… /en retourne du HTML avec <div id="root">');
+    console.log('  âœ… React Router gÃ¨re les routes');
     console.log('');
-    console.log('Si tu vois quand même une page 404, c\'est probablement un problème de cache.');
+    console.log('Si tu vois quand mÃªme une page 404, c\'est probablement un problÃ¨me de cache.');
     console.log('');
     console.log('SOLUTION :');
     console.log('  1. Vide le cache du navigateur (Ctrl+Shift+Delete)');
     console.log('  2. Force un refresh (Ctrl+Shift+R)');
-    console.log('  3. Teste en navigation privée (Ctrl+Shift+N)');
+    console.log('  3. Teste en navigation privÃ©e (Ctrl+Shift+N)');
     results.recommendation = 'ALL_OK_CLEAR_CACHE';
   } else {
-    console.log('%c❓ PROBLÈME INCONNU', 'color: #ff9900; font-size: 16px; font-weight: bold;');
+    console.log('%câ“ PROBLÃˆME INCONNU', 'color: #ff9900; font-size: 16px; font-weight: bold;');
     console.log('');
-    console.log('Le diagnostic n\'a pas pu identifier le problème exact.');
+    console.log('Le diagnostic n\'a pas pu identifier le problÃ¨me exact.');
     console.log('');
-    console.log('%c🎯 RECOMMANDATION : HASH ROUTING (SOLUTION GARANTIE)', 'color: #00FFC2; font-size: 16px; font-weight: bold;');
+    console.log('%cðŸŽ¯ RECOMMANDATION : HASH ROUTING (SOLUTION GARANTIE)', 'color: #CCFF00; font-size: 16px; font-weight: bold;');
     console.log('');
-    console.log('Le Hash Routing fonctionne à 100% dans TOUS les cas.');
+    console.log('Le Hash Routing fonctionne Ã  100% dans TOUS les cas.');
     results.recommendation = 'USE_HASH_ROUTING_FALLBACK';
   }
 
   console.log('');
-  console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00FFC2; font-weight: bold;');
+  console.log('%câ”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”', 'color: #CCFF00; font-weight: bold;');
   console.log('');
-  console.log('%c📋 RAPPORT COMPLET :', 'color: #00ccff; font-size: 14px; font-weight: bold;');
+  console.log('%cðŸ“‹ RAPPORT COMPLET :', 'color: #00ccff; font-size: 14px; font-weight: bold;');
   console.log('');
   console.log(JSON.stringify(results, null, 2));
   console.log('');
-  console.log('%c💾 COPIE CE RAPPORT ET ENVOIE-LE MOI POUR ANALYSE !', 'color: #ff00ff; font-size: 14px; font-weight: bold;');
+  console.log('%cðŸ’¾ COPIE CE RAPPORT ET ENVOIE-LE MOI POUR ANALYSE !', 'color: #ff00ff; font-size: 14px; font-weight: bold;');
   console.log('');
 
   return results;
 }
 
-// Auto-exécution si en production
+// Auto-exÃ©cution si en production
 if (typeof window !== 'undefined') {
   const isProduction = window.location.hostname !== 'localhost' && !window.location.hostname.includes('127.0.0.1');
   
   if (isProduction) {
-    console.log('%c🔍 DIAGNOSTIC AUTOMATIQUE EN PRODUCTION', 'color: #00FFC2; font-size: 14px; font-weight: bold;');
+    console.log('%cðŸ” DIAGNOSTIC AUTOMATIQUE EN PRODUCTION', 'color: #CCFF00; font-size: 14px; font-weight: bold;');
     console.log('Le diagnostic va se lancer dans 3 secondes...');
     console.log('Pour le lancer maintenant, tape : runUltimateDiagnostic()');
     console.log('');
@@ -297,7 +297,7 @@ if (typeof window !== 'undefined') {
       runUltimateDiagnostic();
     }, 3000);
   } else {
-    console.log('%c🏠 MODE LOCALHOST', 'color: #00ccff; font-size: 14px;');
+    console.log('%cðŸ  MODE LOCALHOST', 'color: #00ccff; font-size: 14px;');
     console.log('Le diagnostic automatique ne se lance qu\'en production.');
     console.log('Pour le lancer manuellement, tape : runUltimateDiagnostic()');
     console.log('');

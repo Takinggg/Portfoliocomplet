@@ -19,11 +19,11 @@ export function NewsletterCTA({ variant = "default", className = "" }: Newslette
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className={`bg-gradient-to-br from-[#00FFC2]/10 to-transparent border border-[#00FFC2]/20 rounded-xl p-6 ${className}`}
+        className={`bg-gradient-to-br from-[#CCFF00]/10 to-transparent border border-[#CCFF00]/20 rounded-xl p-6 ${className}`}
       >
         <div className="flex items-start gap-4">
-          <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-[#00FFC2]/10 flex items-center justify-center">
-            <Mail className="h-6 w-6 text-[#00FFC2]" />
+          <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-[#CCFF00]/10 flex items-center justify-center">
+            <Mail className="h-6 w-6 text-[#CCFF00]" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
@@ -46,18 +46,18 @@ export function NewsletterCTA({ variant = "default", className = "" }: Newslette
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className={`relative overflow-hidden rounded-2xl border border-[#00FFC2]/30 ${className}`}
+        className={`relative overflow-hidden rounded-2xl border border-[#CCFF00]/30 ${className}`}
       >
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00FFC2]/10 via-transparent to-transparent" />
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#00FFC2]/5 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#CCFF00]/10 via-transparent to-transparent" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#CCFF00]/5 to-transparent" />
         
         {/* Content */}
         <div className="relative p-12 text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00FFC2]/10 border border-[#00FFC2]/20 mb-6">
-            <Sparkles className="h-4 w-4 text-[#00FFC2]" />
-            <span className="text-sm text-[#00FFC2]">{ctaTexts.hero?.badge}</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#CCFF00]/10 border border-[#CCFF00]/20 mb-6">
+            <Sparkles className="h-4 w-4 text-[#CCFF00]" />
+            <span className="text-sm text-[#CCFF00]">{ctaTexts.hero?.badge}</span>
           </div>
 
           {/* Title */}
@@ -76,7 +76,7 @@ export function NewsletterCTA({ variant = "default", className = "" }: Newslette
               </div>
             </div>
             <div className="text-center">
-              <div className="flex items-center gap-2 text-[#00FFC2]">
+              <div className="flex items-center gap-2 text-[#CCFF00]">
                 <TrendingUp className="h-4 w-4" />
                 <span className="text-sm">{ctaTexts.hero?.trend}</span>
               </div>
@@ -106,8 +106,8 @@ export function NewsletterCTA({ variant = "default", className = "" }: Newslette
       className={`bg-white/5 border border-white/10 rounded-xl p-8 ${className}`}
     >
       <div className="flex items-start gap-4 mb-6">
-        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#00FFC2]/10 flex items-center justify-center">
-          <Mail className="h-6 w-6 text-[#00FFC2]" />
+        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#CCFF00]/10 flex items-center justify-center">
+          <Mail className="h-6 w-6 text-[#CCFF00]" />
         </div>
         <div className="flex-1">
           <h3 className="text-white mb-2">{ctaTexts.default?.title}</h3>
@@ -125,7 +125,7 @@ export function NewsletterCTA({ variant = "default", className = "" }: Newslette
         <div className="grid grid-cols-2 gap-4 text-sm">
           {(ctaTexts.default?.bullets || []).map((bullet: string, index: number) => (
             <div className="flex items-start gap-2" key={`${bullet}-${index}`}>
-              <div className="w-1 h-1 rounded-full bg-[#00FFC2] mt-2" />
+              <div className="w-1 h-1 rounded-full bg-[#CCFF00] mt-2" />
               <span className="text-white/60">{bullet}</span>
             </div>
           ))}

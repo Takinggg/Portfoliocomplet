@@ -8,15 +8,15 @@ import { lazyRetry } from "./utils/lazyRetry";
 // ==========================================
 if (window.location.hostname !== 'localhost') {
   console.log(
-    '%c🚨 ERREUR 404 SUR /CLIENTS ?',
+    '%cðŸš¨ ERREUR 404 SUR /CLIENTS ?',
     'font-size: 24px; font-weight: bold; color: #ff4444; background: #000; padding: 10px;'
   );
   console.log(
     '%cSolution: supabase functions deploy make-server-04919ac5',
-    'font-size: 16px; color: #00FFC2; background: #0C0C0C; padding: 8px; font-family: monospace;'
+    'font-size: 16px; color: #CCFF00; background: #0C0C0C; padding: 8px; font-family: monospace;'
   );
   console.log(
-    '%c📖 Guide complet: Ouvrir /LIRE_MAINTENANT.txt ou /INDEX_GUIDES.md',
+    '%cðŸ“– Guide complet: Ouvrir /LIRE_MAINTENANT.txt ou /INDEX_GUIDES.md',
     'font-size: 14px; color: #999;'
   );
 }
@@ -25,13 +25,13 @@ if (window.location.hostname !== 'localhost') {
 // PAGES - LAZY LOADED FOR CODE SPLITTING
 // ==========================================
 // Critical pages (loaded immediately for first render)
-import HomePage from "./components/pages/HomePage";
+import HomeRedesignPage from "./components/pages/HomeRedesignPage";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 
 // Non-critical pages (lazy loaded on demand with retry on failure)
 const ProjectsPage = lazyRetry(() => import("./components/pages/ProjectsPage"));
 const ProjectDetailPage = lazyRetry(() => import("./components/pages/ProjectDetailPage"));
-const ServicesPage = lazyRetry(() => import("./components/pages/ServicesPage"));
+const ServicesPage = lazyRetry(() => import("./components/pages/ServicesRedesignPage"));
 const AboutPage = lazyRetry(() => import("./components/pages/AboutPage"));
 const ContactPage = lazyRetry(() => import("./components/pages/ContactPage"));
 const BookingPage = lazyRetry(() => import("./components/pages/BookingPage"));
@@ -45,6 +45,7 @@ const FAQPage = lazyRetry(() => import("./components/pages/FAQPage"));
 const NewsletterConfirmPage = lazyRetry(() => import("./components/pages/NewsletterConfirmPage").then(m => ({ default: m.NewsletterConfirmPage })));
 const ResourcesPage = lazyRetry(() => import("./components/pages/ResourcesPage"));
 const TestimonialsPage = lazyRetry(() => import("./components/pages/TestimonialsPage"));
+const LegalPage = lazyRetry(() => import("./components/pages/LegalPage"));
 const ExampleDatabasePage = lazyRetry(() => import("./components/pages/ExampleDatabasePage"));
 const SeedDataPage = lazyRetry(() => import("./components/pages/SeedDataPage"));
 const NotFoundPage = lazyRetry(() => import("./components/pages/NotFoundPage"));
@@ -56,14 +57,16 @@ const InvoiceSuccessPage = lazyRetry(() => import("./components/pages/InvoiceSuc
 // ==========================================
 // LAYOUT COMPONENTS
 // ==========================================
-import Navigation from "./components/layout/Navigation";
-import Footer from "./components/layout/Footer";
 import { SkipNavigation } from "./components/layout/SkipNavigation";
+import { Navbar as RedesignNavbar } from "./redesign/components/Navbar";
+import { Footer as RedesignFooter } from "./redesign/components/Footer";
+import { CustomCursor } from "./redesign/components/CustomCursor";
+import { RedesignNewsletterPopup } from "./redesign/components/NewsletterPopup";
+import type { PageView } from "./redesign/types";
 
 // ==========================================
 // FEATURE COMPONENTS
 // ==========================================
-import { NewsletterPopup } from "./components/newsletter/NewsletterPopup";
 import { BackToTop } from "./components/BackToTop";
 import { ScrollProgress } from "./components/ScrollProgress";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -115,7 +118,7 @@ import { registerServiceWorker } from "./utils/pwaHelpers";
 // ==========================================
 if (typeof import.meta !== "undefined" && (import.meta as any).env?.DEV) {
   import("./utils/testServerRoutes").then((module) => {
-    console.log("🔧 Server diagnostics loaded. Run testServer.quickTest() in console.");
+    console.log("ðŸ”§ Server diagnostics loaded. Run testServer.quickTest() in console.");
   }).catch((err) => {
     console.warn("Failed to load server diagnostics:", err);
   });
@@ -151,6 +154,7 @@ function RouteWrapper({
       'faq': `/${lang}/faq`,
       'resources': `/${lang}/resources`,
       'testimonials': `/${lang}/testimonials`,
+      'legal': `/${lang}/legal/${lang === 'en' ? 'privacy' : 'confidentialite'}`,
       'dashboard': '/dashboard',
       'login': '/login',
     };
@@ -209,7 +213,7 @@ function AppContent() {
     
     registerServiceWorker().then((registration) => {
       if (registration) {
-        console.log("✅ PWA activée: Service Worker enregistré");
+        console.log("âœ… PWA activÃ©e: Service Worker enregistrÃ©");
       }
     });
     
@@ -222,7 +226,7 @@ function AppContent() {
       const { forceCheckServer } = await import("./utils/serverService");
       const available = await forceCheckServer();
       if (available && window.location.hostname === "localhost") {
-        console.log("✅ Serveur Supabase détecté ! Rechargez pour activer.");
+        console.log("âœ… Serveur Supabase dÃ©tectÃ© ! Rechargez pour activer.");
       }
     }, 30000);
 
@@ -291,13 +295,13 @@ function AppContent() {
       );
 
       if (response.ok) {
-        alert("✅ Vous avez été désabonné de la newsletter avec succès.");
+        alert("âœ… Vous avez Ã©tÃ© dÃ©sabonnÃ© de la newsletter avec succÃ¨s.");
       } else {
-        alert("❌ Une erreur s'est produite lors du désabonnement.");
+        alert("âŒ Une erreur s'est produite lors du dÃ©sabonnement.");
       }
     } catch (error) {
       console.error("Error unsubscribing:", error);
-      alert("❌ Impossible de se désabonner. Veuillez réessayer.");
+      alert("âŒ Impossible de se dÃ©sabonner. Veuillez rÃ©essayer.");
     }
   };
 
@@ -380,7 +384,7 @@ function AppContent() {
         <Route path="/home" element={<Navigate to="/" replace />} />
         
         {/* Public routes - French */}
-        <Route path="/fr" element={<PublicLayout currentPage="home"><RouteWrapper component={HomePage} currentPage="home" /></PublicLayout>} />
+        <Route path="/fr" element={<PublicLayout currentPage="home"><RouteWrapper component={HomeRedesignPage} currentPage="home" /></PublicLayout>} />
         <Route path="/fr/projects" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectsPage} currentPage="projects" /></PublicLayout>} />
         <Route path="/fr/projects/:projectId" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectDetailPage} currentPage="project-detail" /></PublicLayout>} />
         <Route path="/fr/services" element={<PublicLayout currentPage="services"><RouteWrapper component={ServicesPage} currentPage="services" /></PublicLayout>} />
@@ -394,11 +398,12 @@ function AppContent() {
         <Route path="/fr/faq" element={<PublicLayout currentPage="faq"><RouteWrapper component={FAQPage} currentPage="faq" /></PublicLayout>} />
         <Route path="/fr/resources" element={<PublicLayout currentPage="resources"><RouteWrapper component={ResourcesPage} currentPage="resources" /></PublicLayout>} />
         <Route path="/fr/testimonials" element={<PublicLayout currentPage="testimonials"><RouteWrapper component={TestimonialsPage} currentPage="testimonials" /></PublicLayout>} />
+        <Route path="/fr/legal/:section" element={<PublicLayout currentPage="legal"><RouteWrapper component={LegalPage} currentPage="legal" /></PublicLayout>} />
         <Route path="/fr/example" element={<PublicLayout currentPage="example"><RouteWrapper component={ExampleDatabasePage} currentPage="example" /></PublicLayout>} />
         <Route path="/fr/seed-data" element={<PublicLayout currentPage="seed-data"><RouteWrapper component={SeedDataPage} currentPage="seed-data" /></PublicLayout>} />
         
         {/* Public routes - English */}
-        <Route path="/en" element={<PublicLayout currentPage="home"><RouteWrapper component={HomePage} currentPage="home" /></PublicLayout>} />
+        <Route path="/en" element={<PublicLayout currentPage="home"><RouteWrapper component={HomeRedesignPage} currentPage="home" /></PublicLayout>} />
         <Route path="/en/projects" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectsPage} currentPage="projects" /></PublicLayout>} />
         <Route path="/en/projects/:projectId" element={<PublicLayout currentPage="projects"><RouteWrapper component={ProjectDetailPage} currentPage="project-detail" /></PublicLayout>} />
         <Route path="/en/services" element={<PublicLayout currentPage="services"><RouteWrapper component={ServicesPage} currentPage="services" /></PublicLayout>} />
@@ -412,6 +417,7 @@ function AppContent() {
         <Route path="/en/faq" element={<PublicLayout currentPage="faq"><RouteWrapper component={FAQPage} currentPage="faq" /></PublicLayout>} />
         <Route path="/en/resources" element={<PublicLayout currentPage="resources"><RouteWrapper component={ResourcesPage} currentPage="resources" /></PublicLayout>} />
         <Route path="/en/testimonials" element={<PublicLayout currentPage="testimonials"><RouteWrapper component={TestimonialsPage} currentPage="testimonials" /></PublicLayout>} />
+        <Route path="/en/legal/:section" element={<PublicLayout currentPage="legal"><RouteWrapper component={LegalPage} currentPage="legal" /></PublicLayout>} />
         <Route path="/en/example" element={<PublicLayout currentPage="example"><RouteWrapper component={ExampleDatabasePage} currentPage="example" /></PublicLayout>} />
         <Route path="/en/seed-data" element={<PublicLayout currentPage="seed-data"><RouteWrapper component={SeedDataPage} currentPage="seed-data" /></PublicLayout>} />
         
@@ -428,62 +434,64 @@ function AppContent() {
   );
 }
 
-// Public page layout with Navigation and Footer
-function PublicLayout({ children, currentPage }: { children: React.ReactNode; currentPage: string }) {
+// Public page layout with redesigned shell
+function PublicLayout({ children }: { children: React.ReactNode; currentPage: string }) {
   const navigate = useNavigate();
   const location = useLocation();
-  
-  const buildNavPath = (page: string): string => {
-    const lang = getLanguageFromPath();
-    const routes: Record<string, string> = {
-      'home': `/${lang}`,
-      'projects': `/${lang}/projects`,
-      'services': `/${lang}/services`,
-      'about': `/${lang}/about`,
-      'contact': `/${lang}/contact`,
-      'booking': `/${lang}/booking`,
-      'blog': `/${lang}/blog`,
-      'case-studies': `/${lang}/case-studies`,
-      'faq': `/${lang}/faq`,
-      'resources': `/${lang}/resources`,
-      'testimonials': `/${lang}/testimonials`,
-      'dashboard': '/dashboard',
-    };
-    return routes[page] || `/${lang}`;
-  };
+  const lang = (getLanguageFromPath() === 'en' ? 'en' : 'fr');
 
-  // Get current page from URL
-  const getCurrentPage = (): any => {
+  const getCurrentView = (): PageView => {
     const path = location.pathname;
-    if (path.includes('/projects')) return 'projects';
     if (path.includes('/services')) return 'services';
-    if (path.includes('/about')) return 'about';
-    if (path.includes('/contact')) return 'contact';
-    if (path.includes('/booking')) return 'booking';
+    if (path.includes('/projects')) return 'portfolio';
+    if (path.includes('/case-studies')) return 'casestudies';
     if (path.includes('/blog')) return 'blog';
-    if (path.includes('/case-studies')) return 'case-studies';
-    if (path.includes('/faq')) return 'faq';
-    if (path.includes('/resources')) return 'resources';
-    if (path.includes('/testimonials')) return 'testimonials';
-    if (path.includes('/dashboard')) return 'dashboard';
+    if (path.includes('/contact') || path.includes('/booking')) return 'contact';
+    if (path.includes('/legal')) return 'legal';
     return 'home';
   };
-  
+
+  const getPathForView = (view: PageView): string => {
+    switch (view) {
+      case 'services':
+        return `/${lang}/services`;
+      case 'portfolio':
+        return `/${lang}/projects`;
+      case 'casestudies':
+        return `/${lang}/case-studies`;
+      case 'blog':
+        return `/${lang}/blog`;
+      case 'contact':
+        return `/${lang}/contact`;
+      case 'legal':
+        return `/${lang}/legal/${lang === 'en' ? 'privacy' : 'confidentialite'}`;
+      case 'admin':
+        return '/dashboard';
+      case 'home':
+      default:
+        return `/${lang}`;
+    }
+  };
+
+  const handleNavigate = (view: PageView) => {
+    navigate(getPathForView(view));
+  };
+
+  const currentView = getCurrentView();
+
   return (
-    <>
+    <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+      <div className="bg-noise" aria-hidden="true" />
+      <CustomCursor />
       <ScrollProgress />
-      <Navigation 
-        currentPage={getCurrentPage() as any} 
-        onNavigate={(page) => navigate(buildNavPath(page))}
-        isAuthenticated={false}
-      />
-      <main id="main-content" className="flex-1" tabIndex={-1}>
+      <RedesignNavbar currentPage={currentView} onNavigate={handleNavigate} />
+      <main id="main-content" className="flex-1 pt-24" tabIndex={-1}>
         {children}
       </main>
-      <Footer onNavigate={(page) => navigate(buildNavPath(page))} />
-      <NewsletterPopup />
+      <RedesignFooter onNavigate={handleNavigate} language={lang} />
+      <RedesignNewsletterPopup />
       <BackToTop />
-    </>
+    </div>
   );
 }
 

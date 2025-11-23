@@ -91,8 +91,8 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
   };
 
   const fallbackClientName = language === 'fr' ? 'Client anonyme' : 'Anonymous client';
-  const fallbackClientRole = language === 'fr' ? 'Rôle non précisé' : 'Role unavailable';
-  const fallbackClientCompany = language === 'fr' ? 'Entreprise non précisée' : 'Company unavailable';
+  const fallbackClientRole = language === 'fr' ? 'RÃ´le non prÃ©cisÃ©' : 'Role unavailable';
+  const fallbackClientCompany = language === 'fr' ? 'Entreprise non prÃ©cisÃ©e' : 'Company unavailable';
 
   const getClientDisplayName = (name?: string) => {
     const trimmed = name?.trim();
@@ -143,8 +143,8 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
       <section className="relative pt-32 pb-20 overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-[#00FFC2]/5 rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-[#00FFC2]/5 rounded-full blur-[120px]" />
+          <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-[#CCFF00]/5 rounded-full blur-[120px]" />
+          <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-[#CCFF00]/5 rounded-full blur-[120px]" />
         </div>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -154,13 +154,13 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
             transition={{ duration: 0.6 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/20 mb-6">
+            <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-[#CCFF00]/20 mb-6">
               {t.testimonials.hero.badge}
             </Badge>
             <h1 className="text-5xl md:text-6xl lg:text-7xl tracking-tight mb-6">
               {t.testimonials.hero.title}
               <span className="block mt-2">
-                <span className="text-[#00FFC2]">{t.testimonials.hero.titleHighlight}</span>
+                <span className="text-[#CCFF00]">{t.testimonials.hero.titleHighlight}</span>
               </span>
             </h1>
             <p className="text-xl text-white/60 max-w-2xl mx-auto">
@@ -175,20 +175,20 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
             transition={{ duration: 0.6, delay: 0.2 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto"
           >
-            <Card className="bg-black/40 border-[#00FFC2]/10 p-6 text-center">
-              <div className="text-4xl mb-2 text-[#00FFC2]">{testimonials.length}</div>
+            <Card className="bg-black/40 border-[#CCFF00]/10 p-6 text-center">
+              <div className="text-4xl mb-2 text-[#CCFF00]">{testimonials.length}</div>
               <div className="text-white/60">{t.testimonials.stats.testimonials}</div>
             </Card>
-            <Card className="bg-black/40 border-[#00FFC2]/10 p-6 text-center">
-              <div className="text-4xl mb-2 text-[#00FFC2]">
+            <Card className="bg-black/40 border-[#CCFF00]/10 p-6 text-center">
+              <div className="text-4xl mb-2 text-[#CCFF00]">
                 {testimonials.length > 0 
                   ? (testimonials.reduce((acc, t) => acc + t.rating, 0) / testimonials.length).toFixed(1)
                   : "5.0"}
               </div>
               <div className="text-white/60">{t.testimonials.stats.averageRating}</div>
             </Card>
-            <Card className="bg-black/40 border-[#00FFC2]/10 p-6 text-center">
-              <div className="text-4xl mb-2 text-[#00FFC2]">
+            <Card className="bg-black/40 border-[#CCFF00]/10 p-6 text-center">
+              <div className="text-4xl mb-2 text-[#CCFF00]">
                 {testimonials.filter(t => t.rating === 5).length}
               </div>
               <div className="text-white/60">{t.testimonials.stats.fiveStars}</div>
@@ -206,8 +206,8 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
               animate={{ opacity: 1 }}
               className="relative"
             >
-              <Card className="bg-gradient-to-br from-black/60 to-black/40 border-[#00FFC2]/20 p-8 md:p-12">
-                <Quote className="h-12 w-12 text-[#00FFC2]/20 mb-6" />
+              <Card className="bg-gradient-to-br from-black/60 to-black/40 border-[#CCFF00]/20 p-8 md:p-12">
+                <Quote className="h-12 w-12 text-[#CCFF00]/20 mb-6" />
                 
                 <motion.div
                   key={currentFeatured}
@@ -223,7 +223,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                         key={i}
                         className={`h-5 w-5 ${
                           i < featuredTestimonials[currentFeatured].rating
-                            ? "fill-[#00FFC2] text-[#00FFC2]"
+                            ? "fill-[#CCFF00] text-[#CCFF00]"
                             : "text-white/20"
                         }`}
                       />
@@ -237,7 +237,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
 
                   {/* Client Info */}
                   <div className="flex items-center gap-4">
-                    <Avatar className="h-16 w-16 border-2 border-[#00FFC2]/20">
+                    <Avatar className="h-16 w-16 border-2 border-[#CCFF00]/20">
                       {featuredTestimonials[currentFeatured].clientPhoto ? (
                         <ImageWithFallback
                           src={featuredTestimonials[currentFeatured].clientPhoto} 
@@ -247,7 +247,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                           priority={true}
                         />
                       ) : (
-                        <div className="w-full h-full bg-[#00FFC2]/10 flex items-center justify-center text-2xl text-[#00FFC2]">
+                        <div className="w-full h-full bg-[#CCFF00]/10 flex items-center justify-center text-2xl text-[#CCFF00]">
                           {getClientInitial(featuredTestimonials[currentFeatured].clientName)}
                         </div>
                       )}
@@ -257,14 +257,14 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                         {getClientDisplayName(featuredTestimonials[currentFeatured].clientName)}
                       </div>
                       <div className="text-white/60">
-                        {getClientRole(featuredTestimonials[currentFeatured].clientRole)} • {getClientCompany(featuredTestimonials[currentFeatured].clientCompany)}
+                        {getClientRole(featuredTestimonials[currentFeatured].clientRole)} â€¢ {getClientCompany(featuredTestimonials[currentFeatured].clientCompany)}
                       </div>
                       {featuredTestimonials[currentFeatured].linkedinUrl && (
                         <a
                           href={featuredTestimonials[currentFeatured].linkedinUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 mt-1 text-[#00FFC2] hover:underline text-sm"
+                          className="inline-flex items-center gap-1 mt-1 text-[#CCFF00] hover:underline text-sm"
                         >
                           <Linkedin className="h-3.5 w-3.5" />
                           {t.testimonials.carousel.viewOnLinkedIn}
@@ -276,7 +276,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
 
                 {/* Navigation */}
                 {featuredTestimonials.length > 1 && (
-                  <div className="flex items-center justify-between mt-8 pt-8 border-t border-[#00FFC2]/10">
+                  <div className="flex items-center justify-between mt-8 pt-8 border-t border-[#CCFF00]/10">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -293,7 +293,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                           onClick={() => setCurrentFeatured(i)}
                           className={`h-2 rounded-full transition-all ${
                             i === currentFeatured
-                              ? "w-8 bg-[#00FFC2]"
+                              ? "w-8 bg-[#CCFF00]"
                               : "w-2 bg-white/20 hover:bg-white/40"
                           }`}
                         />
@@ -326,8 +326,8 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                 onClick={() => setFilter("all")}
                 className={
                   filter === "all"
-                    ? "bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
-                    : "border-[#00FFC2]/20 text-white hover:bg-white/5"
+                    ? "bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
+                    : "border-[#CCFF00]/20 text-white hover:bg-white/5"
                 }
               >
                 {t.testimonials.filters.all}
@@ -339,8 +339,8 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                   onClick={() => setFilter(type)}
                   className={
                     filter === type
-                      ? "bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
-                      : "border-[#00FFC2]/20 text-white hover:bg-white/5"
+                      ? "bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
+                      : "border-[#CCFF00]/20 text-white hover:bg-white/5"
                   }
                 >
                   {type}
@@ -367,8 +367,8 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                 className="text-center max-w-2xl mx-auto"
               >
                 <div className="relative inline-block mb-6">
-                  <div className="absolute inset-0 bg-[#00FFC2]/20 blur-3xl rounded-full" />
-                  <Quote className="h-20 w-20 text-[#00FFC2] relative" />
+                  <div className="absolute inset-0 bg-[#CCFF00]/20 blur-3xl rounded-full" />
+                  <Quote className="h-20 w-20 text-[#CCFF00] relative" />
                 </div>
                 <h2 className="text-3xl mb-4 text-white">{t.testimonials.empty.title}</h2>
                 <p className="text-white/60 mb-8">
@@ -385,7 +385,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
                   >
-                    <Card className="bg-black/40 border-[#00FFC2]/10 p-6 relative overflow-hidden">
+                    <Card className="bg-black/40 border-[#CCFF00]/10 p-6 relative overflow-hidden">
                       {/* "Example" watermark */}
                       <div className="absolute top-2 right-2">
                         <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-xs">
@@ -395,8 +395,8 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
 
                       {/* Header */}
                       <div className="flex items-start gap-4 mb-4">
-                        <Avatar className="h-12 w-12 border-2 border-[#00FFC2]/20">
-                          <div className="w-full h-full bg-[#00FFC2]/10 flex items-center justify-center text-lg text-[#00FFC2]">
+                        <Avatar className="h-12 w-12 border-2 border-[#CCFF00]/20">
+                          <div className="w-full h-full bg-[#CCFF00]/10 flex items-center justify-center text-lg text-[#CCFF00]">
                             {example.name.charAt(0)}
                           </div>
                         </Avatar>
@@ -412,7 +412,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className="h-4 w-4 fill-[#00FFC2] text-[#00FFC2]"
+                            className="h-4 w-4 fill-[#CCFF00] text-[#CCFF00]"
                           />
                         ))}
                       </div>
@@ -423,7 +423,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                       </p>
 
                       {/* Footer */}
-                      <div className="flex items-center justify-between pt-4 border-t border-[#00FFC2]/10">
+                      <div className="flex items-center justify-between pt-4 border-t border-[#CCFF00]/10">
                         <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-xs">
                           {example.type}
                         </Badge>
@@ -440,8 +440,8 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                 transition={{ delay: 0.6 }}
                 className="text-center"
               >
-                <Card className="bg-gradient-to-br from-[#00FFC2]/10 to-blue-500/10 border-[#00FFC2]/20 p-8 max-w-2xl mx-auto">
-                  <Quote className="h-10 w-10 text-[#00FFC2] mx-auto mb-4" />
+                <Card className="bg-gradient-to-br from-[#CCFF00]/10 to-blue-500/10 border-[#CCFF00]/20 p-8 max-w-2xl mx-auto">
+                  <Quote className="h-10 w-10 text-[#CCFF00] mx-auto mb-4" />
                   <h3 className="text-2xl text-white mb-3">
                     {t.testimonials.cta.title}
                   </h3>
@@ -450,7 +450,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                   </p>
                   <Button
                     onClick={() => onNavigate?.('contact')}
-                    className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                    className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
                   >
                     <Star className="mr-2 h-4 w-4" />
                     {t.testimonials.cta.button}
@@ -460,12 +460,12 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
             </div>
           ) : filteredTestimonials.length === 0 ? (
             <div className="text-center text-white/40 py-20">
-              <Quote className="h-16 w-16 mx-auto mb-4 text-[#00FFC2]/20" />
+              <Quote className="h-16 w-16 mx-auto mb-4 text-[#CCFF00]/20" />
               <p>{t.testimonials.noResults.message}</p>
               <Button
                 onClick={() => setFilter("all")}
                 variant="outline"
-                className="mt-4 border-[#00FFC2]/20 text-white hover:bg-white/5"
+                className="mt-4 border-[#CCFF00]/20 text-white hover:bg-white/5"
               >
                 {t.testimonials.noResults.button}
               </Button>
@@ -479,10 +479,10 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <Card className="bg-black/40 border-[#00FFC2]/10 p-6 hover:border-[#00FFC2]/30 transition-all group">
+                  <Card className="bg-black/40 border-[#CCFF00]/10 p-6 hover:border-[#CCFF00]/30 transition-all group">
                     {/* Header */}
                     <div className="flex items-start gap-4 mb-4">
-                      <Avatar className="h-12 w-12 border-2 border-[#00FFC2]/20">
+                      <Avatar className="h-12 w-12 border-2 border-[#CCFF00]/20">
                         {testimonial.clientPhoto ? (
                           <ImageWithFallback
                             src={testimonial.clientPhoto} 
@@ -492,7 +492,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                             loading="lazy"
                           />
                         ) : (
-                          <div className="w-full h-full bg-[#00FFC2]/10 flex items-center justify-center text-lg text-[#00FFC2]">
+                          <div className="w-full h-full bg-[#CCFF00]/10 flex items-center justify-center text-lg text-[#CCFF00]">
                             {getClientInitial(testimonial.clientName)}
                           </div>
                         )}
@@ -507,7 +507,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                           href={testimonial.linkedinUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[#00FFC2] hover:text-[#00FFC2]/80 transition-colors"
+                          className="text-[#CCFF00] hover:text-[#CCFF00]/80 transition-colors"
                         >
                           <Linkedin className="h-5 w-5" />
                         </a>
@@ -521,7 +521,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                           key={i}
                           className={`h-4 w-4 ${
                             i < testimonial.rating
-                              ? "fill-[#00FFC2] text-[#00FFC2]"
+                              ? "fill-[#CCFF00] text-[#CCFF00]"
                               : "text-white/20"
                           }`}
                         />
@@ -529,14 +529,14 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
                     </div>
 
                     {/* Testimonial */}
-                    <Quote className="h-8 w-8 text-[#00FFC2]/20 mb-2" />
+                    <Quote className="h-8 w-8 text-[#CCFF00]/20 mb-2" />
                     <p className="text-white/80 leading-relaxed mb-4">
                       {testimonial.testimonial}
                     </p>
 
                     {/* Footer */}
-                    <div className="flex items-center gap-4 pt-4 border-t border-[#00FFC2]/10">
-                      <Badge className="bg-[#00FFC2]/10 text-[#00FFC2] border-[#00FFC2]/20 text-xs">
+                    <div className="flex items-center gap-4 pt-4 border-t border-[#CCFF00]/10">
+                      <Badge className="bg-[#CCFF00]/10 text-[#CCFF00] border-[#CCFF00]/20 text-xs">
                         <Briefcase className="h-3 w-3 mr-1" />
                         {testimonial.projectType}
                       </Badge>
@@ -555,7 +555,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
 
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00FFC2]/5 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#CCFF00]/5 to-transparent" />
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -565,7 +565,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
           >
             <h2 className="text-4xl md:text-5xl tracking-tight mb-6">
               {t.testimonials.finalCta.title}
-              <span className="text-[#00FFC2]"> {t.testimonials.finalCta.titleHighlight}</span> ?
+              <span className="text-[#CCFF00]"> {t.testimonials.finalCta.titleHighlight}</span> ?
             </h2>
             <p className="text-xl text-white/60 mb-8">
               {t.testimonials.finalCta.subtitle}
@@ -573,7 +573,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
-                className="bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90"
+                className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
                 onClick={() => onNavigate?.("contact")}
               >
                 {t.testimonials.finalCta.startProject}
@@ -581,7 +581,7 @@ export default function TestimonialsPage({ onNavigate }: TestimonialsPageProps =
               <Button
                 size="lg"
                 variant="outline"
-                className="border-[#00FFC2]/20 text-white hover:bg-white/5"
+                className="border-[#CCFF00]/20 text-white hover:bg-white/5"
                 onClick={() => onNavigate?.("booking")}
               >
                 {t.testimonials.finalCta.bookCall}

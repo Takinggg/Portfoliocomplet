@@ -68,7 +68,7 @@ export function CRMDetailPane() {
       if (!response.ok) throw new Error('Conversion failed');
       const data = await response.json();
       
-      showToast('Lead converti en client avec succès !', 'success');
+      showToast('Lead converti en client avec succÃ¨s !', 'success');
       setSelectedId(null); // Close detail pane
       triggerRefresh(); // Trigger list refresh
     } catch (error) {
@@ -100,7 +100,7 @@ export function CRMDetailPane() {
       if (!response.ok) throw new Error('Conversion failed');
       const data = await response.json();
       
-      showToast('Devis converti en facture avec succès !', 'success');
+      showToast('Devis converti en facture avec succÃ¨s !', 'success');
       setSelectedId(null);
       triggerRefresh();
     } catch (error) {
@@ -132,11 +132,11 @@ export function CRMDetailPane() {
       
       if (!response.ok) throw new Error('Update failed');
       
-      showToast(`Statut mis à jour: ${newStatus}`, 'success');
+      showToast(`Statut mis Ã  jour: ${newStatus}`, 'success');
       setEntity({ ...entity, status: newStatus });
     } catch (error) {
       console.error('Error updating status:', error);
-      showToast('Erreur lors de la mise à jour', 'error');
+      showToast('Erreur lors de la mise Ã  jour', 'error');
     } finally {
       setConverting(false);
     }
@@ -162,7 +162,7 @@ export function CRMDetailPane() {
       
       if (!response.ok) throw new Error('Send failed');
       
-      showToast('Email envoyé avec succès !', 'success');
+      showToast('Email envoyÃ© avec succÃ¨s !', 'success');
     } catch (error) {
       console.error('Error sending email:', error);
       showToast('Erreur lors de l\'envoi de l\'email', 'error');
@@ -199,12 +199,12 @@ export function CRMDetailPane() {
         
         // Extract the entity from the API response
         // API returns: { success: true, lead/client/quote/invoice: {...} }
-        const singularTab = currentTab.slice(0, -1); // "leads" → "lead"
+        const singularTab = currentTab.slice(0, -1); // "leads" â†’ "lead"
         const entityData = data[singularTab] || data.data || data;
         setEntity(entityData);
       } catch (error) {
-        console.error('Erreur de chargement des détails:', error);
-        showToast('Erreur de chargement des détails', 'error');
+        console.error('Erreur de chargement des dÃ©tails:', error);
+        showToast('Erreur de chargement des dÃ©tails', 'error');
         setEntity(null);
       } finally {
         setLoading(false);
@@ -265,7 +265,7 @@ export function CRMDetailPane() {
             disabled: converting,
           },
           {
-            label: entity?.status === 'accepted' ? 'Accepté ✓' : 'Marquer Accepté',
+            label: entity?.status === 'accepted' ? 'AcceptÃ© âœ“' : 'Marquer AcceptÃ©',
             icon: Check,
             onClick: () => handleUpdateQuoteStatus('accepted'),
             variant: 'outline' as const,
@@ -294,16 +294,16 @@ export function CRMDetailPane() {
   };
 
   const tabs: { id: TabType; label: string; icon: any }[] = [
-    { id: 'overview', label: 'Aperçu', icon: FileText },
+    { id: 'overview', label: 'AperÃ§u', icon: FileText },
     { id: 'documents', label: 'Documents', icon: FileText },
     { id: 'notes', label: 'Notes', icon: MessageSquare },
-    { id: 'activity', label: 'Activité', icon: Clock },
+    { id: 'activity', label: 'ActivitÃ©', icon: Clock },
   ];
 
   if (loading) {
     return (
       <div className="h-full flex items-center justify-center bg-[#0C0C0C]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00FFC2]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#CCFF00]"></div>
       </div>
     );
   }
@@ -311,7 +311,7 @@ export function CRMDetailPane() {
   if (!entity) {
     return (
       <div className="h-full flex items-center justify-center bg-[#0C0C0C] text-gray-400">
-        <p>Impossible de charger les détails</p>
+        <p>Impossible de charger les dÃ©tails</p>
       </div>
     );
   }
@@ -326,7 +326,7 @@ export function CRMDetailPane() {
               {entity.name || entity.company || entity.invoice_number || entity.quote_number}
             </h2>
             {entity.status && (
-              <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[#00FFC2]/10 text-[#00FFC2]">
+              <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[#CCFF00]/10 text-[#CCFF00]">
                 {entity.status}
               </span>
             )}
@@ -372,7 +372,7 @@ export function CRMDetailPane() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-colors ${
                   activeTab === tab.id
-                    ? 'border-[#00FFC2] text-[#00FFC2]'
+                    ? 'border-[#CCFF00] text-[#CCFF00]'
                     : 'border-transparent text-gray-400 hover:text-white'
                 }`}
               >
@@ -428,8 +428,8 @@ export function CRMDetailPane() {
               <div>
                 <h3 className="text-lg font-semibold text-white mb-3">Montant</h3>
                 <div className="flex items-center gap-3">
-                  <Euro className="w-5 h-5 text-[#00FFC2]" />
-                  <span className="text-2xl font-bold text-[#00FFC2]">
+                  <Euro className="w-5 h-5 text-[#CCFF00]" />
+                  <span className="text-2xl font-bold text-[#CCFF00]">
                     {new Intl.NumberFormat('fr-FR', {
                       style: 'currency',
                       currency: 'EUR',
@@ -461,7 +461,7 @@ export function CRMDetailPane() {
                     <div className="flex items-center gap-3 text-gray-300">
                       <Clock className="w-4 h-4 text-gray-400" />
                       <span>
-                        Créé le:{' '}
+                        CrÃ©Ã© le:{' '}
                         {new Date(entity.created_at).toLocaleDateString('fr-FR', {
                           day: 'numeric',
                           month: 'long',
@@ -513,7 +513,7 @@ export function CRMDetailPane() {
             className="text-center text-gray-400 py-12"
           >
             <Clock className="w-12 h-12 mx-auto mb-4 text-gray-600" />
-            <p>Aucune activité pour le moment</p>
+            <p>Aucune activitÃ© pour le moment</p>
           </motion.div>
         )}
       </div>

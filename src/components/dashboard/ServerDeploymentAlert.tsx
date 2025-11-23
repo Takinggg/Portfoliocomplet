@@ -73,16 +73,16 @@ export function ServerDeploymentAlert() {
   // Server is fully functional
   if (status.isOnline && status.hasClientRoutes) {
     return (
-      <Card className="border-[#00FFC2]/20 bg-[#00FFC2]/5 mb-6">
+      <Card className="border-[#CCFF00]/20 bg-[#CCFF00]/5 mb-6">
         <div className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-[#00FFC2]" />
+            <CheckCircle className="w-5 h-5 text-[#CCFF00]" />
             <div>
               <div className="text-sm text-[#F4F4F4]">
                 Serveur en ligne {status.version && `(${status.version})`}
               </div>
               <div className="text-xs text-gray-400">
-                Dernière vérification: {status.lastChecked?.toLocaleTimeString()}
+                DerniÃ¨re vÃ©rification: {status.lastChecked?.toLocaleTimeString()}
               </div>
             </div>
           </div>
@@ -91,7 +91,7 @@ export function ServerDeploymentAlert() {
             size="sm"
             onClick={checkServerStatus}
             disabled={checking}
-            className="text-[#00FFC2] hover:bg-[#00FFC2]/10"
+            className="text-[#CCFF00] hover:bg-[#CCFF00]/10"
           >
             <RefreshCw className={`w-4 h-4 ${checking ? "animate-spin" : ""}`} />
           </Button>
@@ -112,26 +112,26 @@ export function ServerDeploymentAlert() {
           <AlertTriangle className="h-5 w-5 text-yellow-500" />
           <AlertTitle className="text-[#F4F4F4] mb-2">
             {!status.isOnline
-              ? "⚠️ Serveur hors ligne"
-              : "⚠️ Routes clients non déployées"}
+              ? "âš ï¸ Serveur hors ligne"
+              : "âš ï¸ Routes clients non dÃ©ployÃ©es"}
           </AlertTitle>
           <AlertDescription className="text-gray-300 space-y-3">
             <p>
               {!status.isOnline
-                ? "Le serveur Edge Function ne répond pas. Il doit être déployé sur Supabase."
-                : "Les routes clients retournent une erreur 404. Le serveur a été mis à jour mais n'est pas redéployé."}
+                ? "Le serveur Edge Function ne rÃ©pond pas. Il doit Ãªtre dÃ©ployÃ© sur Supabase."
+                : "Les routes clients retournent une erreur 404. Le serveur a Ã©tÃ© mis Ã  jour mais n'est pas redÃ©ployÃ©."}
             </p>
 
-            <div className="bg-[#0C0C0C] border border-[#00FFC2]/20 rounded-lg p-3 mt-3">
+            <div className="bg-[#0C0C0C] border border-[#CCFF00]/20 rounded-lg p-3 mt-3">
               <div className="flex items-center justify-between mb-2">
-                <code className="text-xs text-[#00FFC2]">
+                <code className="text-xs text-[#CCFF00]">
                   supabase functions deploy make-server-04919ac5
                 </code>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={copyDeployCommand}
-                  className="h-7 px-2 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                  className="h-7 px-2 text-[#CCFF00] hover:bg-[#CCFF00]/10"
                 >
                   {copied ? (
                     <Check className="w-3 h-3" />
@@ -147,25 +147,25 @@ export function ServerDeploymentAlert() {
                 variant="outline"
                 size="sm"
                 onClick={openDeploymentGuide}
-                className="border-[#00FFC2]/30 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                className="border-[#CCFF00]/30 text-[#CCFF00] hover:bg-[#CCFF00]/10"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
-                📖 Guide de déploiement (sans CLI)
+                ðŸ“– Guide de dÃ©ploiement (sans CLI)
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={checkServerStatus}
                 disabled={checking}
-                className="border-[#00FFC2]/30 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+                className="border-[#CCFF00]/30 text-[#CCFF00] hover:bg-[#CCFF00]/10"
               >
                 <RefreshCw className={`w-4 h-4 mr-2 ${checking ? "animate-spin" : ""}`} />
-                Revérifier
+                RevÃ©rifier
               </Button>
             </div>
 
             <p className="text-xs text-gray-400 mt-2">
-              💡 <strong>Pas de CLI Supabase ?</strong> Pas de problème ! Le guide ci-dessus vous montre comment copier-coller le code via l'interface web.
+              ðŸ’¡ <strong>Pas de CLI Supabase ?</strong> Pas de problÃ¨me ! Le guide ci-dessus vous montre comment copier-coller le code via l'interface web.
             </p>
           </AlertDescription>
         </Alert>

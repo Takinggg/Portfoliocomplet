@@ -35,7 +35,7 @@ export default function InvoiceSuccessPage() {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-md w-full"
       >
-        <div className="bg-black/40 backdrop-blur-sm border border-[#00FFC2]/20 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-black/40 backdrop-blur-sm border border-[#CCFF00]/20 rounded-2xl p-8 shadow-2xl">
           {/* Success Icon */}
           <motion.div
             initial={{ scale: 0 }}
@@ -44,8 +44,8 @@ export default function InvoiceSuccessPage() {
             className="flex justify-center mb-6"
           >
             <div className="relative">
-              <div className="absolute inset-0 bg-[#00FFC2]/20 blur-2xl rounded-full" />
-              <CheckCircle2 className="w-20 h-20 text-[#00FFC2] relative" strokeWidth={1.5} />
+              <div className="absolute inset-0 bg-[#CCFF00]/20 blur-2xl rounded-full" />
+              <CheckCircle2 className="w-20 h-20 text-[#CCFF00] relative" strokeWidth={1.5} />
             </div>
           </motion.div>
 
@@ -76,7 +76,7 @@ export default function InvoiceSuccessPage() {
           >
             <Button
               onClick={handleViewInvoice}
-              className="w-full bg-[#00FFC2] hover:bg-[#00FFC2]/90 text-black font-semibold h-12 text-base rounded-xl"
+              className="w-full bg-[#CCFF00] hover:bg-[#CCFF00]/90 text-black font-semibold h-12 text-base rounded-xl"
             >
               <CheckCircle2 className="w-5 h-5 mr-2" />
               {successTexts.buttons?.view}
@@ -85,7 +85,7 @@ export default function InvoiceSuccessPage() {
             <Button
               onClick={handleDownloadInvoice}
               variant="outline"
-              className="w-full border-[#00FFC2]/30 hover:border-[#00FFC2] hover:bg-[#00FFC2]/10 text-white h-12 text-base rounded-xl"
+              className="w-full border-[#CCFF00]/30 hover:border-[#CCFF00] hover:bg-[#CCFF00]/10 text-white h-12 text-base rounded-xl"
             >
               <Download className="w-5 h-5 mr-2" />
               {successTexts.buttons?.download}
@@ -97,14 +97,14 @@ export default function InvoiceSuccessPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="mt-8 pt-6 border-t border-[#00FFC2]/10"
+            className="mt-8 pt-6 border-t border-[#CCFF00]/10"
           >
-            <div className="bg-[#00FFC2]/5 rounded-lg p-4">
+            <div className="bg-[#CCFF00]/5 rounded-lg p-4">
               <p className="text-gray-400 text-sm text-center">
                 {successTexts.support}{' '}
                 <a 
                   href="mailto:contact@maxence.design" 
-                  className="text-[#00FFC2] hover:underline"
+                  className="text-[#CCFF00] hover:underline"
                 >
                   contact@maxence.design
                 </a>
@@ -122,7 +122,7 @@ export default function InvoiceSuccessPage() {
         >
           <a 
             href="https://maxence.design"
-            className="inline-flex items-center text-gray-400 hover:text-[#00FFC2] transition-colors text-sm"
+            className="inline-flex items-center text-gray-400 hover:text-[#CCFF00] transition-colors text-sm"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             {successTexts.back}

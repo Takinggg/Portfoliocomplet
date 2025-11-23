@@ -11,7 +11,7 @@ export function SeedBlogButton() {
   const [mode, setMode] = useState<BlogServiceMode>("checking");
 
   useEffect(() => {
-    // Détecte automatiquement le mode
+    // DÃ©tecte automatiquement le mode
     checkMode();
   }, []);
 
@@ -27,14 +27,14 @@ export function SeedBlogButton() {
     const initResult = await initializeBlog();
     
     if (initResult.mode === "local") {
-      // Mode local - articles déjà créés par initializeBlog
+      // Mode local - articles dÃ©jÃ  crÃ©Ã©s par initializeBlog
       toast.success(
-        `✅ ${initResult.count} articles créés en mode local !`,
+        `âœ… ${initResult.count} articles crÃ©Ã©s en mode local !`,
         {
-          description: "Les articles sont stockés dans votre navigateur",
+          description: "Les articles sont stockÃ©s dans votre navigateur",
           duration: 5000,
           action: {
-            label: "Rafraîchir",
+            label: "RafraÃ®chir",
             onClick: () => window.location.reload(),
           },
         }
@@ -46,7 +46,7 @@ export function SeedBlogButton() {
       return;
     }
 
-    // Mode serveur - utilise le système bilingue
+    // Mode serveur - utilise le systÃ¨me bilingue
     toast.info("Initialisation des articles de blog bilingues (FR + EN) sur le serveur...");
 
     try {
@@ -55,12 +55,12 @@ export function SeedBlogButton() {
       if (result.success) {
         setSeeded(true);
         toast.success(
-          `✅ ${result.created} articles de blog créés avec succès (FR + EN) !`,
+          `âœ… ${result.created} articles de blog crÃ©Ã©s avec succÃ¨s (FR + EN) !`,
           {
-            description: "Rafraîchissez la page pour voir les articles dans les deux langues",
+            description: "RafraÃ®chissez la page pour voir les articles dans les deux langues",
             duration: 5000,
             action: {
-              label: "Rafraîchir",
+              label: "RafraÃ®chir",
               onClick: () => window.location.reload(),
             },
           }
@@ -89,7 +89,7 @@ export function SeedBlogButton() {
         className="border-green-500/50 text-green-400"
       >
         <CheckCircle className="h-4 w-4 mr-2" />
-        Articles initialisés
+        Articles initialisÃ©s
       </Button>
     );
   }
@@ -106,7 +106,7 @@ export function SeedBlogButton() {
       onClick={handleSeed}
       disabled={loading}
       variant="outline"
-      className="border-[#00FFC2]/30 text-[#00FFC2] hover:bg-[#00FFC2]/10"
+      className="border-[#CCFF00]/30 text-[#CCFF00] hover:bg-[#CCFF00]/10"
     >
       {loading ? (
         <>
