@@ -90,57 +90,80 @@ export function NewsletterPopup() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-2rem)] max-w-lg"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl"
           >
-            <div className="relative bg-[#0C0C0C] border border-[#CCFF00]/30 rounded-2xl p-8 shadow-2xl">
+            <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#050505] shadow-[0_40px_120px_rgba(0,0,0,0.65)]">
+              {/* background accents */}
+              <div className="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_top,_rgba(204,255,0,0.15),_transparent_55%),radial-gradient(circle_at_20%_90%,_rgba(124,69,255,0.25),_transparent_60%)]" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
+
               {/* Close button */}
               <button
                 onClick={handleClose}
-                className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
+                className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors"
                 aria-label={t('newsletter.popup.close')}
               >
                 <X className="h-5 w-5" />
               </button>
 
-              {/* Gradient background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#CCFF00]/10 to-transparent rounded-2xl pointer-events-none" />
+              <div className="relative grid gap-10 p-8 md:p-12 lg:grid-cols-[1.15fr_0.85fr]">
+                {/* Copy */}
+                <div>
+                  <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs font-mono uppercase tracking-[0.4em] text-white/70 mb-6">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    {t('newsletter.popup.badge')}
+                  </div>
 
-              {/* Content */}
-              <div className="relative">
-                {/* Icon */}
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#CCFF00]/10 border border-[#CCFF00]/20 mb-6">
-                  <Sparkles className="h-4 w-4 text-[#CCFF00]" />
-                  <span className="text-sm text-[#CCFF00]">{t('newsletter.popup.badge')}</span>
+                  <p className="text-sm font-mono uppercase tracking-[0.3em] text-white/50 mb-3">
+                    {t('newsletter.popup.kicker') ?? 'Weekly Signals'}
+                  </p>
+
+                  <h3 className="font-display heading-display text-white max-w-xl leading-tight mb-4">
+                    {t('newsletter.popup.title')}
+                  </h3>
+
+                  <p className="text-lg text-white/70 max-w-2xl">
+                    {t('newsletter.popup.description')}
+                  </p>
+
+                  <div className="mt-10 space-y-4">
+                    {popupBenefits.map((benefit: string, index: number) => (
+                      <motion.div
+                        key={benefit}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.08 }}
+                        className="flex items-start gap-3 text-white/80"
+                      >
+                        <span className="mt-1 h-1.5 w-8 rounded-full bg-primary/70" />
+                        <span className="text-base font-medium">{benefit}</span>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Title */}
-                <h3 className="text-white mb-3">
-                  {t('newsletter.popup.title')}
-                </h3>
+                {/* Form card */}
+                <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.55)] flex flex-col gap-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-white/70">
+                      <Mail className="h-4 w-4" />
+                      <span className="text-sm font-semibold uppercase tracking-[0.3em]">
+                        {t('newsletter.popup.ctaLabel') ?? t('newsletter.popup.badge')}
+                      </span>
+                    </div>
+                    <div className="relative inline-flex h-6 w-11 items-center rounded-full border border-white/20">
+                      <span className="absolute left-1 top-1 h-4 w-4 rounded-full bg-primary shadow-lg" />
+                    </div>
+                  </div>
 
-                {/* Description */}
-                <p className="text-white/60 mb-6">
-                  {t('newsletter.popup.description')}
-                </p>
+                  <div className="bg-black/30 rounded-2xl p-4 border border-white/5">
+                    <NewsletterForm onSuccess={handleSuccess} className="space-y-3" />
+                  </div>
 
-                {/* Benefits */}
-                <div className="space-y-2 mb-6">
-                  {popupBenefits.map((benefit: string, index: number) => (
-                    <motion.div
-                      key={benefit}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-2 text-sm text-white/70"
-                    >
-                      <div className="w-1 h-1 rounded-full bg-[#CCFF00]" />
-                      {benefit}
-                    </motion.div>
-                  ))}
+                  <p className="text-xs text-white/50 leading-relaxed">
+                    {t('newsletter.form.footnote')}
+                  </p>
                 </div>
-
-                {/* Form */}
-                <NewsletterForm onSuccess={handleSuccess} />
               </div>
             </div>
           </motion.div>
