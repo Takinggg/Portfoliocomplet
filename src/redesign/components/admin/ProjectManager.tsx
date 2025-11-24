@@ -1,21 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Project, KPI, TechItem } from '../../types';
-import { Plus, Edit2, Trash2, X, Save, Image as ImageIcon, Layers, BarChart2, FileText, Globe, ChevronRight } from 'lucide-react';
+import { Plus, Edit2, Trash2, X, Save, Image as ImageIcon, Layers, BarChart2, FileText } from 'lucide-react';
 
 interface ProjectManagerProps {
   projects: Project[];
   setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
   title?: string;
+    onSaveProject?: (data: Partial<Project>, editingId?: Project['id'] | null) => Promise<void>;
+    onDeleteProject?: (id: Project['id']) => Promise<void>;
+    loading?: boolean;
 }
 
 type Tab = 'general' | 'story' | 'tech';
 type Lang = 'fr' | 'en';
 
-export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setProjects, title = "Projets" }) => {
-  const [editingId, setEditingId] = useState<number | null>(null);
+export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setProjects, title = "Projets", onSaveProject, onDeleteProject, loading = false }) => {
+    const [editingId, setEditingId] = useState<Project['id'] | null>(null);
   const [isAdding, setIsAdding] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>('general');
   const [lang, setLang] = useState<Lang>('fr');
+    const [actionLoading, setActionLoading] = useState(false);
   
   // Empty state for new project
   const [formData, setFormData] = useState<Partial<Project>>({
@@ -37,28 +41,60 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
   const [tempStat, setTempStat] = useState<KPI>({ label: '', value: '', change: '' });
   const [tempTech, setTempTech] = useState<TechItem>({ name: '', category: '' });
 
-  const handleEdit = (project: Project) => {
+    const handleEdit = (project: Project) => {
     setEditingId(project.id);
     setFormData(JSON.parse(JSON.stringify(project))); // Deep copy
     setIsAdding(false);
     setActiveTab('general');
   };
 
-  const handleDelete = (id: number) => {
-    if (confirm('Supprimer ce projet ?')) {
-      setProjects(prev => prev.filter(p => p.id !== id));
-    }
+    const handleDelete = async (id: Project['id']) => {
+        if (!confirm('Supprimer ce projet ?')) {
+            return;
+        }
+
+        if (onDeleteProject) {
+            try {
+                setActionLoading(true);
+                await onDeleteProject(id);
+            } catch (error) {
+                console.error('Suppression projet échouée', error);
+                alert((error as Error)?.message || 'Impossible de supprimer le projet.');
+            } finally {
+                setActionLoading(false);
+            }
+            return;
+        }
+
+        setProjects(prev => prev.filter(p => p.id !== id));
   };
 
-  const handleSave = () => {
-    if (editingId) {
-      setProjects(prev => prev.map(p => p.id === editingId ? { ...p, ...formData } as Project : p));
-    } else {
-      const newId = Math.max(...projects.map(p => p.id), 0) + 1;
-      const newProject = { ...formData, id: newId } as Project;
-      setProjects(prev => [...prev, newProject]);
-    }
-    closeForm();
+    const handleSave = async () => {
+        if (onSaveProject) {
+            try {
+                setActionLoading(true);
+                await onSaveProject(formData as Project, editingId);
+                closeForm();
+            } catch (error) {
+                console.error('Sauvegarde projet échouée', error);
+                alert((error as Error)?.message || "Impossible d'enregistrer le projet.");
+            } finally {
+                setActionLoading(false);
+            }
+            return;
+        }
+
+        if (editingId !== null) {
+            setProjects(prev => prev.map(p => p.id === editingId ? { ...p, ...formData } as Project : p));
+        } else {
+            const numericIds = projects
+                .map(p => (typeof p.id === 'number' ? p.id : Number.parseInt(String(p.id), 10)))
+                .filter(id => Number.isFinite(id)) as number[];
+            const newId = (numericIds.length ? Math.max(...numericIds) : 0) + 1;
+            const newProject = { ...formData, id: newId } as Project;
+            setProjects(prev => [...prev, newProject]);
+        }
+        closeForm();
   };
 
   const closeForm = () => {
@@ -74,7 +110,9 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
       link: '#',
       stats: [],
       techStack: []
-    });
+        });
+        setLang('fr');
+        setActiveTab('general');
   };
 
   // Helpers for lists
@@ -89,13 +127,20 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
             <h1 className="text-3xl font-display font-bold text-white mb-2">{title}</h1>
             <p className="text-neutral-400">Pilotez votre portfolio et ses traductions.</p>
         </div>
-        <button 
-            onClick={() => { closeForm(); setIsAdding(true); }}
-            className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-lg font-bold text-sm hover:bg-primary transition-colors"
-        >
-            <Plus size={18} /> Ajouter un projet
-        </button>
+                <button 
+                        onClick={() => { if (!loading) { closeForm(); setIsAdding(true); } }}
+                        className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-lg font-bold text-sm hover:bg-primary transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+                        disabled={loading}
+                >
+                        <Plus size={18} /> Ajouter un projet
+                </button>
       </div>
+
+            {loading && (
+                <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-neutral-300">
+                    Synchronisation du portfolio en cours…
+                </div>
+            )}
 
       {/* FORM OVERLAY */}
       {(isAdding || editingId) && (
@@ -288,9 +333,10 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
                 <div className="p-6 border-t border-white/10 bg-[#151515]">
                     <button 
                         onClick={handleSave}
-                        className="w-full bg-primary text-black font-bold py-3 rounded hover:bg-white transition-colors flex items-center justify-center gap-2"
+                        disabled={actionLoading}
+                        className="w-full bg-primary text-black font-bold py-3 rounded hover:bg-white transition-colors flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        <Save size={18} /> Enregistrer le projet
+                        <Save size={18} /> {actionLoading ? 'Enregistrement…' : 'Enregistrer le projet'}
                     </button>
                 </div>
 
@@ -319,7 +365,7 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
                     <button onClick={() => handleEdit(project)} className="p-2 hover:bg-white/10 rounded text-neutral-400 hover:text-white transition-colors">
                         <Edit2 size={18} />
                     </button>
-                    <button onClick={() => handleDelete(project.id)} className="p-2 hover:bg-red-500/10 rounded text-neutral-400 hover:text-red-500 transition-colors">
+                    <button onClick={() => handleDelete(project.id)} className="p-2 hover:bg-red-500/10 rounded text-neutral-400 hover:text-red-500 transition-colors disabled:opacity-50" disabled={actionLoading}>
                         <Trash2 size={18} />
                     </button>
                 </div>

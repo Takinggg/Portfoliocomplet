@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Briefcase, ShoppingBag, MessageSquare, LogOut, Menu, X, FileText, Users, Calendar, DollarSign } from 'lucide-react';
+import { LayoutDashboard, Briefcase, ShoppingBag, MessageSquare, LogOut, Menu, X, FileText, Users, Calendar, DollarSign, BookOpen } from 'lucide-react';
 import { AdminView } from '../../types';
 
 interface AdminLayoutProps {
@@ -20,6 +20,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentView, onChangeV
     { type: 'separator' },
     { id: 'projects', label: 'Portfolio', icon: Briefcase },
     { id: 'casestudies', label: 'Études de cas', icon: FileText },
+    { id: 'blog', label: 'Blog', icon: BookOpen },
     { id: 'services', label: 'Offres & services', icon: ShoppingBag },
     { id: 'messages', label: 'Messages', icon: MessageSquare },
   ];

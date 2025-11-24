@@ -7,6 +7,8 @@ import { CalendarManager } from "@/redesign/components/admin/CalendarManager";
 import { ProjectManager } from "@/redesign/components/admin/ProjectManager";
 import { ServiceManager } from "@/redesign/components/admin/ServiceManager";
 import { MessageInbox } from "@/redesign/components/admin/MessageInbox";
+import { BlogTabBilingual } from "@/components/dashboard/BlogTabBilingual";
+import { CaseStudiesTab } from "@/components/dashboard/CaseStudiesTab";
 import { redesignProjects, redesignServices } from "@/redesign/data";
 import type {
   AdminView,
@@ -21,6 +23,13 @@ import type {
 } from "@/redesign/types";
 import { createClient } from "@/utils/supabase/client";
 import { API_BASE_URL } from "@/utils/supabase/info";
+import {
+  BilingualProject,
+  fetchProjects,
+  createProject,
+  updateProject,
+  deleteProject,
+} from "@/utils/unifiedDataService";
 
 const supabase = createClient();
 
@@ -191,6 +200,92 @@ const exportToCSV = (rows: Record<string, any>[], filename: string) => {
   document.body.removeChild(link);
 };
 
+const FALLBACK_PROJECT_IMAGE = "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=900&q=80";
+
+const normalizeProjectCategory = (category?: string): BilingualProject["category_fr"] => {
+  if (!category) return "other";
+  const normalized = category.toLowerCase();
+  if (normalized.includes("mobile")) return "mobile";
+  if (normalized.includes("design")) return "design";
+  if (normalized.includes("consult")) return "consulting";
+  if (normalized.includes("web")) return "web";
+  return "other";
+};
+
+const mapBilingualProjectToProject = (project: BilingualProject): Project => ({
+  id: project.id,
+  title: project.name_fr || project.name_en || "Sans titre",
+  title_en: project.name_en || project.name_fr || "",
+  client: project.clientName || "Client confidentiel",
+  category: project.category_fr || project.category_en || "Projet",
+  image: project.imageUrl || FALLBACK_PROJECT_IMAGE,
+  link: project.projectUrl || project.githubUrl || "#",
+  year: project.startDate?.slice(0, 4),
+  description: project.description_fr || "",
+  description_en: project.description_en || project.description_fr || "",
+  challenge: project.challenges_fr,
+  challenge_en: project.challenges_en,
+  solution: project.solutions_fr,
+  solution_en: project.solutions_en,
+  tags: project.tags_fr?.length ? project.tags_fr : project.tags_en || [],
+  techStack: project.technologies?.map((tech) => ({ name: tech, category: "Stack" })),
+  stats: project.results_fr
+    ? [
+        {
+          label: project.results_en || "Résultats",
+          value: project.results_fr,
+        },
+      ]
+    : undefined,
+  gallery: project.imageGallery,
+});
+
+const buildBilingualProjectPayload = (
+  project: Partial<Project>,
+  existing?: BilingualProject
+): Omit<BilingualProject, "id" | "createdAt" | "updatedAt"> => {
+  const normalizedCategory = normalizeProjectCategory(project.category || existing?.category_fr);
+  const tags = project.tags && project.tags.length > 0
+    ? project.tags
+    : existing?.tags_fr || existing?.tags_en || [];
+  const technologies = project.techStack?.map((tech) => tech.name) ?? existing?.technologies ?? [];
+  const kpi = project.stats?.[0];
+  const nowIso = new Date().toISOString();
+
+  return {
+    name_fr: project.title || existing?.name_fr || "Sans titre",
+    name_en: project.title_en || project.title || existing?.name_en || "Untitled project",
+    description_fr: project.description ?? existing?.description_fr ?? "",
+    description_en: project.description_en ?? existing?.description_en ?? "",
+    tags_fr: tags,
+    tags_en: tags,
+    duration_fr: existing?.duration_fr,
+    duration_en: existing?.duration_en,
+    challenges_fr: project.challenge ?? existing?.challenges_fr,
+    challenges_en: project.challenge_en ?? existing?.challenges_en,
+    solutions_fr: project.solution ?? existing?.solutions_fr,
+    solutions_en: project.solution_en ?? existing?.solutions_en,
+    results_fr: kpi?.value ?? existing?.results_fr,
+    results_en: kpi?.label ?? existing?.results_en,
+    category_fr: normalizedCategory,
+    category_en: normalizedCategory,
+    clientId: existing?.clientId,
+    clientName: project.client ?? existing?.clientName ?? "Client confidentiel",
+    status: existing?.status ?? "completed",
+    budget: existing?.budget,
+    spent: existing?.spent,
+    startDate: existing?.startDate ?? nowIso,
+    endDate: existing?.endDate,
+    imageUrl: project.image ?? existing?.imageUrl ?? FALLBACK_PROJECT_IMAGE,
+    isPinned: existing?.isPinned ?? false,
+    technologies,
+    projectUrl: project.link ?? existing?.projectUrl,
+    githubUrl: existing?.githubUrl,
+    imageGallery: project.gallery ?? existing?.imageGallery,
+    testimonial: existing?.testimonial,
+  };
+};
+
 export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDashboardProps) {
   const [adminView, setAdminView] = useState<AdminView>("overview");
   const [clients, setClients] = useState<InternalClient[]>([]);
@@ -199,6 +294,8 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
   const [appointments, setAppointments] = useState<InternalAppointment[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [projects, setProjects] = useState<Project[]>(() => JSON.parse(JSON.stringify(redesignProjects)));
+  const [projectRecords, setProjectRecords] = useState<Record<string, BilingualProject>>({});
+  const [portfolioLoading, setPortfolioLoading] = useState(false);
   const [services, setServices] = useState<ServicePack[]>(() => JSON.parse(JSON.stringify(redesignServices)));
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
@@ -268,6 +365,28 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const refreshPortfolio = useCallback(async () => {
+    try {
+      setPortfolioLoading(true);
+      const remoteProjects = await fetchProjects();
+      const recordMap: Record<string, BilingualProject> = {};
+      remoteProjects.forEach((project) => {
+        recordMap[project.id] = project;
+      });
+      setProjectRecords(recordMap);
+      setProjects(remoteProjects.map(mapBilingualProjectToProject));
+    } catch (err) {
+      console.error("Failed to load portfolio projects", err);
+      addNotification("Impossible de synchroniser les projets", "error");
+    } finally {
+      setPortfolioLoading(false);
+    }
+  }, [addNotification]);
+
+  useEffect(() => {
+    refreshPortfolio();
+  }, [refreshPortfolio]);
 
   const persistEntity = useCallback(
     async (resource: string, payload: Record<string, any>, id?: string | number | null) => {
@@ -484,6 +603,64 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
     [addNotification]
   );
 
+  const handleSaveProject = useCallback(
+    async (payload: Partial<Project>, editingId?: Project["id"] | null) => {
+      try {
+        setPortfolioLoading(true);
+        const session = await ensureSession();
+        if (editingId) {
+          const remoteId = String(editingId);
+          const existing = projectRecords[remoteId];
+          const updates = buildBilingualProjectPayload(payload, existing);
+          const updated = await updateProject(remoteId, updates, session.access_token);
+          setProjectRecords((prev) => ({ ...prev, [remoteId]: updated }));
+          setProjects((prev) =>
+            prev.map((project) => (String(project.id) === remoteId ? mapBilingualProjectToProject(updated) : project))
+          );
+          addNotification("Projet mis à jour");
+        } else {
+          const body = buildBilingualProjectPayload(payload);
+          const created = await createProject(body, session.access_token);
+          setProjectRecords((prev) => ({ ...prev, [created.id]: created }));
+          setProjects((prev) => [...prev, mapBilingualProjectToProject(created)]);
+          addNotification("Projet ajouté");
+        }
+      } catch (err) {
+        console.error("Portfolio save error", err);
+        addNotification((err as Error).message || "Impossible d'enregistrer le projet", "error");
+        throw err;
+      } finally {
+        setPortfolioLoading(false);
+      }
+    },
+    [ensureSession, projectRecords, addNotification]
+  );
+
+  const handleDeleteProject = useCallback(
+    async (id: Project["id"]) => {
+      try {
+        setPortfolioLoading(true);
+        const session = await ensureSession();
+        const remoteId = String(id);
+        await deleteProject(remoteId, session.access_token);
+        setProjectRecords((prev) => {
+          const next = { ...prev };
+          delete next[remoteId];
+          return next;
+        });
+        setProjects((prev) => prev.filter((project) => String(project.id) !== remoteId));
+        addNotification("Projet supprimé", "info");
+      } catch (err) {
+        console.error("Portfolio delete error", err);
+        addNotification((err as Error).message || "Impossible de supprimer le projet", "error");
+        throw err;
+      } finally {
+        setPortfolioLoading(false);
+      }
+    },
+    [ensureSession, addNotification]
+  );
+
   const visibleClients = clients as Client[];
   const visibleQuotes = quotes as Quote[];
   const visibleInvoices = invoices as Invoice[];
@@ -556,12 +733,19 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
         )}
 
         {adminView === "projects" && (
-          <ProjectManager title="Portfolio" projects={projects} setProjects={setProjects} />
+          <ProjectManager
+            title="Portfolio"
+            projects={projects}
+            setProjects={setProjects}
+            onSaveProject={handleSaveProject}
+            onDeleteProject={handleDeleteProject}
+            loading={portfolioLoading}
+          />
         )}
 
-        {adminView === "casestudies" && (
-          <ProjectManager title="Case Studies" projects={projects} setProjects={setProjects} />
-        )}
+        {adminView === "casestudies" && <CaseStudiesTab onRefresh={refreshPortfolio} />}
+
+        {adminView === "blog" && <BlogTabBilingual />}
 
         {adminView === "services" && <ServiceManager services={services} setServices={setServices} />}
 
@@ -577,6 +761,7 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
     visibleInvoices,
     visibleAppointments,
     projects,
+    portfolioLoading,
     services,
     messages,
     handleAddOrUpdateClient,
@@ -591,6 +776,9 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
     handleDeleteInvoice,
     handleAddAppointment,
     handleDeleteAppointment,
+    refreshPortfolio,
+    handleSaveProject,
+    handleDeleteProject,
     addNotification,
   ]);
 
