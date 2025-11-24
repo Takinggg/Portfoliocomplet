@@ -606,13 +606,10 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
 
       try {
         await persistEntity("bookings", updatePayload, record.__recordId ?? id);
-        const session = await ensureSession();
+        addNotification("Rendez-vous replanifié", "success");
+
         const clientMeta = clients.find((client) => String(client.id) === String(record.clientId));
         const recipientEmail = updatePayload.email || clientMeta?.email;
-        if (!recipientEmail) {
-          throw new Error("Aucune adresse email disponible pour ce rendez-vous");
-        }
-
         const recipientName = updatePayload.name || clientMeta?.name || record.clientName || "Client";
         const serviceLabel = updatePayload.service || updatePayload.title || record.title || "Rendez-vous";
         const previousDate = new Date(record.date);
@@ -626,31 +623,45 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
         const prevTime = previousDate.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
         const nextTimeLabel = newDateTime.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
 
-        const emailResponse = await fetch(`${API_BASE_URL}/emails/booking-confirmation`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${session.access_token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            to: recipientEmail,
-            name: recipientName,
-            date: nextDate,
-            time: nextTime,
-            service: serviceLabel,
-            status: "modified",
-            message: `Ancien rendez-vous : ${formatLong(previousDate)} à ${prevTime}\nNouveau rendez-vous : ${formatLong(
-              newDateTime
-            )} à ${nextTimeLabel}`,
-          }),
-        });
-
-        if (!emailResponse.ok) {
-          const errorPayload = await emailResponse.json().catch(() => ({}));
-          throw new Error(errorPayload.error || "Impossible d'envoyer l'email de modification");
+        if (!recipientEmail) {
+          addNotification("Rendez-vous déplacé mais aucun email client n'est disponible", "info");
+          fetchData();
+          return;
         }
 
-        addNotification("Rendez-vous replanifié", "info");
+        try {
+          const session = await ensureSession();
+          const emailResponse = await fetch(`${API_BASE_URL}/emails/booking-confirmation`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${session.access_token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              to: recipientEmail,
+              name: recipientName,
+              date: nextDate,
+              time: nextTime,
+              service: serviceLabel,
+              status: "modified",
+              message: `Ancien rendez-vous : ${formatLong(previousDate)} à ${prevTime}\nNouveau rendez-vous : ${formatLong(
+                newDateTime
+              )} à ${nextTimeLabel}`,
+            }),
+          });
+
+          if (!emailResponse.ok) {
+            const errorPayload = await emailResponse.json().catch(() => ({}));
+            throw new Error(errorPayload.error || "Impossible d'envoyer l'email de modification");
+          }
+
+          addNotification("Email de modification envoyé", "info");
+        } catch (emailError) {
+          console.error("Reschedule booking email error", emailError);
+          const reason = emailError instanceof Error ? emailError.message : "Erreur inconnue";
+          addNotification(`Rendez-vous déplacé mais email non envoyé (${reason})`, "error");
+        }
+
         fetchData();
       } catch (error) {
         console.error("Reschedule booking error", error);
