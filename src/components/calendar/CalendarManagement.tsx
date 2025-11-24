@@ -120,11 +120,16 @@ export default function CalendarManagement({
   const [draggingBooking, setDraggingBooking] = useState<CalendarBooking | null>(null);
   const [dropTargetDate, setDropTargetDate] = useState<string | null>(null);
 
+  const isCalendarBooking = (
+    event: CalendarBooking | CalendarEvent | Lead
+  ): event is CalendarBooking => 'time' in event && 'duration' in event;
+
   const formatDateKey = (date: Date) => date.toISOString().split("T")[0];
 
   const handleDragStart = (booking: CalendarBooking) => {
     if (booking.status !== "confirmed") return;
-    setDraggingBooking(booking);
+    const normalizedDate = formatDateKey(new Date(booking.date));
+    setDraggingBooking({ ...booking, date: normalizedDate });
   };
 
   const handleDragEnd = () => {
@@ -654,7 +659,7 @@ export default function CalendarManagement({
                             let color = 'bg-blue-500';
                             
                             // Determine color based on event type
-                            if ('time' in event && 'duration' in event) {
+                            if (isCalendarBooking(event)) {
                               // CalendarBooking
                               color = event.status === 'confirmed' 
                                 ? 'bg-[#CCFF00]' 
@@ -685,6 +690,48 @@ export default function CalendarManagement({
                           )}
                         </div>
                       )}
+
+                      {/* Booking recap */}
+                      {(() => {
+                        const bookingEvents = eventsForDay.filter(isCalendarBooking);
+                        if (bookingEvents.length === 0) return null;
+                        return (
+                          <div className="w-full space-y-1 mt-1">
+                            {bookingEvents.slice(0, 2).map((booking) => (
+                              <div
+                                key={booking.id}
+                                draggable={booking.status === 'confirmed'}
+                                onDragStart={(event) => {
+                                  event.stopPropagation();
+                                  handleDragStart(booking);
+                                }}
+                                onDragEnd={handleDragEnd}
+                                className={`w-full rounded-md px-1 py-0.5 text-[10px] leading-tight text-left flex flex-col gap-0.5 border border-white/5 ${
+                                  booking.status === 'confirmed'
+                                    ? 'bg-[#CCFF00]/15 text-white'
+                                    : booking.status === 'pending'
+                                    ? 'bg-yellow-500/15 text-yellow-100'
+                                    : booking.status === 'completed'
+                                    ? 'bg-green-500/15 text-green-100'
+                                    : 'bg-red-500/15 text-red-100'
+                                } ${booking.status === 'confirmed' ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                              >
+                                <span className="font-semibold">
+                                  {booking.time || '—'}
+                                </span>
+                                <span className="truncate text-[9px] text-white/80">
+                                  {booking.name}
+                                </span>
+                              </div>
+                            ))}
+                            {bookingEvents.length > 2 && (
+                              <span className="text-[9px] text-white/60">
+                                +{bookingEvents.length - 2} autres
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })()}
                     </button>
                   );
                 }

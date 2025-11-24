@@ -446,6 +446,7 @@ function PublicLayout({ children }: { children: React.ReactNode; currentPage: st
     if (path.includes('/projects')) return 'portfolio';
     if (path.includes('/case-studies')) return 'casestudies';
     if (path.includes('/blog')) return 'blog';
+    if (path.includes('/testimonials')) return 'reviews';
     if (path.includes('/contact') || path.includes('/booking')) return 'contact';
     if (path.includes('/legal')) return 'legal';
     return 'home';
@@ -463,6 +464,8 @@ function PublicLayout({ children }: { children: React.ReactNode; currentPage: st
         return `/${lang}/blog`;
       case 'contact':
         return `/${lang}/contact`;
+      case 'reviews':
+        return `/${lang}/testimonials`;
       case 'legal':
         return `/${lang}/legal/${lang === 'en' ? 'privacy' : 'confidentialite'}`;
       case 'admin':
