@@ -129,6 +129,7 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
                 <div className="rounded-2xl border border-white/5 bg-black/30 p-2 sm:p-4">
                     <CalendarManagement
                         bookings={bookings}
+                        clients={clients}
                         leads={leads}
                         onRefresh={onRefresh}
                         loading={loading}

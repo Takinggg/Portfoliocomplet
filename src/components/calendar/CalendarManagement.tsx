@@ -32,7 +32,7 @@ import {
   Eye
 } from "lucide-react";
 import { toast } from "sonner";
-import { projectId, publicAnonKey } from "../../utils/supabase/info";
+import { projectId } from "../../utils/supabase/info";
 import { createClient } from "../../utils/supabase/client";
 import { LeadDetailDialog } from "../dashboard/LeadDetailDialog";
 
@@ -88,9 +88,16 @@ interface Lead {
   createdAt: string;
 }
 
+interface CalendarClient {
+  id: string | number;
+  name: string;
+  email?: string;
+}
+
 interface CalendarManagementProps {
   bookings: CalendarBooking[];
   leads?: Lead[];
+  clients?: CalendarClient[];
   onRefresh: () => void;
   loading: boolean;
   onUpdateBookingStatus?: (bookingId: string, status: CalendarBooking["status"]) => Promise<void> | void;
@@ -101,6 +108,7 @@ interface CalendarManagementProps {
 export default function CalendarManagement({
   bookings,
   leads = [],
+  clients = [],
   onRefresh,
   loading,
   onUpdateBookingStatus,
@@ -199,16 +207,31 @@ export default function CalendarManagement({
     }
   };
 
-  const getAuthHeaders = useCallback(async () => {
-    try {
-      const { data } = await supabase.auth.getSession();
-      const token = data.session?.access_token;
-      return { Authorization: `Bearer ${token ?? publicAnonKey}` };
-    } catch (error) {
-      console.error("Unable to retrieve session for calendar fetch", error);
-      return { Authorization: `Bearer ${publicAnonKey}` };
+  const getSessionToken = useCallback(async () => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      throw error;
     }
+    const token = data.session?.access_token;
+    if (!token) {
+      throw new Error("Session expirée. Veuillez vous reconnecter pour gérer le calendrier.");
+    }
+    return token;
   }, [supabase]);
+
+  const getAuthHeaders = useCallback(async () => {
+    const token = await getSessionToken();
+    return { Authorization: `Bearer ${token}` };
+  }, [getSessionToken]);
+
+  const handleAuthError = useCallback((error: unknown, fallbackMessage: string) => {
+    const message = error instanceof Error ? error.message : "Erreur inconnue";
+    if (message.toLowerCase().includes("session")) {
+      toast.error("Session expirée : merci de vous reconnecter pour continuer.");
+    } else {
+      toast.error(fallbackMessage);
+    }
+  }, []);
 
   const fetchEvents = useCallback(async () => {
     try {
@@ -229,10 +252,9 @@ export default function CalendarManagement({
         setEvents(data.events || []);
       }
     } catch (error) {
-      console.error("Error fetching events:", error);
-      toast.error("Impossible de récupérer les événements du calendrier");
+      handleAuthError(error, "Impossible de récupérer les événements du calendrier");
     }
-  }, [getAuthHeaders]);
+  }, [getAuthHeaders, handleAuthError]);
 
   const fetchAvailabilities = useCallback(async () => {
     try {
@@ -253,10 +275,66 @@ export default function CalendarManagement({
         setAvailabilities(data.availabilities || []);
       }
     } catch (error) {
-      console.error("Error fetching availabilities:", error);
-      toast.error("Impossible de récupérer les disponibilités");
+      handleAuthError(error, "Impossible de récupérer les disponibilités");
     }
-  }, [getAuthHeaders]);
+  }, [getAuthHeaders, handleAuthError]);
+
+  const computeDurationMinutes = useCallback((start?: string, end?: string) => {
+    if (!start || !end) {
+      return 60;
+    }
+    const [startH = 0, startM = 0] = start.split(":").map(Number);
+    const [endH = 0, endM = 0] = end.split(":").map(Number);
+    const diff = endH * 60 + endM - (startH * 60 + startM);
+    return diff > 0 ? diff : 60;
+  }, []);
+
+  const sendClientBookingEmail = useCallback(
+    async ({
+      email,
+      name,
+      date,
+      time,
+      duration,
+      service,
+      status = "created",
+      message,
+    }: {
+      email: string;
+      name: string;
+      date: string;
+      time: string;
+      duration: number;
+      service: string;
+      status?: string;
+      message?: string;
+    }) => {
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/emails/booking-confirmation`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: email,
+            email,
+            name,
+            date,
+            time,
+            duration,
+            service,
+            status,
+            message,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorPayload = await response.json().catch(() => ({}));
+        throw new Error(errorPayload.error || "Impossible d'envoyer l'email de confirmation");
+      }
+    },
+    []
+  );
 
   // Fetch events and availabilities
   useEffect(() => {
@@ -306,13 +384,14 @@ export default function CalendarManagement({
     }
 
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/bookings/${bookingId}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${publicAnonKey}`,
+            ...headers,
           },
           body: JSON.stringify({ status }),
         }
@@ -323,8 +402,7 @@ export default function CalendarManagement({
         onRefresh();
       }
     } catch (error) {
-      console.error("Error updating CalendarBooking:", error);
-      toast.error("Erreur lors de la mise à jour");
+      handleAuthError(error, "Erreur lors de la mise à jour du rendez-vous");
     }
   };
 
@@ -344,11 +422,12 @@ export default function CalendarManagement({
     }
 
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/bookings/${bookingId}`,
         {
           method: "DELETE",
-          headers: { Authorization: `Bearer ${publicAnonKey}` },
+          headers,
         }
       );
 
@@ -357,21 +436,21 @@ export default function CalendarManagement({
         onRefresh();
       }
     } catch (error) {
-      console.error("Error deleting CalendarBooking:", error);
-      toast.error("Erreur lors de la suppression");
+      handleAuthError(error, "Erreur lors de la suppression du rendez-vous");
     }
   };
 
   // Create availability
   const createAvailability = async (date: Date, slots: string[], isBlocked: boolean, reason?: string) => {
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/availabilities`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${publicAnonKey}`,
+            ...headers,
           },
           body: JSON.stringify({
             date: date.toISOString().split('T')[0],
@@ -388,34 +467,63 @@ export default function CalendarManagement({
         setShowAvailabilityDialog(false);
       }
     } catch (error) {
-      console.error("Error creating availability:", error);
-      toast.error("Erreur lors de la création");
+      handleAuthError(error, "Erreur lors de la création de la disponibilité");
     }
   };
 
   // Create event
-  const createEvent = async (eventData: Partial<CalendarEvent>) => {
+  const createEvent = async (
+    eventData: Partial<CalendarEvent> & {
+      clientId?: string | number | null;
+      clientName?: string;
+      clientEmail?: string;
+    }
+  ) => {
     try {
+      const headers = await getAuthHeaders();
+      const durationMinutes = computeDurationMinutes(eventData.startTime, eventData.endTime);
+      const payload = { ...eventData, durationMinutes };
+
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/events`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${publicAnonKey}`,
+            ...headers,
           },
-          body: JSON.stringify(eventData),
+          body: JSON.stringify(payload),
         }
       );
 
-      if (response.ok) {
-        toast.success("Événement créé");
-        fetchEvents();
-        setShowEventDialog(false);
+      if (!response.ok) {
+        const errorPayload = await response.json().catch(() => ({}));
+        throw new Error(errorPayload.error || "Impossible de créer l'événement");
+      }
+
+      toast.success("Événement créé");
+      fetchEvents();
+      setShowEventDialog(false);
+
+      if (eventData.clientId && eventData.clientEmail && eventData.clientName && eventData.date && eventData.startTime) {
+        try {
+          await sendClientBookingEmail({
+            email: eventData.clientEmail,
+            name: eventData.clientName,
+            date: eventData.date,
+            time: eventData.startTime,
+            duration: durationMinutes,
+            service: eventData.title || "Rendez-vous",
+            status: "created",
+          });
+          toast.info(`Email envoyé à ${eventData.clientName}`);
+        } catch (emailError) {
+          console.error("Event creation email error", emailError);
+          toast.error("Événement créé mais l'email n'a pas pu être envoyé");
+        }
       }
     } catch (error) {
-      console.error("Error creating event:", error);
-      toast.error("Erreur lors de la création");
+      handleAuthError(error, "Erreur lors de la création de l'événement");
     }
   };
 
@@ -1431,7 +1539,11 @@ export default function CalendarManagement({
               Ajoutez un événement personnalisé à votre calendrier
             </DialogDescription>
           </DialogHeader>
-          <EventForm onCreate={createEvent} onClose={() => setShowEventDialog(false)} />
+          <EventForm
+            clients={clients}
+            onCreate={createEvent}
+            onClose={() => setShowEventDialog(false)}
+          />
         </DialogContent>
       </Dialog>
 
@@ -1567,7 +1679,17 @@ export default function CalendarManagement({
 }
 
 // Event Form Component
-function EventForm({ onCreate, onClose }: any) {
+type EventFormProps = {
+  onCreate: (payload: Partial<CalendarEvent> & {
+    clientId?: string | number | null;
+    clientName?: string;
+    clientEmail?: string;
+  }) => void;
+  onClose: () => void;
+  clients: CalendarClient[];
+};
+
+function EventForm({ onCreate, onClose, clients }: EventFormProps) {
   const [formData, setFormData] = useState({
     title: "",
     date: "",
@@ -1577,13 +1699,20 @@ function EventForm({ onCreate, onClose }: any) {
     description: "",
     color: "#CCFF00"
   });
+  const [selectedClientId, setSelectedClientId] = useState<string>("none");
 
   const handleSubmit = () => {
     if (!formData.title || !formData.date) {
       toast.error("Veuillez remplir tous les champs requis");
       return;
     }
-    onCreate(formData);
+    const chosenClient = clients.find((client) => String(client.id) === selectedClientId);
+    onCreate({
+      ...formData,
+      clientId: chosenClient?.id ?? null,
+      clientName: chosenClient?.name,
+      clientEmail: chosenClient?.email,
+    });
   };
 
   return (
@@ -1621,6 +1750,27 @@ function EventForm({ onCreate, onClose }: any) {
             </SelectContent>
           </Select>
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label className="text-white">Client associé</Label>
+        <Select value={selectedClientId} onValueChange={setSelectedClientId}>
+          <SelectTrigger className="bg-white/5 border-white/10 text-white">
+            <SelectValue placeholder="Sans client" />
+          </SelectTrigger>
+          <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
+            <SelectItem value="none">Aucun client</SelectItem>
+            {clients.map((client) => (
+              <SelectItem key={client.id} value={String(client.id)}>
+                {client.name}
+                {client.email ? ` · ${client.email}` : ""}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-xs text-white/50">
+          Sélectionnez un client pour lui envoyer automatiquement un email de confirmation.
+        </p>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
