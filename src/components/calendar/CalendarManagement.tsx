@@ -120,6 +120,7 @@ export default function CalendarManagement({
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [draggingBooking, setDraggingBooking] = useState<CalendarBooking | null>(null);
   const [dropTargetDate, setDropTargetDate] = useState<string | null>(null);
+  const [showBookingDetail, setShowBookingDetail] = useState(false);
 
   const isCalendarBooking = (
     event: CalendarBooking | CalendarEvent | Lead
@@ -127,8 +128,10 @@ export default function CalendarManagement({
 
   const formatDateKey = (date: Date) => date.toISOString().split("T")[0];
 
+  const canDragBooking = (booking: CalendarBooking) => booking.status !== "cancelled";
+
   const handleDragStart = (dragEvent: DragEvent<HTMLElement>, booking: CalendarBooking) => {
-    if (booking.status !== "confirmed") return;
+    if (!canDragBooking(booking)) return;
     const normalizedDate = formatDateKey(new Date(booking.date));
     setDraggingBooking({ ...booking, date: normalizedDate });
 
@@ -144,6 +147,17 @@ export default function CalendarManagement({
     } catch (error) {
       console.warn("Unable to attach drag data", error);
     }
+  };
+
+  const openBookingDetail = (booking: CalendarBooking, focusDate = true) => {
+    if (focusDate) {
+      const bookingDate = new Date(booking.date);
+      if (!Number.isNaN(bookingDate.getTime())) {
+        setSelectedDate(bookingDate);
+      }
+    }
+    setSelectedBooking(booking);
+    setShowBookingDetail(true);
   };
 
   const handleDragEnd = () => {
@@ -714,12 +728,16 @@ export default function CalendarManagement({
                             {bookingEvents.slice(0, 2).map((booking) => (
                               <div
                                 key={booking.id}
-                                draggable={booking.status === 'confirmed'}
+                                draggable={canDragBooking(booking)}
                                 onDragStart={(dragEvent) => {
                                   dragEvent.stopPropagation();
                                   handleDragStart(dragEvent, booking);
                                 }}
                                 onDragEnd={handleDragEnd}
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  openBookingDetail(booking);
+                                }}
                                 className={`w-full rounded-md px-1 py-0.5 text-[10px] leading-tight text-left flex flex-col gap-0.5 border border-white/5 ${
                                   booking.status === 'confirmed'
                                     ? 'bg-[#CCFF00]/15 text-white'
@@ -728,7 +746,7 @@ export default function CalendarManagement({
                                     : booking.status === 'completed'
                                     ? 'bg-green-500/15 text-green-100'
                                     : 'bg-red-500/15 text-red-100'
-                                } ${booking.status === 'confirmed' ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                                } ${canDragBooking(booking) ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}`}
                               >
                                 <span className="font-semibold">
                                   {booking.time || '—'}
@@ -785,7 +803,7 @@ export default function CalendarManagement({
                             setSelectedBooking(event as CalendarBooking);
                           }
                         }}
-                        draggable={'time' in event && 'duration' in event && event.status === 'confirmed'}
+                        draggable={'time' in event && 'duration' in event && canDragBooking(event as CalendarBooking)}
                         onDragStart={(dragEvent) => {
                           if ('time' in event && 'duration' in event) {
                             handleDragStart(dragEvent, event as CalendarBooking);
@@ -798,7 +816,10 @@ export default function CalendarManagement({
                       >
                         {'time' in event && 'duration' in event ? (
                           // CalendarBooking (has time and duration fields)
-                          <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center justify-between gap-3" onClick={(e) => {
+                            e.stopPropagation();
+                            openBookingDetail(event as CalendarBooking, false);
+                          }}>
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
                                 <CalendarIcon className="h-3 w-3 text-[#CCFF00]" />
@@ -988,7 +1009,7 @@ export default function CalendarManagement({
                 </div>
               ) : (
                 upcomingBookings.map((CalendarBooking, index) => {
-                  const isDraggable = CalendarBooking.status === "confirmed";
+                  const isDraggable = canDragBooking(CalendarBooking);
                   return (
                   <motion.div
                     key={CalendarBooking.id}
@@ -1002,8 +1023,9 @@ export default function CalendarManagement({
                       }
                     }}
                     onDragEnd={handleDragEnd}
+                    onClick={() => openBookingDetail(CalendarBooking)}
                     className={`p-4 bg-white/5 rounded-xl border border-white/5 hover:border-[#CCFF00]/30 transition-all group ${
-                      isDraggable ? 'cursor-grab active:cursor-grabbing' : ''
+                      isDraggable ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'
                     }`}
                   >
                     <div className="flex items-start justify-between mb-3">
@@ -1034,7 +1056,10 @@ export default function CalendarManagement({
                       {CalendarBooking.status === "pending" && (
                         <Button
                           size="sm"
-                          onClick={() => updateBookingStatus(CalendarBooking.id, "confirmed")}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            updateBookingStatus(CalendarBooking.id, "confirmed");
+                          }}
                           className="flex-1 bg-[#CCFF00]/10 text-[#CCFF00] hover:bg-[#CCFF00]/20 h-8 text-xs"
                         >
                           <Check className="h-3 w-3 mr-1" />
@@ -1044,7 +1069,10 @@ export default function CalendarManagement({
                       {CalendarBooking.status === "confirmed" && (
                         <Button
                           size="sm"
-                          onClick={() => updateBookingStatus(CalendarBooking.id, "completed")}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            updateBookingStatus(CalendarBooking.id, "completed");
+                          }}
                           className="flex-1 bg-green-500/10 text-green-400 hover:bg-green-500/20 h-8 text-xs"
                         >
                           <Check className="h-3 w-3 mr-1" />
@@ -1054,7 +1082,10 @@ export default function CalendarManagement({
                       {(CalendarBooking.status === "pending" || CalendarBooking.status === "confirmed") && (
                         <Button
                           size="sm"
-                          onClick={() => updateBookingStatus(CalendarBooking.id, "cancelled")}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            updateBookingStatus(CalendarBooking.id, "cancelled");
+                          }}
                           variant="outline"
                           className="flex-1 border-red-500/20 text-red-400 hover:bg-red-500/10 h-8 text-xs"
                         >
@@ -1064,7 +1095,10 @@ export default function CalendarManagement({
                       )}
                       <Button
                         size="sm"
-                        onClick={() => deleteBooking(CalendarBooking.id)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          deleteBooking(CalendarBooking.id);
+                        }}
                         variant="outline"
                         className="border-white/10 text-white/60 hover:bg-white/5 h-8 px-2"
                       >
@@ -1395,6 +1429,111 @@ export default function CalendarManagement({
           onOpenChange={setShowLeadDetail}
           onRefresh={onRefresh}
         />
+      )}
+
+      {/* Booking Detail Dialog */}
+      {selectedBooking && (
+        <Dialog
+          open={showBookingDetail}
+          onOpenChange={(open) => {
+            setShowBookingDetail(open);
+            if (!open) {
+              setSelectedBooking(null);
+            }
+          }}
+        >
+          <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20 max-w-lg">
+            <DialogHeader>
+              <DialogTitle className="text-white">
+                {selectedBooking.name}
+              </DialogTitle>
+              <DialogDescription className="text-white/70">
+                {new Date(`${selectedBooking.date}T${selectedBooking.time || "00:00"}`).toLocaleDateString(
+                  'fr-FR',
+                  {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  }
+                )} • {selectedBooking.time}
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4 text-sm text-white/80">
+              <div className="flex items-center gap-2">
+                <Badge className={getStatusColor(selectedBooking.status)}>
+                  {getStatusLabel(selectedBooking.status)}
+                </Badge>
+                {selectedBooking.duration && (
+                  <span className="text-white/60">{selectedBooking.duration} min</span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-white/40 text-xs mb-1">Email</p>
+                  <p className="font-medium text-white">{selectedBooking.email}</p>
+                </div>
+                {selectedBooking.phone && (
+                  <div>
+                    <p className="text-white/40 text-xs mb-1">Téléphone</p>
+                    <p className="font-medium text-white">{selectedBooking.phone}</p>
+                  </div>
+                )}
+                {selectedBooking.notes && (
+                  <div className="sm:col-span-2">
+                    <p className="text-white/40 text-xs mb-1">Notes</p>
+                    <p className="text-white/80 leading-relaxed">{selectedBooking.notes}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="rounded-xl border border-white/10 bg-white/5 p-3 text-xs text-white/70">
+                Glissez-déposez ce rendez-vous sur une autre date du calendrier pour le replanifier.
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {selectedBooking.status === 'pending' && (
+                  <Button
+                    size="sm"
+                    className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
+                    onClick={() => updateBookingStatus(selectedBooking.id, 'confirmed')}
+                  >
+                    <Check className="h-3 w-3 mr-1" /> Confirmer
+                  </Button>
+                )}
+                {selectedBooking.status === 'confirmed' && (
+                  <Button
+                    size="sm"
+                    className="bg-green-500/20 text-green-300 hover:bg-green-500/30"
+                    onClick={() => updateBookingStatus(selectedBooking.id, 'completed')}
+                  >
+                    <Check className="h-3 w-3 mr-1" /> Terminer
+                  </Button>
+                )}
+                {selectedBooking.status !== 'cancelled' && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-red-500/30 text-red-400 hover:bg-red-500/10"
+                    onClick={() => updateBookingStatus(selectedBooking.id, 'cancelled')}
+                  >
+                    <X className="h-3 w-3 mr-1" /> Annuler
+                  </Button>
+                )}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="border-white/20 text-white/70 hover:bg-white/5"
+                  onClick={() => setShowBookingDetail(false)}
+                >
+                  Fermer
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       )}
     </motion.div>
   );
