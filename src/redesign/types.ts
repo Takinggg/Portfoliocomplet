@@ -142,7 +142,7 @@ export interface NavItem {
 
 export type PageView = 'home' | 'services' | 'portfolio' | 'casestudies' | 'blog' | 'contact' | 'admin' | 'legal';
 
-export type AdminView = 'overview' | 'projects' | 'casestudies' | 'blog' | 'services' | 'messages' | 'crm' | 'finance' | 'calendar';
+export type AdminView = 'overview' | 'projects' | 'casestudies' | 'blog' | 'services' | 'messages' | 'crm' | 'finance' | 'calendar' | 'reviews';
 
 export interface BlogPost {
   id: string;

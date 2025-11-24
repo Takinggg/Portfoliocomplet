@@ -7,6 +7,7 @@ import { CalendarManager } from "@/redesign/components/admin/CalendarManager";
 import { ProjectManager } from "@/redesign/components/admin/ProjectManager";
 import { ServiceManager } from "@/redesign/components/admin/ServiceManager";
 import { MessageInbox } from "@/redesign/components/admin/MessageInbox";
+import { ReviewsManager } from "@/redesign/components/admin/ReviewsManager";
 import { BlogTabBilingual } from "@/components/dashboard/BlogTabBilingual";
 import { CaseStudiesTab } from "@/components/dashboard/CaseStudiesTab";
 import { redesignProjects, redesignServices } from "@/redesign/data";
@@ -746,10 +747,11 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
         {adminView === "casestudies" && <CaseStudiesTab onRefresh={refreshPortfolio} />}
 
         {adminView === "blog" && <BlogTabBilingual />}
+  {adminView === "services" && <ServiceManager services={services} setServices={setServices} />}
 
-        {adminView === "services" && <ServiceManager services={services} setServices={setServices} />}
+  {adminView === "reviews" && <ReviewsManager />}
 
-        {adminView === "messages" && <MessageInbox messages={messages} setMessages={setMessages} />}
+  {adminView === "messages" && <MessageInbox messages={messages} setMessages={setMessages} />}
       </>
     );
   }, [

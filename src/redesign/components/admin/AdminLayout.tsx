@@ -1,5 +1,19 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Briefcase, ShoppingBag, MessageSquare, LogOut, Menu, X, FileText, Users, Calendar, DollarSign, BookOpen } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Briefcase,
+  ShoppingBag,
+  MessageSquare,
+  LogOut,
+  Menu,
+  X,
+  FileText,
+  Users,
+  Calendar,
+  DollarSign,
+  BookOpen,
+  Quote,
+} from 'lucide-react';
 import { AdminView } from '../../types';
 
 interface AdminLayoutProps {
@@ -12,17 +26,32 @@ interface AdminLayoutProps {
 export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentView, onChangeView, onLogout, children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const menuItems = [
-    { id: 'overview', label: 'Tableau de bord', icon: LayoutDashboard },
-    { id: 'crm', label: 'CRM & clients', icon: Users },
-    { id: 'calendar', label: 'Agenda', icon: Calendar },
-    { id: 'finance', label: 'Finance', icon: DollarSign },
-    { type: 'separator' },
-    { id: 'projects', label: 'Portfolio', icon: Briefcase },
-    { id: 'casestudies', label: 'Études de cas', icon: FileText },
-    { id: 'blog', label: 'Blog', icon: BookOpen },
-    { id: 'services', label: 'Offres & services', icon: ShoppingBag },
-    { id: 'messages', label: 'Messages', icon: MessageSquare },
+  const menuSections: { title: string; items: { id: AdminView; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }[] }[] = [
+    {
+      title: 'Pilotage',
+      items: [
+        { id: 'overview', label: 'Tableau de bord', icon: LayoutDashboard },
+        { id: 'crm', label: 'CRM & clients', icon: Users },
+        { id: 'calendar', label: 'Agenda', icon: Calendar },
+        { id: 'finance', label: 'Finance', icon: DollarSign },
+      ],
+    },
+    {
+      title: 'Contenus & preuves',
+      items: [
+        { id: 'projects', label: 'Portfolio', icon: Briefcase },
+        { id: 'casestudies', label: 'Études de cas', icon: FileText },
+        { id: 'blog', label: 'Blog', icon: BookOpen },
+        { id: 'reviews', label: 'Avis clients', icon: Quote },
+      ],
+    },
+    {
+      title: 'Offres & relation',
+      items: [
+        { id: 'services', label: 'Offres & services', icon: ShoppingBag },
+        { id: 'messages', label: 'Messages', icon: MessageSquare },
+      ],
+    },
   ];
 
   return (
@@ -52,26 +81,27 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentView, onChangeV
               </div>
           </div>
 
-          <nav className="p-6 space-y-1 flex-1 overflow-y-auto">
-              <div className="text-xs font-mono text-neutral-600 uppercase tracking-widest mb-4 px-4">Menu principal</div>
-              {menuItems.map((item, index) => (
-                  item.type === 'separator' ? (
-                    <div key={index} className="h-[1px] bg-white/5 my-6 mx-4"></div>
-                  ) : (
-                    <button
+          <nav className="p-6 space-y-8 flex-1 overflow-y-auto">
+              {menuSections.map((section) => (
+                <div key={section.title}>
+                  <div className="text-xs font-mono text-neutral-600 uppercase tracking-widest mb-3 px-4">{section.title}</div>
+                  <div className="space-y-1">
+                    {section.items.map((item) => (
+                      <button
                         key={item.id}
-                        onClick={() => { if(item.id) onChangeView(item.id as AdminView); setSidebarOpen(false); }}
+                        onClick={() => { onChangeView(item.id); setSidebarOpen(false); }}
                         className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-lg text-sm font-medium transition-all group ${
-                            currentView === item.id 
-                            ? 'bg-white text-black font-bold shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)]' 
+                          currentView === item.id
+                            ? 'bg-white text-black font-bold shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)]'
                             : 'text-neutral-500 hover:text-white hover:bg-white/5'
                         }`}
-                    >
-                        {/* @ts-ignore */}
+                      >
                         <item.icon size={18} className={`transition-colors ${currentView === item.id ? 'text-black' : 'text-neutral-600 group-hover:text-white'}`} />
                         {item.label}
-                    </button>
-                  )
+                      </button>
+                    ))}
+                  </div>
+                </div>
               ))}
           </nav>
 
