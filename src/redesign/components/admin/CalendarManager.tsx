@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Appointment, Client } from '../../types';
 import { Clock, Video, MapPin, Plus, X, Save, ChevronLeft, ChevronRight, Trash2 } from 'lucide-react';
 
@@ -9,13 +9,34 @@ interface CalendarManagerProps {
     onDeleteAppointment?: (id: Appointment["id"]) => void;
 }
 
+const getWeekStart = (date: Date) => {
+    const normalized = new Date(date);
+    const day = normalized.getDay();
+    const diff = (day === 0 ? -6 : 1) - day; // align to Monday
+    normalized.setDate(normalized.getDate() + diff);
+    normalized.setHours(0, 0, 0, 0);
+    return normalized;
+};
+
 export const CalendarManager: React.FC<CalendarManagerProps> = ({ appointments, clients, onAddAppointment, onDeleteAppointment }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newApt, setNewApt] = useState({ clientId: '', title: '', date: '', time: '', duration: '60', type: 'discovery' });
+    const [hasAlignedWeek, setHasAlignedWeek] = useState(false);
   
-  // Week Navigation State
-  // For demo purposes, we start with a base date of Monday Oct 21, 2024 to match initial data
-  const [currentWeekStart, setCurrentWeekStart] = useState(new Date('2024-10-21'));
+    // Week Navigation State - align with current week by default
+    const [currentWeekStart, setCurrentWeekStart] = useState(() => getWeekStart(new Date()));
+
+    // When appointments load from Supabase, align the view to the nearest upcoming slot once
+    useEffect(() => {
+        if (hasAlignedWeek) return;
+        if (!appointments.length) return;
+        const sorted = [...appointments].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        const upcoming = sorted.find((apt) => new Date(apt.date).getTime() >= Date.now()) ?? sorted[sorted.length - 1];
+        if (upcoming) {
+            setCurrentWeekStart(getWeekStart(new Date(upcoming.date)));
+            setHasAlignedWeek(true);
+        }
+    }, [appointments, hasAlignedWeek]);
 
   const weekDates = useMemo(() => {
       const dates = [];

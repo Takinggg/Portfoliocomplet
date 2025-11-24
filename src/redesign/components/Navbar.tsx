@@ -1,30 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { ChevronDown, Menu, X } from 'lucide-react';
 import { PageView, NavItem } from '../types';
 import { useTranslation } from '../../utils/i18n/useTranslation';
 
-const NAV_COPY: Record<'fr' | 'en', { navItems: NavItem[]; dashboard: string; adminDashboard: string }> = {
+type ContentMenu = {
+  label: string;
+  description: string;
+  items: NavItem[];
+};
+
+type NavCopy = {
+  primary: NavItem[];
+  contentMenu: ContentMenu;
+  dashboard: string;
+  adminDashboard: string;
+};
+
+const NAV_COPY: Record<'fr' | 'en', NavCopy> = {
   fr: {
-    navItems: [
+    primary: [
       { id: 'home', label: 'Accueil', href: '#' },
       { id: 'services', label: 'Services', href: '#' },
-      { id: 'portfolio', label: 'Portfolio', href: '#' },
-      { id: 'casestudies', label: 'Études de cas', href: '#' },
-      { id: 'blog', label: 'Blog', href: '#' },
       { id: 'contact', label: 'Contact', href: '#' },
     ],
+    contentMenu: {
+      label: 'Contenus',
+      description: 'Portfolio, études, blog et avis clients',
+      items: [
+        { id: 'portfolio', label: 'Portfolio', href: '#' },
+        { id: 'casestudies', label: 'Études de cas', href: '#' },
+        { id: 'blog', label: 'Blog', href: '#' },
+        { id: 'reviews', label: 'Avis clients', href: '#' },
+      ],
+    },
     dashboard: 'Tableau de bord',
     adminDashboard: 'Espace admin',
   },
   en: {
-    navItems: [
+    primary: [
       { id: 'home', label: 'Home', href: '#' },
       { id: 'services', label: 'Services', href: '#' },
-      { id: 'portfolio', label: 'Portfolio', href: '#' },
-      { id: 'casestudies', label: 'Case Studies', href: '#' },
-      { id: 'blog', label: 'Blog', href: '#' },
       { id: 'contact', label: 'Contact', href: '#' },
     ],
+    contentMenu: {
+      label: 'Content',
+      description: 'Portfolio, case studies, blog & reviews',
+      items: [
+        { id: 'portfolio', label: 'Portfolio', href: '#' },
+        { id: 'casestudies', label: 'Case Studies', href: '#' },
+        { id: 'blog', label: 'Blog', href: '#' },
+        { id: 'reviews', label: 'Reviews', href: '#' },
+      ],
+    },
     dashboard: 'Dashboard',
     adminDashboard: 'Admin dashboard',
   },
@@ -38,9 +65,9 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
   const { language, setLanguage } = useTranslation();
   const copy = NAV_COPY[language];
-  const navItems = copy.navItems;
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [contentMenuOpen, setContentMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,7 +80,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
   const handleNavClick = (id: string) => {
     onNavigate(id as PageView);
     setMobileMenuOpen(false);
+    setContentMenuOpen(false);
   };
+
+  const isContentActive = copy.contentMenu.items.some((item) => item.id === currentPage);
 
   const renderLanguageSwitch = (variant: 'desktop' | 'mobile' = 'desktop') => (
     <div className={`flex items-center gap-1 rounded-full border border-white/10 px-1 py-1 ${variant === 'desktop' ? 'bg-white/5' : 'bg-white/10 mt-8'}`}>
@@ -92,8 +122,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
             </button>
 
             {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-8">
-              {navItems.map((item) => (
+            <div className="hidden md:flex items-center gap-6">
+              {copy.primary.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
@@ -107,6 +137,38 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                   )}
                 </button>
               ))}
+
+              <div
+                className="relative"
+                onMouseEnter={() => setContentMenuOpen(true)}
+                onMouseLeave={() => setContentMenuOpen(false)}
+              >
+                <button
+                  className={`flex items-center gap-2 text-sm font-medium transition-colors rounded-full px-4 py-2 border border-transparent ${
+                    isContentActive ? 'text-white border-white/20 bg-white/5' : 'text-neutral-400 hover:text-white'
+                  }`}
+                >
+                  {copy.contentMenu.label}
+                  <ChevronDown className={`h-4 w-4 transition-transform ${contentMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {contentMenuOpen && (
+                  <div className="absolute left-1/2 -translate-x-1/2 mt-3 w-64 rounded-2xl bg-[#0F0F0F]/95 border border-white/10 shadow-2xl p-3 space-y-2">
+                    <p className="text-[11px] text-white/50 px-2">{copy.contentMenu.description}</p>
+                    {copy.contentMenu.items.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => handleNavClick(item.id)}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-sm transition-colors ${
+                          currentPage === item.id ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
               {/* CTA & language */}
@@ -147,17 +209,34 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
             <X size={32} />
         </button>
 
-        {navItems.map((item) => (
-        <button
-          key={item.id}
-          onClick={() => handleNavClick(item.id)}
-          className={`text-5xl font-display font-bold transition-colors ${
-            currentPage === item.id ? 'text-primary' : 'text-white hover:text-primary'
-          }`}
-        >
-          {item.label}
-        </button>
-        ))}
+        <div className="space-y-6 text-center">
+          {copy.primary.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              className={`text-5xl font-display font-bold transition-colors block w-full ${
+                currentPage === item.id ? 'text-primary' : 'text-white hover:text-primary'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+
+          <div className="space-y-4 mt-10">
+            <p className="text-xs uppercase tracking-[0.5em] text-white/40">{copy.contentMenu.label}</p>
+            {copy.contentMenu.items.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`text-4xl font-display font-semibold transition-colors block w-full ${
+                  currentPage === item.id ? 'text-primary' : 'text-white/80 hover:text-white'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
         {renderLanguageSwitch('mobile')}
         <button
             onClick={() => handleNavClick('admin')}
