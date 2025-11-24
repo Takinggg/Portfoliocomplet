@@ -6,6 +6,7 @@ type CalendarBookingStatus = "pending" | "confirmed" | "completed" | "cancelled"
 
 type AppointmentWithRaw = Appointment & {
     __raw?: Record<string, any>;
+    __recordId?: string | number;
 };
 
 type LegacyLead = {
@@ -28,6 +29,8 @@ interface CalendarManagerProps {
     leads?: LegacyLead[];
     onRefresh: () => void;
     loading: boolean;
+    onUpdateBookingStatus?: (bookingId: string, status: CalendarBookingStatus) => Promise<void> | void;
+    onDeleteBooking?: (bookingId: string) => Promise<void> | void;
 }
 
 const normalizeStatus = (value?: string): CalendarBookingStatus => {
@@ -70,6 +73,8 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
     leads = [],
     onRefresh,
     loading,
+    onUpdateBookingStatus,
+    onDeleteBooking,
 }) => {
     const clientsById = useMemo(() => {
         return new Map(clients.map((client) => [String(client.id), client]));
@@ -80,9 +85,10 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
             const raw = (apt as AppointmentWithRaw).__raw ?? {};
             const client = clientsById.get(String(apt.clientId));
             const { date, time } = formatParts(raw.date ?? raw.bookingDate ?? raw.start_time ?? apt.date, raw.time);
+            const recordId = raw.id ?? raw.booking_id ?? (apt as AppointmentWithRaw).__recordId ?? apt.id;
 
             return {
-                id: String(raw.id ?? raw.booking_id ?? apt.id),
+                id: String(recordId),
                 name: raw.name ?? client?.name ?? apt.clientName ?? apt.title,
                 email: raw.email ?? client?.email ?? "contact@client.com",
                 phone: raw.phone,
@@ -119,7 +125,14 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
 
             <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-black/70 via-black/40 to-black/60 p-2 sm:p-4 shadow-[0_20px_65px_rgba(0,0,0,0.45)]">
                 <div className="rounded-2xl border border-white/5 bg-black/30 p-2 sm:p-4">
-                    <CalendarManagement bookings={bookings} leads={leads} onRefresh={onRefresh} loading={loading} />
+                    <CalendarManagement
+                        bookings={bookings}
+                        leads={leads}
+                        onRefresh={onRefresh}
+                        loading={loading}
+                        onUpdateBookingStatus={onUpdateBookingStatus}
+                        onDeleteBooking={onDeleteBooking}
+                    />
                 </div>
             </div>
         </section>

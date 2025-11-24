@@ -91,6 +91,7 @@ type InternalClient = Client & { __source?: "clients" | "leads"; __recordId?: st
 type InternalQuote = Quote & { __raw?: any };
 type InternalInvoice = Invoice & { __raw?: any };
 type InternalAppointment = Appointment & { __recordId?: string | number; __raw?: any };
+type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 
 type AdminExperienceDashboardProps = {
   onLogout: () => void;
@@ -557,6 +558,32 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
     [deleteEntity, fetchData, addNotification]
   );
 
+  const handleUpdateBookingStatus = useCallback(
+    async (id: string, status: BookingStatus) => {
+      const record = appointments.find(
+        (apt) => String(apt.id) === String(id) || String(apt.__recordId) === String(id)
+      );
+      if (!record) {
+        throw new Error("Rendez-vous introuvable");
+      }
+      const payload = { ...(record.__raw ?? {}), status };
+      await persistEntity("bookings", payload, record.__recordId ?? id);
+      await fetchData();
+    },
+    [appointments, persistEntity, fetchData]
+  );
+
+  const handleDeleteBooking = useCallback(
+    async (id: string) => {
+      const record = appointments.find(
+        (apt) => String(apt.id) === String(id) || String(apt.__recordId) === String(id)
+      );
+      await deleteEntity("bookings", record?.__recordId ?? id);
+      await fetchData();
+    },
+    [appointments, deleteEntity, fetchData]
+  );
+
   const handleExportClients = useCallback(
     (data: Client[], filename: string) => {
       const sanitized = data.map(({ name, email, company, role, department, status, joinDate, totalRevenue }) => ({
@@ -700,6 +727,8 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
             leads={leads}
             onRefresh={fetchData}
             loading={loading}
+            onUpdateBookingStatus={handleUpdateBookingStatus}
+            onDeleteBooking={handleDeleteBooking}
           />
         )}
 
@@ -747,6 +776,8 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
     handleConvertQuoteToInvoice,
     handleUpdateInvoiceStatus,
     handleDeleteInvoice,
+    handleUpdateBookingStatus,
+    handleDeleteBooking,
     refreshPortfolio,
     handleSaveProject,
     handleDeleteProject,

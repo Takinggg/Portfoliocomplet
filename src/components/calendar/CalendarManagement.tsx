@@ -91,9 +91,18 @@ interface CalendarManagementProps {
   leads?: Lead[];
   onRefresh: () => void;
   loading: boolean;
+  onUpdateBookingStatus?: (bookingId: string, status: CalendarBooking["status"]) => Promise<void> | void;
+  onDeleteBooking?: (bookingId: string) => Promise<void> | void;
 }
 
-export default function CalendarManagement({ bookings, leads = [], onRefresh, loading }: CalendarManagementProps) {
+export default function CalendarManagement({
+  bookings,
+  leads = [],
+  onRefresh,
+  loading,
+  onUpdateBookingStatus,
+  onDeleteBooking,
+}: CalendarManagementProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [view, setView] = useState<"month" | "week" | "day">("month");
@@ -106,12 +115,6 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [showLeadDetail, setShowLeadDetail] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>("all");
-
-  // Debug: Log leads
-  useEffect(() => {
-    console.log("ðŸ“Š CalendarManagement - Leads reÃ§us:", leads);
-    console.log("ðŸ“Š CalendarManagement - Bookings reÃ§us:", bookings);
-  }, [leads, bookings]);
 
   // Fetch events and availabilities
   useEffect(() => {
@@ -183,6 +186,17 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
 
   // Update CalendarBooking status
   const updateBookingStatus = async (bookingId: string, status: CalendarBooking["status"]) => {
+    if (onUpdateBookingStatus) {
+      try {
+        await onUpdateBookingStatus(bookingId, status);
+        toast.success("Statut mis à jour");
+      } catch (error) {
+        console.error("Error updating CalendarBooking via callback:", error);
+        toast.error("Erreur lors de la mise à jour");
+      }
+      return;
+    }
+
     try {
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/bookings/${bookingId}`,
@@ -197,18 +211,29 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       );
 
       if (response.ok) {
-        toast.success("Statut mis Ã  jour");
+        toast.success("Statut mis à jour");
         onRefresh();
       }
     } catch (error) {
       console.error("Error updating CalendarBooking:", error);
-      toast.error("Erreur lors de la mise Ã  jour");
+      toast.error("Erreur lors de la mise à jour");
     }
   };
 
   // Delete CalendarBooking
   const deleteBooking = async (bookingId: string) => {
-    if (!confirm("ÃŠtes-vous sÃ»r de vouloir supprimer ce rendez-vous ?")) return;
+    if (!confirm("Êtes-vous sûr de vouloir supprimer ce rendez-vous ?")) return;
+
+    if (onDeleteBooking) {
+      try {
+        await onDeleteBooking(bookingId);
+        toast.success("Rendez-vous supprimé");
+      } catch (error) {
+        console.error("Error deleting CalendarBooking via callback:", error);
+        toast.error("Erreur lors de la suppression");
+      }
+      return;
+    }
 
     try {
       const response = await fetch(
@@ -220,7 +245,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       );
 
       if (response.ok) {
-        toast.success("Rendez-vous supprimÃ©");
+        toast.success("Rendez-vous supprimé");
         onRefresh();
       }
     } catch (error) {
@@ -250,13 +275,13 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       );
 
       if (response.ok) {
-        toast.success(isBlocked ? "JournÃ©e bloquÃ©e" : "DisponibilitÃ© ajoutÃ©e");
+        toast.success(isBlocked ? "Journée bloquée" : "Disponibilité ajoutée");
         fetchAvailabilities();
         setShowAvailabilityDialog(false);
       }
     } catch (error) {
       console.error("Error creating availability:", error);
-      toast.error("Erreur lors de la crÃ©ation");
+      toast.error("Erreur lors de la création");
     }
   };
 
@@ -276,13 +301,13 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       );
 
       if (response.ok) {
-        toast.success("Ã‰vÃ©nement crÃ©Ã©");
+        toast.success("Événement créé");
         fetchEvents();
         setShowEventDialog(false);
       }
     } catch (error) {
       console.error("Error creating event:", error);
-      toast.error("Erreur lors de la crÃ©ation");
+      toast.error("Erreur lors de la création");
     }
   };
 
@@ -317,9 +342,9 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
   const getStatusLabel = (status: CalendarBooking["status"]) => {
     const labels = {
       pending: "En attente",
-      confirmed: "ConfirmÃ©",
-      completed: "TerminÃ©",
-      cancelled: "AnnulÃ©"
+      confirmed: "Confirmé",
+      completed: "Terminé",
+      cancelled: "Annulé"
     };
     return labels[status];
   };
@@ -346,7 +371,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
         <div>
           <h2 className="text-2xl mb-1">Calendrier & Rendez-vous</h2>
           <p className="text-white/60 text-sm">
-            {upcomingBookings.length} rendez-vous Ã  venir
+            {upcomingBookings.length} rendez-vous à venir
           </p>
         </div>
         <div className="flex gap-2">
@@ -355,7 +380,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
             className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Nouvel Ã©vÃ©nement
+            Nouvel événement
           </Button>
           <Button
             onClick={() => setShowAvailabilityDialog(true)}
@@ -363,7 +388,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
             className="bg-white/5 border-white/10 text-white hover:bg-white/10"
           >
             <Settings className="h-4 w-4 mr-2" />
-            DisponibilitÃ©s
+            Disponibilités
           </Button>
         </div>
       </div>
@@ -384,19 +409,19 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
             color: "#FFB800"
           },
           {
-            label: "ConfirmÃ©s",
+            label: "Confirmés",
             value: bookings.filter(b => b.status === "confirmed").length,
             icon: Check,
             color: "#CCFF00"
           },
           {
-            label: "TerminÃ©s",
+            label: "Terminés",
             value: bookings.filter(b => b.status === "completed").length,
             icon: CalendarDays,
             color: "#4CAF50"
           },
           {
-            label: "AnnulÃ©s",
+            label: "Annulés",
             value: bookings.filter(b => b.status === "cancelled").length,
             icon: X,
             color: "#FF6B6B"
@@ -476,14 +501,14 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
           <CardContent className="pt-6">
             {/* Legend */}
             <div className="flex items-center gap-4 mb-4 pb-3 border-b border-white/5">
-              <p className="text-xs text-white/40">LÃ©gende:</p>
+              <p className="text-xs text-white/40">Légende:</p>
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-purple-500" />
                 <span className="text-xs text-white/60">Leads</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-[#CCFF00]" />
-                <span className="text-xs text-white/60">RDV confirmÃ©s</span>
+                <span className="text-xs text-white/60">RDV confirmés</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-yellow-500" />
@@ -607,7 +632,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                 className="mt-6 pt-6 border-t border-white/10"
               >
                 <h4 className="text-sm text-white/60 mb-3">
-                  Ã‰vÃ©nements du {selectedDate.toLocaleDateString('fr-FR', { 
+                  Événements du {selectedDate.toLocaleDateString('fr-FR', { 
                     weekday: 'long', 
                     day: 'numeric', 
                     month: 'long' 
@@ -616,7 +641,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {getEventsForDate(selectedDate).length === 0 ? (
                     <p className="text-sm text-white/40 text-center py-4">
-                      Aucun Ã©vÃ©nement ce jour
+                      Aucun événement ce jour
                     </p>
                   ) : (
                     getEventsForDate(selectedDate).map((event, idx) => (
@@ -691,7 +716,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                               </Badge>
                               {event.wantsAppointment && (
                                 <Badge className="bg-orange-500/10 text-orange-400 text-xs">
-                                  RDV demandÃ©
+                                  RDV demandé
                                 </Badge>
                               )}
                             </div>
@@ -776,11 +801,11 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                             ? 'bg-purple-500/10 text-purple-400' 
                             : 'bg-blue-500/10 text-blue-400'
                         }`}>
-                          {lead.status === 'new' ? 'Nouveau' : 'ContactÃ©'}
+                          {lead.status === 'new' ? 'Nouveau' : 'Contacté'}
                         </Badge>
                         {lead.wantsAppointment && (
                           <Badge className="bg-orange-500/10 text-orange-400 text-xs">
-                            RDV demandÃ©
+                            RDV demandé
                           </Badge>
                         )}
                         {lead.interests && lead.interests.length > 0 && (
@@ -822,7 +847,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
               ) : upcomingBookings.length === 0 ? (
                 <div className="text-center text-white/40 py-8">
                   <CalendarIcon className="h-12 w-12 mx-auto mb-3 opacity-20" />
-                  <p className="text-sm">Aucun rendez-vous Ã  venir</p>
+                  <p className="text-sm">Aucun rendez-vous à venir</p>
                 </div>
               ) : (
                 upcomingBookings.map((CalendarBooking, index) => (
@@ -845,9 +870,9 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                         <div className="flex items-center gap-2 text-xs text-white/60">
                           <Clock className="h-3 w-3" />
                           <span>{new Date(CalendarBooking.date).toLocaleDateString('fr-FR')}</span>
-                          <span>â€¢</span>
+                          <span>⬢</span>
                           <span>{CalendarBooking.time}</span>
-                          <span>â€¢</span>
+                          <span>⬢</span>
                           <span>{CalendarBooking.duration}min</span>
                         </div>
                       </div>
@@ -934,11 +959,11 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
             ) : !leads || leads.length === 0 ? (
               <div className="col-span-full text-center text-white/40 py-12">
                 <Mail className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                <p>Aucun lead trouvÃ©</p>
+                <p>Aucun lead trouvé</p>
               </div>
             ) : (
               (leads || [])
-                .filter(lead => !lead.wantsAppointment) // Exclure les leads avec RDV demandÃ©
+                .filter(lead => !lead.wantsAppointment) // Exclure les leads avec RDV demandé
                 .filter(lead => 
                   searchQuery === "" ||
                   lead.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -996,12 +1021,12 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                           : 'bg-white/10 text-white/70'
                       }`}>
                         {lead.status === 'new' ? 'Nouveau' : 
-                         lead.status === 'contacted' ? 'ContactÃ©' :
-                         lead.status === 'converted' ? 'Converti' : 'QualifiÃ©'}
+                         lead.status === 'contacted' ? 'Contacté' :
+                         lead.status === 'converted' ? 'Converti' : 'Qualifié'}
                       </Badge>
                       {lead.wantsAppointment && (
                         <Badge className="bg-orange-500/10 text-orange-400 text-xs">
-                          RDV demandÃ©
+                          RDV demandé
                         </Badge>
                       )}
                       {lead.interests && lead.interests.length > 0 && (
@@ -1058,11 +1083,11 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
             ) : filteredBookings.length === 0 && (leads || []).filter(l => l.wantsAppointment).length === 0 ? (
               <div className="col-span-full text-center text-white/40 py-12">
                 <CalendarIcon className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                <p>Aucun rendez-vous trouvÃ©</p>
+                <p>Aucun rendez-vous trouvé</p>
               </div>
             ) : (
               <>
-                {/* Leads with RDV demandÃ© */}
+                {/* Leads with RDV demandé */}
                 {(leads || [])
                   .filter(lead => lead.wantsAppointment)
                   .filter(lead => 
@@ -1094,7 +1119,7 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                           )}
                         </div>
                         <Badge className="bg-orange-500/10 text-orange-400">
-                          RDV demandÃ©
+                          RDV demandé
                         </Badge>
                       </div>
                       
@@ -1113,8 +1138,8 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
                             : 'bg-white/10 text-white/70'
                         }`}>
                           {lead.status === 'new' ? 'Nouveau' : 
-                           lead.status === 'contacted' ? 'ContactÃ©' :
-                           lead.status === 'converted' ? 'Converti' : 'QualifiÃ©'}
+                           lead.status === 'contacted' ? 'Contacté' :
+                           lead.status === 'converted' ? 'Converti' : 'Qualifié'}
                         </Badge>
                         {lead.interests && lead.interests.length > 0 && (
                           <Badge className="bg-white/10 text-white/70 text-xs">
@@ -1188,9 +1213,9 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       <Dialog open={showEventDialog} onOpenChange={setShowEventDialog}>
         <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
           <DialogHeader>
-            <DialogTitle className="text-white">CrÃ©er un Ã©vÃ©nement</DialogTitle>
+            <DialogTitle className="text-white">Créer un événement</DialogTitle>
             <DialogDescription className="text-white/60">
-              Ajoutez un Ã©vÃ©nement personnalisÃ© Ã  votre calendrier
+              Ajoutez un événement personnalisé à votre calendrier
             </DialogDescription>
           </DialogHeader>
           <EventForm onCreate={createEvent} onClose={() => setShowEventDialog(false)} />
@@ -1201,9 +1226,9 @@ export default function CalendarManagement({ bookings, leads = [], onRefresh, lo
       <Dialog open={showAvailabilityDialog} onOpenChange={setShowAvailabilityDialog}>
         <DialogContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
           <DialogHeader>
-            <DialogTitle className="text-white">GÃ©rer les disponibilitÃ©s</DialogTitle>
+            <DialogTitle className="text-white">Gérer les disponibilités</DialogTitle>
             <DialogDescription className="text-white/60">
-              DÃ©finissez vos crÃ©neaux disponibles ou bloquez une journÃ©e
+              Définissez vos créneaux disponibles ou bloquez une journée
             </DialogDescription>
           </DialogHeader>
           <AvailabilityForm onCreate={createAvailability} onClose={() => setShowAvailabilityDialog(false)} />
@@ -1250,7 +1275,7 @@ function EventForm({ onCreate, onClose }: any) {
         <Input
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          placeholder="Titre de l'Ã©vÃ©nement"
+          placeholder="Titre de l'événement"
           className="bg-white/5 border-white/10 text-white"
         />
       </div>
@@ -1273,8 +1298,8 @@ function EventForm({ onCreate, onClose }: any) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="bg-[#0C0C0C] border-[#CCFF00]/20">
-              <SelectItem value="event">Ã‰vÃ©nement</SelectItem>
-              <SelectItem value="blocked">BloquÃ©</SelectItem>
+              <SelectItem value="event">Événement</SelectItem>
+              <SelectItem value="blocked">Bloqué</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -1282,7 +1307,7 @@ function EventForm({ onCreate, onClose }: any) {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label className="text-white">Heure de dÃ©but</Label>
+          <Label className="text-white">Heure de début</Label>
           <Input
             type="time"
             value={formData.startTime}
@@ -1307,7 +1332,7 @@ function EventForm({ onCreate, onClose }: any) {
         <Textarea
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          placeholder="Description de l'Ã©vÃ©nement..."
+          placeholder="Description de l'événement..."
           rows={3}
           className="bg-white/5 border-white/10 text-white"
         />
@@ -1325,7 +1350,7 @@ function EventForm({ onCreate, onClose }: any) {
           onClick={handleSubmit}
           className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
         >
-          CrÃ©er l'Ã©vÃ©nement
+          Créer l'événement
         </Button>
       </div>
     </div>
@@ -1360,7 +1385,7 @@ function AvailabilityForm({ onCreate, onClose }: any) {
 
   const handleSubmit = () => {
     if (!formData.date) {
-      toast.error("Veuillez sÃ©lectionner une date");
+      toast.error("Veuillez sélectionner une date");
       return;
     }
 
@@ -1397,7 +1422,7 @@ function AvailabilityForm({ onCreate, onClose }: any) {
           className="w-4 h-4 rounded border-white/20 bg-white/5"
         />
         <Label htmlFor="blocked" className="text-white cursor-pointer">
-          Bloquer cette journÃ©e (pas de disponibilitÃ©s)
+          Bloquer cette journée (pas de disponibilités)
         </Label>
       </div>
 
@@ -1407,7 +1432,7 @@ function AvailabilityForm({ onCreate, onClose }: any) {
           <Input
             value={formData.reason}
             onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-            placeholder="Ex: CongÃ©s, formation..."
+            placeholder="Ex: Congés, formation..."
             className="bg-white/5 border-white/10 text-white"
           />
         </div>
@@ -1423,7 +1448,7 @@ function AvailabilityForm({ onCreate, onClose }: any) {
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-white">Ã€</Label>
+            <Label className="text-white">ì</Label>
             <Input
               type="time"
               value={formData.endTime}
@@ -1446,7 +1471,7 @@ function AvailabilityForm({ onCreate, onClose }: any) {
           onClick={handleSubmit}
           className="flex-1 bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90"
         >
-          {formData.isBlocked ? "Bloquer la journÃ©e" : "Ajouter les disponibilitÃ©s"}
+          {formData.isBlocked ? "Bloquer la journée" : "Ajouter les disponibilités"}
         </Button>
       </div>
     </div>
