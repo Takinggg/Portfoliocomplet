@@ -294,6 +294,7 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
   const [invoices, setInvoices] = useState<InternalInvoice[]>([]);
   const [appointments, setAppointments] = useState<InternalAppointment[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [leads, setLeads] = useState<any[]>([]);
   const [projects, setProjects] = useState<Project[]>(() => JSON.parse(JSON.stringify(redesignProjects)));
   const [projectRecords, setProjectRecords] = useState<Record<string, BilingualProject>>({});
   const [portfolioLoading, setPortfolioLoading] = useState(false);
@@ -346,6 +347,7 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
 
       const normalizedClients = [...mapClients(clientPayload, "clients"), ...mapClients(leadPayload, "leads")];
       setClients(normalizedClients);
+      setLeads(Array.isArray(leadPayload) ? leadPayload : []);
       setQuotes(mapQuotes(quotePayload));
       setInvoices(mapInvoices(invoicePayload));
       setAppointments(mapAppointments(bookingPayload));
@@ -555,37 +557,6 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
     [deleteEntity, fetchData, addNotification]
   );
 
-  const handleAddAppointment = useCallback(
-    async (apt: Appointment) => {
-      const start = new Date(apt.date);
-      const payload = {
-        clientId: apt.clientId,
-        clientName: apt.clientName,
-        name: apt.clientName || apt.title,
-        title: apt.title,
-        date: start.toISOString(),
-        time: start.toISOString(),
-        duration: apt.duration,
-        serviceType: apt.type,
-        status: "confirmed",
-      };
-      await persistEntity("bookings", payload);
-      addNotification("Rendez-vous ajouté");
-      fetchData();
-    },
-    [persistEntity, fetchData, addNotification]
-  );
-
-  const handleDeleteAppointment = useCallback(
-    async (id: Appointment["id"]) => {
-      const record = appointments.find((apt) => apt.id === id);
-      await deleteEntity("bookings", record?.__recordId ?? id);
-      addNotification("Rendez-vous supprimé", "info");
-      fetchData();
-    },
-    [appointments, deleteEntity, fetchData, addNotification]
-  );
-
   const handleExportClients = useCallback(
     (data: Client[], filename: string) => {
       const sanitized = data.map(({ name, email, company, role, department, status, joinDate, totalRevenue }) => ({
@@ -665,8 +636,6 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
   const visibleClients = clients as Client[];
   const visibleQuotes = quotes as Quote[];
   const visibleInvoices = invoices as Invoice[];
-  const visibleAppointments = appointments as Appointment[];
-
   const content = useMemo(() => {
     if (loading && !visibleClients.length && !visibleQuotes.length) {
       return (
@@ -726,10 +695,11 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
 
         {adminView === "calendar" && (
           <CalendarManager
-            appointments={visibleAppointments}
+            appointments={appointments}
             clients={visibleClients}
-            onAddAppointment={handleAddAppointment}
-            onDeleteAppointment={handleDeleteAppointment}
+            leads={leads}
+            onRefresh={fetchData}
+            loading={loading}
           />
         )}
 
@@ -761,11 +731,12 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
     visibleClients,
     visibleQuotes,
     visibleInvoices,
-    visibleAppointments,
+    appointments,
     projects,
     portfolioLoading,
     services,
     messages,
+    leads,
     handleAddOrUpdateClient,
     handleDeleteClient,
     handleExportClients,
@@ -776,8 +747,6 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
     handleConvertQuoteToInvoice,
     handleUpdateInvoiceStatus,
     handleDeleteInvoice,
-    handleAddAppointment,
-    handleDeleteAppointment,
     refreshPortfolio,
     handleSaveProject,
     handleDeleteProject,
