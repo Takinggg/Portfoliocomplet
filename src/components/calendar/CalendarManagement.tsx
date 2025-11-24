@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import type { DragEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
+import { createClient } from "../../utils/supabase/client";
 import { LeadDetailDialog } from "../dashboard/LeadDetailDialog";
 
 interface CalendarBooking {
@@ -106,6 +107,7 @@ export default function CalendarManagement({
   onDeleteBooking,
   onRescheduleBooking,
 }: CalendarManagementProps) {
+  const supabase = useMemo(() => createClient(), []);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [view, setView] = useState<"month" | "week" | "day">("month");
@@ -197,45 +199,70 @@ export default function CalendarManagement({
     }
   };
 
-  // Fetch events and availabilities
-  useEffect(() => {
-    fetchEvents();
-    fetchAvailabilities();
-  }, []);
+  const getAuthHeaders = useCallback(async () => {
+    try {
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      return { Authorization: `Bearer ${token ?? publicAnonKey}` };
+    } catch (error) {
+      console.error("Unable to retrieve session for calendar fetch", error);
+      return { Authorization: `Bearer ${publicAnonKey}` };
+    }
+  }, [supabase]);
 
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     try {
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/events`,
         {
-          headers: { Authorization: `Bearer ${publicAnonKey}` }
+          headers: await getAuthHeaders(),
         }
       );
+
+      if (response.status === 401) {
+        toast.error("Merci de vous reconnecter pour charger les événements du calendrier");
+        return;
+      }
+
       const data = await response.json();
       if (data.success) {
         setEvents(data.events || []);
       }
     } catch (error) {
       console.error("Error fetching events:", error);
+      toast.error("Impossible de récupérer les événements du calendrier");
     }
-  };
+  }, [getAuthHeaders]);
 
-  const fetchAvailabilities = async () => {
+  const fetchAvailabilities = useCallback(async () => {
     try {
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5/availabilities`,
         {
-          headers: { Authorization: `Bearer ${publicAnonKey}` }
+          headers: await getAuthHeaders(),
         }
       );
+
+      if (response.status === 401) {
+        toast.error("Session expirée : reconnectez-vous pour voir les disponibilités");
+        return;
+      }
+
       const data = await response.json();
       if (data.success) {
         setAvailabilities(data.availabilities || []);
       }
     } catch (error) {
       console.error("Error fetching availabilities:", error);
+      toast.error("Impossible de récupérer les disponibilités");
     }
-  };
+  }, [getAuthHeaders]);
+
+  // Fetch events and availabilities
+  useEffect(() => {
+    fetchEvents();
+    fetchAvailabilities();
+  }, [fetchEvents, fetchAvailabilities]);
 
   // Get events for a specific date
   const getEventsForDate = (date: Date): (CalendarBooking | CalendarEvent | Lead)[] => {
