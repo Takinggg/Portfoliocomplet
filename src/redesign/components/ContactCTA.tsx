@@ -90,7 +90,7 @@ export const ContactCTA: React.FC<ContactCTAProps> = ({
                 {eyebrow}
               </div>
             )}
-            <h2 className="font-display heading-hero font-semibold text-white leading-[1.05]">
+            <h2 className="font-display heading-display font-semibold text-white leading-[1.08]">
               {title}
             </h2>
             {description && (

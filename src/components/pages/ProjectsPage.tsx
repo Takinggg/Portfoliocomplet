@@ -99,7 +99,7 @@ const mapToRedesignProjects = (items: any[], language: string): RedesignProject[
 };
 
 export default function ProjectsPage({ onNavigate }: ProjectsPageProps) {
-  const { language } = useTranslation();
+  const { t, language } = useTranslation();
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -171,19 +171,29 @@ export default function ProjectsPage({ onNavigate }: ProjectsPageProps) {
       <div className="bg-[#050505] text-white">
         <PortfolioRedesignPage items={mappedProjects.length ? mappedProjects : undefined} />
 
-        <section className="container mx-auto px-6 pb-24">
-          <ContactCTA
-            eyebrow="Nouvelle mission"
-            title={
-              <>
-                Co-créons votre prochain produit en 30 jours
-              </>
-            }
-            description="Prêt à lancer votre projet ? Partagez votre brief et je vous reviens dans les 24h avec un plan d'action clair."
-            primaryAction={{ label: "Discuter du brief", onClick: () => onNavigate("contact") }}
-            secondaryAction={{ label: "Réserver un créneau", onClick: () => onNavigate("booking") }}
-            helperText="Slots limités chaque mois"
-          />
+        <section className="container mx-auto px-6 pb-24 pt-16 md:pt-24">
+          {(() => {
+            const closingCopy = (t as any)?.projects?.closing ?? {};
+            const {
+              eyebrow = "Nouvelle mission",
+              title = "Co-créons votre prochain produit en 30 jours",
+              description = "Prêt à lancer votre projet ? Partagez votre brief et je vous reviens dans les 24h avec un plan d'action clair.",
+              primary = "Discuter du brief",
+              secondary = "Réserver un créneau",
+              helper = "Slots limités chaque mois",
+            } = closingCopy;
+
+            return (
+              <ContactCTA
+                eyebrow={eyebrow}
+                title={title}
+                description={description}
+                primaryAction={{ label: primary, onClick: () => onNavigate("contact") }}
+                secondaryAction={{ label: secondary, onClick: () => onNavigate("booking") }}
+                helperText={helper}
+              />
+            );
+          })()}
         </section>
       </div>
     </PageTransition>

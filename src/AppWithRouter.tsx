@@ -52,6 +52,7 @@ import { CORSFixAlert } from "./components/CORSFixAlert";
 import { DeploymentNeededBanner } from "./components/DeploymentNeededBanner";
 import { HashRedirectHandler } from "./components/routing/HashRedirectHandler";
 import { registerServiceWorker } from "./utils/pwaHelpers";
+import { PageLoaderOverlay } from "./redesign/components/PageLoaderOverlay";
 // ⚠️ IMPORTS COMMENTÉS TEMPORAIREMENT - Trop de scripts ralentissent le chargement
 // import "./utils/testDatabase";
 // import "./utils/fixedErrorsMessage";
@@ -324,6 +325,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <PageLoaderOverlay />
       {/* Hash URL Redirect Handler - Converts /#/path to /path */}
       <HashRedirectHandler />
       

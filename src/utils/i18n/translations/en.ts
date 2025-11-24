@@ -513,6 +513,14 @@ export default {
       "cta": "Request a free audit",
       "button": "Book a call"
     },
+    "closing": {
+      "eyebrow": "New mission",
+      "title": "Let's co-create your next product in 30 days",
+      "description": "Ready to launch? Share your brief and I'll get back within 24h with a clear action plan.",
+      "primary": "Discuss the brief",
+      "secondary": "Book a slot",
+      "helper": "Limited spots each month"
+    },
     "detail": {
       "loading": "Loading project...",
       "notFound": "Project not found",

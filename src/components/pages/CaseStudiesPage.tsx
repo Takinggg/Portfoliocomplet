@@ -8,6 +8,7 @@ import { getCaseStudiesForLanguage } from "../../utils/caseStudiesDataBilingual"
 import { fetchCaseStudies } from "../../utils/unifiedDataService";
 import { mapCaseStudyToProject } from "../../utils/caseStudyMapper";
 import type { CaseStudySource, SupportedLang } from "../../utils/caseStudyMapper";
+import { FullScreenLoader } from "../../redesign/components/FullScreenLoader";
 
 interface CaseStudiesPageProps {
   onNavigate?: (page: string, caseStudyId?: string) => void;
@@ -136,12 +137,10 @@ export function CaseStudiesPage({ onNavigate }: CaseStudiesPageProps) {
 
   if (state.loading) {
     return (
-      <div className="min-h-screen bg-[#050505] text-white flex flex-col items-center justify-center gap-4">
-        <div className="w-10 h-10 border-2 border-white/20 border-t-white rounded-full animate-spin" aria-hidden="true" />
-        <p className="text-sm text-white/60 uppercase tracking-[0.3em]">
-          {lang === "en" ? "Loading case studies" : "Chargement des études"}
-        </p>
-      </div>
+      <FullScreenLoader
+        message={lang === "en" ? "Loading case studies" : "Chargement des études"}
+        subtext={lang === "en" ? "One moment please" : "Merci de patienter"}
+      />
     );
   }
 

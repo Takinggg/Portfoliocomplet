@@ -486,6 +486,14 @@ export default {
       "cta": "Demander un audit gratuit",
       "button": "Réserver un appel"
     },
+    "closing": {
+      "eyebrow": "Nouvelle mission",
+      "title": "Co-créons votre prochain produit en 30 jours",
+      "description": "Prêt à lancer votre projet ? Partagez votre brief et je vous reviens dans les 24h avec un plan d'action clair.",
+      "primary": "Discuter du brief",
+      "secondary": "Réserver un créneau",
+      "helper": "Slots limités chaque mois"
+    },
     "detail": {
       "loading": "Chargement du projet...",
       "notFound": "Projet non trouvé",
