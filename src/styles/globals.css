@@ -141,6 +141,12 @@ p {
   letter-spacing: -0.035em;
 }
 
+.home-hero-heading {
+  font-size: clamp(3.75rem, 10vw, 8.25rem);
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+}
+
 .heading-display {
   font-size: clamp(1.85rem, 3.8vw, 3.25rem);
   line-height: 1.06;

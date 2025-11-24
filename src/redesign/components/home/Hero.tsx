@@ -69,7 +69,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <div className="flex flex-col items-center text-center max-w-7xl mx-auto">
           
           {/* Massive Editorial Heading */}
-          <h1 className="font-display font-medium heading-hero tracking-tight text-white mb-12 uppercase text-center mix-blend-difference">
+          <h1 className="font-display font-medium home-hero-heading tracking-tight text-white mb-12 uppercase text-center mix-blend-difference">
             <Reveal delay={100} width="100%">
               <span className="block text-neutral-500">{copy.title.line1}</span>
             </Reveal>

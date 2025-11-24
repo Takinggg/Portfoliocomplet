@@ -72,27 +72,85 @@ const pickImage = (project: Record<string, any>): string => {
   return typeof candidate === "string" && candidate.length > 5 ? candidate : FALLBACK_IMAGE;
 };
 
+const coerceTextBlock = (value: unknown): string => {
+  if (Array.isArray(value)) {
+    return value
+      .map((entry) => (typeof entry === "string" ? entry.trim() : ""))
+      .filter(Boolean)
+      .join(" - ");
+  }
+  if (typeof value === "string") {
+    return value.trim();
+  }
+  return "";
+};
+
+const coerceStringArray = (value: unknown): string[] => {
+  if (Array.isArray(value)) {
+    return value.map((entry) => String(entry).trim()).filter(Boolean);
+  }
+  if (typeof value === "string" && value.trim().length) {
+    return value
+      .split(/\r?\n|[,|]/)
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+  }
+  return [];
+};
+
 const mapToRedesignProjects = (items: any[], language: string): RedesignProject[] => {
   return items.map((project, index) => {
     const title = project.title || project.name || `Projet ${index + 1}`;
     const category = formatCategory(project.category || project.type || project.industry);
     const description = project.short_description || project.subtitle || project.description || FALLBACK_DESCRIPTION;
+    const descriptionEn = project.description_en || project.short_description_en || project.description || description;
     const image = pickImage(project);
 
     const slug = language === "en"
       ? project.slug_en || project.slug_fr || project.slug
       : project.slug_fr || project.slug_en || project.slug;
 
+    const challengeFr = coerceTextBlock(
+      project.challenge || project.challenge_fr || project.challenges_fr || project.challenges || description
+    );
+    const challengeEn = coerceTextBlock(
+      project.challenge_en || project.challenges_en || project.challenge || descriptionEn
+    );
+
+    const solutionFr = coerceTextBlock(
+      project.solution || project.solution_fr || project.features_fr || project.features
+    );
+    const solutionEn = coerceTextBlock(
+      project.solution_en || project.features_en || project.solution || solutionFr
+    );
+
+    const deliverablesFr = coerceStringArray(project.deliverables_fr || project.features_fr || project.deliverables);
+    const deliverablesEn = coerceStringArray(project.deliverables_en || project.features_en || project.deliverables);
+
+    const techStack = coerceStringArray(project.technologies || project.stack).map((tech: string) => ({
+      name: tech,
+      category: "Stack",
+    }));
+
     return {
       id: project.id ?? slug ?? `project-${index}`,
       title,
-      client: project.client || project.client_name || FALLBACK_CLIENT,
+      title_en: project.title_en || title,
+      client: project.client || project.client_name || project.clientName || FALLBACK_CLIENT,
       category,
       image,
       description,
+      description_en: descriptionEn,
+      challenge: challengeFr,
+      challenge_en: challengeEn,
+      solution: solutionFr,
+      solution_en: solutionEn,
+      deliverables: deliverablesFr.length ? deliverablesFr : undefined,
+      deliverables_en: deliverablesEn.length ? deliverablesEn : undefined,
       link: slug ? `/${language}/projects/${slug}` : project.url || "#",
       year: project.year?.toString() || project.launch_year?.toString(),
-      tags: normalizeTags(project.tags || project.technologies || project.stack, category),
+      tags: normalizeTags(project.tags || project.tags_fr || project.tags_en || project.technologies || project.stack, category),
+      techStack: techStack.length ? techStack : undefined,
       gallery: coerceGallery(project.gallery || project.images, image),
     } satisfies RedesignProject;
   });

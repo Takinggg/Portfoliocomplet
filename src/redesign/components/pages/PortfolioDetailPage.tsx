@@ -30,6 +30,7 @@ const DETAIL_COPY = {
     fr: {
         back: "Retour à l'archive",
         challenge: 'Le défi',
+        solution: 'La solution',
         role: 'Rôle',
         agency: 'Agence',
         timeline: 'Planning',
@@ -42,6 +43,7 @@ const DETAIL_COPY = {
     en: {
         back: 'Back to archive',
         challenge: 'The Challenge',
+        solution: 'The Solution',
         role: 'Role',
         agency: 'Agency',
         timeline: 'Timeline',
@@ -63,6 +65,8 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
         const details = project ?? fallbackProject;
         const { language } = useTranslation();
         const copy = DETAIL_COPY[language];
+    const challengeText = getLocalizedValue(language, details.challenge ?? details.description, details.challenge_en ?? details.description_en);
+    const solutionText = getLocalizedValue(language, details.solution, details.solution_en);
 
   return (
     <div className="bg-background min-h-screen animate-in fade-in slide-in-from-bottom-8 duration-700">
@@ -120,9 +124,19 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
                     <Reveal>
                         <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-4">{copy.challenge}</h3>
                         <p className="text-xl text-white font-light leading-relaxed">
-                            {getLocalizedValue(language, details.description, details.description_en)}
+                            {challengeText}
                         </p>
                     </Reveal>
+                    {solutionText && (
+                        <Reveal delay={150}>
+                            <div>
+                                <h3 className="mt-10 text-xs font-bold uppercase tracking-widest text-primary mb-4">{copy.solution}</h3>
+                                <p className="text-xl text-white font-light leading-relaxed">
+                                    {solutionText}
+                                </p>
+                            </div>
+                        </Reveal>
+                    )}
                     
                     <Reveal delay={200}>
                         <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-8">
