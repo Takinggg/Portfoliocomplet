@@ -37,16 +37,59 @@ import {
   ArrowRight,
   X,
   Globe,
+  Layers,
 } from "lucide-react";
 import { CaseStudy } from "../../utils/freelanceConfig";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { toast } from "sonner";
+import type { CaseStudyArchitecture, CaseStudyArchitectureNode } from "../../types/caseStudyArchitecture";
 
 interface CaseStudiesTabProps {
   onRefresh?: () => void;
   loading?: boolean;
 }
+
+const generateArchitectureNodeId = (): string => {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+  return `architecture-node-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+};
+
+const createEmptyArchitectureNode = (): CaseStudyArchitectureNode => ({
+  id: generateArchitectureNodeId(),
+  layer: "",
+  title: "",
+  description: "",
+  connector: "",
+});
+
+const createEmptyArchitecture = (): CaseStudyArchitecture => ({
+  status: "",
+  status_en: "",
+  latency: "",
+  latency_en: "",
+  nodes: [],
+});
+
+const ARCHITECTURE_ICON_OPTIONS: Array<{ value: CaseStudyArchitectureNode["icon"]; label: string }> = [
+  { value: "smartphone", label: "Smartphone" },
+  { value: "cloud", label: "Cloud" },
+  { value: "server", label: "Serveur" },
+  { value: "database", label: "Base de donnÃ©es" },
+  { value: "shield", label: "SÃ©curitÃ©" },
+  { value: "layers", label: "GÃ©nÃ©rique" },
+];
+
+const ARCHITECTURE_ACCENT_OPTIONS: Array<{ value: CaseStudyArchitectureNode["accent"]; label: string }> = [
+  { value: "blue", label: "Bleu" },
+  { value: "purple", label: "Violet" },
+  { value: "green", label: "Vert" },
+  { value: "orange", label: "Orange" },
+  { value: "pink", label: "Rose" },
+  { value: "teal", label: "Bleu canard" },
+];
 
 export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabProps) {
   const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
@@ -118,6 +161,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
     },
     process: [],
     images: [],
+    architecture: createEmptyArchitecture(),
   });
 
   // Load case studies from Supabase (FULL DB)
@@ -213,6 +257,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
       },
       process: [],
       images: [],
+      architecture: createEmptyArchitecture(),
     });
     setEditorLang("fr");
     setActiveTab("general");
@@ -270,6 +315,18 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
       },
       process: cs.process || [],
       images: cs.images || [],
+      architecture: cs.architecture
+        ? {
+            status: cs.architecture.status || "",
+            status_en: cs.architecture.status_en || "",
+            latency: cs.architecture.latency || "",
+            latency_en: cs.architecture.latency_en || "",
+            nodes: cs.architecture.nodes?.map((node) => ({
+              ...node,
+              id: node.id || generateArchitectureNodeId(),
+            })) || [],
+          }
+        : createEmptyArchitecture(),
     });
     setIsCreateOpen(true);
   };
@@ -343,6 +400,28 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
         })),
         images: formData.images!,
         video: formData.video,
+        architecture:
+          formData.architecture &&
+          (formData.architecture.nodes.length > 0 || formData.architecture.status || formData.architecture.latency)
+            ? {
+                status: formData.architecture.status || "",
+                status_en: formData.architecture.status_en || "",
+                latency: formData.architecture.latency || "",
+                latency_en: formData.architecture.latency_en || "",
+                nodes: formData.architecture.nodes.map((node) => ({
+                  ...node,
+                  id: node.id || generateArchitectureNodeId(),
+                  layer: node.layer || "",
+                  layer_en: node.layer_en || "",
+                  title: node.title || "",
+                  title_en: node.title_en || "",
+                  description: node.description || "",
+                  description_en: node.description_en || "",
+                  connector: node.connector || "",
+                  connector_en: node.connector_en || "",
+                })),
+              }
+            : undefined,
       };
 
       console.log("ðŸ“¤ Saving case study data:", caseStudyData);
@@ -545,6 +624,61 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
         images: formData.images?.filter((_, i) => i !== index),
       });
     }
+  };
+
+  const ensureArchitecture = (): CaseStudyArchitecture => formData.architecture ?? createEmptyArchitecture();
+
+  const updateArchitectureField = (field: keyof CaseStudyArchitecture, value: string) => {
+    const architecture = ensureArchitecture();
+    setFormData({
+      ...formData,
+      architecture: {
+        ...architecture,
+        [field]: value,
+      },
+    });
+  };
+
+  const addArchitectureNode = () => {
+    const architecture = ensureArchitecture();
+    setFormData({
+      ...formData,
+      architecture: {
+        ...architecture,
+        nodes: [...architecture.nodes, createEmptyArchitectureNode()],
+      },
+    });
+  };
+
+  const updateArchitectureNode = (
+    index: number,
+    field: keyof CaseStudyArchitectureNode,
+    value: CaseStudyArchitectureNode[keyof CaseStudyArchitectureNode]
+  ) => {
+    const architecture = ensureArchitecture();
+    const nodes = [...architecture.nodes];
+    nodes[index] = {
+      ...nodes[index],
+      [field]: value,
+    };
+    setFormData({
+      ...formData,
+      architecture: {
+        ...architecture,
+        nodes,
+      },
+    });
+  };
+
+  const removeArchitectureNode = (index: number) => {
+    const architecture = ensureArchitecture();
+    setFormData({
+      ...formData,
+      architecture: {
+        ...architecture,
+        nodes: architecture.nodes.filter((_, i) => i !== index),
+      },
+    });
   };
 
   const addMetric = () => {
@@ -898,11 +1032,12 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
 
             {/* Main Tabs: General / Challenge / Solution / Results / Extras */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-5 bg-white/5">
+              <TabsList className="grid w-full grid-cols-6 bg-white/5">
                 <TabsTrigger value="general">GÃ©nÃ©ral</TabsTrigger>
                 <TabsTrigger value="challenge">DÃ©fi</TabsTrigger>
                 <TabsTrigger value="solution">Solution</TabsTrigger>
                 <TabsTrigger value="results">RÃ©sultats</TabsTrigger>
+                <TabsTrigger value="architecture">Architecture</TabsTrigger>
                 <TabsTrigger value="extras">Extras</TabsTrigger>
               </TabsList>
 
@@ -1858,6 +1993,240 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                         </div>
                       </Card>
                     ))}
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* ARCHITECTURE TAB */}
+              <TabsContent value="architecture" className="space-y-4 mt-4">
+                <div className="border border-white/10 rounded-lg p-4 space-y-4">
+                  <div className="flex items-center gap-2 text-white">
+                    <Layers className="h-5 w-5 text-[#CCFF00]" />
+                    <h3 className="font-semibold">Carte d'architecture</h3>
+                  </div>
+                  <p className="text-white/50 text-sm">
+                    Centralisez les diffÃ©rentes couches (application cliente, edge, base de donnÃ©es...) visibles sur la page publique.
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-white/60 text-xs">Statut (FR)</Label>
+                      <Input
+                        value={formData.architecture?.status || ""}
+                        onChange={(e) => updateArchitectureField("status", e.target.value)}
+                        placeholder="EN LIGNE"
+                        className="bg-white/5 border-white/10 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-white/60 text-xs">Status (EN)</Label>
+                      <Input
+                        value={formData.architecture?.status_en || ""}
+                        onChange={(e) => updateArchitectureField("status_en", e.target.value)}
+                        placeholder="ONLINE"
+                        className="bg-white/5 border-white/10 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-white/60 text-xs">Latence (FR)</Label>
+                      <Input
+                        value={formData.architecture?.latency || ""}
+                        onChange={(e) => updateArchitectureField("latency", e.target.value)}
+                        placeholder="Latence : 12ms"
+                        className="bg-white/5 border-white/10 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-white/60 text-xs">Latency (EN)</Label>
+                      <Input
+                        value={formData.architecture?.latency_en || ""}
+                        onChange={(e) => updateArchitectureField("latency_en", e.target.value)}
+                        placeholder="Latency: 12ms"
+                        className="bg-white/5 border-white/10 text-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between border-t border-white/10 pt-4 mt-4">
+                    <div>
+                      <p className="text-white font-medium">Niveaux</p>
+                      <p className="text-white/50 text-xs">Ajoutez chaque couche (client, edge, data...).</p>
+                    </div>
+                    <Button
+                      type="button"
+                      onClick={addArchitectureNode}
+                      className="bg-[#CCFF00]/20 text-[#CCFF00] hover:bg-[#CCFF00]/30"
+                      size="sm"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Ajouter une couche
+                    </Button>
+                  </div>
+
+                  <div className="space-y-4">
+                    {formData.architecture?.nodes?.length ? (
+                      formData.architecture.nodes.map((node, index) => (
+                        <Card key={node.id || index} className="bg-white/5 border-white/10 p-4 space-y-4">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <p className="text-white text-sm font-medium">Couche {index + 1}</p>
+                              <p className="text-white/50 text-xs">DÃ©taillez le label, le titre et la stack.</p>
+                            </div>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeArchitectureNode(index)}
+                              className="text-red-400 hover:text-red-300"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div>
+                              <Label className="text-white/60 text-xs">IcÃ´ne</Label>
+                              <Select
+                                value={node.icon || "layers"}
+                                onValueChange={(value) =>
+                                  updateArchitectureNode(index, "icon", value as CaseStudyArchitectureNode["icon"])
+                                }
+                              >
+                                <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {ARCHITECTURE_ICON_OPTIONS.map((option) => (
+                                    <SelectItem key={option.value || "layers"} value={option.value || "layers"}>
+                                      {option.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label className="text-white/60 text-xs">Accent</Label>
+                              <Select
+                                value={node.accent || "blue"}
+                                onValueChange={(value) =>
+                                  updateArchitectureNode(index, "accent", value as CaseStudyArchitectureNode["accent"])
+                                }
+                              >
+                                <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {ARCHITECTURE_ACCENT_OPTIONS.map((option) => (
+                                    <SelectItem key={option.value || "blue"} value={option.value || "blue"}>
+                                      {option.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label className="text-white/60 text-xs">Badge/Chemin (FR)</Label>
+                              <Input
+                                value={node.connector || ""}
+                                onChange={(e) => updateArchitectureNode(index, "connector", e.target.value)}
+                                placeholder="gRPC / HTTPS"
+                                className="bg-white/5 border-white/10 text-white"
+                              />
+                            </div>
+                          </div>
+
+                          <Tabs value={editorLang} onValueChange={(v) => setEditorLang(v as "fr" | "en")}>
+                            <TabsList className="grid grid-cols-2 bg-white/5 mb-3">
+                              <TabsTrigger
+                                value="fr"
+                                className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C] text-xs"
+                              >
+                                ðŸ‡«ðŸ‡· FR
+                              </TabsTrigger>
+                              <TabsTrigger
+                                value="en"
+                                className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C] text-xs"
+                              >
+                                ðŸ‡¬ðŸ‡§ EN
+                              </TabsTrigger>
+                            </TabsList>
+
+                            <TabsContent value="fr" className="space-y-2">
+                              <div>
+                                <Label className="text-white/60 text-xs">Label couche (FR)</Label>
+                                <Input
+                                  value={node.layer || ""}
+                                  onChange={(e) => updateArchitectureNode(index, "layer", e.target.value)}
+                                  placeholder="Couche prÃ©sentation"
+                                  className="bg-white/5 border-white/10 text-white"
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-white/60 text-xs">Titre (FR)</Label>
+                                <Input
+                                  value={node.title || ""}
+                                  onChange={(e) => updateArchitectureNode(index, "title", e.target.value)}
+                                  placeholder="Application mobile"
+                                  className="bg-white/5 border-white/10 text-white"
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-white/60 text-xs">Stack / Description (FR)</Label>
+                                <Input
+                                  value={node.description || ""}
+                                  onChange={(e) => updateArchitectureNode(index, "description", e.target.value)}
+                                  placeholder="React Native / TypeScript"
+                                  className="bg-white/5 border-white/10 text-white"
+                                />
+                              </div>
+                            </TabsContent>
+
+                            <TabsContent value="en" className="space-y-2">
+                              <div>
+                                <Label className="text-white/60 text-xs">Layer label (EN)</Label>
+                                <Input
+                                  value={node.layer_en || ""}
+                                  onChange={(e) => updateArchitectureNode(index, "layer_en", e.target.value)}
+                                  placeholder="Presentation layer"
+                                  className="bg-white/5 border-white/10 text-white"
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-white/60 text-xs">Title (EN)</Label>
+                                <Input
+                                  value={node.title_en || ""}
+                                  onChange={(e) => updateArchitectureNode(index, "title_en", e.target.value)}
+                                  placeholder="Mobile application"
+                                  className="bg-white/5 border-white/10 text-white"
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-white/60 text-xs">Stack / Description (EN)</Label>
+                                <Input
+                                  value={node.description_en || ""}
+                                  onChange={(e) => updateArchitectureNode(index, "description_en", e.target.value)}
+                                  placeholder="React Native / TypeScript"
+                                  className="bg-white/5 border-white/10 text-white"
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-white/60 text-xs">Badge (EN)</Label>
+                                <Input
+                                  value={node.connector_en || ""}
+                                  onChange={(e) => updateArchitectureNode(index, "connector_en", e.target.value)}
+                                  placeholder="gRPC / HTTPS"
+                                  className="bg-white/5 border-white/10 text-white"
+                                />
+                              </div>
+                            </TabsContent>
+                          </Tabs>
+                        </Card>
+                      ))
+                    ) : (
+                      <p className="text-white/40 text-sm">
+                        Ajoutez votre premiÃ¨re couche pour rendre la carte interactive.
+                      </p>
+                    )}
                   </div>
                 </div>
               </TabsContent>

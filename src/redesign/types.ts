@@ -1,4 +1,5 @@
 import React from 'react';
+import type { CaseStudyArchitecture } from '../types/caseStudyArchitecture';
 
 export interface KPI {
   label: string;
@@ -55,6 +56,7 @@ export interface Project {
   
   // Gallery
   gallery?: string[];
+  architecture?: CaseStudyArchitecture;
 }
 
 export interface ServicePack {

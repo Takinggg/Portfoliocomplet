@@ -8,6 +8,7 @@
  */
 
 import { projectId, publicAnonKey } from "./supabase/info";
+import type { CaseStudyArchitecture } from "../types/caseStudyArchitecture";
 
 const BASE_URL = `https://${projectId}.supabase.co/functions/v1/make-server-04919ac5`;
 
@@ -630,6 +631,7 @@ export interface CaseStudy {
     description_en?: string;
   }>;
   images: string[];
+  architecture?: CaseStudyArchitecture;
   createdAt: string;
   updatedAt?: string;
 }

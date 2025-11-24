@@ -87,6 +87,9 @@ export function mapCaseStudyToProject(caseStudy: CaseStudySource, lang: Supporte
   const derivedTechStack = mapTechnologies(caseStudy.solution?.technologies);
   const feedbackSource = caseStudy.testimonial || baseProject.feedback;
   const timeline = buildTimeline(caseStudy, lang, baseProject.timeline);
+  const architecture = caseStudy.architecture?.nodes?.length
+    ? caseStudy.architecture
+    : baseProject.architecture;
   const formattedFeedback = feedbackSource
     ? hasLocalizedTestimonial(feedbackSource)
       ? {
@@ -127,5 +130,6 @@ export function mapCaseStudyToProject(caseStudy: CaseStudySource, lang: Supporte
     techStack: derivedTechStack ?? baseProject.techStack,
     feedback: formattedFeedback ?? baseProject.feedback,
     gallery: gallery && gallery.length ? gallery : baseProject.gallery,
+    architecture,
   };
 }

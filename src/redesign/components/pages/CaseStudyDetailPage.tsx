@@ -1,9 +1,125 @@
 import React from 'react';
-import { ArrowLeft, ArrowUpRight, CheckCircle, Database, Layout, Cpu, Quote, Smartphone, Cloud, Layers } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, CheckCircle, Database, Layout, Cpu, Quote, Smartphone, Cloud, Layers, Server, Shield } from 'lucide-react';
 import { Reveal } from '../Reveal';
 import type { Project } from '../../types';
 import { useTranslation } from '../../../utils/i18n/useTranslation';
 import { getLocalizedList, getLocalizedValue } from '../../../utils/i18n/localeUtils';
+import type { ArchitectureAccent, ArchitectureIcon, CaseStudyArchitecture } from '../../../types/caseStudyArchitecture';
+
+const FALLBACK_ARCHITECTURE: CaseStudyArchitecture = {
+    status: "EN LIGNE",
+    status_en: "ONLINE",
+    latency: "Latence : 12ms",
+    latency_en: "Latency: 12ms",
+    nodes: [
+        {
+            id: "client",
+            layer: "Couche prÃ©sentation",
+            layer_en: "Presentation Layer",
+            title: "Application Mobile",
+            title_en: "Mobile Application",
+            description: "React Native / TypeScript",
+            description_en: "React Native / TypeScript",
+            icon: "smartphone",
+            accent: "blue",
+        },
+        {
+            id: "edge",
+            layer: "RÃ©seau Edge",
+            layer_en: "Edge Network",
+            title: "Passerelle API",
+            title_en: "API Gateway",
+            description: "Next.js Middleware / Vercel",
+            description_en: "Next.js Middleware / Vercel",
+            connector: "gRPC / HTTPS",
+            connector_en: "gRPC / HTTPS",
+            icon: "cloud",
+            accent: "purple",
+        },
+        {
+            id: "database",
+            layer: "Couche donnÃ©es",
+            layer_en: "Persistence Layer",
+            title: "Base PostgreSQL",
+            title_en: "PostgreSQL DB",
+            description: "Supabase Managed",
+            description_en: "Supabase Managed",
+            icon: "database",
+            accent: "green",
+        },
+    ],
+};
+
+type IconComponent = React.ComponentType<{ size?: number }>;
+
+const ICON_COMPONENTS: Record<ArchitectureIcon, IconComponent> = {
+    smartphone: Smartphone,
+    cloud: Cloud,
+    database: Database,
+    server: Server,
+    shield: Shield,
+    layers: Layers,
+};
+
+type AccentStyle = {
+    iconBg: string;
+    iconText: string;
+    hover: string;
+    connector: string;
+    badge: string;
+};
+
+const ACCENT_STYLES: Record<ArchitectureAccent, AccentStyle> = {
+    blue: {
+        iconBg: "bg-blue-500/10",
+        iconText: "text-blue-400",
+        hover: "hover:border-blue-500/50 hover:shadow-[0_0_30px_-10px_rgba(59,130,246,0.3)]",
+        connector: "from-blue-500/0 to-blue-500",
+        badge: "bg-blue-500/10 border-blue-500/20 text-blue-300",
+    },
+    purple: {
+        iconBg: "bg-purple-500/10",
+        iconText: "text-purple-400",
+        hover: "hover:border-purple-500/50 hover:shadow-[0_0_30px_-10px_rgba(168,85,247,0.3)]",
+        connector: "from-purple-500/0 to-purple-500",
+        badge: "bg-purple-500/10 border-purple-500/20 text-purple-300",
+    },
+    green: {
+        iconBg: "bg-green-500/10",
+        iconText: "text-green-400",
+        hover: "hover:border-green-500/50 hover:shadow-[0_0_30px_-10px_rgba(34,197,94,0.3)]",
+        connector: "from-green-500/0 to-green-500",
+        badge: "bg-green-500/10 border-green-500/20 text-green-300",
+    },
+    orange: {
+        iconBg: "bg-orange-500/10",
+        iconText: "text-orange-400",
+        hover: "hover:border-orange-500/50 hover:shadow-[0_0_30px_-10px_rgba(249,115,22,0.3)]",
+        connector: "from-orange-500/0 to-orange-500",
+        badge: "bg-orange-500/10 border-orange-500/20 text-orange-300",
+    },
+    pink: {
+        iconBg: "bg-pink-500/10",
+        iconText: "text-pink-400",
+        hover: "hover:border-pink-500/50 hover:shadow-[0_0_30px_-10px_rgba(236,72,153,0.3)]",
+        connector: "from-pink-500/0 to-pink-500",
+        badge: "bg-pink-500/10 border-pink-500/20 text-pink-300",
+    },
+    teal: {
+        iconBg: "bg-teal-500/10",
+        iconText: "text-teal-400",
+        hover: "hover:border-teal-500/50 hover:shadow-[0_0_30px_-10px_rgba(20,184,166,0.3)]",
+        connector: "from-teal-500/0 to-teal-500",
+        badge: "bg-teal-500/10 border-teal-500/20 text-teal-300",
+    },
+};
+
+const getAccentStyle = (accent?: ArchitectureAccent): AccentStyle => {
+    if (accent && ACCENT_STYLES[accent]) {
+        return ACCENT_STYLES[accent];
+    }
+    return ACCENT_STYLES.blue;
+};
 
 const fallbackCaseStudy: Project = {
     id: 1,
@@ -63,7 +179,8 @@ const fallbackCaseStudy: Project = {
         "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop",
         "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2564&auto=format&fit=crop",
         "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2600&auto=format&fit=crop"
-    ]
+    ],
+    architecture: FALLBACK_ARCHITECTURE,
 };
 
 const buildCaseStudyData = (project?: Project): Project => {
@@ -178,7 +295,11 @@ export const CaseStudyDetailPage: React.FC<CaseStudyDetailPageProps> = ({ projec
         : '??';
     const deliverablesSummary = deliverables.length ? deliverables.slice(0, 2).join(', ') : '—';
     const feedbackQuote = getLocalizedValue(language, feedback?.quote, feedback?.quote_en);
-    const feedbackRole = getLocalizedValue(language, feedback?.role, feedback?.role_en);
+        const feedbackRole = getLocalizedValue(language, feedback?.role, feedback?.role_en);
+        const architecture = data.architecture && data.architecture.nodes?.length ? data.architecture : FALLBACK_ARCHITECTURE;
+        const architectureNodes = architecture.nodes && architecture.nodes.length ? architecture.nodes : FALLBACK_ARCHITECTURE.nodes;
+        const architectureStatus = (getLocalizedValue(language, architecture.status, architecture.status_en) || copy.statusOnline).toUpperCase();
+        const architectureLatency = getLocalizedValue(language, architecture.latency, architecture.latency_en) || `${copy.latency.toUpperCase()}: 12ms`;
   return (
     <div className="bg-background min-h-screen animate-in fade-in slide-in-from-bottom-8 duration-700 font-sans text-white">
       
@@ -344,8 +465,8 @@ export const CaseStudyDetailPage: React.FC<CaseStudyDetailPageProps> = ({ projec
                                     <span className="text-xs font-mono text-neutral-400 uppercase tracking-widest">{copy.architectureMap}</span>
                                 </div>
                                 <div className="flex gap-3 text-[10px] font-mono text-neutral-600">
-                                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> {copy.statusOnline}</span>
-                                    <span>{copy.latency.toUpperCase()}: 12ms</span>
+                                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> {architectureStatus}</span>
+                                    <span>{architectureLatency}</span>
                                 </div>
                             </div>
                             
@@ -374,59 +495,45 @@ export const CaseStudyDetailPage: React.FC<CaseStudyDetailPageProps> = ({ projec
                                     </div>
                                 </div>
 
-                                {/* Node 1: Client */}
-                                <div className="relative group/node z-10 w-full flex justify-center">
-                                    <div className="absolute top-full left-1/2 w-[1px] h-12 bg-white/10 -translate-x-1/2 overflow-hidden">
-                                        <div className="w-full h-1/2 bg-gradient-to-b from-blue-500/0 to-blue-500 animate-drop"></div>
-                                    </div>
-                                    <div className="bg-[#151515] border border-white/10 p-4 rounded-xl flex items-center gap-4 w-72 shadow-lg hover:border-blue-500/50 hover:shadow-[0_0_30px_-10px_rgba(59,130,246,0.3)] transition-all duration-300 relative">
-                                        <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 shrink-0">
-                                            <Smartphone size={20} />
-                                        </div>
-                                        <div>
-                                            <div className="text-[10px] font-mono text-neutral-500 uppercase mb-0.5">Presentation Layer</div>
-                                            <div className="text-sm font-bold text-white">Mobile Application</div>
-                                            <div className="text-[10px] text-neutral-400">React Native / TypeScript</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Node 2: Edge */}
-                                <div className="relative group/node z-10 w-full flex justify-center">
-                                    <div className="absolute top-full left-1/2 w-[1px] h-12 bg-white/10 -translate-x-1/2 overflow-hidden">
-                                        <div className="w-full h-1/2 bg-gradient-to-b from-purple-500/0 to-purple-500 animate-drop-delay"></div>
-                                    </div>
-                                    <div className="bg-[#151515] border border-white/10 p-4 rounded-xl flex items-center gap-4 w-72 shadow-lg hover:border-purple-500/50 hover:shadow-[0_0_30px_-10px_rgba(168,85,247,0.3)] transition-all duration-300 relative">
-                                        <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 shrink-0">
-                                            <Cloud size={20} />
-                                        </div>
-                                        <div>
-                                            <div className="text-[10px] font-mono text-neutral-500 uppercase mb-0.5">Edge Network</div>
-                                            <div className="text-sm font-bold text-white">API Gateway</div>
-                                            <div className="text-[10px] text-neutral-400">Next.js Middleware / Vercel</div>
-                                        </div>
-                                        <div className="absolute -right-3 top-1/2 -translate-y-1/2 translate-x-full opacity-0 group-hover/node:opacity-100 transition-opacity duration-300 hidden md:block">
-                                            <div className="px-2 py-1 bg-purple-500/10 border border-purple-500/20 rounded text-[10px] text-purple-400 font-mono whitespace-nowrap">
-                                                gRPC / HTTPS
+                                {architectureNodes.map((node, index) => {
+                                    const IconComponent = ICON_COMPONENTS[node.icon ?? "layers"];
+                                    const accent = getAccentStyle(node.accent);
+                                    const layerLabel = getLocalizedValue(language, node.layer, node.layer_en) || node.layer;
+                                    const nodeTitle = getLocalizedValue(language, node.title, node.title_en) || node.title;
+                                    const nodeDescription = getLocalizedValue(language, node.description, node.description_en) || node.description;
+                                    const connectorLabel = getLocalizedValue(language, node.connector, node.connector_en) || node.connector;
+                                    const animationClass = index % 2 === 0 ? "animate-drop" : "animate-drop-delay";
+                                    return (
+                                        <div key={node.id || `${nodeTitle}-${index}`} className="relative group/node z-10 w-full flex justify-center">
+                                            {index < architectureNodes.length - 1 && (
+                                                <div className="absolute top-full left-1/2 w-[1px] h-12 bg-white/10 -translate-x-1/2 overflow-hidden">
+                                                    <div className={`w-full h-1/2 bg-gradient-to-b ${accent.connector} ${animationClass}`}></div>
+                                                </div>
+                                            )}
+                                            <div className={`bg-[#151515] border border-white/10 p-4 rounded-xl flex items-center gap-4 w-72 shadow-lg transition-all duration-300 relative ${accent.hover}`}>
+                                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${accent.iconBg} ${accent.iconText}`}>
+                                                    <IconComponent size={20} />
+                                                </div>
+                                                <div>
+                                                    {layerLabel && (
+                                                        <div className="text-[10px] font-mono text-neutral-500 uppercase mb-0.5">{layerLabel}</div>
+                                                    )}
+                                                    <div className="text-sm font-bold text-white">{nodeTitle}</div>
+                                                    {nodeDescription && (
+                                                        <div className="text-[10px] text-neutral-400">{nodeDescription}</div>
+                                                    )}
+                                                </div>
+                                                {connectorLabel && (
+                                                    <div className="absolute -right-3 top-1/2 -translate-y-1/2 translate-x-full opacity-0 group-hover/node:opacity-100 transition-opacity duration-300 hidden md:block">
+                                                        <div className={`px-2 py-1 border rounded text-[10px] font-mono whitespace-nowrap ${accent.badge}`}>
+                                                            {connectorLabel}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-
-                                {/* Node 3: Database */}
-                                <div className="relative group/node z-10 w-full flex justify-center">
-                                    <div className="bg-[#151515] border border-white/10 p-4 rounded-xl flex items-center gap-4 w-72 shadow-lg hover:border-green-500/50 hover:shadow-[0_0_30px_-10px_rgba(34,197,94,0.3)] transition-all duration-300 relative">
-                                        <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center text-green-500 shrink-0">
-                                            <Database size={20} />
-                                        </div>
-                                        <div>
-                                            <div className="text-[10px] font-mono text-neutral-500 uppercase mb-0.5">Persistence Layer</div>
-                                            <div className="text-sm font-bold text-white">PostgreSQL DB</div>
-                                            <div className="text-[10px] text-neutral-400">Supabase Managed</div>
-                                        </div>
-                                    </div>
-                                </div>
-
+                                    );
+                                })}
                             </div>
                         </div>
                     </Reveal>

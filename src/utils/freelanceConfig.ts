@@ -1,3 +1,4 @@
+import type { CaseStudyArchitecture } from "../types/caseStudyArchitecture";
 // Configuration des informations freelance
 // Informations de FOULON Maxence
 
@@ -105,6 +106,9 @@ export interface CaseStudy {
   
   // Process
   process: CaseStudyStep[];
+  
+  // Architecture Map
+  architecture?: CaseStudyArchitecture;
   
   // Visual Content
   images: string[];
