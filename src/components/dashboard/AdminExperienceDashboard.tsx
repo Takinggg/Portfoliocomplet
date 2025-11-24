@@ -584,6 +584,82 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
     [appointments, deleteEntity, fetchData]
   );
 
+  const handleRescheduleBooking = useCallback(
+    async (id: string, nextDate: string, nextTime: string) => {
+      const record = appointments.find(
+        (apt) => String(apt.id) === String(id) || String(apt.__recordId) === String(id)
+      );
+      if (!record) {
+        throw new Error("Rendez-vous introuvable");
+      }
+
+      const newDateTime = new Date(`${nextDate}T${nextTime || "00:00"}`);
+      if (Number.isNaN(newDateTime.getTime())) {
+        throw new Error("Date ou heure invalide");
+      }
+
+      const updatePayload = {
+        ...(record.__raw ?? record),
+        date: newDateTime.toISOString(),
+        time: newDateTime.toISOString(),
+      };
+
+      try {
+        await persistEntity("bookings", updatePayload, record.__recordId ?? id);
+        const session = await ensureSession();
+        const clientMeta = clients.find((client) => String(client.id) === String(record.clientId));
+        const recipientEmail = updatePayload.email || clientMeta?.email;
+        if (!recipientEmail) {
+          throw new Error("Aucune adresse email disponible pour ce rendez-vous");
+        }
+
+        const recipientName = updatePayload.name || clientMeta?.name || record.clientName || "Client";
+        const serviceLabel = updatePayload.service || updatePayload.title || record.title || "Rendez-vous";
+        const previousDate = new Date(record.date);
+        const formatLong = (date: Date) =>
+          date.toLocaleDateString("fr-FR", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
+        const prevTime = previousDate.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+        const nextTimeLabel = newDateTime.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+
+        const emailResponse = await fetch(`${API_BASE_URL}/emails/booking-confirmation`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            to: recipientEmail,
+            name: recipientName,
+            date: nextDate,
+            time: nextTime,
+            service: serviceLabel,
+            status: "modified",
+            message: `Ancien rendez-vous : ${formatLong(previousDate)} à ${prevTime}\nNouveau rendez-vous : ${formatLong(
+              newDateTime
+            )} à ${nextTimeLabel}`,
+          }),
+        });
+
+        if (!emailResponse.ok) {
+          const errorPayload = await emailResponse.json().catch(() => ({}));
+          throw new Error(errorPayload.error || "Impossible d'envoyer l'email de modification");
+        }
+
+        addNotification("Rendez-vous replanifié", "info");
+        fetchData();
+      } catch (error) {
+        console.error("Reschedule booking error", error);
+        throw error;
+      }
+    },
+    [appointments, persistEntity, ensureSession, clients, addNotification, fetchData]
+  );
+
   const handleExportClients = useCallback(
     (data: Client[], filename: string) => {
       const sanitized = data.map(({ name, email, company, role, department, status, joinDate, totalRevenue }) => ({
@@ -729,6 +805,7 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
             loading={loading}
             onUpdateBookingStatus={handleUpdateBookingStatus}
             onDeleteBooking={handleDeleteBooking}
+            onRescheduleBooking={handleRescheduleBooking}
           />
         )}
 
@@ -778,6 +855,7 @@ export default function AdminExperienceDashboard({ onLogout }: AdminExperienceDa
     handleDeleteInvoice,
     handleUpdateBookingStatus,
     handleDeleteBooking,
+    handleRescheduleBooking,
     refreshPortfolio,
     handleSaveProject,
     handleDeleteProject,

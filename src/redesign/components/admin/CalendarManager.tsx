@@ -31,6 +31,7 @@ interface CalendarManagerProps {
     loading: boolean;
     onUpdateBookingStatus?: (bookingId: string, status: CalendarBookingStatus) => Promise<void> | void;
     onDeleteBooking?: (bookingId: string) => Promise<void> | void;
+    onRescheduleBooking?: (bookingId: string, date: string, time: string) => Promise<void> | void;
 }
 
 const normalizeStatus = (value?: string): CalendarBookingStatus => {
@@ -75,6 +76,7 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
     loading,
     onUpdateBookingStatus,
     onDeleteBooking,
+    onRescheduleBooking,
 }) => {
     const clientsById = useMemo(() => {
         return new Map(clients.map((client) => [String(client.id), client]));
@@ -132,6 +134,7 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
                         loading={loading}
                         onUpdateBookingStatus={onUpdateBookingStatus}
                         onDeleteBooking={onDeleteBooking}
+                        onRescheduleBooking={onRescheduleBooking}
                     />
                 </div>
             </div>

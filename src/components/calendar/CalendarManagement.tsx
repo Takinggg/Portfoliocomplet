@@ -93,6 +93,7 @@ interface CalendarManagementProps {
   loading: boolean;
   onUpdateBookingStatus?: (bookingId: string, status: CalendarBooking["status"]) => Promise<void> | void;
   onDeleteBooking?: (bookingId: string) => Promise<void> | void;
+  onRescheduleBooking?: (bookingId: string, nextDate: string, nextTime: string) => Promise<void> | void;
 }
 
 export default function CalendarManagement({
@@ -102,6 +103,7 @@ export default function CalendarManagement({
   loading,
   onUpdateBookingStatus,
   onDeleteBooking,
+  onRescheduleBooking,
 }: CalendarManagementProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -115,6 +117,52 @@ export default function CalendarManagement({
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [showLeadDetail, setShowLeadDetail] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [draggingBooking, setDraggingBooking] = useState<CalendarBooking | null>(null);
+  const [dropTargetDate, setDropTargetDate] = useState<string | null>(null);
+
+  const formatDateKey = (date: Date) => date.toISOString().split("T")[0];
+
+  const handleDragStart = (booking: CalendarBooking) => {
+    if (booking.status !== "confirmed") return;
+    setDraggingBooking(booking);
+  };
+
+  const handleDragEnd = () => {
+    setDraggingBooking(null);
+    setDropTargetDate(null);
+  };
+
+  const handleDropOnDate = async (targetDate: Date) => {
+    if (!draggingBooking) return;
+    const dateKey = formatDateKey(targetDate);
+    if (dateKey === draggingBooking.date) {
+      handleDragEnd();
+      return;
+    }
+
+    if (!onRescheduleBooking) {
+      toast.error("Replanification indisponible dans cet environnement");
+      handleDragEnd();
+      return;
+    }
+
+    try {
+      await onRescheduleBooking(draggingBooking.id, dateKey, draggingBooking.time || "09:00");
+      toast.success(
+        `Rendez-vous déplacé au ${targetDate.toLocaleDateString("fr-FR", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+        })}`
+      );
+      setSelectedDate(targetDate);
+    } catch (error) {
+      console.error("Drag-and-drop reschedule error:", error);
+      toast.error("Impossible de déplacer ce rendez-vous");
+    } finally {
+      handleDragEnd();
+    }
+  };
 
   // Fetch events and availabilities
   useEffect(() => {
@@ -543,6 +591,7 @@ export default function CalendarManagement({
                 // Calendar days
                 for (let day = 1; day <= lastDay.getDate(); day++) {
                   const date = new Date(year, month, day);
+                  const dateKey = formatDateKey(date);
                   const eventsForDay = getEventsForDate(date);
                   const availability = getAvailabilityForDate(date);
                   
@@ -558,7 +607,26 @@ export default function CalendarManagement({
                   days.push(
                     <button
                       key={day}
+                      type="button"
                       onClick={() => setSelectedDate(date)}
+                      onDragOver={(event) => {
+                        if (!draggingBooking) return;
+                        event.preventDefault();
+                        if (dropTargetDate !== dateKey) {
+                          setDropTargetDate(dateKey);
+                        }
+                      }}
+                      onDragLeave={() => {
+                        if (dropTargetDate === dateKey) {
+                          setDropTargetDate(null);
+                        }
+                      }}
+                      onDrop={(event) => {
+                        if (!draggingBooking) return;
+                        event.preventDefault();
+                        setDropTargetDate(null);
+                        handleDropOnDate(date);
+                      }}
                       className={`
                         aspect-square rounded-lg p-1 flex flex-col items-center justify-start
                         transition-all duration-200 relative
@@ -572,6 +640,7 @@ export default function CalendarManagement({
                         }
                         ${isToday && !isSelected ? 'border-2 border-white/30' : ''}
                         ${availability?.isBlocked ? 'bg-red-500/10' : ''}
+                        ${dropTargetDate === dateKey ? 'border-2 border-[#CCFF00] bg-[#CCFF00]/10' : ''}
                       `}
                     >
                       <span className={`text-xs mb-1 ${isSelected ? 'font-bold' : ''}`}>
@@ -648,23 +717,27 @@ export default function CalendarManagement({
                       <div
                         key={idx}
                         onClick={() => {
-                          // If it's a lead, open the lead detail dialog
                           if ('message' in event && 'email' in event && !('time' in event)) {
                             setSelectedLead(event as Lead);
                             setShowLeadDetail(true);
-                          }
-                          // If it's a CalendarBooking, could open CalendarBooking details
-                          else if ('time' in event && 'duration' in event) {
+                          } else if ('time' in event && 'duration' in event) {
                             setSelectedBooking(event as CalendarBooking);
                           }
                         }}
+                        draggable={'time' in event && 'duration' in event && event.status === 'confirmed'}
+                        onDragStart={() => {
+                          if ('time' in event && 'duration' in event) {
+                            handleDragStart(event as CalendarBooking);
+                          }
+                        }}
+                        onDragEnd={handleDragEnd}
                         className={`p-3 bg-white/5 rounded-lg border border-white/5 hover:border-[#CCFF00]/30 transition-all ${
-                          ('message' in event || 'time' in event) ? 'cursor-pointer' : ''
-                        }`}
+                          'message' in event || 'time' in event ? 'cursor-pointer' : ''
+                        } ${'time' in event && event.status === 'confirmed' ? 'cursor-grab active:cursor-grabbing' : ''}`}
                       >
                         {'time' in event && 'duration' in event ? (
                           // CalendarBooking (has time and duration fields)
-                          <div className="flex items-center justify-between">
+                          <div className="flex items-center justify-between gap-3">
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
                                 <CalendarIcon className="h-3 w-3 text-[#CCFF00]" />
@@ -673,6 +746,9 @@ export default function CalendarManagement({
                               <p className="text-xs text-white/60">{event.time} - {event.duration}min</p>
                               {event.email && (
                                 <p className="text-xs text-white/50 mt-1">{event.email}</p>
+                              )}
+                              {event.status === 'confirmed' && (
+                                <p className="text-[10px] uppercase tracking-wide text-[#CCFF00]/70 mt-2">Glisser-déposer pour replanifier</p>
                               )}
                             </div>
                             <Badge className={getStatusColor(event.status)}>
@@ -850,13 +926,27 @@ export default function CalendarManagement({
                   <p className="text-sm">Aucun rendez-vous à venir</p>
                 </div>
               ) : (
-                upcomingBookings.map((CalendarBooking, index) => (
+                upcomingBookings.map((CalendarBooking, index) => {
+                  const isDraggable = CalendarBooking.status === "confirmed";
+                  return (
                   <motion.div
                     key={CalendarBooking.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="p-4 bg-white/5 rounded-xl border border-white/5 hover:border-[#CCFF00]/30 transition-all group"
+                    draggable={isDraggable}
+                    onDragStart={() => {
+                      if (isDraggable) {
+                        handleDragStart({
+                          ...CalendarBooking,
+                          date: formatDateKey(new Date(CalendarBooking.date)),
+                        } as CalendarBooking);
+                      }
+                    }}
+                    onDragEnd={handleDragEnd}
+                    className={`p-4 bg-white/5 rounded-xl border border-white/5 hover:border-[#CCFF00]/30 transition-all group ${
+                      isDraggable ? 'cursor-grab active:cursor-grabbing' : ''
+                    }`}
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
@@ -875,6 +965,9 @@ export default function CalendarManagement({
                           <span>⬢</span>
                           <span>{CalendarBooking.duration}min</span>
                         </div>
+                        {isDraggable && (
+                          <p className="text-[10px] uppercase tracking-wide text-[#CCFF00]/70 mt-2">Glisser vers une nouvelle date</p>
+                        )}
                       </div>
                     </div>
 
@@ -921,7 +1014,8 @@ export default function CalendarManagement({
                       </Button>
                     </div>
                   </motion.div>
-                ))
+                  );
+                })
               )}
             </div>
           </CardContent>
