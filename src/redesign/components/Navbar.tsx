@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import { PageView, NavItem } from '../types';
 import { useTranslation } from '../../utils/i18n/useTranslation';
@@ -68,6 +68,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contentMenuOpen, setContentMenuOpen] = useState(false);
+  const closeTimer = useRef<NodeJS.Timeout | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,6 +87,46 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
   };
 
   const isContentActive = copy.contentMenu.items.some((item) => item.id === currentPage);
+
+  const clearCloseTimer = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const scheduleClose = () => {
+    clearCloseTimer();
+    closeTimer.current = setTimeout(() => setContentMenuOpen(false), 150);
+  };
+
+  const handleMouseLeaveArea = (
+    event: React.MouseEvent,
+    source: 'trigger' | 'dropdown'
+  ) => {
+    const nextTarget = event.relatedTarget as Node | null;
+    if (!nextTarget) {
+      scheduleClose();
+      return;
+    }
+
+    if (source === 'trigger' && dropdownRef.current?.contains(nextTarget)) {
+      return;
+    }
+
+    if (source === 'dropdown' && triggerRef.current?.contains(nextTarget)) {
+      return;
+    }
+
+    scheduleClose();
+  };
+
+  const openContentMenu = () => {
+    clearCloseTimer();
+    setContentMenuOpen(true);
+  };
+
+  useEffect(() => () => clearCloseTimer(), []);
 
   const renderLanguageSwitch = (variant: 'desktop' | 'mobile' = 'desktop') => (
     <div className={`flex items-center gap-1 rounded-full border border-white/10 px-1 py-1 ${variant === 'desktop' ? 'bg-white/5' : 'bg-white/10 mt-8'}`}>
@@ -138,12 +181,17 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                 </button>
               ))}
 
-              <div
-                className="relative"
-                onMouseEnter={() => setContentMenuOpen(true)}
-                onMouseLeave={() => setContentMenuOpen(false)}
-              >
+              <div className="relative">
                 <button
+                  ref={triggerRef}
+                  onMouseEnter={openContentMenu}
+                  onMouseLeave={(event) => handleMouseLeaveArea(event, 'trigger')}
+                  onFocus={openContentMenu}
+                  onBlur={scheduleClose}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setContentMenuOpen((prev) => !prev);
+                  }}
                   className={`flex items-center gap-2 text-sm font-medium transition-colors rounded-full px-4 py-2 border border-transparent ${
                     isContentActive ? 'text-white border-white/20 bg-white/5' : 'text-neutral-400 hover:text-white'
                   }`}
@@ -153,7 +201,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                 </button>
 
                 {contentMenuOpen && (
-                  <div className="absolute left-1/2 -translate-x-1/2 mt-3 w-64 rounded-2xl bg-[#0F0F0F]/95 border border-white/10 shadow-2xl p-3 space-y-2">
+                  <div
+                    ref={dropdownRef}
+                    onMouseEnter={openContentMenu}
+                    onMouseLeave={(event) => handleMouseLeaveArea(event, 'dropdown')}
+                    className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 rounded-2xl bg-[#0F0F0F]/95 border border-white/10 shadow-2xl p-3 space-y-2"
+                  >
                     <p className="text-[11px] text-white/50 px-2">{copy.contentMenu.description}</p>
                     {copy.contentMenu.items.map((item) => (
                       <button
