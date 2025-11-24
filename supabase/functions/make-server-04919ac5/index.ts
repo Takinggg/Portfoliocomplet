@@ -1411,9 +1411,14 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
     }
 
     const resendKey = Deno.env.get("RESEND_API_KEY");
+    const softFail = (warning: string) => {
+      console.warn(`⚠️ Booking email warning: ${warning}`);
+      return c.json({ success: true, emailSkipped: true, warning });
+    };
+
     if (!resendKey) {
-      console.error("âŒ RESEND_API_KEY not configured");
-      return c.json({ success: false, error: "Email service not configured" }, 500);
+      console.error("❌ RESEND_API_KEY not configured");
+      return softFail("Email service not configured");
     }
 
     // Formater la date
@@ -1754,32 +1759,37 @@ app.post("/make-server-04919ac5/emails/booking-confirmation", async (c: HonoCont
     }
 
     // Envoyer l'email via Resend
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${resendKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "Maxence Design <contact@maxence.design>",
-        to: [to],
-        subject,
-        html
-      }),
-    });
+    try {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${resendKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "Maxence Design <contact@maxence.design>",
+          to: [to],
+          subject,
+          html
+        }),
+      });
 
-    const result = await response.json();
+      const result = await response.json().catch(() => ({}));
 
-    if (response.ok) {
-      console.log(`âœ… Email ${status} sent to ${to}`);
-      return c.json({ success: true, message: `Email sent to ${to}`, emailId: result.id });
-    } else {
-      console.error("âŒ Resend API error:", result);
-      return c.json({ success: false, error: result.message || "Failed to send email" }, 500);
+      if (response.ok) {
+        console.log(`✅ Email ${status} sent to ${to}`);
+        return c.json({ success: true, message: `Email sent to ${to}`, emailId: result.id });
+      }
+
+      console.error("❌ Resend API error:", result);
+      return softFail(result.message || "Failed to send email");
+    } catch (emailError) {
+      console.error("❌ Email sending error:", emailError);
+      return softFail("Unexpected error while sending email");
     }
   } catch (error: any) {
-    console.error("âŒ Email sending error:", error);
-    return c.json({ success: false, error: getErrorMessage(error) }, 500);
+    console.error("❌ Email endpoint error:", error);
+    return c.json({ success: true, emailSkipped: true, warning: getErrorMessage(error) });
   }
 });
 
