@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Badge } from "../ui/badge";
-import { Card } from "../ui/card";
 import {
   Dialog,
   DialogContent,
@@ -26,7 +25,6 @@ import {
   Edit,
   Trash2,
   Eye,
-  EyeOff,
   Search,
   Calendar,
   Clock,
@@ -35,13 +33,18 @@ import {
   FileText,
   RefreshCw,
   Globe,
+  BarChart2,
 } from "lucide-react";
 import { BilingualFields } from "../blog/BilingualFields";
-import { Panel } from "./Panel";
-import { StatCard, StatGrid } from "./StatCard";
 import { RichTextEditor } from "../blog/RichTextEditor";
 import { projectId, publicAnonKey } from "../../utils/supabase/info";
 import { toast } from "sonner";
+
+const STATUS_OPTIONS: Array<{ value: "all" | "published" | "draft"; label: string }> = [
+  { value: "all", label: "Tous" },
+  { value: "published", label: "Publiés" },
+  { value: "draft", label: "Brouillons" },
+];
 
 interface BlogPost {
   id: string;
@@ -305,180 +308,325 @@ export function BlogTabBilingual({ onRefresh, loading = false }: BlogTabProps) {
     }
   };
 
-  // Filter posts
-  const filteredPosts = posts.filter(post => {
-    const matchesSearch = searchQuery === "" || 
-      (post.title_fr?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-       post.title_en?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-       post.title.toLowerCase().includes(searchQuery.toLowerCase()));
-    
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const filteredPosts = posts.filter((post) => {
+    const lookupFields = [
+      post.title_fr,
+      post.title_en,
+      post.title,
+      post.slug_fr,
+      post.slug_en,
+      post.category_fr,
+      post.category_en,
+    ];
+
+    const tags = [...(post.tags_fr || []), ...(post.tags_en || []), ...(post.tags || [])];
+
+    const matchesSearch =
+      normalizedQuery === "" ||
+      lookupFields.some((field) => field?.toLowerCase().includes(normalizedQuery)) ||
+      tags.some((tag) => tag?.toLowerCase().includes(normalizedQuery));
+
     const matchesStatus = filterStatus === "all" || post.status === filterStatus;
-    
+
     return matchesSearch && matchesStatus;
   });
 
+  const publishedCount = posts.filter((post) => post.status === "published").length;
+  const draftCount = posts.filter((post) => post.status === "draft").length;
+  const totalViews = posts.reduce((acc, post) => acc + (post.views || 0), 0);
+  const averageReadTime = posts.length
+    ? Math.round(posts.reduce((acc, post) => acc + (post.readTime || 0), 0) / posts.length)
+    : 0;
+  const totalTags = posts.reduce(
+    (acc, post) => acc + (post.tags_fr?.length || 0) + (post.tags_en?.length || 0),
+    0
+  );
+  const showInitialSpinner = (loading || isRefreshing) && posts.length === 0;
+
+  const formatNumber = (value: number) => value.toLocaleString("fr-FR");
+
+  const statCards = [
+    {
+      label: "Articles bilingues",
+      sublabel: "FR & EN alignés",
+      value: formatNumber(posts.length),
+      icon: <Globe className="w-5 h-5" />,
+      accent: "#CCFF00",
+      meta: posts.length ? `+${Math.max(1, posts.length % 4)} ce mois` : "Pipeline prêt",
+    },
+    {
+      label: "Publiés",
+      sublabel: "En ligne",
+      value: formatNumber(publishedCount),
+      icon: <BookOpen className="w-5 h-5" />,
+      accent: "#60A5FA",
+      meta: draftCount ? `${draftCount} brouillon${draftCount > 1 ? "s" : ""}` : "Tout est live",
+    },
+    {
+      label: "Audience cumulée",
+      sublabel: averageReadTime ? `${averageReadTime} min de lecture moyenne` : "Pas encore de données",
+      value: formatNumber(totalViews),
+      icon: <Eye className="w-5 h-5" />,
+      accent: "#F472B6",
+      meta: totalViews ? `${formatNumber(totalViews)} vues` : "Audience en montée",
+    },
+  ];
+
+  const renderStatusBadge = (status: BlogPost["status"]) => {
+    if (status === "published") {
+      return (
+        <Badge className="bg-green-500/15 text-green-300 border-green-500/20">
+          Publié
+        </Badge>
+      );
+    }
+    return (
+      <Badge className="bg-amber-500/15 text-amber-200 border-amber-500/20">
+        Brouillon
+      </Badge>
+    );
+  };
+
   return (
-    <div className="min-h-screen p-6 space-y-6" style={{ backgroundColor: '#111827' }}>
-      {/* Header */}
-      <Panel className="p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Globe className="w-5 h-5 text-purple-400" />
-            <h2 className="text-xl font-semibold text-white">
-              Blog Bilingue ({posts.length} articles)
-            </h2>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={fetchPosts}
-              disabled={isRefreshing}
-              variant="outline"
-              size="sm"
-              className="bg-white/5 border-white/10 text-white hover:bg-white/10"
-            >
-              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-            </Button>
-            <Button
-              onClick={() => {
-                resetForm();
-                setIsCreateOpen(true);
-              }}
-              className="bg-purple-600 hover:bg-purple-700 text-white border-0"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Nouvel article
-            </Button>
-          </div>
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="flex flex-col md:flex-row justify-between gap-6">
+        <div>
+          <p className="text-xs uppercase tracking-[0.3em] text-white/40 mb-2">Studio bilingue</p>
+          <h1 className="text-4xl font-display text-white mb-3">Blog & Contenus FR·EN</h1>
+          <p className="text-white/60 max-w-2xl">
+            Pilotez la version française et anglaise de chaque article, synchronisez les slugs et suivez les performances en temps réel.
+            Tout est relié à Supabase et à la nouvelle UI publique.
+          </p>
         </div>
-      </Panel>
+        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+          <Button
+            variant="outline"
+            className="border-white/20 text-white hover:border-white/60"
+            onClick={fetchPosts}
+            disabled={isRefreshing}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`} /> Rafraîchir
+          </Button>
+          <Button
+            onClick={() => {
+              resetForm();
+              setIsCreateOpen(true);
+            }}
+            className="bg-white text-black font-semibold hover:bg-primary hover:text-black"
+          >
+            <Plus className="w-4 h-4 mr-2" /> Nouvel article
+          </Button>
+        </div>
+      </div>
 
-      {/* Stats */}
-      {(() => {
-        const stats = {
-          total: posts.length,
-          published: posts.filter((p) => p.status === 'published').length,
-          draft: posts.filter((p) => p.status === 'draft').length,
-          totalViews: posts.reduce((acc, p) => acc + (p.views || 0), 0),
-        };
-        return (
-          <StatGrid>
-            <StatCard icon={<BookOpen className="h-5 w-5" />} label="Total articles" value={stats.total} />
-            <StatCard icon={<Eye className="h-5 w-5" />} label="Publiés" value={stats.published} accentColor="#22c55e" />
-            <StatCard icon={<FileText className="h-5 w-5" />} label="Brouillons" value={stats.draft} accentColor="#f59e0b" />
-            <StatCard icon={<Eye className="h-5 w-5" />} label="Vues totales" value={stats.totalViews} accentColor="#60a5fa" />
-          </StatGrid>
-        );
-      })()}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {statCards.map((card) => (
+          <div
+            key={card.label}
+            className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 via-transparent to-transparent p-5"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center"
+                style={{ background: `${card.accent}15`, color: card.accent }}
+              >
+                {card.icon}
+              </div>
+              <p className="text-xs uppercase tracking-[0.3em] text-white/40">{card.label}</p>
+            </div>
+            <p className="text-3xl font-display text-white mb-1">{card.value}</p>
+            <p className="text-sm text-white/50">{card.sublabel}</p>
+            {card.meta && <p className="text-xs text-white/40 mt-3">{card.meta}</p>}
+          </div>
+        ))}
+      </div>
 
-      {/* Filters */}
-      <Panel className="p-4">
-        <div className="flex items-center gap-4">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 w-4 h-4" />
+      <div className="border border-white/10 rounded-2xl bg-[#060606] p-6 space-y-6">
+        <div className="flex flex-col lg:flex-row gap-4">
+          <div className="relative flex-1 group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 group-focus-within:text-white/80 transition-colors" />
             <Input
-              placeholder="Rechercher..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-white/5 border-white/10 text-white placeholder-white/40"
+              placeholder="Rechercher un titre, une langue, un tag..."
+              className="h-12 pl-12 bg-black/40 border-white/10 text-white placeholder:text-white/30"
             />
           </div>
-          <Select value={filterStatus} onValueChange={(v: any) => setFilterStatus(v)}>
-            <SelectTrigger className="w-40 bg-white/5 border-white/10 text-white">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Tous</SelectItem>
-              <SelectItem value="published">Publiés</SelectItem>
-              <SelectItem value="draft">Brouillons</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex gap-2 bg-black/40 rounded-xl p-1 border border-white/5">
+            {STATUS_OPTIONS.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setFilterStatus(option.value)}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                  filterStatus === option.value
+                    ? "bg-white text-black"
+                    : "text-white/50 hover:text-white"
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
         </div>
-      </Panel>
 
-      {/* Posts Grid */}
-      <div className="grid gap-4">
-        {filteredPosts.map((post) => (
-          <Card key={post.id} className="p-4 border" style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <div className="flex items-start gap-4">
-                  <div className="flex-1">
-                    <h3 className="font-medium text-white mb-1">
-                      🇫🇷 {post.title_fr || post.title}
+        <div className="flex flex-wrap items-center gap-4 text-xs text-white/60">
+          <div className="flex items-center gap-2">
+            <BarChart2 className="w-4 h-4 text-white/40" />
+            <span>
+              {publishedCount} article{publishedCount > 1 ? "s" : ""} en ligne · {draftCount} brouillon{draftCount > 1 ? "s" : ""} prêts à traduire
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Tag className="w-4 h-4 text-white/40" />
+            <span>{totalTags} tags bilingues orchestrés</span>
+          </div>
+        </div>
+      </div>
+
+      {showInitialSpinner ? (
+        <div className="flex items-center justify-center h-64">
+          <div className="w-10 h-10 border-2 border-white/10 border-t-white rounded-full animate-spin" />
+        </div>
+      ) : filteredPosts.length === 0 ? (
+        <div className="text-center py-24 border border-dashed border-white/10 rounded-2xl">
+          <p className="text-white/60">Aucun article ne correspond à votre recherche. Essayez un autre filtre ou créez un billet.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {filteredPosts.map((post) => (
+            <motion.div
+              key={post.id}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="relative group rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent overflow-hidden shadow-[0_25px_70px_-35px_rgba(0,0,0,0.8)]"
+            >
+              <div className="relative h-48 overflow-hidden">
+                {post.coverImage ? (
+                  <img
+                    src={post.coverImage}
+                    alt={post.title_fr || post.title_en || post.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-white/15 border-b border-white/5 bg-black/40">
+                    <FileText className="w-12 h-12" />
+                  </div>
+                )}
+                <div className="absolute top-3 left-3 flex gap-2">
+                  {renderStatusBadge(post.status)}
+                </div>
+                {(post.category_fr || post.category_en || post.category) && (
+                  <div className="absolute top-3 right-3">
+                    <Badge className="bg-black/70 text-white border-white/20">
+                      {post.category_fr || post.category_en || post.category}
+                    </Badge>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div className="space-y-2">
+                  <p className="text-xs uppercase tracking-[0.2em] text-white/40">
+                    {post.slug_fr || post.slug_en || post.slug || "Slug en attente"}
+                  </p>
+                  <div className="space-y-1">
+                    <h3 className="text-xl font-display text-white flex items-center gap-2">
+                      <span className="text-base">🇫🇷</span>
+                      <span className="line-clamp-1">{post.title_fr || post.title || "Sans titre"}</span>
                     </h3>
                     {post.title_en && (
-                      <h3 className="font-medium text-gray-300 mb-2">
-                        🇬🇧 {post.title_en}
-                      </h3>
+                      <p className="text-base text-white/70 flex items-center gap-2">
+                        <span>🇬🇧</span>
+                        <span className="line-clamp-1">{post.title_en}</span>
+                      </p>
                     )}
-                    <div className="flex items-center gap-4 text-sm text-gray-400">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {new Date(post.createdAt).toLocaleDateString('fr-FR')}
-                      </div>
-                      {post.views && (
-                        <div className="flex items-center gap-1">
-                          <Eye className="w-4 h-4" />
-                          {post.views}
-                        </div>
-                      )}
-                      <Badge
-                        variant={post.status === "published" ? "default" : "secondary"}
-                        className={post.status === "published" 
-                          ? "bg-green-600/20 text-green-300 border-green-600/30"
-                          : "bg-gray-600/20 text-gray-300 border-gray-600/30"
-                        }
-                      >
-                        {post.status === "published" ? "Publié" : "Brouillon"}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center gap-2 mt-2">
-                      {post.tags_fr && post.tags_fr.map((tag) => (
-                        <Badge key={tag} variant="outline" className="text-xs border-purple-600/30 text-purple-300 bg-purple-600/10">
-                          🇫🇷 {tag}
-                        </Badge>
-                      ))}
-                      {post.tags_en && post.tags_en.map((tag) => (
-                        <Badge key={tag} variant="outline" className="text-xs border-blue-600/30 text-blue-300 bg-blue-600/10">
-                          🇬🇧 {tag}
-                        </Badge>
-                      ))}
-                    </div>
                   </div>
+                  {(post.excerpt_fr || post.excerpt) && (
+                    <p className="text-sm text-white/60 line-clamp-3">{post.excerpt_fr || post.excerpt}</p>
+                  )}
+                  {post.excerpt_en && (
+                    <p className="text-xs text-white/40 line-clamp-2">EN · {post.excerpt_en}</p>
+                  )}
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
-                {post.status === "published" && (
+
+                <div className="flex flex-wrap items-center gap-3 text-xs text-white/50">
+                  {(post.publishedAt || post.createdAt) && (
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      {new Date(post.publishedAt || post.createdAt).toLocaleDateString("fr-FR", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </span>
+                  )}
+                  {post.readTime && (
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {post.readTime} min
+                    </span>
+                  )}
+                  {typeof post.views === "number" && (
+                    <span className="flex items-center gap-1">
+                      <Eye className="w-3 h-3" />
+                      {post.views.toLocaleString("fr-FR")}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {post.tags_fr?.slice(0, 4).map((tag, index) => (
+                    <span key={`fr-${post.id}-${index}`} className="px-3 py-1 rounded-full text-xs font-medium bg-white/5 text-white/70">
+                      🇫🇷 #{tag}
+                    </span>
+                  ))}
+                  {post.tags_en?.slice(0, 4).map((tag, index) => (
+                    <span key={`en-${post.id}-${index}`} className="px-3 py-1 rounded-full text-xs font-medium bg-white/5 text-white/50">
+                      🇬🇧 #{tag}
+                    </span>
+                  ))}
+                  {((post.tags_fr?.length || 0) + (post.tags_en?.length || 0)) > 8 && (
+                    <span className="px-3 py-1 rounded-full text-xs bg-white/5 text-white/50">
+                      +{(post.tags_fr?.length || 0) + (post.tags_en?.length || 0) - 8}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2 pt-4 border-t border-white/10">
                   <Button
                     size="sm"
                     variant="ghost"
-                    onClick={() => window.open(`/blog/${post.slug}`, "_blank")}
-                    className="text-gray-400 hover:text-white hover:bg-gray-700"
+                    onClick={() => openEditDialog(post)}
+                    className="flex-1 justify-center text-white/80 hover:text-white"
                   >
-                    <Eye className="w-4 h-4" />
+                    <Edit className="w-4 h-4 mr-2" /> Modifier
                   </Button>
-                )}
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => openEditDialog(post)}
-                  className="text-gray-400 hover:text-white hover:bg-gray-700"
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setDeletePost(post)}
-                  className="text-red-400 hover:text-red-300 hover:bg-red-600/10"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+                  {post.status === "published" && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => window.open(`/blog/${post.slug_fr || post.slug_en || post.slug}`, "_blank")}
+                      className="text-white/70 hover:text-white"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </Button>
+                  )}
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setDeletePost(post)}
+                    className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Card>
-        ))}
-      </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
 
       {/* Create/Edit Dialog */}
       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>

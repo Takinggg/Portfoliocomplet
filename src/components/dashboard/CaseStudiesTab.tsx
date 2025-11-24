@@ -77,9 +77,9 @@ const ARCHITECTURE_ICON_OPTIONS: Array<{ value: CaseStudyArchitectureNode["icon"
   { value: "smartphone", label: "Smartphone" },
   { value: "cloud", label: "Cloud" },
   { value: "server", label: "Serveur" },
-  { value: "database", label: "Base de donnÃ©es" },
-  { value: "shield", label: "SÃ©curitÃ©" },
-  { value: "layers", label: "GÃ©nÃ©rique" },
+  { value: "database", label: "Base de données" },
+  { value: "shield", label: "Sécurité" },
+  { value: "layers", label: "Générique" },
 ];
 
 const ARCHITECTURE_ACCENT_OPTIONS: Array<{ value: CaseStudyArchitectureNode["accent"]; label: string }> = [
@@ -167,29 +167,29 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
   // Load case studies from Supabase (FULL DB)
   const loadCaseStudies = async () => {
     try {
-      console.log("ðŸ” Loading case studies from Supabase...");
+      console.log("🔍 Loading case studies from Supabase...");
       
-      // âœ… Utiliser unifiedDataService.ts (Supabase uniquement, FULL DB)
+      // ✅ Utiliser unifiedDataService.ts (Supabase uniquement, FULL DB)
       const { fetchCaseStudies } = await import("../../utils/unifiedDataService");
       
       const loadedCaseStudies = await fetchCaseStudies();
       
-      console.log(`âœ… Case studies chargÃ©es depuis Supabase:`, loadedCaseStudies.length);
-      console.log("ðŸ“‹ Case studies IDs:", loadedCaseStudies.map(cs => cs.id));
+      console.log(`✅ Case studies chargées depuis Supabase:`, loadedCaseStudies.length);
+      console.log("📋 Case studies IDs:", loadedCaseStudies.map(cs => cs.id));
       
       setCaseStudies(loadedCaseStudies);
       
       if (loadedCaseStudies.length === 0) {
-        toast.info("Aucune case study. Utilisez le bouton '+' pour en crÃ©er.", {
+        toast.info("Aucune case study. Utilisez le bouton '+' pour en créer.", {
           duration: 5000,
         });
       }
     } catch (error: any) {
-      console.error("âŒ Error loading case studies:", error);
+      console.error("❌ Error loading case studies:", error);
       
-      // Message d'erreur dÃ©taillÃ© avec instructions de dÃ©ploiement
+      // Message d'erreur détaillé avec instructions de déploiement
       if (error.message.includes("fetch") || error.message.includes("network")) {
-        toast.error("âŒ Serveur Supabase non dÃ©ployÃ©. Consultez DEPLOYMENT_GUIDE_SUPABASE.md", {
+        toast.error("❌ Serveur Supabase non déployé. Consultez DEPLOYMENT_GUIDE_SUPABASE.md", {
           duration: 8000,
         });
       } else {
@@ -341,13 +341,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
     setIsSubmitting(true);
 
     try {
-      // RÃ©cupÃ©rer le token d'authentification
+      // Récupérer le token d'authentification
       const { createClient } = await import("../../utils/supabase/client");
       const supabase = createClient();
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Vous devez Ãªtre connectÃ© pour effectuer cette action");
+        toast.error("Vous devez être connecté pour effectuer cette action");
         setIsSubmitting(false);
         return;
       }
@@ -424,17 +424,17 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
             : undefined,
       };
 
-      console.log("ðŸ“¤ Saving case study data:", caseStudyData);
+      console.log("📤 Saving case study data:", caseStudyData);
 
-      // Utiliser le service unifiÃ©
+      // Utiliser le service unifié
       const { createCaseStudy, updateCaseStudy } = await import("../../utils/unifiedDataService");
       
       if (editingCaseStudy) {
         await updateCaseStudy(editingCaseStudy.id, caseStudyData, session.access_token);
-        toast.success("Ã‰tude de cas mise Ã  jour avec succÃ¨s");
+        toast.success("Étude de cas mise à jour avec succès");
       } else {
         await createCaseStudy(caseStudyData, session.access_token);
-        toast.success("Ã‰tude de cas crÃ©Ã©e avec succÃ¨s");
+        toast.success("Étude de cas créée avec succès");
       }
 
       await loadCaseStudies();
@@ -455,53 +455,53 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
     if (!deletingCaseStudy) return;
 
     try {
-      console.log("ðŸ—‘ï¸ Attempting to delete case study:", deletingCaseStudy.id);
+      console.log("🗑️ Attempting to delete case study:", deletingCaseStudy.id);
 
-      // RÃ©cupÃ©rer le token d'authentification
+      // Récupérer le token d'authentification
       const { createClient } = await import("../../utils/supabase/client");
       const supabase = createClient();
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Vous devez Ãªtre connectÃ© pour effectuer cette action");
+        toast.error("Vous devez être connecté pour effectuer cette action");
         return;
       }
 
-      // Utiliser le service unifiÃ©
+      // Utiliser le service unifié
       const { deleteCaseStudy } = await import("../../utils/unifiedDataService");
       await deleteCaseStudy(deletingCaseStudy.id, session.access_token);
 
-      console.log("âœ… Case study supprimÃ© avec succÃ¨s:", deletingCaseStudy.id);
-      toast.success("Ã‰tude de cas supprimÃ©e avec succÃ¨s");
+      console.log("✅ Case study supprimé avec succès:", deletingCaseStudy.id);
+      toast.success("Étude de cas supprimée avec succès");
       
       await loadCaseStudies();
       setDeletingCaseStudy(null);
       onRefresh?.();
     } catch (error: any) {
-      console.error("âŒ Error deleting case study:", error);
+      console.error("❌ Error deleting case study:", error);
       toast.error(`Erreur lors de la suppression: ${error.message || "Erreur inconnue"}`);
     }
   };
 
   // Add/remove items from arrays
   const addArrayItem = (field: string, value: string, lang: "fr" | "en" = "fr") => {
-    console.log(`ðŸ·ï¸ addArrayItem called:`, { field, value, lang });
+    console.log(`🏷️ addArrayItem called:`, { field, value, lang });
     if (!value.trim()) {
-      console.log(`âš ï¸ Value is empty, returning`);
+      console.log(`⚠️ Value is empty, returning`);
       return;
     }
 
     if (field === "tags") {
       if (lang === "en") {
         const newTagsEn = [...(formData.tags_en || []), value.trim()];
-        console.log(`âœ… Adding EN tag:`, { currentTags: formData.tags_en, newTag: value.trim(), result: newTagsEn });
+        console.log(`✅ Adding EN tag:`, { currentTags: formData.tags_en, newTag: value.trim(), result: newTagsEn });
         setFormData({
           ...formData,
           tags_en: newTagsEn,
         });
       } else {
         const newTagsFr = [...(formData.tags || []), value.trim()];
-        console.log(`âœ… Adding FR tag:`, { currentTags: formData.tags, newTag: value.trim(), result: newTagsFr });
+        console.log(`✅ Adding FR tag:`, { currentTags: formData.tags, newTag: value.trim(), result: newTagsFr });
         setFormData({
           ...formData,
           tags: newTagsFr,
@@ -562,13 +562,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
   const removeArrayItem = (field: string, index: number, lang: "fr" | "en" = "fr") => {
     if (field === "tags") {
       if (lang === "en") {
-        console.log(`ðŸ—‘ï¸ Removing EN tag at index ${index}`);
+        console.log(`🗑️ Removing EN tag at index ${index}`);
         setFormData({
           ...formData,
           tags_en: formData.tags_en?.filter((_, i) => i !== index),
         });
       } else {
-        console.log(`ðŸ—‘ï¸ Removing FR tag at index ${index}`);
+        console.log(`🗑️ Removing FR tag at index ${index}`);
         setFormData({
           ...formData,
           tags: formData.tags?.filter((_, i) => i !== index),
@@ -765,32 +765,32 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-white mb-2">Ã‰tudes de Cas</h2>
+          <h2 className="text-white mb-2">Études de Cas</h2>
           <p className="text-white/60">
-            GÃ©rez vos Ã©tudes de cas dÃ©taillÃ©es avec mÃ©triques et tÃ©moignages
+            Gérez vos études de cas détaillées avec métriques et témoignages
           </p>
         </div>
         <div className="flex gap-2">
           <Button
             onClick={async () => {
-              if (window.confirm("Voulez-vous initialiser les Ã©tudes de cas bilingues dans Supabase ?\n\nCela va :\n1. Vider la liste de suppression permanente\n2. Charger 3 Ã©tudes de cas professionnelles (FR + EN)\n3. Synchroniser avec la database Supabase\n4. Afficher les donnÃ©es")) {
+              if (window.confirm("Voulez-vous initialiser les études de cas bilingues dans Supabase ?\n\nCela va :\n1. Vider la liste de suppression permanente\n2. Charger 3 études de cas professionnelles (FR + EN)\n3. Synchroniser avec la database Supabase\n4. Afficher les données")) {
                 try {
-                  toast.info("ðŸ”„ Initialisation Supabase en cours...");
+                  toast.info("🔄 Initialisation Supabase en cours...");
                   
-                  console.log("ðŸ—‘ï¸ Ã‰tape 1/4 : Suppression de la liste noire...");
-                  // Vider la liste de suppression permanente (bonne clÃ©)
+                  console.log("🗑️ Étape 1/4 : Suppression de la liste noire...");
+                  // Vider la liste de suppression permanente (bonne clé)
                   localStorage.removeItem("deleted_case_studies");
                   
-                  console.log("ðŸ“¦ Ã‰tape 2/4 : GÃ©nÃ©ration des case studies bilingues...");
-                  // Importer les donnÃ©es bilingues
+                  console.log("📦 Étape 2/4 : Génération des case studies bilingues...");
+                  // Importer les données bilingues
                   const { bilingualCaseStudies } = await import("../../utils/caseStudiesDataBilingual");
                   const { convertBilingualToCaseStudy } = await import("../../utils/seedBilingualCaseStudies");
                   
                   // Convertir en format CaseStudy
                   const caseStudiesData = bilingualCaseStudies.map(convertBilingualToCaseStudy);
-                  console.log("ðŸ“‹ Case studies gÃ©nÃ©rÃ©es:", caseStudiesData.length);
+                  console.log("📋 Case studies générées:", caseStudiesData.length);
                   
-                  console.log("â˜ï¸ Ã‰tape 3/4 : Envoi vers Supabase...");
+                  console.log("☁️ Étape 3/4 : Envoi vers Supabase...");
                   // Envoyer au serveur Supabase via bulk create
                   const { projectId, publicAnonKey } = await import("../../utils/supabase/info");
                   
@@ -812,17 +812,17 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   }
                   
                   const result = await response.json();
-                  console.log("âœ… Supabase sync result:", result);
+                  console.log("✅ Supabase sync result:", result);
                   
-                  console.log("ðŸ“¥ Ã‰tape 4/4 : Rechargement depuis Supabase...");
+                  console.log("📥 Étape 4/4 : Rechargement depuis Supabase...");
                   // Recharger depuis le serveur
                   await loadCaseStudies();
                   
-                  console.log("âœ… Initialisation Supabase terminÃ©e !");
-                  toast.success(`âœ… ${result.count} case studies synchronisÃ©es avec Supabase !`);
+                  console.log("✅ Initialisation Supabase terminée !");
+                  toast.success(`✅ ${result.count} case studies synchronisées avec Supabase !`);
                   
                 } catch (error: any) {
-                  console.error("âŒ Erreur lors de l'initialisation Supabase:", error);
+                  console.error("❌ Erreur lors de l'initialisation Supabase:", error);
                   toast.error(`Erreur: ${error.message}`);
                 }
               }
@@ -842,7 +842,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
             className="bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Nouvelle Ã©tude de cas
+            Nouvelle étude de cas
           </Button>
         </div>
       </div>
@@ -903,7 +903,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
           <Input
-            placeholder="Rechercher une Ã©tude de cas..."
+            placeholder="Rechercher une étude de cas..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 bg-white/5 border-white/10 text-white"
@@ -914,7 +914,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Toutes les catÃ©gories</SelectItem>
+            <SelectItem value="all">Toutes les catégories</SelectItem>
             <SelectItem value="E-commerce">E-commerce</SelectItem>
             <SelectItem value="SaaS">SaaS</SelectItem>
             <SelectItem value="Website">Website</SelectItem>
@@ -1002,7 +1002,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
         {filteredCaseStudies.length === 0 && (
           <div className="col-span-full text-center py-12">
             <Sparkles className="h-12 w-12 text-white/20 mx-auto mb-4" />
-            <p className="text-white/60">Aucune Ã©tude de cas trouvÃ©e</p>
+            <p className="text-white/60">Aucune étude de cas trouvée</p>
           </div>
         )}
       </div>
@@ -1016,27 +1016,27 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
         <DialogContent className="bg-[#0C0C0C] border-white/10 text-white max-w-5xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {editingCaseStudy ? "Modifier l'Ã©tude de cas" : "Nouvelle Ã©tude de cas"}
+              {editingCaseStudy ? "Modifier l'étude de cas" : "Nouvelle étude de cas"}
             </DialogTitle>
             <DialogDescription className="text-white/60">
               {editingCaseStudy
-                ? "Modifiez les informations de votre Ã©tude de cas"
-                : "CrÃ©ez une nouvelle Ã©tude de cas dÃ©taillÃ©e"}
+                ? "Modifiez les informations de votre étude de cas"
+                : "Créez une nouvelle étude de cas détaillée"}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 mt-4">
             <p className="text-white/60 text-sm">
-              ðŸŒ Contenu multilingue - Remplissez le franÃ§ais (obligatoire) et l'anglais (optionnel)
+              🌍 Contenu multilingue - Remplissez le français (obligatoire) et l'anglais (optionnel)
             </p>
 
             {/* Main Tabs: General / Challenge / Solution / Results / Extras */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-6 bg-white/5">
-                <TabsTrigger value="general">GÃ©nÃ©ral</TabsTrigger>
-                <TabsTrigger value="challenge">DÃ©fi</TabsTrigger>
+                <TabsTrigger value="general">Général</TabsTrigger>
+                <TabsTrigger value="challenge">Défi</TabsTrigger>
                 <TabsTrigger value="solution">Solution</TabsTrigger>
-                <TabsTrigger value="results">RÃ©sultats</TabsTrigger>
+                <TabsTrigger value="results">Résultats</TabsTrigger>
                 <TabsTrigger value="architecture">Architecture</TabsTrigger>
                 <TabsTrigger value="extras">Extras</TabsTrigger>
               </TabsList>
@@ -1059,7 +1059,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   </div>
                   <div>
                     <Label htmlFor="year" className="text-white/80">
-                      AnnÃ©e
+                      Année
                     </Label>
                     <Input
                       id="year"
@@ -1107,13 +1107,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                         value="fr" 
                         className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                       >
-                        ðŸ‡«ðŸ‡· FranÃ§ais {!formData.title && <span className="ml-1 text-red-400">*</span>}
+                        🇫🇷 Français {!formData.title && <span className="ml-1 text-red-400">*</span>}
                       </TabsTrigger>
                       <TabsTrigger 
                         value="en" 
                         className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                       >
-                        ðŸ‡¬ðŸ‡§ English
+                        🇬🇧 English
                       </TabsTrigger>
                     </TabsList>
 
@@ -1121,7 +1121,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                     <TabsContent value="fr" className="space-y-4">
                       <div>
                         <Label htmlFor="title_fr" className="text-white/80">
-                          Titre (FranÃ§ais) *
+                          Titre (Français) *
                         </Label>
                         <Input
                           id="title_fr"
@@ -1134,7 +1134,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
 
                       <div className="space-y-2">
                         <Label htmlFor="category_fr" className="text-white/80">
-                          CatÃ©gorie (FranÃ§ais)
+                          Catégorie (Français)
                         </Label>
                         <Select
                           value={formData.category?.startsWith("Autre:") ? "Autre" : formData.category}
@@ -1156,13 +1156,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                             <SelectItem value="Application Mobile">Application Mobile</SelectItem>
                             <SelectItem value="Application Web">Application Web</SelectItem>
                             <SelectItem value="Page d'Atterrissage">Page d'Atterrissage</SelectItem>
-                            <SelectItem value="IdentitÃ© de Marque">IdentitÃ© de Marque</SelectItem>
+                            <SelectItem value="Identité de Marque">Identité de Marque</SelectItem>
                             <SelectItem value="Design UI/UX">Design UI/UX</SelectItem>
                             <SelectItem value="Marketing">Marketing</SelectItem>
                             <SelectItem value="Tableau de Bord">Tableau de Bord</SelectItem>
                             <SelectItem value="Portfolio">Portfolio</SelectItem>
                             <SelectItem value="Blog">Blog</SelectItem>
-                            <SelectItem value="Autre">Autre (prÃ©ciser)</SelectItem>
+                            <SelectItem value="Autre">Autre (préciser)</SelectItem>
                           </SelectContent>
                         </Select>
                         {formData.category?.startsWith("Autre:") && (
@@ -1170,14 +1170,14 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                             value={formData.category.replace("Autre: ", "")}
                             onChange={(e) => setFormData({ ...formData, category: `Autre: ${e.target.value}` })}
                             className="bg-white/5 border-white/10 text-white"
-                            placeholder="PrÃ©ciser la catÃ©gorie..."
+                            placeholder="Préciser la catégorie..."
                           />
                         )}
                       </div>
 
                       <div>
                         <Label htmlFor="tagline_fr" className="text-white/80">
-                          Tagline (FranÃ§ais)
+                          Tagline (Français)
                         </Label>
                         <Input
                           id="tagline_fr"
@@ -1190,7 +1190,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
 
                       <div>
                         <Label htmlFor="description_fr" className="text-white/80">
-                          Description (FranÃ§ais)
+                          Description (Français)
                         </Label>
                         <Textarea
                           id="description_fr"
@@ -1206,7 +1206,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
 
                       {/* Tags FR */}
                       <div>
-                        <Label className="text-white/80 mb-2 block">Tags (FranÃ§ais)</Label>
+                        <Label className="text-white/80 mb-2 block">Tags (Français)</Label>
                         <div className="flex gap-2 mb-2">
                           <Input
                             id="tagInput_fr"
@@ -1388,13 +1388,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                       value="fr" 
                       className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      ðŸ‡«ðŸ‡· FranÃ§ais
+                      🇫🇷 Français
                     </TabsTrigger>
                     <TabsTrigger 
                       value="en" 
                       className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      ðŸ‡¬ðŸ‡§ English
+                      🇬🇧 English
                     </TabsTrigger>
                   </TabsList>
 
@@ -1402,7 +1402,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <TabsContent value="fr" className="space-y-4">
                     <div>
                       <Label htmlFor="challengeTitle_fr" className="text-white/80">
-                        Titre du dÃ©fi (FranÃ§ais)
+                        Titre du défi (Français)
                       </Label>
                       <Input
                         id="challengeTitle_fr"
@@ -1414,13 +1414,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Un site obsolÃ¨te qui freinait la croissance"
+                        placeholder="Un site obsolète qui freinait la croissance"
                       />
                     </div>
 
                     <div>
                       <Label htmlFor="challengeDescription_fr" className="text-white/80">
-                        Description du dÃ©fi (FranÃ§ais)
+                        Description du défi (Français)
                       </Label>
                       <Textarea
                         id="challengeDescription_fr"
@@ -1432,14 +1432,14 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Description dÃ©taillÃ©e du problÃ¨me..."
+                        placeholder="Description détaillée du problème..."
                         rows={4}
                       />
                     </div>
 
                     {/* Pain Points FR */}
                     <div>
-                      <Label className="text-white/80 mb-2 block">Points de friction (FranÃ§ais)</Label>
+                      <Label className="text-white/80 mb-2 block">Points de friction (Français)</Label>
                       <div className="flex gap-2 mb-2">
                         <Input
                           id="painPointInput_fr"
@@ -1586,13 +1586,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                       value="fr" 
                       className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      ðŸ‡«ðŸ‡· FranÃ§ais
+                      🇫🇷 Français
                     </TabsTrigger>
                     <TabsTrigger 
                       value="en" 
                       className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      ðŸ‡¬ðŸ‡§ English
+                      🇬🇧 English
                     </TabsTrigger>
                   </TabsList>
 
@@ -1600,7 +1600,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <TabsContent value="fr" className="space-y-4">
                     <div>
                       <Label htmlFor="solutionTitle_fr" className="text-white/80">
-                        Titre de la solution (FranÃ§ais)
+                        Titre de la solution (Français)
                       </Label>
                       <Input
                         id="solutionTitle_fr"
@@ -1612,13 +1612,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Une refonte complÃ¨te centrÃ©e utilisateur"
+                        placeholder="Une refonte complète centrée utilisateur"
                       />
                     </div>
 
                     <div>
                       <Label htmlFor="solutionDescription_fr" className="text-white/80">
-                        Description de la solution (FranÃ§ais)
+                        Description de la solution (Français)
                       </Label>
                       <Textarea
                         id="solutionDescription_fr"
@@ -1630,18 +1630,18 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Description dÃ©taillÃ©e de la solution mise en place..."
+                        placeholder="Description détaillée de la solution mise en place..."
                         rows={4}
                       />
                     </div>
 
                     {/* Approach FR */}
                     <div>
-                      <Label className="text-white/80 mb-2 block">Approche (FranÃ§ais)</Label>
+                      <Label className="text-white/80 mb-2 block">Approche (Français)</Label>
                       <div className="flex gap-2 mb-2">
                         <Input
                           id="approachInput_fr"
-                          placeholder="Ajouter une Ã©tape de l'approche..."
+                          placeholder="Ajouter une étape de l'approche..."
                           className="bg-white/5 border-white/10 text-white"
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
@@ -1826,13 +1826,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                       value="fr" 
                       className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      ðŸ‡«ðŸ‡· FranÃ§ais
+                      🇫🇷 Français
                     </TabsTrigger>
                     <TabsTrigger 
                       value="en" 
                       className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                     >
-                      ðŸ‡¬ðŸ‡§ English
+                      🇬🇧 English
                     </TabsTrigger>
                   </TabsList>
 
@@ -1840,7 +1840,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <TabsContent value="fr" className="space-y-4">
                     <div>
                       <Label htmlFor="resultsTitle_fr" className="text-white/80">
-                        Titre des rÃ©sultats (FranÃ§ais)
+                        Titre des résultats (Français)
                       </Label>
                       <Input
                         id="resultsTitle_fr"
@@ -1852,13 +1852,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Des rÃ©sultats mesurables et impressionnants"
+                        placeholder="Des résultats mesurables et impressionnants"
                       />
                     </div>
 
                     <div>
                       <Label htmlFor="resultsDescription_fr" className="text-white/80">
-                        Description des rÃ©sultats (FranÃ§ais)
+                        Description des résultats (Français)
                       </Label>
                       <Textarea
                         id="resultsDescription_fr"
@@ -1870,7 +1870,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           })
                         }
                         className="bg-white/5 border-white/10 text-white"
-                        placeholder="Description dÃ©taillÃ©e des rÃ©sultats obtenus..."
+                        placeholder="Description détaillée des résultats obtenus..."
                         rows={4}
                       />
                     </div>
@@ -1920,7 +1920,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                 {/* Metrics (bilingual) */}
                 <div className="border-t border-white/10 pt-4">
                   <div className="flex items-center justify-between mb-4">
-                    <Label className="text-white/80">MÃ©triques (Metrics)</Label>
+                    <Label className="text-white/80">Métriques (Metrics)</Label>
                     <Button
                       type="button"
                       onClick={addMetric}
@@ -1928,7 +1928,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                       size="sm"
                     >
                       <Plus className="h-4 w-4 mr-2" />
-                      Ajouter une mÃ©trique
+                      Ajouter une métrique
                     </Button>
                   </div>
                   <div className="space-y-4">
@@ -1977,7 +1977,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                                     : "bg-red-500/10 border-red-500/20 text-red-400"
                                 }`}
                               >
-                                {metric.positive ? "Positif" : "NÃ©gatif"}
+                                {metric.positive ? "Positif" : "Négatif"}
                               </Button>
                               <Button
                                 type="button"
@@ -2005,7 +2005,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                     <h3 className="font-semibold">Carte d'architecture</h3>
                   </div>
                   <p className="text-white/50 text-sm">
-                    Centralisez les diffÃ©rentes couches (application cliente, edge, base de donnÃ©es...) visibles sur la page publique.
+                    Centralisez les différentes couches (application cliente, edge, base de données...) visibles sur la page publique.
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2070,7 +2070,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                           <div className="flex items-start justify-between">
                             <div>
                               <p className="text-white text-sm font-medium">Couche {index + 1}</p>
-                              <p className="text-white/50 text-xs">DÃ©taillez le label, le titre et la stack.</p>
+                              <p className="text-white/50 text-xs">Détaillez le label, le titre et la stack.</p>
                             </div>
                             <Button
                               type="button"
@@ -2085,7 +2085,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
 
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                             <div>
-                              <Label className="text-white/60 text-xs">IcÃ´ne</Label>
+                              <Label className="text-white/60 text-xs">Icône</Label>
                               <Select
                                 value={node.icon || "layers"}
                                 onValueChange={(value) =>
@@ -2141,13 +2141,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                                 value="fr"
                                 className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C] text-xs"
                               >
-                                ðŸ‡«ðŸ‡· FR
+                                🇫🇷 FR
                               </TabsTrigger>
                               <TabsTrigger
                                 value="en"
                                 className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C] text-xs"
                               >
-                                ðŸ‡¬ðŸ‡§ EN
+                                🇬🇧 EN
                               </TabsTrigger>
                             </TabsList>
 
@@ -2157,7 +2157,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                                 <Input
                                   value={node.layer || ""}
                                   onChange={(e) => updateArchitectureNode(index, "layer", e.target.value)}
-                                  placeholder="Couche prÃ©sentation"
+                                  placeholder="Couche présentation"
                                   className="bg-white/5 border-white/10 text-white"
                                 />
                               </div>
@@ -2224,7 +2224,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                       ))
                     ) : (
                       <p className="text-white/40 text-sm">
-                        Ajoutez votre premiÃ¨re couche pour rendre la carte interactive.
+                        Ajoutez votre première couche pour rendre la carte interactive.
                       </p>
                     )}
                   </div>
@@ -2237,7 +2237,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                 <div className="border border-white/10 rounded-lg p-4">
                   <h3 className="text-white mb-4 flex items-center gap-2">
                     <Quote className="h-5 w-5 text-[#CCFF00]" />
-                    TÃ©moignage client
+                    Témoignage client
                   </h3>
                   
                   <Tabs value={editorLang} onValueChange={(v) => setEditorLang(v as "fr" | "en")} className="w-full">
@@ -2246,13 +2246,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                         value="fr" 
                         className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                       >
-                        ðŸ‡«ðŸ‡· FranÃ§ais
+                        🇫🇷 Français
                       </TabsTrigger>
                       <TabsTrigger 
                         value="en" 
                         className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]"
                       >
-                        ðŸ‡¬ðŸ‡§ English
+                        🇬🇧 English
                       </TabsTrigger>
                     </TabsList>
 
@@ -2268,12 +2268,12 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                             })
                           }
                           className="bg-white/5 border-white/10 text-white"
-                          placeholder="L'Ã©quipe a dÃ©passÃ© toutes nos attentes..."
+                          placeholder="L'équipe a dépassé toutes nos attentes..."
                           rows={3}
                         />
                       </div>
                       <div>
-                        <Label className="text-white/60 text-xs">RÃ´le (FR)</Label>
+                        <Label className="text-white/60 text-xs">Rôle (FR)</Label>
                         <Input
                           value={formData.testimonial?.role}
                           onChange={(e) =>
@@ -2367,7 +2367,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                       size="sm"
                     >
                       <Plus className="h-4 w-4 mr-2" />
-                      Ajouter une Ã©tape
+                      Ajouter une étape
                     </Button>
                   </div>
 
@@ -2375,7 +2375,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                     {formData.process?.map((step, index) => (
                       <Card key={index} className="bg-white/5 border-white/10 p-4">
                         <div className="flex items-start justify-between mb-3">
-                          <span className="text-white/60 text-sm">Ã‰tape {index + 1}</span>
+                          <span className="text-white/60 text-sm">Étape {index + 1}</span>
                           <Button
                             type="button"
                             variant="ghost"
@@ -2393,13 +2393,13 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                               value="fr" 
                               className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C] text-xs"
                             >
-                              ðŸ‡«ðŸ‡· FR
+                              🇫🇷 FR
                             </TabsTrigger>
                             <TabsTrigger 
                               value="en" 
                               className="data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C] text-xs"
                             >
-                              ðŸ‡¬ðŸ‡§ EN
+                              🇬🇧 EN
                             </TabsTrigger>
                           </TabsList>
 
@@ -2415,7 +2415,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                                 />
                               </div>
                               <div>
-                                <Label className="text-white/60 text-xs">DurÃ©e (FR)</Label>
+                                <Label className="text-white/60 text-xs">Durée (FR)</Label>
                                 <Input
                                   value={step.duration}
                                   onChange={(e) => updateProcessStep(index, "duration", e.target.value)}
@@ -2430,7 +2430,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                                 value={step.title}
                                 onChange={(e) => updateProcessStep(index, "title", e.target.value)}
                                 className="bg-white/5 border-white/10 text-white text-sm"
-                                placeholder="DÃ©couverte"
+                                placeholder="Découverte"
                               />
                             </div>
                             <div>
@@ -2498,7 +2498,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                   <div className="flex gap-2 mb-2">
                     <Input
                       id="imageInput"
-                      placeholder="Mots-clÃ©s Unsplash..."
+                      placeholder="Mots-clés Unsplash..."
                       className="bg-white/5 border-white/10 text-white"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
@@ -2555,7 +2555,7 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
                 className="flex-1 bg-[#CCFF00] text-[#0C0C0C] hover:bg-[#CCFF00]/90"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Enregistrement..." : editingCaseStudy ? "Mettre Ã  jour" : "CrÃ©er"}
+                {isSubmitting ? "Enregistrement..." : editingCaseStudy ? "Mettre à jour" : "Créer"}
               </Button>
             </div>
           </div>
@@ -2567,10 +2567,10 @@ export function CaseStudiesTab({ onRefresh, loading = false }: CaseStudiesTabPro
         open={!!deletingCaseStudy}
         onOpenChange={(open) => !open && setDeletingCaseStudy(null)}
         onConfirm={handleDelete}
-        title="Supprimer l'Ã©tude de cas"
-        description="ÃŠtes-vous sÃ»r de vouloir supprimer cette Ã©tude de cas ? Cette action est irrÃ©versible."
+        title="Supprimer l'étude de cas"
+        description="Êtes-vous sûr de vouloir supprimer cette étude de cas ? Cette action est irréversible."
         itemName={deletingCaseStudy?.title || ""}
-        warningMessage="Toutes les donnÃ©es associÃ©es seront dÃ©finitivement supprimÃ©es."
+        warningMessage="Toutes les données associées seront définitivement supprimées."
       />
     </div>
   );
