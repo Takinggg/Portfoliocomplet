@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import type { DragEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
@@ -126,10 +127,23 @@ export default function CalendarManagement({
 
   const formatDateKey = (date: Date) => date.toISOString().split("T")[0];
 
-  const handleDragStart = (booking: CalendarBooking) => {
+  const handleDragStart = (dragEvent: DragEvent<HTMLElement>, booking: CalendarBooking) => {
     if (booking.status !== "confirmed") return;
     const normalizedDate = formatDateKey(new Date(booking.date));
     setDraggingBooking({ ...booking, date: normalizedDate });
+
+    try {
+      dragEvent.dataTransfer?.setData("text/plain", booking.id);
+      dragEvent.dataTransfer?.setData(
+        "application/json",
+        JSON.stringify({ id: booking.id, date: normalizedDate, time: booking.time })
+      );
+      if (dragEvent.dataTransfer) {
+        dragEvent.dataTransfer.effectAllowed = "move";
+      }
+    } catch (error) {
+      console.warn("Unable to attach drag data", error);
+    }
   };
 
   const handleDragEnd = () => {
@@ -701,9 +715,9 @@ export default function CalendarManagement({
                               <div
                                 key={booking.id}
                                 draggable={booking.status === 'confirmed'}
-                                onDragStart={(event) => {
-                                  event.stopPropagation();
-                                  handleDragStart(booking);
+                                onDragStart={(dragEvent) => {
+                                  dragEvent.stopPropagation();
+                                  handleDragStart(dragEvent, booking);
                                 }}
                                 onDragEnd={handleDragEnd}
                                 className={`w-full rounded-md px-1 py-0.5 text-[10px] leading-tight text-left flex flex-col gap-0.5 border border-white/5 ${
@@ -772,9 +786,9 @@ export default function CalendarManagement({
                           }
                         }}
                         draggable={'time' in event && 'duration' in event && event.status === 'confirmed'}
-                        onDragStart={() => {
+                        onDragStart={(dragEvent) => {
                           if ('time' in event && 'duration' in event) {
-                            handleDragStart(event as CalendarBooking);
+                            handleDragStart(dragEvent, event as CalendarBooking);
                           }
                         }}
                         onDragEnd={handleDragEnd}
@@ -982,12 +996,9 @@ export default function CalendarManagement({
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
                     draggable={isDraggable}
-                    onDragStart={() => {
+                    onDragStart={(dragEvent) => {
                       if (isDraggable) {
-                        handleDragStart({
-                          ...CalendarBooking,
-                          date: formatDateKey(new Date(CalendarBooking.date)),
-                        } as CalendarBooking);
+                        handleDragStart(dragEvent, CalendarBooking);
                       }
                     }}
                     onDragEnd={handleDragEnd}
