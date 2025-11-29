@@ -116,6 +116,43 @@ const MIME_EXTENSION_MAP: Record<string, string> = {
   "image/avif": "avif",
 };
 
+let ensureBucketPromise: Promise<void> | null = null;
+async function ensureStorageBucketExists() {
+  if (ensureBucketPromise) {
+    return ensureBucketPromise;
+  }
+
+  ensureBucketPromise = (async () => {
+    const { data: buckets, error } = await supabase.storage.listBuckets();
+    if (error) {
+      console.error("⚠️ Unable to list storage buckets", error);
+      throw error;
+    }
+    const exists = buckets?.some((bucket) => bucket.name === STORAGE_BUCKET);
+    if (exists) {
+      return;
+    }
+
+    const { error: createError } = await supabase.storage.createBucket(STORAGE_BUCKET, {
+      public: true,
+      fileSizeLimit: `${STORAGE_MAX_FILE_SIZE}`,
+      allowedMimeTypes: Array.from(STORAGE_ALLOWED_TYPES),
+    });
+
+    if (createError && !createError.message?.toLowerCase().includes("already exists")) {
+      console.error("❌ Failed to create storage bucket", createError);
+      throw createError;
+    }
+  })();
+
+  try {
+    await ensureBucketPromise;
+  } catch (error) {
+    ensureBucketPromise = null;
+    throw error;
+  }
+}
+
 // Client KV pour le stockage de donnÃ©es
 const kvClient = () => createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 const kv = {
@@ -758,6 +795,8 @@ app.post("/make-server-04919ac5/storage/upload", requireAuth, async (c: HonoCont
     const user = c.get("user");
     const userId = user?.id as string | undefined;
     const storagePath = buildStoragePath(userId || "portfolio", extension);
+
+    await ensureStorageBucketExists();
 
     const { error: uploadError } = await supabase.storage
       .from(STORAGE_BUCKET)
