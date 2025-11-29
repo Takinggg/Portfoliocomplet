@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Project, KPI, TechItem } from '../../types';
 import { Plus, Edit2, Trash2, X, Save, Image as ImageIcon, Layers, BarChart2, FileText } from 'lucide-react';
+import { uploadPortfolioImage, MAX_PORTFOLIO_UPLOAD_SIZE_MB } from '@/utils/storage/uploadPortfolioImage';
 
 interface ProjectManagerProps {
   projects: Project[];
@@ -20,6 +21,9 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
   const [activeTab, setActiveTab] = useState<Tab>('general');
   const [lang, setLang] = useState<Lang>('fr');
     const [actionLoading, setActionLoading] = useState(false);
+        const [uploadingImage, setUploadingImage] = useState(false);
+        const [uploadError, setUploadError] = useState<string | null>(null);
+        const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Empty state for new project
   const [formData, setFormData] = useState<Partial<Project>>({
@@ -118,7 +122,35 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
   // Helpers for lists
   const addTag = () => { if(tempTag) { setFormData({...formData, tags: [...(formData.tags||[]), tempTag]}); setTempTag(''); }};
   const addStat = () => { if(tempStat.label && tempStat.value) { setFormData({...formData, stats: [...(formData.stats||[]), tempStat]}); setTempStat({label:'', value:'', change:''}); }};
-  const addTech = () => { if(tempTech.name) { setFormData({...formData, techStack: [...(formData.techStack||[]), tempTech]}); setTempTech({name:'', category:''}); }};
+    const addTech = () => { if(tempTech.name) { setFormData({...formData, techStack: [...(formData.techStack||[]), tempTech]}); setTempTech({name:'', category:''}); }};
+
+    const handleImageUploadClick = () => {
+        if (!loading) {
+            fileInputRef.current?.click();
+        }
+    };
+
+    const handleImageFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        event.target.value = '';
+        if (!file) {
+            return;
+        }
+        try {
+            setUploadError(null);
+            setUploadingImage(true);
+            const { publicUrl } = await uploadPortfolioImage(file);
+            if (!publicUrl) {
+                throw new Error('Upload réussi mais URL introuvable');
+            }
+            setFormData((prev) => ({ ...prev, image: publicUrl }));
+        } catch (error) {
+            console.error('Upload image échoué', error);
+            setUploadError((error as Error)?.message || "Impossible de téléverser l'image");
+        } finally {
+            setUploadingImage(false);
+        }
+    };
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -224,12 +256,31 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
                             </div>
                             <div>
                                 <label className="field-label">Visuel principal</label>
-                                <div className="flex gap-2">
-                                    <input type="text" value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} className="input-field flex-1" placeholder="https://..." />
+                                <div className="flex gap-2 flex-wrap">
+                                    <input type="text" value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} className="input-field flex-1 min-w-[220px]" placeholder="https://..." />
+                                    <button
+                                        type="button"
+                                        onClick={handleImageUploadClick}
+                                        disabled={uploadingImage}
+                                        className="px-3 py-2 bg-white/10 hover:bg-white hover:text-black rounded text-white text-xs font-bold uppercase tracking-wide transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+                                    >
+                                        {uploadingImage ? 'Import…' : 'Importer'}
+                                    </button>
                                     <div className="w-12 h-12 bg-white/5 rounded border border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
                                         {formData.image ? <img src={formData.image} className="w-full h-full object-cover" /> : <ImageIcon size={20} className="text-neutral-600"/>}
                                     </div>
                                 </div>
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
+                                    className="hidden"
+                                    onChange={handleImageFileChange}
+                                />
+                                <p className="text-[11px] text-neutral-500 mt-2">
+                                    PNG / JPG / WEBP, max {MAX_PORTFOLIO_UPLOAD_SIZE_MB}MB. Import direct stocké sur Supabase Storage.
+                                </p>
+                                {uploadError && <p className="text-[11px] text-red-400 mt-1">{uploadError}</p>}
                             </div>
                         </div>
                     )}

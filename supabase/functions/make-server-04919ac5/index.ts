@@ -82,6 +82,39 @@ if (!SUPABASE_SERVICE_ROLE_KEY) {
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 const FRONTEND_BASE_URL = Deno.env.get("FRONTEND_URL") || "https://maxence.design";
+const DEFAULT_ALLOWED_ORIGINS = [
+  "https://maxence.design",
+  "https://www.maxence.design",
+  "http://localhost:5173",
+  "http://localhost:3000",
+];
+const ALLOWED_ORIGINS = (Deno.env.get("ALLOWED_ORIGINS")?.split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean) ?? DEFAULT_ALLOWED_ORIGINS);
+
+const isAllowedOrigin = (origin?: string | null) => {
+  if (!origin) {
+    return true;
+  }
+  return ALLOWED_ORIGINS.includes(origin);
+};
+
+const STORAGE_BUCKET = Deno.env.get("PORTFOLIO_BUCKET") || "portfolio-media";
+const STORAGE_MAX_FILE_SIZE = Number(Deno.env.get("PORTFOLIO_MAX_UPLOAD_BYTES") ?? 10 * 1024 * 1024);
+const STORAGE_ALLOWED_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "image/avif",
+]);
+const MIME_EXTENSION_MAP: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
+  "image/avif": "avif",
+};
 
 // Client KV pour le stockage de donnÃ©es
 const kvClient = () => createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
@@ -103,27 +136,6 @@ const kv = {
       throw new Error(getErrorMessage(error));
     }
     return data?.value;
-
-    function sanitizeCustomKey(input: string | undefined | null): string | null {
-      if (!input) return null;
-      const normalized = input.trim();
-      if (!normalized) return null;
-      const safeKey = normalized.replace(/[^a-zA-Z0-9_-]/g, "").toLowerCase();
-      return safeKey || null;
-    }
-
-    function getUserScopedKey(c: HonoContext, keyParam: string): { storageKey: string; userId: string } | null {
-      const user = c.get("user");
-      const rawUserId = user?.id as string | undefined;
-      if (!rawUserId) {
-        return null;
-      }
-      const safeUserId = sanitizeCustomKey(rawUserId.replace(/[^a-zA-Z0-9_-]/g, "-"));
-      if (!safeUserId) {
-        return null;
-      }
-      return { storageKey: `custom:${safeUserId}:${keyParam}`, userId: safeUserId };
-    }
   },
   del: async (key: string): Promise<void> => {
     const supabaseKv = kvClient();
@@ -175,6 +187,54 @@ const kv = {
   }
 };
 console.log("âœ… KV store configured");
+
+function sanitizeCustomKey(input: string | undefined | null): string | null {
+  if (!input) return null;
+  const normalized = input.trim();
+  if (!normalized) return null;
+  const safeKey = normalized.replace(/[^a-zA-Z0-9_-]/g, "").toLowerCase();
+  return safeKey || null;
+}
+
+function getUserScopedKey(c: HonoContext, keyParam: string): { storageKey: string; userId: string } | null {
+  const user = c.get("user");
+  const rawUserId = user?.id as string | undefined;
+  if (!rawUserId) {
+    return null;
+  }
+  const safeUserId = sanitizeCustomKey(rawUserId.replace(/[^a-zA-Z0-9_-]/g, "-"));
+  if (!safeUserId) {
+    return null;
+  }
+  return { storageKey: `custom:${safeUserId}:${keyParam}`, userId: safeUserId };
+}
+
+function sanitizeFileName(fileName?: string | null): string | null {
+  if (!fileName) {
+    return null;
+  }
+  const normalized = fileName.trim().toLowerCase();
+  if (!normalized) {
+    return null;
+  }
+  return normalized.replace(/[^a-z0-9._-]/g, "-");
+}
+
+function getFileExtension(fileName: string | null, mimeType: string): string {
+  const fromName = fileName?.includes(".") ? fileName.split(".").pop()?.toLowerCase() : null;
+  if (fromName) {
+    return fromName;
+  }
+  return MIME_EXTENSION_MAP[mimeType] || "bin";
+}
+
+function buildStoragePath(userId: string, extension: string): string {
+  const safeUser = sanitizeCustomKey(userId) || "portfolio";
+  const randomSegment = typeof crypto?.randomUUID === "function"
+    ? crypto.randomUUID()
+    : Math.random().toString(36).slice(2, 10);
+  return `projects/${safeUser}/${Date.now()}-${randomSegment}.${extension}`;
+}
 // ===========================================================================
 // LANGUAGE DETECTION
 // ===========================================================================
@@ -263,8 +323,21 @@ console.log("âœ… Email service configured");
 app.use('*', logger(console.log));
 
 // CORS middleware - Permet les requÃªtes depuis le frontend
+app.use("*", async (c: HonoContext, next: HonoNext) => {
+  const origin = c.req.header("origin");
+  if (origin && !isAllowedOrigin(origin)) {
+    return c.json({ success: false, error: "Origin not allowed" }, 403);
+  }
+  await next();
+});
+
 app.use("*", cors({
-  origin: "*", // Accepte toutes les origines (permet localhost:3000 et production)
+  origin: (origin) => {
+    if (origin && isAllowedOrigin(origin)) {
+      return origin;
+    }
+    return DEFAULT_ALLOWED_ORIGINS[0];
+  },
   allowHeaders: [
     "Content-Type",
     "Authorization", 
@@ -287,8 +360,8 @@ app.use("*", async (c: HonoContext, next: HonoNext) => {
   // Content Security Policy - EmpÃªche XSS, injection de scripts malveillants
   c.header("Content-Security-Policy", 
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; " +
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+    "script-src 'self' https://cdn.jsdelivr.net https://unpkg.com; " +
+    "style-src 'self' https://fonts.googleapis.com; " +
     "font-src 'self' https://fonts.gstatic.com; " +
     "img-src 'self' data: https:; " +
     "connect-src 'self' https://*.supabase.co;"
@@ -647,6 +720,76 @@ app.delete("/make-server-04919ac5/custom-data/:key", async (c: HonoContext) => {
   }
 });
 console.log("âœ… Custom data KV endpoints added");
+
+// ===========================================================================
+// STORAGE ROUTES
+// ===========================================================================
+app.post("/make-server-04919ac5/storage/upload", requireAuth, async (c: HonoContext) => {
+  try {
+    const contentType = c.req.header("content-type") || "";
+    if (!contentType.includes("multipart/form-data")) {
+      return c.json({ success: false, error: "CONTENT_TYPE_MUST_BE_MULTIPART" }, 400);
+    }
+
+    const formData = await c.req.raw.formData();
+    const fileEntry = formData.get("file");
+
+    if (!(fileEntry instanceof File)) {
+      return c.json({ success: false, error: "FILE_FIELD_REQUIRED" }, 400);
+    }
+
+    if (fileEntry.size === 0) {
+      return c.json({ success: false, error: "EMPTY_FILE" }, 400);
+    }
+
+    if (fileEntry.size > STORAGE_MAX_FILE_SIZE) {
+      return c.json({ success: false, error: `FILE_TOO_LARGE_MAX_${STORAGE_MAX_FILE_SIZE}` }, 413);
+    }
+
+    const fileType = fileEntry.type?.toLowerCase() || "application/octet-stream";
+    if (!STORAGE_ALLOWED_TYPES.has(fileType)) {
+      return c.json({ success: false, error: "FILE_TYPE_NOT_ALLOWED" }, 415);
+    }
+
+    const providedNameEntry = formData.get("fileName");
+    const providedName = typeof providedNameEntry === "string" ? providedNameEntry : fileEntry.name;
+    const safeFileName = sanitizeFileName(providedName) || `portfolio-${Date.now()}`;
+    const extension = getFileExtension(safeFileName, fileType);
+    const user = c.get("user");
+    const userId = user?.id as string | undefined;
+    const storagePath = buildStoragePath(userId || "portfolio", extension);
+
+    const { error: uploadError } = await supabase.storage
+      .from(STORAGE_BUCKET)
+      .upload(storagePath, fileEntry, {
+        cacheControl: "3600",
+        contentType: fileType,
+        upsert: false,
+      });
+
+    if (uploadError) {
+      throw uploadError;
+    }
+
+    const publicResult = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(storagePath);
+    const publicUrl = publicResult.data?.publicUrl || null;
+
+    return c.json({
+      success: true,
+      data: {
+        bucket: STORAGE_BUCKET,
+        path: storagePath,
+        publicUrl,
+        size: fileEntry.size,
+        contentType: fileType,
+      },
+    });
+  } catch (error) {
+    console.error("Storage upload error", error);
+    return c.json({ success: false, error: getErrorMessage(error) }, 500);
+  }
+});
+console.log("âœ… Storage upload endpoint added");
 
 // ===========================================================================
 // AUTH ROUTES

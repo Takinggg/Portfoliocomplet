@@ -201,6 +201,7 @@ function AppContent() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const supabase = createClient();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Initialize analytics on app startup
   useEffect(() => {
@@ -276,10 +277,10 @@ function AppContent() {
 
   // Track page views on route change
   useEffect(() => {
-    const pathname = window.location.pathname;
+    const pathname = location.pathname;
     const pageTitle = pathname.split('/').filter(Boolean).pop() || 'home';
     trackPageView(pathname, pageTitle);
-  }, [window.location.pathname]);
+  }, [location.pathname]);
 
   // Handle newsletter unsubscribe
   const handleNewsletterUnsubscribe = async (email: string) => {

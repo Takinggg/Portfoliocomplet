@@ -19,7 +19,7 @@ interface SEOProps {
 
 export function SEO({
   title = "Portfolio Freelance & CRM - Solutions Web sur mesure",
-  description = "CrÃ©ation de sites web, applications et automatisations pour entreprises ambitieuses. Dashboard CRM intÃ©grÃ© pour gÃ©rer votre activitÃ©.",
+  description = "Création de sites web, applications et automatisations pour entreprises ambitieuses. Dashboard CRM intégré pour gérer votre activité.",
   ogTitle,
   ogDescription,
   ogImage = "/og-image.jpg",
