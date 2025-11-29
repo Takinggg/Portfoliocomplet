@@ -19,7 +19,7 @@ interface ProjectManagerProps {
     loading?: boolean;
 }
 
-type Tab = 'general' | 'story' | 'tech';
+type Tab = 'general' | 'story' | 'tech' | 'media';
 type Lang = 'fr' | 'en';
 
 export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setProjects, title = "Projets", onSaveProject, onDeleteProject, loading = false }) => {
@@ -30,7 +30,9 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
     const [actionLoading, setActionLoading] = useState(false);
     const [uploadingImage, setUploadingImage] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
+    const [galleryUploadError, setGalleryUploadError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const galleryFileInputRef = useRef<HTMLInputElement>(null);
     const isDialogOpen = isAdding || editingId !== null;
   
   // Empty state for new project
@@ -42,7 +44,8 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
     challenge: '', challenge_en: '',
     solution: '', solution_en: '',
     image: '',
-    tags: [],
+        tags: [],
+        gallery: [],
     link: '#',
     stats: [],
     techStack: []
@@ -52,10 +55,16 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
   const [tempTag, setTempTag] = useState('');
   const [tempStat, setTempStat] = useState<KPI>({ label: '', value: '', change: '' });
   const [tempTech, setTempTech] = useState<TechItem>({ name: '', category: '' });
+    const [tempGalleryUrl, setTempGalleryUrl] = useState('');
+    const [uploadingGalleryImage, setUploadingGalleryImage] = useState(false);
 
     const handleEdit = (project: Project) => {
     setEditingId(project.id);
-    setFormData(JSON.parse(JSON.stringify(project))); // Deep copy
+    const draftProject = JSON.parse(JSON.stringify(project));
+    if (!draftProject.gallery) {
+        draftProject.gallery = [];
+    }
+    setFormData(draftProject); // Deep copy
     setIsAdding(false);
     setActiveTab('general');
   };
@@ -118,23 +127,45 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
       category: 'SaaS',
       description: '', description_en: '',
       image: '',
-      tags: [],
+            tags: [],
+            gallery: [],
       link: '#',
       stats: [],
       techStack: []
         });
         setLang('fr');
         setActiveTab('general');
+                setTempGalleryUrl('');
+                setGalleryUploadError(null);
+                setUploadingGalleryImage(false);
+          setUploadError(null);
   };
 
   // Helpers for lists
   const addTag = () => { if(tempTag) { setFormData({...formData, tags: [...(formData.tags||[]), tempTag]}); setTempTag(''); }};
   const addStat = () => { if(tempStat.label && tempStat.value) { setFormData({...formData, stats: [...(formData.stats||[]), tempStat]}); setTempStat({label:'', value:'', change:''}); }};
     const addTech = () => { if(tempTech.name) { setFormData({...formData, techStack: [...(formData.techStack||[]), tempTech]}); setTempTech({name:'', category:''}); }};
+    const addGalleryUrl = () => {
+        if(tempGalleryUrl.trim()) {
+            setFormData(prev => ({...prev, gallery: [...(prev.gallery || []), tempGalleryUrl.trim()]}));
+            setTempGalleryUrl('');
+        }
+    };
+    const removeGalleryItem = (index: number) => {
+        setFormData(prev => ({
+            ...prev,
+            gallery: prev.gallery?.filter((_, idx) => idx !== index) || []
+        }));
+    };
 
     const handleImageUploadClick = () => {
         if (!loading) {
             fileInputRef.current?.click();
+        }
+    };
+    const handleGalleryUploadClick = () => {
+        if (!loading) {
+            galleryFileInputRef.current?.click();
         }
     };
 
@@ -157,6 +188,27 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
             setUploadError((error as Error)?.message || "Impossible de téléverser l'image");
         } finally {
             setUploadingImage(false);
+        }
+    };
+    const handleGalleryFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        event.target.value = '';
+        if (!file) {
+            return;
+        }
+        try {
+            setGalleryUploadError(null);
+            setUploadingGalleryImage(true);
+            const { publicUrl } = await uploadPortfolioImage(file);
+            if (!publicUrl) {
+                throw new Error('Upload réussi mais URL introuvable');
+            }
+            setFormData(prev => ({ ...prev, gallery: [...(prev.gallery || []), publicUrl] }));
+        } catch (error) {
+            console.error('Upload média échoué', error);
+            setGalleryUploadError((error as Error)?.message || "Impossible de téléverser ce média");
+        } finally {
+            setUploadingGalleryImage(false);
         }
     };
 
@@ -223,7 +275,7 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
                         </div>
 
                         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as Tab)} className="w-full">
-                            <TabsList className="grid w-full grid-cols-3 bg-white/5">
+                            <TabsList className="grid w-full grid-cols-4 bg-white/5">
                                 <TabsTrigger value="general" className="flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]">
                                     <Layers className="h-3.5 w-3.5" /> Général
                                 </TabsTrigger>
@@ -232,6 +284,9 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
                                 </TabsTrigger>
                                 <TabsTrigger value="tech" className="flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]">
                                     <BarChart2 className="h-3.5 w-3.5" /> Données & Tech
+                                </TabsTrigger>
+                                <TabsTrigger value="media" className="flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest data-[state=active]:bg-[#CCFF00] data-[state=active]:text-[#0C0C0C]">
+                                    <ImageIcon className="h-3.5 w-3.5" /> Média
                                 </TabsTrigger>
                             </TabsList>
 
@@ -487,6 +542,68 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
                                         ))}
                                         {!formData.techStack?.length && <p className="text-xs text-white/40">Aucun élément dans la stack pour le moment.</p>}
                                     </div>
+                                </div>
+                            </TabsContent>
+
+                            <TabsContent value="media" className="space-y-6 pt-4">
+                                <div className="space-y-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+                                    <div>
+                                        <p className="text-sm font-semibold text-white">Galerie d'images</p>
+                                        <p className="text-xs text-white/60">Ajoutez plusieurs visuels pour les pages projets et les carrousels.</p>
+                                    </div>
+                                    <div className="flex flex-col gap-2 md:flex-row">
+                                        <Input
+                                            value={tempGalleryUrl}
+                                            onChange={(e) => setTempGalleryUrl(e.target.value)}
+                                            placeholder="https://cdn.../image.webp"
+                                            className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
+                                        />
+                                        <Button type="button" onClick={addGalleryUrl} className="bg-white/10 text-white hover:bg-white hover:text-black">
+                                            <Plus className="h-4 w-4" /> Ajouter l'URL
+                                        </Button>
+                                    </div>
+                                    <div className="flex flex-wrap gap-3">
+                                        {formData.gallery?.map((url, index) => (
+                                            <div key={`${url}-${index}`} className="group relative h-28 w-40 overflow-hidden rounded-lg border border-white/10 bg-white/5">
+                                                <img src={url} alt={`media-${index}`} className="h-full w-full object-cover" />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeGalleryItem(index)}
+                                                    className="absolute right-2 top-2 rounded-full bg-black/70 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                                                >
+                                                    <X className="h-3 w-3" />
+                                                </button>
+                                            </div>
+                                        ))}
+                                        {!formData.gallery?.length && <p className="text-xs text-white/40">Aucun média pour l'instant.</p>}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2 rounded-xl border border-dashed border-white/20 bg-white/[0.01] p-4 text-center">
+                                    <p className="text-sm font-semibold text-white">Uploader depuis votre ordinateur</p>
+                                    <p className="text-xs text-white/50">PNG / JPG / WEBP / GIF / AVIF, max {MAX_PORTFOLIO_UPLOAD_SIZE_MB}MB</p>
+                                    <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            onClick={handleGalleryUploadClick}
+                                            disabled={uploadingGalleryImage}
+                                            className="border-white/30 bg-transparent text-white hover:bg-white hover:text-black"
+                                        >
+                                            {uploadingGalleryImage ? 'Import…' : 'Importer un fichier'}
+                                        </Button>
+                                        <Button type="button" variant="ghost" className="text-white/70 hover:text-white" onClick={() => setActiveTab('general')}>
+                                            Voir l'image principale
+                                        </Button>
+                                    </div>
+                                    <input
+                                        ref={galleryFileInputRef}
+                                        type="file"
+                                        accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
+                                        className="hidden"
+                                        onChange={handleGalleryFileChange}
+                                    />
+                                    {galleryUploadError && <p className="text-xs text-red-400">{galleryUploadError}</p>}
                                 </div>
                             </TabsContent>
                         </Tabs>
