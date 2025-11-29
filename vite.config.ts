@@ -15,10 +15,10 @@
             [
               "default-src 'self'",
               "script-src 'self' https://js.stripe.com https://cdn.jsdelivr.net",
-              "style-src 'self' https://fonts.googleapis.com",
-              "font-src 'self' https://fonts.gstatic.com data:",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com",
+              "font-src 'self' https://fonts.gstatic.com https://api.fontshare.com data:",
               "img-src 'self' data: https: blob:",
-              "connect-src 'self' https://*.supabase.co https://api.stripe.com wss://*.supabase.co https://media.istockphoto.com https://*.istockphoto.com https://images.unsplash.com https://images.pexels.com https://cdn.pixabay.com",
+              "connect-src 'self' https://*.supabase.co https://api.stripe.com wss://*.supabase.co https://media.istockphoto.com https://*.istockphoto.com https://images.unsplash.com https://images.pexels.com https://cdn.pixabay.com https://fonts.googleapis.com https://fonts.gstatic.com https://api.fontshare.com https://cdn.prod.website-files.com",
               "frame-src 'self' https://js.stripe.com",
               "object-src 'none'",
               "base-uri 'self'",

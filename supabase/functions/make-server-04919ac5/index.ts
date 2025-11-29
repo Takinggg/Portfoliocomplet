@@ -361,10 +361,10 @@ app.use("*", async (c: HonoContext, next: HonoNext) => {
   c.header("Content-Security-Policy", 
     "default-src 'self'; " +
     "script-src 'self' https://cdn.jsdelivr.net https://unpkg.com; " +
-    "style-src 'self' https://fonts.googleapis.com; " +
-    "font-src 'self' https://fonts.gstatic.com; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com; " +
+    "font-src 'self' https://fonts.gstatic.com https://api.fontshare.com; " +
     "img-src 'self' data: https:; " +
-    "connect-src 'self' https://*.supabase.co;"
+    "connect-src 'self' https://*.supabase.co https://fonts.googleapis.com https://fonts.gstatic.com https://api.fontshare.com https://cdn.prod.website-files.com;"
   );
   
   // EmpÃªche le site d'Ãªtre intÃ©grÃ© dans une iframe (protection clickjacking)

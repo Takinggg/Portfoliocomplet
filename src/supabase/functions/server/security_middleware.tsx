@@ -264,10 +264,10 @@ export function securityHeaders() {
         [
           "default-src 'self'",
           "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://browser.sentry-cdn.com https://js.sentry-cdn.com",
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-        "font-src 'self' https://fonts.gstatic.com data:",
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com",
+        "font-src 'self' https://fonts.gstatic.com https://api.fontshare.com data:",
         "img-src 'self' data: https: blob:",
-        "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://www.clarity.ms https://*.sentry.io",
+        "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://www.clarity.ms https://*.sentry.io https://fonts.googleapis.com https://fonts.gstatic.com https://api.fontshare.com https://cdn.prod.website-files.com",
         "frame-ancestors 'none'",
         "base-uri 'self'",
         "form-action 'self'",
