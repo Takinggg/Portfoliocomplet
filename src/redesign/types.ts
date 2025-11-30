@@ -29,6 +29,8 @@ export interface Project {
   timeline_en?: string;
   role?: string;
   role_en?: string;
+  agency?: string;
+  agency_en?: string;
   
   // Short Description (Portfolio Card)
   description: string;

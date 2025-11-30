@@ -3170,17 +3170,73 @@ app.get("/make-server-04919ac5/projects/:id", async (c: HonoContext) =>{
 app.post("/make-server-04919ac5/projects", requireAuth, async (c: HonoContext) => {
   try {
     const body = await c.req.json();
-    const { 
-      title_fr, title_en, 
-      description_fr, description_en,
-      slug_fr, slug_en, technologies, category, 
-      status, featured, images, coverImage,
-      demoUrl, githubUrl,
-      clientName_fr, clientName_en,
-      duration, year, tags_fr, tags_en,
-      challenges_fr, challenges_en,
-      features_fr, features_en 
-    } = body;
+
+    const resolveField = <T = string>(...keys: string[]): T | undefined => {
+      for (const key of keys) {
+        if (key in body && body[key] !== undefined && body[key] !== null) {
+          return body[key] as T;
+        }
+      }
+      return undefined;
+    };
+
+    const normalizeStringArray = (value?: string | string[]): string[] => {
+      if (!value) return [];
+      return Array.isArray(value) ? value : [value];
+    };
+
+    const title_fr = resolveField<string>("title_fr", "name_fr", "title", "nameFr");
+    const title_en = resolveField<string>("title_en", "name_en", "title_en", "nameEn") || title_fr;
+    const description_fr = resolveField<string>("description_fr", "summary_fr", "description", "descriptionFr");
+    const description_en = resolveField<string>("description_en", "summary_en", "description_en", "descriptionEn") || description_fr;
+    const slug_fr = resolveField<string>("slug_fr", "slug", "slugFr");
+    const slug_en = resolveField<string>("slug_en", "slugEn") || slug_fr;
+    const technologies = normalizeStringArray(resolveField<string | string[]>("technologies", "stack", "technologies_fr"));
+    const category = resolveField<string>("category", "category_fr", "categoryFr") || "web-development";
+    const status = resolveField<string>("status");
+    const featured = resolveField<boolean>("featured") ?? false;
+    const images = normalizeStringArray(resolveField<string | string[]>("images", "gallery", "imageGallery"));
+    const coverImage = resolveField<string>("coverImage", "imageUrl", "cover_image");
+    const demoUrl = resolveField<string>("demoUrl", "projectUrl");
+    const githubUrl = resolveField<string>("githubUrl");
+    const clientName_fr = resolveField<string>("clientName_fr", "clientName", "client", "client_name_fr");
+    const clientName_en = resolveField<string>("clientName_en", "clientNameEn") || clientName_fr;
+    const duration = resolveField<string>("duration", "duration_fr");
+    const year = resolveField<string | number>("year", "startYear");
+    const tags_fr = normalizeStringArray(resolveField<string | string[]>("tags_fr", "tags", "tagsFr"));
+    const tags_en_candidate = normalizeStringArray(resolveField<string | string[]>("tags_en", "tagsEn"));
+    const tags_en = tags_en_candidate.length ? tags_en_candidate : tags_fr;
+    const challenges_fr = normalizeStringArray(resolveField<string | string[]>("challenges_fr", "challenges", "challenge_fr"));
+    const challenges_en_candidate = normalizeStringArray(resolveField<string | string[]>("challenges_en", "challengesEn", "challenge_en"));
+    const challenges_en = challenges_en_candidate.length ? challenges_en_candidate : challenges_fr;
+    const features_fr = normalizeStringArray(resolveField<string | string[]>("features_fr", "features", "featuresFr"));
+    const features_en_candidate = normalizeStringArray(resolveField<string | string[]>("features_en", "featuresEn"));
+    const features_en = features_en_candidate.length ? features_en_candidate : features_fr;
+    const role_fr = resolveField<string>("role_fr", "role", "roleFr");
+    const role_en = resolveField<string>("role_en", "roleEn") || role_fr;
+    const agency_fr = resolveField<string>("agency_fr", "agency", "agencyFr");
+    const agency_en = resolveField<string>("agency_en", "agencyEn") || agency_fr || clientName_en;
+    const timeline_fr = resolveField<string>("timeline_fr", "timeline", "duration_fr", "duration");
+    const timeline_en = resolveField<string>("timeline_en", "timelineEn", "duration_en") || timeline_fr;
+    const deliverables_fr = normalizeStringArray(resolveField<string | string[]>("deliverables_fr", "deliverables", "features_fr"));
+    const deliverables_en_candidate = normalizeStringArray(resolveField<string | string[]>("deliverables_en", "deliverablesEn", "features_en"));
+    const deliverables_en = deliverables_en_candidate.length ? deliverables_en_candidate : deliverables_fr;
+    const testimonialQuoteFr = resolveField<string>("testimonial_quote_fr", "testimonial_fr", "quote_fr");
+    const testimonialQuoteEn = resolveField<string>("testimonial_quote_en", "testimonial_en", "quote_en");
+    const testimonialAuthor = resolveField<string>("testimonial_author", "testimonialAuthor");
+    const testimonialRoleFr = resolveField<string>("testimonial_role_fr", "testimonial_role", "testimonialRoleFr");
+    const testimonialRoleEn = resolveField<string>("testimonial_role_en", "testimonialRoleEn");
+    const testimonialPayload = body.testimonial ?? ((testimonialQuoteFr || testimonialQuoteEn || testimonialAuthor)
+      ? {
+          text: testimonialQuoteFr || testimonialQuoteEn || "",
+          text_fr: testimonialQuoteFr,
+          text_en: testimonialQuoteEn,
+          author: testimonialAuthor,
+          role: testimonialRoleFr || testimonialRoleEn,
+          role_fr: testimonialRoleFr,
+          role_en: testimonialRoleEn,
+        }
+      : undefined);
 
     // Validation
     if (!title_fr || !description_fr) {
@@ -3200,24 +3256,32 @@ app.post("/make-server-04919ac5/projects", requireAuth, async (c: HonoContext) =
       description_en: description_en || description_fr,
       slug_fr: slug_fr || `project-${Date.now()}`,
       slug_en: slug_en || slug_fr || `project-${Date.now()}`,
-      technologies: technologies || [],
-      category: category || "web-development",
+      technologies,
+      category,
       status: status || "draft",
-      featured: featured || false,
-      images: images || [],
+      featured,
+      images,
       coverImage: coverImage || "",
       demoUrl: demoUrl || null,
       githubUrl: githubUrl || null,
       clientName_fr: clientName_fr || "",
       clientName_en: clientName_en || clientName_fr,
       duration: duration || "",
+      timeline_fr: timeline_fr || duration || "",
+      timeline_en: timeline_en || timeline_fr || duration || "",
+      role_fr: role_fr || "",
+      role_en: role_en || role_fr || "",
+      agency_fr: agency_fr || clientName_fr || "",
+      agency_en: agency_en || agency_fr || clientName_en || "",
       year: year || new Date().getFullYear(),
-      tags_fr: tags_fr || [],
-      tags_en: tags_en || tags_fr || [],
+      tags_fr,
+      tags_en,
       challenges_fr: challenges_fr || [],
       challenges_en: challenges_en || challenges_fr,
       features_fr: features_fr || [],
       features_en: features_en || features_fr,
+      deliverables_fr,
+      deliverables_en,
       views: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -3225,7 +3289,13 @@ app.post("/make-server-04919ac5/projects", requireAuth, async (c: HonoContext) =
       title: title_fr,
       description: description_fr,
       slug: slug_fr || `project-${Date.now()}`,
-      tags: tags_fr || []
+      tags: tags_fr || [],
+      name_fr: title_fr,
+      name_en: title_en,
+      description_fr,
+      description_en,
+      imageGallery: images,
+      testimonial: testimonialPayload
     };
     
     await kv.set(projectId, projectData);

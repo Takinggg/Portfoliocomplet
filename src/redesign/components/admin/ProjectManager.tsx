@@ -21,6 +21,7 @@ interface ProjectManagerProps {
 
 type Tab = 'general' | 'story' | 'tech' | 'media';
 type Lang = 'fr' | 'en';
+type FeedbackFields = NonNullable<Project['feedback']>;
 
 export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setProjects, title = "Projets", onSaveProject, onDeleteProject, loading = false }) => {
     const [editingId, setEditingId] = useState<Project['id'] | null>(null);
@@ -37,24 +38,37 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
   
   // Empty state for new project
   const [formData, setFormData] = useState<Partial<Project>>({
-    title: '', title_en: '',
-    client: '',
-    category: 'SaaS',
-    description: '', description_en: '',
-    challenge: '', challenge_en: '',
-    solution: '', solution_en: '',
-    image: '',
-        tags: [],
-        gallery: [],
-    link: '#',
-    stats: [],
-    techStack: []
+        title: '',
+        title_en: '',
+        client: '',
+        category: 'SaaS',
+        description: '',
+        description_en: '',
+        challenge: '',
+        challenge_en: '',
+        solution: '',
+        solution_en: '',
+        timeline: '',
+        timeline_en: '',
+        role: '',
+        role_en: '',
+        agency: '',
+        agency_en: '',
+        image: '',
+                tags: [],
+                gallery: [],
+                deliverables: [],
+                deliverables_en: [],
+        link: '#',
+        stats: [],
+        techStack: []
   });
 
   // Temporary state for list inputs
   const [tempTag, setTempTag] = useState('');
   const [tempStat, setTempStat] = useState<KPI>({ label: '', value: '', change: '' });
   const [tempTech, setTempTech] = useState<TechItem>({ name: '', category: '' });
+        const [tempDeliverables, setTempDeliverables] = useState<Record<Lang, string>>({ fr: '', en: '' });
     const [tempGalleryUrl, setTempGalleryUrl] = useState('');
     const [uploadingGalleryImage, setUploadingGalleryImage] = useState(false);
 
@@ -67,6 +81,7 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
     setFormData(draftProject); // Deep copy
     setIsAdding(false);
     setActiveTab('general');
+                setTempDeliverables({ fr: '', en: '' });
   };
 
     const handleDelete = async (id: Project['id']) => {
@@ -122,19 +137,35 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
     setEditingId(null);
     setIsAdding(false);
     setFormData({
-      title: '', title_en: '',
-      client: '',
-      category: 'SaaS',
-      description: '', description_en: '',
-      image: '',
-            tags: [],
-            gallery: [],
-      link: '#',
-      stats: [],
-      techStack: []
-        });
+    title: '',
+    title_en: '',
+    client: '',
+    category: 'SaaS',
+    description: '',
+    description_en: '',
+    challenge: '',
+    challenge_en: '',
+    solution: '',
+    solution_en: '',
+    timeline: '',
+    timeline_en: '',
+    role: '',
+    role_en: '',
+    agency: '',
+    agency_en: '',
+    image: '',
+        tags: [],
+        gallery: [],
+        deliverables: [],
+        deliverables_en: [],
+    link: '#',
+    stats: [],
+    techStack: [],
+    feedback: undefined,
+      });
         setLang('fr');
         setActiveTab('general');
+            setTempDeliverables({ fr: '', en: '' });
                 setTempGalleryUrl('');
                 setGalleryUploadError(null);
                 setUploadingGalleryImage(false);
@@ -155,6 +186,49 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
         setFormData(prev => ({
             ...prev,
             gallery: prev.gallery?.filter((_, idx) => idx !== index) || []
+        }));
+    };
+
+    const addDeliverable = (targetLang: Lang) => {
+        const value = tempDeliverables[targetLang].trim();
+        if (!value) {
+            return;
+        }
+        setFormData((prev) => {
+            if (targetLang === 'fr') {
+                return { ...prev, deliverables: [...(prev.deliverables ?? []), value] };
+            }
+            return { ...prev, deliverables_en: [...(prev.deliverables_en ?? []), value] };
+        });
+        setTempDeliverables((prev) => ({ ...prev, [targetLang]: '' }));
+    };
+
+    const removeDeliverable = (targetLang: Lang, index: number) => {
+        setFormData((prev) => {
+            if (targetLang === 'fr') {
+                const next = (prev.deliverables ?? []).filter((_, idx) => idx !== index);
+                return { ...prev, deliverables: next };
+            }
+            const next = (prev.deliverables_en ?? []).filter((_, idx) => idx !== index);
+            return { ...prev, deliverables_en: next };
+        });
+    };
+
+    const ensureFeedbackBase = (feedback?: Project['feedback']): FeedbackFields => ({
+        quote: feedback?.quote ?? '',
+        author: feedback?.author ?? '',
+        quote_en: feedback?.quote_en,
+        role: feedback?.role,
+        role_en: feedback?.role_en,
+    });
+
+    const setFeedbackField = (field: keyof FeedbackFields, value: string) => {
+        setFormData((prev) => ({
+            ...prev,
+            feedback: {
+                ...ensureFeedbackBase(prev.feedback),
+                [field]: value,
+            },
         }));
     };
 
@@ -343,6 +417,51 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
                                     </div>
                                 </div>
 
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    <div>
+                                        <Label className="text-xs uppercase text-white/60">Planning ({lang.toUpperCase()})</Label>
+                                        <Input
+                                            value={lang === 'fr' ? formData.timeline ?? '' : formData.timeline_en ?? ''}
+                                            onChange={(e) =>
+                                                lang === 'fr'
+                                                    ? setFormData({ ...formData, timeline: e.target.value })
+                                                    : setFormData({ ...formData, timeline_en: e.target.value })
+                                            }
+                                            placeholder={lang === 'fr' ? 'Ex : 4 semaines' : 'E.g. 4 weeks'}
+                                            className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Label className="text-xs uppercase text-white/60">Rôle ({lang.toUpperCase()})</Label>
+                                        <Input
+                                            value={lang === 'fr' ? formData.role ?? '' : formData.role_en ?? ''}
+                                            onChange={(e) =>
+                                                lang === 'fr'
+                                                    ? setFormData({ ...formData, role: e.target.value })
+                                                    : setFormData({ ...formData, role_en: e.target.value })
+                                            }
+                                            placeholder={lang === 'fr' ? 'Direction artistique' : 'Art Direction'}
+                                            className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    <div>
+                                        <Label className="text-xs uppercase text-white/60">Cadre / Agence ({lang.toUpperCase()})</Label>
+                                        <Input
+                                            value={lang === 'fr' ? formData.agency ?? '' : formData.agency_en ?? ''}
+                                            onChange={(e) =>
+                                                lang === 'fr'
+                                                    ? setFormData({ ...formData, agency: e.target.value })
+                                                    : setFormData({ ...formData, agency_en: e.target.value })
+                                            }
+                                            placeholder={lang === 'fr' ? 'Ex : Freelance' : 'E.g. Freelance partner'}
+                                            className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
+                                        />
+                                    </div>
+                                </div>
+
                                 <div className="space-y-3">
                                     <Label className="text-xs uppercase text-white/60">Visuel principal</Label>
                                     <div className="flex flex-wrap items-center gap-3">
@@ -425,6 +544,88 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
                                         placeholder="Comment avez-vous résolu ce défi ?"
                                         className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
                                     />
+                                </div>
+
+                                <div className="space-y-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+                                    <div>
+                                        <p className="text-sm font-semibold text-white">Livrables ({lang.toUpperCase()})</p>
+                                        <p className="text-xs text-white/60">Une puce par livrable, traduit si nécessaire.</p>
+                                    </div>
+                                    <div className="flex flex-col gap-2 md:flex-row">
+                                        <Input
+                                            value={tempDeliverables[lang]}
+                                            onChange={(e) => setTempDeliverables((prev) => ({ ...prev, [lang]: e.target.value }))}
+                                            placeholder={lang === 'fr' ? 'Design system' : 'Design system'}
+                                            className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
+                                        />
+                                        <Button
+                                            type="button"
+                                            onClick={() => addDeliverable(lang)}
+                                            className="bg-white/10 text-white hover:bg-white hover:text-black"
+                                            disabled={!tempDeliverables[lang].trim()}
+                                        >
+                                            <Plus className="h-4 w-4" /> Ajouter
+                                        </Button>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {(lang === 'fr' ? formData.deliverables ?? [] : formData.deliverables_en ?? []).map((item, index) => (
+                                            <Badge key={`${item}-${index}`} className="flex items-center gap-2 bg-white/10 text-white">
+                                                <span>{item}</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeDeliverable(lang, index)}
+                                                    className="text-white/60 hover:text-red-400"
+                                                >
+                                                    <X className="h-3 w-3" />
+                                                </button>
+                                            </Badge>
+                                        ))}
+                                        {!(lang === 'fr' ? formData.deliverables : formData.deliverables_en)?.length && (
+                                            <p className="text-xs text-white/40">Ajoutez 2 à 4 livrables clés.</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+                                    <div>
+                                        <p className="text-sm font-semibold text-white">Citation client ({lang.toUpperCase()})</p>
+                                        <p className="text-xs text-white/60">Affichez un bloc témoignage facultatif.</p>
+                                    </div>
+                                    <Textarea
+                                        rows={4}
+                                        value={lang === 'fr' ? formData.feedback?.quote ?? '' : formData.feedback?.quote_en ?? ''}
+                                        onChange={(e) =>
+                                            lang === 'fr'
+                                                ? setFeedbackField('quote', e.target.value)
+                                                : setFeedbackField('quote_en', e.target.value)
+                                        }
+                                        placeholder={lang === 'fr' ? '“Une collaboration hors norme…”' : '“An outstanding collaboration…”'}
+                                        className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
+                                    />
+                                    <div className="grid gap-4 md:grid-cols-2">
+                                        <div>
+                                            <Label className="text-xs uppercase text-white/60">Auteur</Label>
+                                            <Input
+                                                value={formData.feedback?.author ?? ''}
+                                                onChange={(e) => setFeedbackField('author', e.target.value)}
+                                                placeholder="Nom du client"
+                                                className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
+                                            />
+                                        </div>
+                                        <div>
+                                            <Label className="text-xs uppercase text-white/60">Rôle auteur ({lang.toUpperCase()})</Label>
+                                            <Input
+                                                value={lang === 'fr' ? formData.feedback?.role ?? '' : formData.feedback?.role_en ?? ''}
+                                                onChange={(e) =>
+                                                    lang === 'fr'
+                                                        ? setFeedbackField('role', e.target.value)
+                                                        : setFeedbackField('role_en', e.target.value)
+                                                }
+                                                placeholder={lang === 'fr' ? 'CEO Client' : 'Client CEO'}
+                                                className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </TabsContent>
 

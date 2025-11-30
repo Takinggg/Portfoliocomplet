@@ -111,6 +111,14 @@ export interface BilingualProject {
   results_en?: string;
   category_en?: "web" | "mobile" | "design" | "consulting" | "other";
   // Common fields
+  timeline_fr?: string;
+  timeline_en?: string;
+  role_fr?: string;
+  role_en?: string;
+  agency_fr?: string;
+  agency_en?: string;
+  deliverables_fr?: string[];
+  deliverables_en?: string[];
   clientId?: string;
   clientName?: string;
   status: "planning" | "in_progress" | "review" | "completed" | "on_hold";
@@ -125,9 +133,13 @@ export interface BilingualProject {
   githubUrl?: string;
   imageGallery?: string[];
   testimonial?: {
-    text: string;
-    author: string;
-    role: string;
+    text?: string;
+    text_fr?: string;
+    text_en?: string;
+    author?: string;
+    role?: string;
+    role_fr?: string;
+    role_en?: string;
   };
   createdAt: string;
   updatedAt: string;

@@ -13,16 +13,36 @@ const fallbackProject: Project = {
     client: "Studio Alpha",
     year: "2024",
     image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+    timeline: "4 semaines",
+    timeline_en: "4 weeks",
+    role: "Direction artistique",
+    role_en: "Art Direction",
+    agency: "Freelance",
+    agency_en: "Freelance",
     description:
         "Une exploration visuelle des frontières entre l'interface utilisateur et l'art abstrait. Ce projet vise à déconstruire les grilles conventionnelles pour créer une expérience numérique fluide et organique.",
     description_en:
         "A visual exploration at the edge of interface design and abstract art. The goal is to break conventional grids to craft a fluid, organic digital experience.",
     link: "#",
     tags: ["UI/UX", "Art Direction"],
+    deliverables: ["UI Kit", "3D Assets"],
+    deliverables_en: ["UI Kit", "3D Assets"],
     gallery: [
         "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop",
         "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2564&auto=format&fit=crop",
         "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2600&auto=format&fit=crop",
+    ],
+    feedback: {
+        quote: "Un dispositif qui a dépassé nos attentes en donnant une âme à chaque écran.",
+        quote_en: "A setup that exceeded expectations by giving life to every screen.",
+        author: "Claire Dupont",
+        role: "Head of Design",
+        role_en: "Head of Design",
+    },
+    techStack: [
+        { name: "React", category: "Frontend" },
+        { name: "Three.js", category: "3D" },
+        { name: "Tailwind", category: "UI" },
     ],
 };
 
@@ -36,6 +56,8 @@ const DETAIL_COPY = {
         timeline: 'Planning',
         deliverables: 'Livrables',
         techStack: 'Stack technique',
+        testimonial: 'Témoignage client',
+        gallery: 'Galerie projet',
         nextProject: 'Projet suivant',
         nextProjectAria: 'Voir le projet suivant',
         figure: 'FIG',
@@ -49,6 +71,8 @@ const DETAIL_COPY = {
         timeline: 'Timeline',
         deliverables: 'Deliverables',
         techStack: 'Technology Stack',
+        testimonial: 'Client Testimonial',
+        gallery: 'Project Gallery',
         nextProject: 'Next Project',
         nextProjectAria: 'View next project',
         figure: 'FIG',
@@ -67,6 +91,35 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
         const copy = DETAIL_COPY[language];
     const challengeText = getLocalizedValue(language, details.challenge ?? details.description, details.challenge_en ?? details.description_en);
     const solutionText = getLocalizedValue(language, details.solution, details.solution_en);
+    const [activeImage, setActiveImage] = React.useState(0);
+    React.useEffect(() => {
+        setActiveImage(0);
+    }, [details.id]);
+    const galleryImages = (details.gallery && details.gallery.length > 0
+        ? details.gallery
+        : (details.image ? [details.image] : [])).filter((src): src is string => Boolean(src));
+    const safeGallery = galleryImages.length ? galleryImages : [fallbackProject.image];
+    const hasMultipleImages = safeGallery.length > 1;
+    const handlePrevImage = () => {
+        setActiveImage((prev) => (prev - 1 + safeGallery.length) % safeGallery.length);
+    };
+    const handleNextImage = () => {
+        setActiveImage((prev) => (prev + 1) % safeGallery.length);
+    };
+    const roleLabel = getLocalizedValue(language, details.role, details.role_en) || '—';
+    const agencyLabel = getLocalizedValue(language, details.agency ?? details.client, details.agency_en ?? details.client) || '—';
+    const timelineLabel = getLocalizedValue(language, details.timeline, details.timeline_en) || details.year || '—';
+    const deliverablesList = language === 'fr'
+        ? details.deliverables ?? []
+        : details.deliverables_en ?? details.deliverables ?? [];
+    const deliverablesSummary = deliverablesList.length ? deliverablesList.slice(0, 2).join(', ') : '—';
+    const testimonialQuote = getLocalizedValue(language, details.feedback?.quote, details.feedback?.quote_en);
+    const testimonialRole = getLocalizedValue(language, details.feedback?.role, details.feedback?.role_en);
+    const testimonialAuthor = details.feedback?.author;
+    const techItems = details.techStack?.map((item) => item.name) ?? details.tags ?? [];
+    const techFallback = language === 'fr' ? 'Bientôt disponible' : 'Coming soon';
+    const prevImageLabel = language === 'fr' ? 'Image précédente' : 'Previous image';
+    const nextImageLabel = language === 'fr' ? 'Image suivante' : 'Next image';
 
   return (
     <div className="bg-background min-h-screen animate-in fade-in slide-in-from-bottom-8 duration-700">
@@ -142,19 +195,19 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
                         <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-8">
                             <div>
                                 <h4 className="text-xs text-neutral-500 uppercase mb-1">{copy.role}</h4>
-                                <p className="text-white">Art Direction</p>
+                                <p className="text-white">{roleLabel}</p>
                             </div>
                             <div>
                                 <h4 className="text-xs text-neutral-500 uppercase mb-1">{copy.agency}</h4>
-                                <p className="text-white">Freelance</p>
+                                <p className="text-white">{agencyLabel}</p>
                             </div>
                             <div>
                                 <h4 className="text-xs text-neutral-500 uppercase mb-1">{copy.timeline}</h4>
-                                <p className="text-white">4 Weeks</p>
+                                <p className="text-white">{timelineLabel}</p>
                             </div>
                              <div>
                                 <h4 className="text-xs text-neutral-500 uppercase mb-1">{copy.deliverables}</h4>
-                                <p className="text-white">UI Kit, 3D Assets</p>
+                                <p className="text-white">{deliverablesSummary}</p>
                             </div>
                         </div>
                     </Reveal>
@@ -162,35 +215,100 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
             </div>
 
             {/* Main Content & Gallery */}
-            <div className="lg:col-span-8 space-y-24">
-                <Reveal delay={100}>
-                    <p className="text-3xl md:text-5xl font-display font-medium text-white leading-tight">
-                        "Un design qui ne se contente pas d'être beau, mais qui raconte une histoire à travers chaque pixel, chaque interaction et chaque mouvement."
-                    </p>
-                </Reveal>
-
-                {details.gallery?.map((img, index) => (
-                    <Reveal key={index} width="100%">
-                        <div className="relative group overflow-hidden rounded-lg">
-                            <img 
-                                src={img} 
-                                alt={`Gallery ${index}`} 
-                                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                             <div className="absolute bottom-4 right-4 text-xs font-mono text-white/50 bg-black/50 px-2 py-1 rounded">
-                                          {copy.figure} {index + 1}.0
+            <div className="lg:col-span-8 space-y-16">
+                {testimonialQuote && (
+                    <Reveal delay={50}>
+                        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-8">
+                            <p className="text-3xl md:text-4xl font-display font-medium text-white leading-tight">
+                                &ldquo;{testimonialQuote}&rdquo;
+                            </p>
+                            <div className="mt-6 text-sm font-mono uppercase tracking-widest text-white/80">
+                                <span>{testimonialAuthor || details.client}</span>
+                                {testimonialRole && <span className="text-white/50"> &mdash; {testimonialRole}</span>}
                             </div>
                         </div>
                     </Reveal>
-                ))}
+                )}
 
-                <Reveal>
+                <Reveal delay={testimonialQuote ? 120 : 60}>
+                    <div>
+                        <div className="mb-4 flex items-center justify-between text-xs font-bold uppercase tracking-[0.3em] text-neutral-500">
+                            <span>{copy.gallery}</span>
+                            <span>{String(activeImage + 1).padStart(2, '0')}/{String(safeGallery.length).padStart(2, '0')}</span>
+                        </div>
+                        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+                            <img
+                                src={safeGallery[activeImage]}
+                                alt={`${details.title} gallery ${activeImage + 1}`}
+                                className="w-full h-[520px] object-cover"
+                            />
+                            {hasMultipleImages && (
+                                <>
+                                    <button
+                                        onClick={handlePrevImage}
+                                        aria-label={prevImageLabel}
+                                        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-3 text-white backdrop-blur hover:bg-primary hover:text-black transition"
+                                    >
+                                        <ArrowLeft size={18} />
+                                    </button>
+                                    <button
+                                        onClick={handleNextImage}
+                                        aria-label={nextImageLabel}
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-3 text-white backdrop-blur hover:bg-primary hover:text-black transition"
+                                    >
+                                        <ArrowRight size={18} />
+                                    </button>
+                                </>
+                            )}
+                            <div className="absolute bottom-4 left-4 text-xs font-mono text-white/60 bg-black/50 px-3 py-1 rounded-full">
+                                {copy.figure} {activeImage + 1}.0
+                            </div>
+                        </div>
+                        {hasMultipleImages && (
+                            <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
+                                {safeGallery.map((img, index) => (
+                                    <button
+                                        key={`${img}-${index}`}
+                                        onClick={() => setActiveImage(index)}
+                                        className={`relative h-20 w-32 flex-shrink-0 overflow-hidden rounded-xl border transition ${
+                                            index === activeImage ? 'border-primary' : 'border-white/10 opacity-70 hover:opacity-100'
+                                        }`}
+                                    >
+                                        <img src={img} alt={`Thumbnail ${index + 1}`} className="h-full w-full object-cover" />
+                                        {index === activeImage && <span className="absolute inset-0 border-2 border-primary/80 rounded-xl pointer-events-none" />}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </Reveal>
+
+                {deliverablesList.length > 0 && (
+                    <Reveal delay={200}>
+                        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+                            <div className="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-3">{copy.deliverables}</div>
+                            <div className="flex flex-wrap gap-2">
+                                {deliverablesList.map((item, index) => (
+                                    <span key={`${item}-${index}`} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-white text-sm">
+                                        {item}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </Reveal>
+                )}
+
+                <Reveal delay={techItems.length ? 240 : 200}>
                     <div className="bg-[#111] p-12 rounded-2xl border border-white/5 text-center">
                         <h3 className="font-display text-2xl text-white mb-4">{copy.techStack}</h3>
                         <div className="flex flex-wrap justify-center gap-4">
-                            {['React', 'WebGL', 'Three.js', 'Tailwind', 'Blender'].map(tech => (
-                                <span key={tech} className="px-4 py-2 bg-white/5 rounded text-neutral-400 text-sm">{tech}</span>
-                            ))}
+                            {techItems.length ? (
+                                techItems.map((tech) => (
+                                    <span key={tech} className="px-4 py-2 bg-white/5 rounded text-neutral-400 text-sm">{tech}</span>
+                                ))
+                            ) : (
+                                <span className="text-sm text-neutral-500">{techFallback}</span>
+                            )}
                         </div>
                     </div>
                 </Reveal>

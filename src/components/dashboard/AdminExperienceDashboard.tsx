@@ -223,12 +223,20 @@ const mapBilingualProjectToProject = (project: BilingualProject): Project => ({
   image: project.imageUrl || FALLBACK_PROJECT_IMAGE,
   link: project.projectUrl || project.githubUrl || "#",
   year: project.startDate?.slice(0, 4),
+  timeline: project.timeline_fr || project.duration_fr || project.timeline_en || project.duration_en,
+  timeline_en: project.timeline_en || project.duration_en || project.timeline_fr || project.duration_fr,
+  role: project.role_fr || project.role_en,
+  role_en: project.role_en || project.role_fr,
+  agency: project.agency_fr || project.clientName,
+  agency_en: project.agency_en || project.clientName,
   description: project.description_fr || "",
   description_en: project.description_en || project.description_fr || "",
   challenge: project.challenges_fr,
   challenge_en: project.challenges_en,
   solution: project.solutions_fr,
   solution_en: project.solutions_en,
+  deliverables: project.deliverables_fr || (project as any)?.features_fr,
+  deliverables_en: project.deliverables_en || (project as any)?.features_en || project.deliverables_fr,
   tags: project.tags_fr?.length ? project.tags_fr : project.tags_en || [],
   techStack: project.technologies?.map((tech) => ({ name: tech, category: "Stack" })),
   stats: project.results_fr
@@ -240,6 +248,20 @@ const mapBilingualProjectToProject = (project: BilingualProject): Project => ({
       ]
     : undefined,
   gallery: project.imageGallery,
+  feedback: (() => {
+    const quoteFr = project.testimonial?.text_fr ?? project.testimonial?.text;
+    const quoteEn = project.testimonial?.text_en ?? project.testimonial?.text;
+    if (!quoteFr && !quoteEn) {
+      return undefined;
+    }
+    return {
+      quote: quoteFr || quoteEn || "",
+      quote_en: quoteEn,
+      author: project.testimonial?.author || project.clientName || "Client",
+      role: project.testimonial?.role_fr || project.testimonial?.role,
+      role_en: project.testimonial?.role_en || project.testimonial?.role,
+    };
+  })(),
 });
 
 const buildBilingualProjectPayload = (
@@ -253,6 +275,37 @@ const buildBilingualProjectPayload = (
   const technologies = project.techStack?.map((tech) => tech.name) ?? existing?.technologies ?? [];
   const kpi = project.stats?.[0];
   const nowIso = new Date().toISOString();
+  const deliverablesFr = project.deliverables && project.deliverables.length > 0
+    ? project.deliverables
+    : existing?.deliverables_fr;
+  const deliverablesEn = project.deliverables_en && project.deliverables_en.length > 0
+    ? project.deliverables_en
+    : existing?.deliverables_en ?? deliverablesFr;
+  const timelineFr = project.timeline ?? existing?.timeline_fr ?? existing?.duration_fr;
+  const timelineEn = project.timeline_en ?? existing?.timeline_en ?? existing?.duration_en ?? timelineFr;
+  const agencyFr = project.agency ?? existing?.agency_fr ?? project.client ?? existing?.clientName;
+  const agencyEn = project.agency_en ?? existing?.agency_en ?? agencyFr;
+  const roleFr = project.role ?? existing?.role_fr;
+  const roleEn = project.role_en ?? existing?.role_en ?? roleFr;
+  const testimonial = (() => {
+    if (!project.feedback && !existing?.testimonial) {
+      return existing?.testimonial;
+    }
+    const textFr = project.feedback?.quote ?? existing?.testimonial?.text_fr ?? existing?.testimonial?.text;
+    const textEn = project.feedback?.quote_en ?? existing?.testimonial?.text_en ?? existing?.testimonial?.text;
+    const author = project.feedback?.author ?? existing?.testimonial?.author ?? project.client ?? existing?.clientName ?? "Client";
+    const testimonialRoleFr = project.feedback?.role ?? existing?.testimonial?.role_fr ?? existing?.testimonial?.role;
+    const testimonialRoleEn = project.feedback?.role_en ?? existing?.testimonial?.role_en ?? existing?.testimonial?.role;
+    return {
+      text: textFr || textEn,
+      text_fr: textFr,
+      text_en: textEn,
+      author,
+      role: testimonialRoleFr || testimonialRoleEn,
+      role_fr: testimonialRoleFr,
+      role_en: testimonialRoleEn,
+    };
+  })();
 
   return {
     name_fr: project.title || existing?.name_fr || "Sans titre",
@@ -263,6 +316,14 @@ const buildBilingualProjectPayload = (
     tags_en: tags,
     duration_fr: existing?.duration_fr,
     duration_en: existing?.duration_en,
+    timeline_fr: timelineFr,
+    timeline_en: timelineEn,
+    role_fr: roleFr,
+    role_en: roleEn,
+    agency_fr: agencyFr,
+    agency_en: agencyEn,
+    deliverables_fr: deliverablesFr,
+    deliverables_en: deliverablesEn,
     challenges_fr: project.challenge ?? existing?.challenges_fr,
     challenges_en: project.challenge_en ?? existing?.challenges_en,
     solutions_fr: project.solution ?? existing?.solutions_fr,
@@ -284,7 +345,7 @@ const buildBilingualProjectPayload = (
     projectUrl: project.link ?? existing?.projectUrl,
     githubUrl: existing?.githubUrl,
     imageGallery: project.gallery ?? existing?.imageGallery,
-    testimonial: existing?.testimonial,
+    testimonial,
   };
 };
 
