@@ -66,7 +66,7 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
 
   // Temporary state for list inputs
   const [tempTag, setTempTag] = useState('');
-  const [tempStat, setTempStat] = useState<KPI>({ label: '', value: '', change: '' });
+    const [tempStat, setTempStat] = useState<KPI>({ label: '', label_en: '', value: '', change: '' });
   const [tempTech, setTempTech] = useState<TechItem>({ name: '', category: '' });
         const [tempDeliverables, setTempDeliverables] = useState<Record<Lang, string>>({ fr: '', en: '' });
     const [tempGalleryUrl, setTempGalleryUrl] = useState('');
@@ -174,7 +174,24 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
 
   // Helpers for lists
   const addTag = () => { if(tempTag) { setFormData({...formData, tags: [...(formData.tags||[]), tempTag]}); setTempTag(''); }};
-  const addStat = () => { if(tempStat.label && tempStat.value) { setFormData({...formData, stats: [...(formData.stats||[]), tempStat]}); setTempStat({label:'', value:'', change:''}); }};
+  const addStat = () => {
+      const baseLabel = (tempStat.label || '').trim();
+      const englishLabel = (tempStat.label_en || '').trim();
+      const value = (tempStat.value || '').trim();
+      if(!value || (!baseLabel && !englishLabel)) {
+          return;
+      }
+      setFormData({
+          ...formData,
+          stats: [...(formData.stats||[]), {
+              ...tempStat,
+              label: baseLabel || englishLabel,
+              label_en: englishLabel || tempStat.label_en,
+              value
+          }]
+      });
+      setTempStat({ label:'', label_en:'', value:'', change:'' });
+  };
     const addTech = () => { if(tempTech.name) { setFormData({...formData, techStack: [...(formData.techStack||[]), tempTech]}); setTempTech({name:'', category:''}); }};
     const addGalleryUrl = () => {
         if(tempGalleryUrl.trim()) {
@@ -667,6 +684,7 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
                                     <div className="flex items-center gap-2 text-sm font-semibold text-white">
                                         <BarChart2 className="h-4 w-4" /> KPIs clés
                                     </div>
+                                    <p className="text-xs text-white/60">Entrez la valeur, puis utilisez l'onglet FR/EN pour définir chaque libellé.</p>
                                     <div className="grid gap-2 md:grid-cols-3">
                                         <Input
                                             value={tempStat.value}
@@ -675,9 +693,13 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
                                             className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
                                         />
                                         <Input
-                                            value={tempStat.label}
-                                            onChange={(e) => setTempStat({ ...tempStat, label: e.target.value })}
-                                            placeholder="Libellé (ex : Utilisateurs)"
+                                            value={lang === 'fr' ? tempStat.label : tempStat.label_en ?? ''}
+                                            onChange={(e) =>
+                                                lang === 'fr'
+                                                    ? setTempStat({ ...tempStat, label: e.target.value })
+                                                    : setTempStat({ ...tempStat, label_en: e.target.value })
+                                            }
+                                            placeholder={lang === 'fr' ? 'Libellé (ex : Utilisateurs)' : 'Label (e.g. Users)'}
                                             className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
                                         />
                                         <Button type="button" onClick={addStat} className="bg-white/10 text-white hover:bg-white hover:text-black">
@@ -689,7 +711,7 @@ export const ProjectManager: React.FC<ProjectManagerProps> = ({ projects, setPro
                                             <div key={`${s.label}-${i}`} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2">
                                                 <div>
                                                     <p className="text-sm font-semibold text-white">{s.value}</p>
-                                                    <p className="text-xs text-white/60">{s.label}</p>
+                                                    <p className="text-xs text-white/60">{lang === 'fr' ? (s.label || s.label_en || '—') : (s.label_en || s.label || '—')}</p>
                                                 </div>
                                                 <Button
                                                     type="button"
