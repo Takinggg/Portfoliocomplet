@@ -60,6 +60,8 @@ const DETAIL_COPY = {
         techStack: 'Stack technique',
         testimonial: 'Témoignage client',
         gallery: 'Galerie projet',
+        zoomHint: 'Scroll pour zoomer',
+        resetZoom: 'Double-cliquer pour réinitialiser',
         nextProject: 'Projet suivant',
         nextProjectAria: 'Voir le projet suivant',
         figure: 'FIG',
@@ -77,6 +79,8 @@ const DETAIL_COPY = {
         techStack: 'Technology Stack',
         testimonial: 'Client Testimonial',
         gallery: 'Project Gallery',
+        zoomHint: 'Scroll to zoom',
+        resetZoom: 'Double-click to reset',
         nextProject: 'Next Project',
         nextProjectAria: 'View next project',
         figure: 'FIG',
@@ -98,9 +102,11 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
     const solutionText = getLocalizedValue(language, details.solution, details.solution_en);
     const [activeImage, setActiveImage] = React.useState(0);
     const [isLightboxOpen, setIsLightboxOpen] = React.useState(false);
+    const [zoomLevel, setZoomLevel] = React.useState(1);
     React.useEffect(() => {
         setActiveImage(0);
         setIsLightboxOpen(false);
+        setZoomLevel(1);
     }, [details.id]);
     const galleryImages = (details.gallery && details.gallery.length > 0
         ? details.gallery
@@ -119,7 +125,6 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
     const deliverablesList = language === 'fr'
         ? details.deliverables ?? []
         : details.deliverables_en ?? details.deliverables ?? [];
-    const deliverablesSummary = deliverablesList.length ? deliverablesList.slice(0, 2).join(', ') : '—';
     const testimonialQuote = getLocalizedValue(language, details.feedback?.quote, details.feedback?.quote_en);
     const testimonialRole = getLocalizedValue(language, details.feedback?.role, details.feedback?.role_en);
     const testimonialAuthor = details.feedback?.author;
@@ -130,6 +135,8 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
     const enlargeLabel = language === 'fr' ? "Ouvrir l'image en plein écran" : 'Open image fullscreen';
     const enlargeHint = language === 'fr' ? 'Cliquer pour agrandir' : 'Click to enlarge';
     const closeLabel = language === 'fr' ? 'Fermer la galerie' : 'Close gallery';
+    const zoomHint = copy.zoomHint;
+    const resetZoomHint = copy.resetZoom;
     const stats = details.stats ?? [];
     const localizedStats = stats.map((stat) => ({
         value: stat.value,
@@ -139,8 +146,12 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
     const openLightbox = (index: number) => {
         setActiveImage(index);
         setIsLightboxOpen(true);
+        setZoomLevel(1);
     };
-    const closeLightbox = () => setIsLightboxOpen(false);
+    const closeLightbox = () => {
+        setIsLightboxOpen(false);
+        setZoomLevel(1);
+    };
 
     React.useEffect(() => {
         if (!isLightboxOpen) {
@@ -254,10 +265,6 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
                             <div>
                                 <h4 className="text-xs text-neutral-500 uppercase mb-1">{copy.timeline}</h4>
                                 <p className="text-white">{timelineLabel}</p>
-                            </div>
-                             <div>
-                                <h4 className="text-xs text-neutral-500 uppercase mb-1">{copy.deliverables}</h4>
-                                <p className="text-white">{deliverablesSummary}</p>
                             </div>
                         </div>
                     </Reveal>
@@ -394,40 +401,60 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
       
       {isLightboxOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 px-4" onClick={closeLightbox}>
-            <div className="relative flex w-full max-w-6xl items-center justify-center" onClick={(event) => event.stopPropagation()}>
+            <div
+                className="relative flex w-full max-w-6xl flex-col items-center"
+                onClick={(event) => event.stopPropagation()}
+            >
+                <div className="mb-3 flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-white/60">
+                    <span>{zoomHint}</span>
+                    <span>{resetZoomHint}</span>
+                </div>
                 <button
                     type="button"
                     aria-label={closeLabel}
                     onClick={closeLightbox}
-                    className="absolute -top-10 right-0 rounded-full border border-white/20 bg-white/10 p-3 text-white hover:bg-primary hover:text-black"
+                    className="absolute top-0 right-0 rounded-full border border-white/20 bg-white/10 p-3 text-white hover:bg-primary hover:text-black"
                 >
                     <X size={18} />
                 </button>
-                <button
-                    onClick={(event) => {
-                        event.stopPropagation();
-                        handlePrevImage();
-                    }}
-                    aria-label={prevImageLabel}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-white/10 p-4 text-white hover:bg-primary hover:text-black"
-                >
-                    <ArrowLeft size={22} />
-                </button>
-                <img
-                    src={safeGallery[activeImage]}
-                    alt={`${details.title} fullscreen ${activeImage + 1}`}
-                    className="max-h-[90vh] max-w-5xl rounded-2xl border border-white/10 object-contain"
-                />
-                <button
-                    onClick={(event) => {
-                        event.stopPropagation();
-                        handleNextImage();
-                    }}
-                    aria-label={nextImageLabel}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-white/10 p-4 text-white hover:bg-primary hover:text-black"
-                >
-                    <ArrowRight size={22} />
-                </button>
+                <div className="relative flex w-full items-center justify-center">
+                    <button
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            handlePrevImage();
+                        }}
+                        aria-label={prevImageLabel}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-white/10 p-4 text-white hover:bg-primary hover:text-black"
+                    >
+                        <ArrowLeft size={22} />
+                    </button>
+                    <div
+                        className="relative max-h-[85vh] max-w-5xl overflow-hidden rounded-2xl border border-white/10 bg-black/60"
+                        onWheel={(event) => {
+                            event.preventDefault();
+                            const nextZoom = Math.min(3, Math.max(0.5, zoomLevel + event.deltaY * -0.001));
+                            setZoomLevel(Number(nextZoom.toFixed(2)));
+                        }}
+                        onDoubleClick={() => setZoomLevel(1)}
+                    >
+                        <img
+                            src={safeGallery[activeImage]}
+                            alt={`${details.title} fullscreen ${activeImage + 1}`}
+                            className="object-contain"
+                            style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center center', transition: 'transform 0.2s ease-out' }}
+                        />
+                    </div>
+                    <button
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            handleNextImage();
+                        }}
+                        aria-label={nextImageLabel}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-white/10 p-4 text-white hover:bg-primary hover:text-black"
+                    >
+                        <ArrowRight size={22} />
+                    </button>
+                </div>
             </div>
         </div>
       )}
