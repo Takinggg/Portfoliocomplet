@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 import { Reveal } from '../Reveal';
 import { Project } from '../../types';
 import { useTranslation } from '../../../utils/i18n/useTranslation';
@@ -51,10 +51,12 @@ const DETAIL_COPY = {
         back: "Retour à l'archive",
         challenge: 'Le défi',
         solution: 'La solution',
+        overview: 'Contexte',
         role: 'Rôle',
         agency: 'Agence',
         timeline: 'Planning',
         deliverables: 'Livrables',
+        kpis: 'KPIs clés',
         techStack: 'Stack technique',
         testimonial: 'Témoignage client',
         gallery: 'Galerie projet',
@@ -66,10 +68,12 @@ const DETAIL_COPY = {
         back: 'Back to archive',
         challenge: 'The Challenge',
         solution: 'The Solution',
+        overview: 'Overview',
         role: 'Role',
         agency: 'Agency',
         timeline: 'Timeline',
         deliverables: 'Deliverables',
+        kpis: 'Key KPIs',
         techStack: 'Technology Stack',
         testimonial: 'Client Testimonial',
         gallery: 'Project Gallery',
@@ -89,11 +93,14 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
         const details = project ?? fallbackProject;
         const { language } = useTranslation();
         const copy = DETAIL_COPY[language];
+    const overviewText = getLocalizedValue(language, details.description, details.description_en);
     const challengeText = getLocalizedValue(language, details.challenge ?? details.description, details.challenge_en ?? details.description_en);
     const solutionText = getLocalizedValue(language, details.solution, details.solution_en);
     const [activeImage, setActiveImage] = React.useState(0);
+    const [isLightboxOpen, setIsLightboxOpen] = React.useState(false);
     React.useEffect(() => {
         setActiveImage(0);
+        setIsLightboxOpen(false);
     }, [details.id]);
     const galleryImages = (details.gallery && details.gallery.length > 0
         ? details.gallery
@@ -120,6 +127,39 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
     const techFallback = language === 'fr' ? 'Bientôt disponible' : 'Coming soon';
     const prevImageLabel = language === 'fr' ? 'Image précédente' : 'Previous image';
     const nextImageLabel = language === 'fr' ? 'Image suivante' : 'Next image';
+    const enlargeLabel = language === 'fr' ? "Ouvrir l'image en plein écran" : 'Open image fullscreen';
+    const enlargeHint = language === 'fr' ? 'Cliquer pour agrandir' : 'Click to enlarge';
+    const closeLabel = language === 'fr' ? 'Fermer la galerie' : 'Close gallery';
+    const stats = details.stats ?? [];
+    const localizedStats = stats.map((stat) => ({
+        value: stat.value,
+        label: language === 'fr' ? (stat.label || stat.label_en || '') : (stat.label_en || stat.label || ''),
+    })).filter((stat) => stat.value && stat.label);
+
+    const openLightbox = (index: number) => {
+        setActiveImage(index);
+        setIsLightboxOpen(true);
+    };
+    const closeLightbox = () => setIsLightboxOpen(false);
+
+    React.useEffect(() => {
+        if (!isLightboxOpen) {
+            return;
+        }
+        const handleKey = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                closeLightbox();
+            }
+            if (event.key === 'ArrowLeft') {
+                handlePrevImage();
+            }
+            if (event.key === 'ArrowRight') {
+                handleNextImage();
+            }
+        };
+        window.addEventListener('keydown', handleKey);
+        return () => window.removeEventListener('keydown', handleKey);
+    }, [isLightboxOpen, safeGallery.length]);
 
   return (
     <div className="bg-background min-h-screen animate-in fade-in slide-in-from-bottom-8 duration-700">
@@ -174,6 +214,16 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
             {/* Sticky Sidebar */}
             <div className="lg:col-span-4">
                 <div className="sticky top-32 space-y-12">
+                    {overviewText && (
+                        <Reveal>
+                            <div>
+                                <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-4">{copy.overview}</h3>
+                                <p className="text-xl text-white font-light leading-relaxed">
+                                    {overviewText}
+                                </p>
+                            </div>
+                        </Reveal>
+                    )}
                     <Reveal>
                         <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-4">{copy.challenge}</h3>
                         <p className="text-xl text-white font-light leading-relaxed">
@@ -237,11 +287,21 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
                             <span>{String(activeImage + 1).padStart(2, '0')}/{String(safeGallery.length).padStart(2, '0')}</span>
                         </div>
                         <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40">
-                            <img
-                                src={safeGallery[activeImage]}
-                                alt={`${details.title} gallery ${activeImage + 1}`}
-                                className="w-full h-[520px] object-cover"
-                            />
+                            <button
+                                type="button"
+                                onClick={() => openLightbox(activeImage)}
+                                aria-label={enlargeLabel}
+                                className="group block w-full"
+                            >
+                                <img
+                                    src={safeGallery[activeImage]}
+                                    alt={`${details.title} gallery ${activeImage + 1}`}
+                                    className="w-full h-[520px] object-cover transition duration-300 group-hover:scale-[1.01]"
+                                />
+                                <span className="pointer-events-none absolute bottom-4 right-4 rounded-full border border-white/20 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.3em] text-white opacity-0 group-hover:opacity-100 transition">
+                                    {enlargeHint}
+                                </span>
+                            </button>
                             {hasMultipleImages && (
                                 <>
                                     <button
@@ -298,6 +358,22 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
                     </Reveal>
                 )}
 
+                {localizedStats.length > 0 && (
+                    <Reveal delay={220}>
+                        <div className="rounded-2xl border border-white/10 bg-[#0c0c0c] p-6">
+                            <div className="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-6">{copy.kpis}</div>
+                            <div className="grid gap-6 sm:grid-cols-2">
+                                {localizedStats.map((stat, index) => (
+                                    <div key={`${stat.label}-${index}`} className="border border-white/5 rounded-xl p-4 bg-white/[0.01]">
+                                        <p className="text-3xl font-display text-white">{stat.value}</p>
+                                        <p className="mt-2 text-sm uppercase tracking-[0.2em] text-white/60">{stat.label}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </Reveal>
+                )}
+
                 <Reveal delay={techItems.length ? 240 : 200}>
                     <div className="bg-[#111] p-12 rounded-2xl border border-white/5 text-center">
                         <h3 className="font-display text-2xl text-white mb-4">{copy.techStack}</h3>
@@ -315,6 +391,46 @@ export const PortfolioDetailPage: React.FC<PortfolioDetailPageProps> = ({ projec
             </div>
         </div>
       </div>
+      
+      {isLightboxOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 px-4" onClick={closeLightbox}>
+            <div className="relative flex w-full max-w-6xl items-center justify-center" onClick={(event) => event.stopPropagation()}>
+                <button
+                    type="button"
+                    aria-label={closeLabel}
+                    onClick={closeLightbox}
+                    className="absolute -top-10 right-0 rounded-full border border-white/20 bg-white/10 p-3 text-white hover:bg-primary hover:text-black"
+                >
+                    <X size={18} />
+                </button>
+                <button
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        handlePrevImage();
+                    }}
+                    aria-label={prevImageLabel}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-white/10 p-4 text-white hover:bg-primary hover:text-black"
+                >
+                    <ArrowLeft size={22} />
+                </button>
+                <img
+                    src={safeGallery[activeImage]}
+                    alt={`${details.title} fullscreen ${activeImage + 1}`}
+                    className="max-h-[90vh] max-w-5xl rounded-2xl border border-white/10 object-contain"
+                />
+                <button
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        handleNextImage();
+                    }}
+                    aria-label={nextImageLabel}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-white/10 p-4 text-white hover:bg-primary hover:text-black"
+                >
+                    <ArrowRight size={22} />
+                </button>
+            </div>
+        </div>
+      )}
 
       {/* Next Project Footer */}
       <div className="border-t border-white/10 bg-[#0A0A0A] py-32 group cursor-pointer relative overflow-hidden">
